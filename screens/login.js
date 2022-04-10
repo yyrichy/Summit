@@ -25,7 +25,7 @@ export default class Login extends Component {
       const client = await StudentVue.login(DISTRICT_URL, { username: username, password: password });
       const info = await client.schoolInfo();
       Alert.alert('School Info', `${info.school.address} in ${info.school.city}`);
-      this.props.navigation.navigate('Home');
+      this.props.navigation.navigate('Menu');
     } catch (err) {
       return;
     }
@@ -44,7 +44,7 @@ export default class Login extends Component {
     const info = await this.client.schoolInfo();
 
     Alert.alert('School Info', `${info.school.address} in ${info.school.city} 😁`);
-    this.props.navigation.navigate('Home')
+    this.props.navigation.navigate('Menu')
   }
 
   render() {
