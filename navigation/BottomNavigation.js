@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import Grades from '../screens/Grades';
 import StudentInfo from '../screens/StudentInfo';
 import { Component } from 'react';

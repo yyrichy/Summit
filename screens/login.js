@@ -35,15 +35,14 @@ export default class Login extends Component {
     const { username, password } = this.state;
     try {
       this.client = await StudentVue.login(DISTRICT_URL, { username: username, password: password });
+      const info = await this.client.schoolInfo();
+      Alert.alert('School Info', `${info.school.address} in ${info.school.city} 😁`);
     } catch (err) {
       Alert.alert('Error', err.message);
       return;
     }
     save('Username', username);
     save('Password', password);
-    const info = await this.client.schoolInfo();
-
-    Alert.alert('School Info', `${info.school.address} in ${info.school.city} 😁`);
     this.props.navigation.navigate('Menu')
   }
 
