@@ -1,76 +1,77 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet } from 'react-native';
 import StudentVue from 'studentvue';
 import * as SecureStore from 'expo-secure-store';
 
 const DISTRICT_URL = 'https://md-mcps-psv.edupoint.com/';
 
-export default class Login extends Component {
-  constructor(props) {
-    super(props)
-    this.client = undefined;
+const Login = ({ navigation }) => {
+  const [client, setClient] = useState(undefined);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const user = {
+    username: username,
+    password: password,
+    client: client
+  };
 
-    this.state = {
-      username: '',
-      password: '',
-    };
+  savedCredentials();
 
-    this.savedCredentials();
-  }
-
-  async savedCredentials() {
-    const username = await getValueFor('Username') || '';
-    const password = await getValueFor('Password') || '';
+  async function savedCredentials() {
+    const u = await getValueFor('Username') || '';
+    const p = await getValueFor('Password') || '';
     try {
-      const client = await StudentVue.login(DISTRICT_URL, { username: username, password: password });
-      const info = await client.schoolInfo();
-      Alert.alert('School Info', `${info.school.address} in ${info.school.city}`);
-      this.props.navigation.navigate('Menu');
+      setClient(await StudentVue.login(DISTRICT_URL, { username: u, password: p }));
     } catch (err) {
       return;
     }
+    setUsername(u);
+    setPassword(p);
+    menu();
   }
 
-  async onLogin() {
-    const { username, password } = this.state;
+  async function onLogin() {
     try {
-      this.client = await StudentVue.login(DISTRICT_URL, { username: username, password: password });
-      const info = await this.client.schoolInfo();
-      Alert.alert('School Info', `${info.school.address} in ${info.school.city} 😁`);
+      setClient(await StudentVue.login(DISTRICT_URL, { username: username, password: password }));
+      Alert.alert('a', user.username);
     } catch (err) {
       Alert.alert('Error', err.message);
       return;
     }
     save('Username', username);
     save('Password', password);
-    this.props.navigation.navigate('Menu')
+    menu();
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <TextInput
-          value={this.state.username}
-          onChangeText={(username) => this.setState({ username })}
-          placeholder={'Username'}
-          style={styles.input}
-        />
-        <TextInput
-          value={this.state.password}
-          onChangeText={(password) => this.setState({ password })}
-          placeholder={'Password'}
-          secureTextEntry={true}
-          style={styles.input}
-        />
-        <Button
-          title={'Login'}
-          style={styles.input}
-          onPress={this.onLogin.bind(this)}
-        />
-      </View>
-    );
+  function menu() {
+    navigation.navigate('Menu', { user: user })
   }
+
+  return (
+    <View style={styles.container}>
+      <TextInput
+        value={username}
+        onChangeText={(u) => setUsername(u)}
+        placeholder={'Username'}
+        style={styles.input}
+      />
+      <TextInput
+        value={password}
+        onChangeText={(p) => setPassword(p)}
+        placeholder={'Password'}
+        secureTextEntry={true}
+        style={styles.input}
+      />
+      <Button
+        title={'Login'}
+        style={styles.input}
+        onPress={onLogin.bind(this)}
+      />
+    </View>
+  );
 }
+
+export default Login;
 
 const styles = StyleSheet.create({
   container: {
