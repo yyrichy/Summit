@@ -1,4 +1,4 @@
-import Login from './screens/Login';
+import Login from './screens/Login-temp';
 import BottomNavigation from './navigation/BottomNavigation'
 import { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
