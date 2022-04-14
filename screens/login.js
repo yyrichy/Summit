@@ -44,7 +44,7 @@ const Login = ({ navigation }) => {
   }
 
   function menu() {
-    navigation.navigate('Menu', { user: user })
+    navigation.navigate('Menu', { user: user });
   }
 
   return (

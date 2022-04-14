@@ -1,8 +1,8 @@
-import React, { Component, useContext } from 'react';
+import React, { useContext } from 'react';
 import AppContext from '../components/AppContext';
-import { View, Text, Alert } from 'react-native';
+import { View, Text } from 'react-native';
 
-const Grades = async () => {
+function Grades () {
   const context = useContext(AppContext);
 /*   const user = context.user
   const username = user.username;
@@ -12,7 +12,7 @@ const Grades = async () => {
 
   return (
     <View>
-      <Text>This is the grades screen</Text>
+      <Text>This is the grades screen {context.username}</Text>
     </View>
   )
 }
