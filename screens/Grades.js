@@ -1,14 +1,9 @@
-import React, { useContext } from 'react';
-import AppContext from '../components/AppContext';
-import { View, Text } from 'react-native';
+import React, { useContext } from "react"
+import AppContext from "../components/AppContext"
+import { View, Text } from "react-native"
 
-function Grades () {
-  const context = useContext(AppContext);
-/*   const user = context.user
-  const username = user.username;
-  const password = user.password;
-  const client = user.client;
-  Alert.alert('.', password) */
+function Grades() {
+  const context = useContext(AppContext)
 
   return (
     <View>
@@ -17,4 +12,4 @@ function Grades () {
   )
 }
 
-export default Grades;
+export default Grades

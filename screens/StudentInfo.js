@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from "react"
+import { View, Text } from "react-native"
 
 export class StudentInfo extends Component {
   render() {
@@ -11,4 +11,4 @@ export class StudentInfo extends Component {
   }
 }
 
-export default StudentInfo;
+export default StudentInfo
