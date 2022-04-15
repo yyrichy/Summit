@@ -3,7 +3,7 @@ import React from 'react';
 import BottomNavigation from "./navigation/BottomNavigation"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { RootStackParamList } from "./screens/RootStackParams"
+import { RootStackParamList } from "./types/RootStackParams"
 
 const Stack = createStackNavigator<RootStackParamList>()
 

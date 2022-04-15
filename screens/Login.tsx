@@ -3,9 +3,10 @@ import { Alert, TextInput, View, StyleSheet } from "react-native"
 import StudentVue from "studentvue"
 import * as SecureStore from "expo-secure-store"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { RootStackParamList } from "./RootStackParams"
+import { RootStackParamList } from "../types/RootStackParams"
 import { useNavigation } from "@react-navigation/native"
 import CustomButton from "../components/CustomButton"
+import { User } from "../types/User"
 
 const DISTRICT_URL = "https://md-mcps-psv.edupoint.com/"
 
@@ -16,7 +17,7 @@ const Login = () => {
   const [client, setClient] = useState(undefined)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const user = {
+  const user: User = {
     username: username,
     password: password,
     client: client
@@ -25,8 +26,8 @@ const Login = () => {
   savedCredentials()
 
   async function savedCredentials() {
-    const u = (await getValueFor("Username")) || ""
-    const p = (await getValueFor("Password")) || ""
+    const u = await getValueFor("Username")
+    const p = await getValueFor("Password")
     try {
       setClient(
         await StudentVue.login(DISTRICT_URL, { username: u, password: p })
@@ -57,7 +58,7 @@ const Login = () => {
   }
 
   function menu() {
-    navigation.navigate("Menu", { user: user })
+    navigation.navigate("Menu", { user: user } as any)
   }
 
   return (

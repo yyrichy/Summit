@@ -5,24 +5,27 @@ import React from "react"
 import { useState } from "react"
 import AppContext from "../components/AppContext"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { RootStackParamList } from "../screens/RootStackParams"
+import { RootStackParamList } from "../types/RootStackParams"
 import { useNavigation } from "@react-navigation/native"
 
 const Tab = createBottomTabNavigator()
 type navScreenProp = StackNavigationProp<RootStackParamList, "Menu">
 
-const App = ({ route }) => {
+const App = ({
+  route: {
+    params: {
+      user: { username: u, password: p, client: c }
+    }
+  }
+}) => {
   const navigation = useNavigation<navScreenProp>()
-  const [username, setUsername] = useState(route.params.user.username)
-  const [password, setPassword] = useState(route.params.user.password)
-  const [client, setClient] = useState(route.params.user.client)
+  const [username] = useState(u)
+  const [password] = useState(p)
+  const [client] = useState(c)
   const user = {
     username: username,
     password: password,
-    client: client,
-    setUsername,
-    setPassword,
-    setClient
+    client: client
   }
 
   return (
