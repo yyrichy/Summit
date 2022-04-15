@@ -7,6 +7,7 @@ import { RootStackParamList } from "./types/RootStackParams"
 import { useState } from "react"
 import AppContext from "./components/AppContext"
 import { User } from "./types/User"
+import { LightTheme } from "./theme/LightTheme"
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -25,7 +26,7 @@ const App = () => {
 
   return (
     <AppContext.Provider value={user}>
-      <NavigationContainer>
+      <NavigationContainer theme={LightTheme}>
         <Stack.Navigator>
           <Stack.Screen
             name="Login"

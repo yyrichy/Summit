@@ -8,6 +8,9 @@ import { useNavigation } from "@react-navigation/native"
 import CustomButton from "../components/CustomButton"
 import AppContext from "../components/AppContext"
 import { useContext } from "react"
+import { LightTheme } from "../theme/LightTheme"
+
+const colors = LightTheme.colors
 
 const DISTRICT_URL = "https://md-mcps-psv.edupoint.com/"
 
@@ -15,7 +18,8 @@ type loginScreenProp = StackNavigationProp<RootStackParamList, "Login">
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const { username, password, setUsername, setPassword, setClient } = useContext(AppContext)
+  const { username, password, setUsername, setPassword, setClient } =
+    useContext(AppContext)
 
   savedCredentials()
 
@@ -73,7 +77,7 @@ const Login = () => {
       <CustomButton
         onPress={onLogin.bind(this)}
         text={"Login"}
-        backgroundColor="#02a5c2"
+        backgroundColor={colors.light_primary}
       ></CustomButton>
     </View>
   )
@@ -92,7 +96,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     borderWidth: 1,
-    borderColor: "#02a5c2",
+    borderColor: colors.light_primary,
     marginBottom: 10
   }
 })

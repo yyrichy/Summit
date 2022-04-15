@@ -6,6 +6,9 @@ import { StackNavigationProp } from "@react-navigation/stack"
 import { RootStackParamList } from "../types/RootStackParams"
 import { useNavigation } from "@react-navigation/native"
 import { Ionicons } from "@expo/vector-icons"
+import { LightTheme } from "../theme/LightTheme"
+
+const colors = LightTheme.colors;
 
 const Tab = createBottomTabNavigator()
 type navScreenProp = StackNavigationProp<RootStackParamList, "Menu">
@@ -20,13 +23,13 @@ const App = () => {
         component={Grades}
         options={{
           headerTitleAlign: "center",
-          tabBarActiveTintColor: "#02a5c2",
+          tabBarActiveTintColor: colors.primary,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="trending-up-outline"
                 size={28}
-                color={tabInfo.focused ? "#02a5c2" : "#8e8e93"}
+                color={tabInfo.focused ? colors.primary : colors.gray}
               />
             )
           }
@@ -37,13 +40,13 @@ const App = () => {
         component={StudentInfo}
         options={{
           headerTitleAlign: "center",
-          tabBarActiveTintColor: "#02a5c2",
+          tabBarActiveTintColor: colors.primary,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="person-outline"
                 size={28}
-                color={tabInfo.focused ? "#02a5c2" : "#8e8e93"}
+                color={tabInfo.focused ? colors.primary : colors.gray}
               />
             )
           }
