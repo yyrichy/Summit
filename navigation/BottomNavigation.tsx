@@ -7,6 +7,8 @@ import { RootStackParamList } from "../types/RootStackParams"
 import { useNavigation } from "@react-navigation/native"
 import { Ionicons } from "@expo/vector-icons"
 import { LightTheme } from "../theme/LightTheme"
+import Schedule from "../screens/Schedule"
+import Documents from "../screens/Documents"
 
 const colors = LightTheme.colors;
 
@@ -28,7 +30,41 @@ const App = () => {
             return (
               <Ionicons
                 name="trending-up-outline"
-                size={28}
+                size={tabInfo.focused ? 32 : 24}
+                color={tabInfo.focused ? colors.primary : colors.gray}
+              />
+            )
+          }
+        }}
+      />
+      <Tab.Screen
+        name="Schedule"
+        component={Schedule}
+        options={{
+          headerTitleAlign: "center",
+          tabBarActiveTintColor: colors.primary,
+          tabBarIcon: (tabInfo) => {
+            return (
+              <Ionicons
+                name="calendar-outline"
+                size={tabInfo.focused ? 32 : 24}
+                color={tabInfo.focused ? colors.primary : colors.gray}
+              />
+            )
+          }
+        }}
+      />
+      <Tab.Screen
+        name="Documents"
+        component={Documents}
+        options={{
+          headerTitleAlign: "center",
+          tabBarActiveTintColor: colors.primary,
+          tabBarIcon: (tabInfo) => {
+            return (
+              <Ionicons
+                name="file-tray-outline"
+                size={tabInfo.focused ? 32 : 24}
                 color={tabInfo.focused ? colors.primary : colors.gray}
               />
             )
@@ -45,7 +81,7 @@ const App = () => {
             return (
               <Ionicons
                 name="person-outline"
-                size={28}
+                size={tabInfo.focused ? 32 : 24}
                 color={tabInfo.focused ? colors.primary : colors.gray}
               />
             )
