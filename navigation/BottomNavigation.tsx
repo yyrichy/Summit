@@ -2,47 +2,54 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Grades from "../screens/Grades"
 import StudentInfo from "../screens/StudentInfo"
 import React from "react"
-import { useState } from "react"
-import AppContext from "../components/AppContext"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { RootStackParamList } from "../types/RootStackParams"
 import { useNavigation } from "@react-navigation/native"
+import { Ionicons } from "@expo/vector-icons"
 
 const Tab = createBottomTabNavigator()
 type navScreenProp = StackNavigationProp<RootStackParamList, "Menu">
 
-const App = ({
-  route: {
-    params: {
-      user: { username: u, password: p, client: c }
-    }
-  }
-}) => {
+const App = () => {
   const navigation = useNavigation<navScreenProp>()
-  const [username] = useState(u)
-  const [password] = useState(p)
-  const [client] = useState(c)
-  const user = {
-    username: username,
-    password: password,
-    client: client
-  }
 
   return (
-    <AppContext.Provider value={user}>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Grades"
-          component={Grades}
-          options={{ headerTitleAlign: "center" }}
-        />
-        <Tab.Screen
-          name="Student Info"
-          component={StudentInfo}
-          options={{ headerTitleAlign: "center" }}
-        />
-      </Tab.Navigator>
-    </AppContext.Provider>
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Grades"
+        component={Grades}
+        options={{
+          headerTitleAlign: "center",
+          tabBarActiveTintColor: "#02a5c2",
+          tabBarIcon: (tabInfo) => {
+            return (
+              <Ionicons
+                name="trending-up-outline"
+                size={28}
+                color={tabInfo.focused ? "#02a5c2" : "#8e8e93"}
+              />
+            )
+          }
+        }}
+      />
+      <Tab.Screen
+        name="Student Info"
+        component={StudentInfo}
+        options={{
+          headerTitleAlign: "center",
+          tabBarActiveTintColor: "#02a5c2",
+          tabBarIcon: (tabInfo) => {
+            return (
+              <Ionicons
+                name="person-outline"
+                size={28}
+                color={tabInfo.focused ? "#02a5c2" : "#8e8e93"}
+              />
+            )
+          }
+        }}
+      />
+    </Tab.Navigator>
   )
 }
 

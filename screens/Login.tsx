@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Alert, TextInput, View, StyleSheet } from "react-native"
 import StudentVue from "studentvue"
 import * as SecureStore from "expo-secure-store"
@@ -6,7 +6,8 @@ import { StackNavigationProp } from "@react-navigation/stack"
 import { RootStackParamList } from "../types/RootStackParams"
 import { useNavigation } from "@react-navigation/native"
 import CustomButton from "../components/CustomButton"
-import { User } from "../types/User"
+import AppContext from "../components/AppContext"
+import { useContext } from "react"
 
 const DISTRICT_URL = "https://md-mcps-psv.edupoint.com/"
 
@@ -14,14 +15,7 @@ type loginScreenProp = StackNavigationProp<RootStackParamList, "Login">
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const [client, setClient] = useState(undefined)
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const user: User = {
-    username: username,
-    password: password,
-    client: client
-  }
+  const { username, password, setUsername, setPassword, setClient } = useContext(AppContext)
 
   savedCredentials()
 
@@ -58,7 +52,7 @@ const Login = () => {
   }
 
   function menu() {
-    navigation.navigate("Menu", { user: user } as any)
+    navigation.navigate("Menu")
   }
 
   return (
@@ -98,7 +92,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     borderWidth: 1,
-    borderColor: "#3EB489",
+    borderColor: "#02a5c2",
     marginBottom: 10
   }
 })

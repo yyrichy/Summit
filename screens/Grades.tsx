@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import AppContext from "../components/AppContext"
 import { View, Text } from "react-native"
 
-function Grades() {
+const Grades = () => {
   const context = useContext(AppContext)
 
   return (

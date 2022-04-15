@@ -1,6 +1,6 @@
-import { Client } from "studentvue"
+import { Client } from "studentvue";
 
-export type User = {
+export interface User {
   username: string
   password: string
   client: Client
