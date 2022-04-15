@@ -3,7 +3,7 @@ import AppContext from "../components/AppContext"
 import { View, Text } from "react-native"
 
 function Grades() {
-  const context = useContext(AppContext)
+  const context: unknown = useContext(AppContext)
 
   return (
     <View>

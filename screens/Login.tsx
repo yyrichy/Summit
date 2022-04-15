@@ -1,11 +1,18 @@
 import React, { useState } from "react"
-import { Alert, Button, TextInput, View, StyleSheet } from "react-native"
+import { Alert, TextInput, View, StyleSheet } from "react-native"
 import StudentVue from "studentvue"
 import * as SecureStore from "expo-secure-store"
+import { StackNavigationProp } from "@react-navigation/stack"
+import { RootStackParamList } from "./RootStackParams"
+import { useNavigation } from "@react-navigation/native"
+import CustomButton from "../components/CustomButton"
 
 const DISTRICT_URL = "https://md-mcps-psv.edupoint.com/"
 
-const Login = ({ navigation }) => {
+type loginScreenProp = StackNavigationProp<RootStackParamList, "Login">
+
+const Login = () => {
+  const navigation = useNavigation<loginScreenProp>()
   const [client, setClient] = useState(undefined)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -40,7 +47,6 @@ const Login = ({ navigation }) => {
           password: password
         })
       )
-      Alert.alert("a", user.username)
     } catch (err) {
       Alert.alert("Error", err.message)
       return
@@ -69,11 +75,11 @@ const Login = ({ navigation }) => {
         secureTextEntry={true}
         style={styles.input}
       />
-      <Button
-        title={"Login"}
-        style={styles.input}
+      <CustomButton
         onPress={onLogin.bind(this)}
-      />
+        text={"Login"}
+        backgroundColor="#02a5c2"
+      ></CustomButton>
     </View>
   )
 }
@@ -96,10 +102,10 @@ const styles = StyleSheet.create({
   }
 })
 
-async function save(key, value) {
+async function save(key: string, value: string) {
   await SecureStore.setItemAsync(key, value)
 }
 
-async function getValueFor(key) {
+async function getValueFor(key: string) {
   return await SecureStore.getItemAsync(key)
 }
