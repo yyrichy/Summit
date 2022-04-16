@@ -24,18 +24,8 @@ const Login = () => {
   savedCredentials()
 
   async function savedCredentials() {
-    const u = await getValueFor("Username")
-    const p = await getValueFor("Password")
-    try {
-      setClient(
-        await StudentVue.login(DISTRICT_URL, { username: u, password: p })
-      )
-    } catch (err) {
-      return
-    }
-    setUsername(u)
-    setPassword(p)
-    menu()
+    setUsername(await getValueFor("Username"))
+    setPassword(await getValueFor("Password"))
   }
 
   async function onLogin() {
