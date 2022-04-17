@@ -63,7 +63,7 @@ const App = () => {
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
-                name="file-tray-outline"
+                name="folder-outline"
                 size={tabInfo.focused ? 32 : 24}
                 color={tabInfo.focused ? colors.secondary : colors.gray}
               />
