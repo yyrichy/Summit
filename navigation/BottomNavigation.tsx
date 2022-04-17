@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Grades from "../screens/Grades"
-import StudentInfo from "../screens/StudentInfo"
+import Profile from "../screens/Profile"
 import React from "react"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { RootStackParamList } from "../types/RootStackParams"
@@ -72,8 +72,8 @@ const App = () => {
         }}
       />
       <Tab.Screen
-        name="Student Info"
-        component={StudentInfo}
+        name="Profile"
+        component={Profile}
         options={{
           headerTitleAlign: "center",
           tabBarActiveTintColor: colors.secondary,
