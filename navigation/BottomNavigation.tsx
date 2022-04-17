@@ -24,7 +24,7 @@ const App = () => {
         name="Grades"
         component={Grades}
         options={{
-          headerTitleAlign: "center",
+          headerShown: false,
           tabBarActiveTintColor: colors.secondary,
           tabBarIcon: (tabInfo) => {
             return (
@@ -41,7 +41,7 @@ const App = () => {
         name="Schedule"
         component={Schedule}
         options={{
-          headerTitleAlign: "center",
+          headerShown: false,
           tabBarActiveTintColor: colors.secondary,
           tabBarIcon: (tabInfo) => {
             return (
@@ -58,7 +58,7 @@ const App = () => {
         name="Documents"
         component={Documents}
         options={{
-          headerTitleAlign: "center",
+          headerShown: false,
           tabBarActiveTintColor: colors.secondary,
           tabBarIcon: (tabInfo) => {
             return (
@@ -75,7 +75,7 @@ const App = () => {
         name="Profile"
         component={Profile}
         options={{
-          headerTitleAlign: "center",
+          headerShown: false,
           tabBarActiveTintColor: colors.secondary,
           tabBarIcon: (tabInfo) => {
             return (
