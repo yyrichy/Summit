@@ -67,7 +67,8 @@ const Login = () => {
       <CustomButton
         onPress={onLogin.bind(this)}
         text={"Login"}
-        backgroundColor={colors.light_primary}
+        backgroundColor={colors.card}
+        textColor={colors.secondary}
       ></CustomButton>
     </View>
   )
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     borderWidth: 1,
-    borderColor: colors.light_primary,
+    borderColor: colors.secondary,
     marginBottom: 10
   }
 })

@@ -10,7 +10,7 @@ import { LightTheme } from "../theme/LightTheme"
 import Schedule from "../screens/Schedule"
 import Documents from "../screens/Documents"
 
-const colors = LightTheme.colors;
+const colors = LightTheme.colors
 
 const Tab = createBottomTabNavigator()
 type navScreenProp = StackNavigationProp<RootStackParamList, "Menu">
@@ -25,13 +25,13 @@ const App = () => {
         component={Grades}
         options={{
           headerTitleAlign: "center",
-          tabBarActiveTintColor: colors.primary,
+          tabBarActiveTintColor: colors.secondary,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="trending-up-outline"
                 size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? colors.primary : colors.gray}
+                color={tabInfo.focused ? colors.secondary : colors.gray}
               />
             )
           }
@@ -42,13 +42,13 @@ const App = () => {
         component={Schedule}
         options={{
           headerTitleAlign: "center",
-          tabBarActiveTintColor: colors.primary,
+          tabBarActiveTintColor: colors.secondary,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="calendar-outline"
                 size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? colors.primary : colors.gray}
+                color={tabInfo.focused ? colors.secondary : colors.gray}
               />
             )
           }
@@ -59,13 +59,13 @@ const App = () => {
         component={Documents}
         options={{
           headerTitleAlign: "center",
-          tabBarActiveTintColor: colors.primary,
+          tabBarActiveTintColor: colors.secondary,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="file-tray-outline"
                 size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? colors.primary : colors.gray}
+                color={tabInfo.focused ? colors.secondary : colors.gray}
               />
             )
           }
@@ -76,13 +76,13 @@ const App = () => {
         component={StudentInfo}
         options={{
           headerTitleAlign: "center",
-          tabBarActiveTintColor: colors.primary,
+          tabBarActiveTintColor: colors.secondary,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="person-outline"
                 size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? colors.primary : colors.gray}
+                color={tabInfo.focused ? colors.secondary : colors.gray}
               />
             )
           }

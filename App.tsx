@@ -30,7 +30,10 @@ const App = () => {
           <Stack.Screen
             name="Login"
             component={Login}
-            options={{ headerTitleAlign: "center" }}
+            options={{
+              headerTitleAlign: "center",
+              headerTitle: "Welcome to ScholarHelper"
+            }}
           />
           <Stack.Screen
             name="Menu"
