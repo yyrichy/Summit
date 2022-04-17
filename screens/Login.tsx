@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Alert, TextInput, View, StyleSheet } from "react-native"
 import StudentVue from "studentvue"
 import * as SecureStore from "expo-secure-store"
@@ -7,7 +7,6 @@ import { RootStackParamList } from "../types/RootStackParams"
 import { useNavigation } from "@react-navigation/native"
 import CustomButton from "../components/CustomButton"
 import AppContext from "../components/AppContext"
-import { useContext } from "react"
 import { LightTheme } from "../theme/LightTheme"
 
 const colors = LightTheme.colors
@@ -21,6 +20,9 @@ const Login = () => {
   const { username, password, setUsername, setPassword, setClient } =
     useContext(AppContext)
 
+  let usernameLocal = username
+  let passwordLocal = password
+
   savedCredentials()
 
   async function savedCredentials() {
@@ -32,34 +34,35 @@ const Login = () => {
     try {
       setClient(
         await StudentVue.login(DISTRICT_URL, {
-          username: username,
-          password: password
+          username: usernameLocal,
+          password: passwordLocal
         })
       )
     } catch (err) {
       Alert.alert("Error", err.message)
       return
     }
-    save("Username", username)
-    save("Password", password)
-    menu()
-  }
-
-  function menu() {
+    setUsername(usernameLocal)
+    setPassword(passwordLocal)
+    save("Username", usernameLocal)
+    save("Password", passwordLocal)
     navigation.navigate("Menu")
   }
 
   return (
     <View style={styles.container}>
       <TextInput
-        value={username}
-        onChangeText={(u) => setUsername(u)}
+        defaultValue={username}
+        onChangeText={(u) => {
+          usernameLocal = u
+          console.log(u)
+        }}
         placeholder={"Username"}
         style={styles.input}
       />
       <TextInput
-        value={password}
-        onChangeText={(p) => setPassword(p)}
+        defaultValue={password}
+        onChangeText={(p) => (passwordLocal = p)}
         placeholder={"Password"}
         secureTextEntry={true}
         style={styles.input}
@@ -99,3 +102,4 @@ async function save(key: string, value: string) {
 async function getValueFor(key: string) {
   return await SecureStore.getItemAsync(key)
 }
+222111111111111111112222222222222222221
