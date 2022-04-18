@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { Alert, TextInput, View, StyleSheet } from "react-native"
-import StudentVue from "studentvue"
+import StudentVue, { Client, Gradebook } from "studentvue"
 import * as SecureStore from "expo-secure-store"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { RootStackParamList } from "../types/RootStackParams"
@@ -17,8 +17,14 @@ type loginScreenProp = StackNavigationProp<RootStackParamList, "Login">
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const { username, password, setUsername, setPassword, setClient } =
-    useContext(AppContext)
+  const {
+    username,
+    password,
+    setUsername,
+    setPassword,
+    setClient,
+    setGradebook
+  } = useContext(AppContext)
 
   let usernameLocal = username
   let passwordLocal = password
@@ -32,12 +38,13 @@ const Login = () => {
 
   async function onLogin() {
     try {
-      setClient(
-        await StudentVue.login(DISTRICT_URL, {
-          username: usernameLocal,
-          password: passwordLocal
-        })
-      )
+      const client = await StudentVue.login(DISTRICT_URL, {
+        username: usernameLocal,
+        password: passwordLocal
+      })
+      const gradebook = await client.gradebook()
+      setClient(client)
+      setGradebook(gradebook)
     } catch (err) {
       Alert.alert("Error", err.message)
       return

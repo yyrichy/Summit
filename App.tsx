@@ -5,22 +5,24 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { RootStackParamList } from "./types/RootStackParams"
 import AppContext from "./components/AppContext"
-import { User } from "./types/User"
 import { LightTheme } from "./theme/LightTheme"
 
 const Stack = createStackNavigator<RootStackParamList>()
 
 const App = () => {
   const [client, setClient] = useState(undefined)
+  const [gradebook, setGradebook] = useState(undefined)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const user: User = {
+  const user = {
     username: username,
     password: password,
     client: client,
+    gradebook: gradebook,
     setUsername,
     setPassword,
-    setClient
+    setClient,
+    setGradebook
   }
 
   return (
