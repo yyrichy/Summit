@@ -109,4 +109,3 @@ async function save(key: string, value: string) {
 async function getValueFor(key: string) {
   return await SecureStore.getItemAsync(key)
 }
-222111111111111111112222222222222222221
