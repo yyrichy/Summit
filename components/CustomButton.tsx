@@ -1,6 +1,6 @@
-import React from "react"
-import { StyleSheet, Text, View } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler"
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 type Props = {
   onPress: any
@@ -30,12 +30,12 @@ const CustomButton: React.FC<Props> = ({
 const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
-    textAlign: "center"
+    textAlign: 'center'
   },
   buttonContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
     width: 100,
     height: 50,
     padding: 10,

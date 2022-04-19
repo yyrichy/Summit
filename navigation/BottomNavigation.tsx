@@ -1,19 +1,19 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import Grades from "../screens/Grades"
-import Profile from "../screens/Profile"
-import React from "react"
-import { StackNavigationProp } from "@react-navigation/stack"
-import { RootStackParamList } from "../types/RootStackParams"
-import { useNavigation } from "@react-navigation/native"
-import { Ionicons } from "@expo/vector-icons"
-import { LightTheme } from "../theme/LightTheme"
-import Schedule from "../screens/Schedule"
-import Documents from "../screens/Documents"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Grades from '../screens/Grades'
+import Profile from '../screens/Profile'
+import React from 'react'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { RootStackParamList } from '../types/RootStackParams'
+import { useNavigation } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons'
+import { LightTheme } from '../theme/LightTheme'
+import Schedule from '../screens/Schedule'
+import Documents from '../screens/Documents'
 
 const colors = LightTheme.colors
 
 const Tab = createBottomTabNavigator()
-type navScreenProp = StackNavigationProp<RootStackParamList, "Menu">
+type navScreenProp = StackNavigationProp<RootStackParamList, 'Menu'>
 
 const App = () => {
   const navigation = useNavigation<navScreenProp>()

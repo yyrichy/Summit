@@ -1,4 +1,4 @@
-import { Client, Gradebook } from "studentvue"
+import { Client, Gradebook } from 'studentvue'
 
 export interface User {
   username: string
