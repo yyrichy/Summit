@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   mark: {
     color: "#121212",
     fontSize: 35,
-    alignSelf: "flex-end",
+    alignSelf: "center",
     marginRight: 20
   }
 })
