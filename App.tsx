@@ -30,7 +30,7 @@ const App = () => {
       <NavigationContainer theme={LightTheme}>
         <Stack.Navigator>
           <Stack.Screen
-            name="Login"
+            name='Login'
             component={Login}
             options={{
               headerTitleAlign: 'center',
@@ -38,7 +38,7 @@ const App = () => {
             }}
           />
           <Stack.Screen
-            name="Menu"
+            name='Menu'
             component={BottomNavigation}
             options={{ headerTitle: '' }}
           />
