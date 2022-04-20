@@ -69,10 +69,7 @@ const Login = () => {
     <View style={styles.container}>
       <TextInput
         defaultValue={username}
-        onChangeText={(u) => {
-          usernameLocal = u
-          console.log(u)
-        }}
+        onChangeText={(u) => (usernameLocal = u)}
         placeholder={'Username'}
         style={styles.input}
       />
