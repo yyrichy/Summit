@@ -1,6 +1,12 @@
-import React, { useContext } from 'react'
-import { Alert, TextInput, View, StyleSheet } from 'react-native'
-import StudentVue, { Client, Gradebook } from 'studentvue'
+import React, { useContext, useState } from 'react'
+import {
+  Alert,
+  TextInput,
+  View,
+  StyleSheet,
+  ActivityIndicator
+} from 'react-native'
+import StudentVue from 'studentvue'
 import * as SecureStore from 'expo-secure-store'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../types/RootStackParams'
@@ -25,6 +31,7 @@ const Login = () => {
     setClient,
     setGradebook
   } = useContext(AppContext)
+  const [isLoading, setIsLoading] = useState(false)
 
   let usernameLocal = username
   let passwordLocal = password
@@ -37,6 +44,7 @@ const Login = () => {
   }
 
   async function onLogin() {
+    setIsLoading(true)
     try {
       const client = await StudentVue.login(DISTRICT_URL, {
         username: usernameLocal,
@@ -53,6 +61,7 @@ const Login = () => {
     setPassword(passwordLocal)
     save('Username', usernameLocal)
     save('Password', passwordLocal)
+    setIsLoading(false)
     navigation.navigate('Menu')
   }
 
@@ -80,6 +89,11 @@ const Login = () => {
         backgroundColor={colors.card}
         textColor={colors.primary}
       ></CustomButton>
+      <ActivityIndicator
+        color={colors.primary}
+        animating={isLoading}
+        size="large"
+      />
     </View>
   )
 }
@@ -99,6 +113,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.primary,
     marginBottom: 10
+  },
+  loading: {
+    margin: 'auto'
   }
 })
 
