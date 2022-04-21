@@ -32,8 +32,8 @@ function Assignment(props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'rgb(221,221,221)',
-    borderRadius: 15,
-    height: 40,
+    borderRadius: 10,
+    height: 30,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   name: {
     color: '#121212',
     fontSize: 11,
-    marginLeft: 20,
+    marginLeft: 10,
     marginRight: 10,
     textAlign: 'left',
     flex: 1
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderWidth: 0,
     alignSelf: 'center',
-    marginRight: 20
+    marginRight: 10
   }
 })
 
