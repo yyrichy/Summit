@@ -8,14 +8,20 @@ const CourseDetails = ({ route }) => {
   const course = context.gradebook.courses.find(
     (c) => c.title === route.params.title
   )
-  const assignments = course.marks[0].assignments
+  const assignments = course.marks[0].assignments.map((a) => {
+    return { name: a.name, points: a.points, value: a.score.value }
+  })
 
   return (
     <View>
       <FlatList
         data={assignments}
         renderItem={({ item }) => (
-          <Assignment name={item.name} mark={item.points}></Assignment>
+          <Assignment
+            name={item.name}
+            points={item.points}
+            value={item.value}
+          ></Assignment>
         )}
         keyExtractor={(item) => item.name}
       />

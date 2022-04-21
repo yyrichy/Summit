@@ -3,11 +3,25 @@ import { TextInput } from 'react-native'
 import { StyleSheet, View, Text } from 'react-native'
 
 function Assignment(props) {
+  let pointsEarned: number = 0,
+    pointsTotal: number = 0
+  if (props.value !== 'Not Graded') {
+    const points = props.points.split('/').map((p) => p.replace(/\s+/g, ''))
+    pointsEarned = parseFloat(points[0])
+    pointsTotal = parseFloat(points[1])
+  } else {
+    pointsTotal = parseFloat(
+      props.points.substring(0, props.points.indexOf(' '))
+    )
+  }
+
   return (
     <View style={[styles.container, props.style]}>
-      <Text style={styles.name}>{props.name}</Text>
+      <Text numberOfLines={2} style={styles.name}>
+        {props.name}
+      </Text>
       <TextInput
-        defaultValue={props.mark}
+        defaultValue={`${pointsEarned.toString()} / ${pointsTotal.toString()}`}
         placeholder={'Mark'}
         style={styles.mark}
       />
@@ -30,7 +44,10 @@ const styles = StyleSheet.create({
   name: {
     color: '#121212',
     fontSize: 11,
-    marginLeft: 20
+    marginLeft: 20,
+    marginRight: 10,
+    textAlign: 'left',
+    flex: 1
   },
   mark: {
     height: 60,
