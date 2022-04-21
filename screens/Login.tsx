@@ -3,6 +3,7 @@ import {
   Alert,
   TextInput,
   View,
+  Text,
   StyleSheet,
   ActivityIndicator
 } from 'react-native'
@@ -14,6 +15,7 @@ import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
 import AppContext from '../components/AppContext'
 import { LightTheme } from '../theme/LightTheme'
+import BouncyCheckbox from 'react-native-bouncy-checkbox'
 
 const colors = LightTheme.colors
 
@@ -32,6 +34,7 @@ const Login = () => {
     setGradebook
   } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
+  const [isChecked, setToggleCheckBox] = useState(false)
 
   let usernameLocal = username
   let passwordLocal = password
@@ -59,8 +62,10 @@ const Login = () => {
     }
     setUsername(usernameLocal)
     setPassword(passwordLocal)
-    save('Username', usernameLocal)
-    save('Password', passwordLocal)
+    if (isChecked) {
+      save('Username', usernameLocal)
+      save('Password', passwordLocal)
+    }
     setIsLoading(false)
     navigation.navigate('Menu')
   }
@@ -80,11 +85,24 @@ const Login = () => {
         secureTextEntry={true}
         style={styles.input}
       />
+      <View style={styles.checkboxContainer}>
+        <BouncyCheckbox
+          size={20}
+          fillColor={colors.primary}
+          unfillColor="white"
+          disableText
+          iconStyle={{ borderColor: colors.primary }}
+          isChecked={isChecked}
+          disableBuiltInState 
+          onPress={() => setToggleCheckBox(!isChecked)}
+        />
+        <Text style={{ marginLeft: 8 }}>Save login information</Text>
+      </View>
       <CustomButton
         onPress={onLogin.bind(this)}
         text={'Login'}
         backgroundColor={colors.card}
-        textColor={colors.primary}
+        textColor="black"
       ></CustomButton>
       <ActivityIndicator
         color={colors.primary}
@@ -102,6 +120,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10
   },
   input: {
     width: 220,
