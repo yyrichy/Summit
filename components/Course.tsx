@@ -4,7 +4,9 @@ import { StyleSheet, View, Text } from 'react-native'
 function CourseComponent(props) {
   return (
     <View style={[styles.container, props.style]}>
-      <Text style={styles.name}>{props.name}</Text>
+      <Text numberOfLines={1} style={styles.name}>
+        {props.name}
+      </Text>
       <Text style={styles.mark}>{props.mark}</Text>
     </View>
   )
@@ -25,7 +27,10 @@ const styles = StyleSheet.create({
   name: {
     color: '#121212',
     fontSize: 15,
-    marginLeft: 15
+    marginLeft: 15,
+    marginRight: 15,
+    textAlign: 'left',
+    flex: 1
   },
   mark: {
     color: '#121212',
