@@ -24,14 +24,14 @@ const styles = StyleSheet.create({
   },
   name: {
     color: '#121212',
-    fontSize: 18,
-    marginLeft: 20
+    fontSize: 15,
+    marginLeft: 15
   },
   mark: {
     color: '#121212',
-    fontSize: 35,
+    fontSize: 32,
     alignSelf: 'center',
-    marginRight: 20
+    marginRight: 15
   }
 })
 
