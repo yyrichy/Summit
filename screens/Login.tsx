@@ -58,6 +58,7 @@ const Login = () => {
       setGradebook(gradebook)
     } catch (err) {
       Alert.alert('Error', err.message)
+      setIsLoading(false)
       return
     }
     setUsername(usernameLocal)
