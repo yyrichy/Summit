@@ -2,8 +2,9 @@ import React, { useState, useContext } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import CourseDetails from './CourseDetails'
 import Courses from './Courses'
-import GradebookContext from '../components/Gradebook'
+import GradebookContext from '../interfaces/Gradebook'
 import AppContext from '../components/AppContext'
+import { Assignment } from 'studentvue'
 
 const Stack = createStackNavigator()
 
@@ -12,7 +13,12 @@ const StackNavigator = () => {
   const [gradebook, setGradebook] = useState(context.gradebook)
 
   return (
-    <GradebookContext.Provider value={{ gradebook: gradebook, setGradebook }}>
+    <GradebookContext.Provider
+      value={{
+        gradebook: gradebook,
+        setGradebook
+      }}
+    >
       <Stack.Navigator>
         <Stack.Screen
           name="Courses"

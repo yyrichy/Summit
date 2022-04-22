@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
-import GradebookContext from '../components/Gradebook'
+import GradebookContext from '../interfaces/Gradebook'
 
 const Courses = ({ navigation }) => {
   const context = useContext(AppContext)

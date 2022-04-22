@@ -1,5 +1,5 @@
 import React from 'react'
-import { Gradebook } from 'studentvue'
+import { Assignment, Gradebook } from 'studentvue'
 
 const GradebookContext = React.createContext<Gb>(null)
 

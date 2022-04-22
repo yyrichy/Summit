@@ -1,18 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TextInput } from 'react-native'
 import { StyleSheet, View, Text } from 'react-native'
 
 function Assignment(props) {
-  let pointsEarned: number = 0,
-    pointsTotal: number = 0
-  if (props.value !== 'Not Graded') {
+  let p = NaN
+  let pT = NaN
+  if (props.value != 'Not Graded' && props.value != 'Not Due') {
     const points = props.points.split('/').map((p) => p.replace(/\s+/g, ''))
-    pointsEarned = parseFloat(points[0])
-    pointsTotal = parseFloat(points[1])
+    p = parseFloat(points[0])
+    pT = parseFloat(points[1])
   } else {
-    pointsTotal = parseFloat(
-      props.points.substring(0, props.points.indexOf(' '))
-    )
+    pT = parseFloat(props.points.substring(0, props.points.indexOf(' ')))
+  }
+
+  const [pointsEarned, setPointsEarned] = useState(p)
+  const [pointsTotal, setPointsTotal] = useState(pT)
+
+  const updatePointsEarned = (input: string) => {
+    const points = parseFloat(input)
+    setPointsEarned(points)
+  }
+
+  const updatePointsTotal = (input: string) => {
+    const points = parseFloat(input)
+    setPointsTotal(points)
   }
 
   return (
@@ -20,11 +31,21 @@ function Assignment(props) {
       <Text numberOfLines={2} style={styles.name}>
         {props.name}
       </Text>
-      <TextInput
-        defaultValue={`${pointsEarned.toString()} / ${pointsTotal.toString()}`}
-        placeholder={'Mark'}
-        style={styles.mark}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          defaultValue={pointsEarned?.toString()}
+          placeholder={'Points'}
+          style={styles.mark}
+          onChangeText={(input) => updatePointsEarned(input)}
+        />
+        <Text style={styles.dash}> / </Text>
+        <TextInput
+          defaultValue={pointsTotal?.toString()}
+          placeholder={'Total'}
+          style={[styles.mark, { marginRight: 10 }]}
+          onChangeText={(input) => updatePointsTotal(input)}
+        />
+      </View>
     </View>
   )
 }
@@ -41,6 +62,11 @@ const styles = StyleSheet.create({
     marginRight: 7,
     marginTop: 7
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   name: {
     color: '#121212',
     fontSize: 11,
@@ -52,8 +78,13 @@ const styles = StyleSheet.create({
   mark: {
     height: 60,
     borderWidth: 0,
+    fontSize: 20,
+    alignSelf: 'center'
+  },
+  dash: {
+    fontSize: 20,
     alignSelf: 'center',
-    marginRight: 10
+    textAlignVertical: 'center'
   }
 })
 

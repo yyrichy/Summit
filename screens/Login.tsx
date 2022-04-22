@@ -93,7 +93,7 @@ const Login = () => {
           disableText
           iconStyle={{ borderColor: colors.primary }}
           isChecked={isChecked}
-          disableBuiltInState 
+          disableBuiltInState
           onPress={() => setToggleCheckBox(!isChecked)}
         />
         <Text style={{ marginLeft: 8 }}>Save login information</Text>

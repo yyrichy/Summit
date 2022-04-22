@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { FlatList, View } from 'react-native'
 import Assignment from '../components/Assignment'
-import GradebookContext from '../components/Gradebook'
+import GradebookContext from '../interfaces/Gradebook'
 
 const CourseDetails = ({ route }) => {
   const context = useContext(GradebookContext)
