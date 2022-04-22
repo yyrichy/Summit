@@ -104,6 +104,7 @@ const Login = () => {
         text={'Login'}
         backgroundColor={colors.card}
         textColor="black"
+        fontFamily="Inter_800ExtraBold"
       ></CustomButton>
       <ActivityIndicator
         color={colors.primary}

@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import AppContext from '../components/AppContext'
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -43,6 +43,8 @@ const Courses = ({ navigation }) => {
         setValue={setValue}
         setItems={setPeriods}
         maxHeight={null}
+        style={styles.dropdown}
+        textStyle={styles.dropdownText}
       ></DropDownPicker>
       {gradebook != null && (
         <FlatList
@@ -65,5 +67,18 @@ const Courses = ({ navigation }) => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  dropdown: {
+    borderRadius: 15,
+    height: 50,
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: 7
+  },
+  dropdownText: {
+    fontFamily: 'Inter_800ExtraBold'
+  }
+})
 
 export default Courses

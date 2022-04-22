@@ -4,7 +4,6 @@ import CourseDetails from './CourseDetails'
 import Courses from './Courses'
 import GradebookContext from '../interfaces/Gradebook'
 import AppContext from '../components/AppContext'
-import { Assignment } from 'studentvue'
 
 const Stack = createStackNavigator()
 

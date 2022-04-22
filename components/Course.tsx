@@ -1,19 +1,20 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
+import { LightTheme } from '../theme/LightTheme'
 
 function CourseComponent(props) {
   const mark = parseFloat(props.mark)
-  let color = '#121212'
+  let color = 'black'
   if (mark > 89.5) {
-    color = 'purple'
+    color = LightTheme.colors.primary
   } else if (mark > 79.5) {
     color = 'green'
   } else if (mark > 69.5) {
-    color = 'yellow'
-  } else if (mark > 59.5) {
     color = 'orange'
-  } else if (mark > 49.5) {
+  } else if (mark > 59.5) {
     color = 'red'
+  } else if (mark > 49.5) {
+    color = 'gray'
   }
 
   return (
@@ -25,9 +26,7 @@ function CourseComponent(props) {
         style={[
           styles.mark,
           {
-            color: color,
-            textShadowColor: 'black',
-            textShadowRadius: 2
+            color: color
           }
         ]}
       >
@@ -51,6 +50,7 @@ const styles = StyleSheet.create({
   },
   name: {
     color: '#121212',
+    fontFamily: 'Inter_500Medium',
     fontSize: 15,
     marginLeft: 15,
     marginRight: 15,
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   },
   mark: {
     color: '#121212',
+    fontFamily: 'Inter_600SemiBold',
     fontSize: 32,
     alignSelf: 'center',
     marginRight: 15

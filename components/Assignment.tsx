@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   name: {
     color: '#121212',
     fontSize: 11,
+    fontFamily: 'Inter_500Medium',
     marginLeft: 10,
     marginRight: 10,
     textAlign: 'left',
@@ -79,6 +80,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderWidth: 0,
     fontSize: 20,
+    fontFamily: 'Inter_600SemiBold',
     alignSelf: 'center'
   },
   dash: {
