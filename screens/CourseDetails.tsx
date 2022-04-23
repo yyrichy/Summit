@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { FlatList, View } from 'react-native'
-import Assignment from '../components/Assignment'
+import AssignmentComponent from '../components/Assignment'
 import GradebookContext from '../interfaces/Gradebook'
 
 const CourseDetails = ({ route }) => {
@@ -9,7 +9,12 @@ const CourseDetails = ({ route }) => {
     (c) => c.title === route.params.title
   )
   const assignments = course.marks[0].assignments.map((a) => {
-    return { name: a.name, points: a.points, value: a.score.value }
+    return {
+      name: a.name,
+      points: a.points,
+      value: a.score.value,
+      course: course.title
+    }
   })
 
   return (
@@ -17,11 +22,12 @@ const CourseDetails = ({ route }) => {
       <FlatList
         data={assignments}
         renderItem={({ item }) => (
-          <Assignment
+          <AssignmentComponent
             name={item.name}
             points={item.points}
             value={item.value}
-          ></Assignment>
+            course={item.course}
+          ></AssignmentComponent>
         )}
         keyExtractor={(item) => item.name}
       />

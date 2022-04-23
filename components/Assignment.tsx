@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { TextInput } from 'react-native'
 import { StyleSheet, View, Text } from 'react-native'
+import GradebookContext from '../interfaces/Gradebook'
 
-function Assignment(props) {
+function AssignmentComponent(props) {
+  const { gradebook, setGradebook } = useContext(GradebookContext)
   let p = NaN
   let pT = NaN
   if (props.value != 'Not Graded' && props.value != 'Not Due') {
@@ -25,6 +27,21 @@ function Assignment(props) {
     const points = parseFloat(input)
     setPointsTotal(points)
   }
+
+  useEffect(() => {
+    const gb = gradebook
+    const i = gb.courses.findIndex((c) => c.title === props.course)
+    const course = gb.courses[i]
+    const index = course.marks[0].assignments.findIndex(
+      (a) => a.name === props.name
+    )
+    const assignment = course.marks[0].assignments[index]
+    console.log(course.title)
+    console.log(course.marks)
+    assignment.points = `${pointsEarned} / ${pointsTotal}`
+    gb.courses[i].marks[0].assignments[index] = assignment
+    setGradebook(gb)
+  }, [pointsEarned, pointsTotal])
 
   return (
     <View style={[styles.container, props.style]}>
@@ -90,4 +107,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Assignment
+export default AssignmentComponent
