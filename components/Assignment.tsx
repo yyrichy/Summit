@@ -1,10 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { TextInput } from 'react-native'
 import { StyleSheet, View, Text } from 'react-native'
 import { LightTheme } from '../theme/LightTheme'
 import AppContext from './AppContext'
 
 function AssignmentComponent(props) {
+  props.navigation.setParams({
+    title: 'sdaf'
+  })
+
   const { marks, setMarks } = useContext(AppContext)
   const assignment = marks.courses
     .get(props.course)
@@ -13,7 +17,7 @@ function AssignmentComponent(props) {
 
   const updatePoints = (input: string, type: string) => {
     const points = parseFloat(input)
-    const newMarks = marks
+    const newMarks = Object.assign({}, marks)
     if (type === 'earned') {
       newMarks.courses
         .get(props.course)
@@ -34,28 +38,44 @@ function AssignmentComponent(props) {
 
   return (
     <View style={[styles.container, props.style]}>
-      <Text numberOfLines={2} style={styles.name}>
+      <Text
+        numberOfLines={2}
+        style={[
+          styles.name,
+          {
+            color: assignment.modified ? LightTheme.colors.dark_red : 'black'
+          }
+        ]}
+      >
         {props.name}
       </Text>
       <View style={styles.inputContainer}>
         <TextInput
-          defaultValue={assignment.points.toString()}
+          defaultValue={
+            isNaN(assignment.points) ? '' : assignment.points.toString()
+          }
           placeholder={'_'}
           style={[
             styles.mark,
             {
-              color: assignment.modified
-                ? LightTheme.colors.light_primary
-                : 'black'
+              color: assignment.modified ? LightTheme.colors.dark_red : 'black'
             }
           ]}
           onChangeText={(input) => updatePoints(input, 'earned')}
         />
         <Text style={styles.dash}> / </Text>
         <TextInput
-          defaultValue={assignment.total.toString()}
+          defaultValue={
+            isNaN(assignment.total) ? '' : assignment.total.toString()
+          }
           placeholder={'_'}
-          style={[styles.mark, { marginRight: 10 }]}
+          style={[
+            styles.mark,
+            {
+              marginRight: 10,
+              color: assignment.modified ? LightTheme.colors.dark_red : 'black'
+            }
+          ]}
           onChangeText={(input) => updatePoints(input, 'total')}
         />
       </View>
@@ -65,9 +85,9 @@ function AssignmentComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgb(221,221,221)',
+    backgroundColor: LightTheme.colors.card_background,
     borderRadius: 10,
-    height: 30,
+    height: 45,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -81,8 +101,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   name: {
-    color: '#121212',
-    fontSize: 11,
+    color: 'black',
+    fontSize: 14,
     fontFamily: 'Inter_500Medium',
     marginLeft: 10,
     marginRight: 10,
@@ -92,7 +112,7 @@ const styles = StyleSheet.create({
   mark: {
     height: 60,
     borderWidth: 0,
-    fontSize: 20,
+    fontSize: 23,
     fontFamily: 'Inter_600SemiBold',
     alignSelf: 'center'
   },

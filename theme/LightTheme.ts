@@ -9,6 +9,8 @@ export const LightTheme = {
     text: 'rgb(2, 2, 2)',
     border: 'rgb(20, 20, 20)',
     notification: 'rgb(249, 209, 19)',
-    gray: 'rgb(142, 142, 147)'
+    gray: 'rgb(142, 142, 147)',
+    card_background: 'rgb(230, 230, 230)',
+    dark_red: 'rgb(155, 0, 0)'
   }
 }

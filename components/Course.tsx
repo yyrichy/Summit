@@ -38,7 +38,7 @@ function CourseComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgb(221,221,221)',
+    backgroundColor: LightTheme.colors.card_background,
     borderRadius: 15,
     height: 50,
     flexDirection: 'row',
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     marginTop: 7
   },
   name: {
-    color: '#121212',
+    color: 'black',
     fontFamily: 'Inter_500Medium',
     fontSize: 15,
     marginLeft: 15,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   mark: {
-    color: '#121212',
+    color: 'black',
     fontFamily: 'Inter_600SemiBold',
     fontSize: 32,
     alignSelf: 'center',
