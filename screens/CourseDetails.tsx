@@ -1,9 +1,15 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useContext } from 'react'
 import { FlatList, View } from 'react-native'
 import AppContext from '../components/AppContext'
 import AssignmentComponent from '../components/Assignment'
 
 const CourseDetails = ({ route }) => {
+  const navigation = useNavigation()
+  React.useLayoutEffect(() => {
+    navigation.setOptions({ title: route.params.title })
+  }, [navigation])
+
   const { marks } = useContext(AppContext)
   const course = marks.courses.get(route.params.title)
   const data = []

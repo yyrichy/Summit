@@ -1,14 +1,9 @@
-import React, { useContext, useEffect } from 'react'
-import { TextInput } from 'react-native'
-import { StyleSheet, View, Text } from 'react-native'
+import React, { useContext } from 'react'
+import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { LightTheme } from '../theme/LightTheme'
 import AppContext from './AppContext'
 
 function AssignmentComponent(props) {
-  props.navigation.setParams({
-    title: 'sdaf'
-  })
-
   const { marks, setMarks } = useContext(AppContext)
   const assignment = marks.courses
     .get(props.course)
