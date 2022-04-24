@@ -24,6 +24,7 @@ const Stack = createStackNavigator<RootStackParamList>()
 
 const App = () => {
   const [client, setClient] = useState(undefined)
+  const [marks, setMarks] = useState(undefined)
   const [gradebook, setGradebook] = useState(undefined)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -31,10 +32,12 @@ const App = () => {
     username: username,
     password: password,
     client: client,
+    marks: marks,
     gradebook: gradebook,
     setUsername,
     setPassword,
     setClient,
+    setMarks,
     setGradebook
   }
   let [fontsLoaded] = useFonts({

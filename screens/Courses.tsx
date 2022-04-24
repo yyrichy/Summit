@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
-import GradebookContext from '../interfaces/Gradebook'
+import Grades from '../gradebook/Grades'
 
 const Courses = ({ navigation }) => {
   const context = useContext(AppContext)
@@ -17,14 +17,16 @@ const Courses = ({ navigation }) => {
       return { label: p.name, value: p.index }
     })
   )
-  const { gradebook, setGradebook } = useContext(GradebookContext)
+  const { marks, setMarks, setGradebook } = useContext(AppContext)
 
   useEffect(() => {
     let isSubscribed = true
     const getGradebook = async () => {
       const gradebook = await context.client.gradebook(value)
+      const marks = await Grades.convertGradebook(gradebook)
       if (isSubscribed) {
         setGradebook(gradebook)
+        setMarks(marks)
       }
     }
     getGradebook()
@@ -46,22 +48,22 @@ const Courses = ({ navigation }) => {
         style={styles.dropdown}
         textStyle={styles.dropdownText}
       ></DropDownPicker>
-      {gradebook != null && (
+      {marks != null && (
         <FlatList
-          data={gradebook.courses}
+          data={Array.from(marks.courses.entries())}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate('Course Details', { title: item.title })
+                navigation.navigate('Course Details', { title: item[0] })
               }
             >
               <CourseComponent
-                name={item.title}
-                mark={item.marks[0].calculatedScore.raw}
+                name={item[0]}
+                mark={item[1].points}
               ></CourseComponent>
             </TouchableOpacity>
           )}
-          keyExtractor={(item) => item.title}
+          keyExtractor={(item) => item[0]}
         />
       )}
     </View>

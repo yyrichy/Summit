@@ -1,32 +1,31 @@
 import React, { useContext } from 'react'
 import { FlatList, View } from 'react-native'
+import AppContext from '../components/AppContext'
 import AssignmentComponent from '../components/Assignment'
-import GradebookContext from '../interfaces/Gradebook'
 
 const CourseDetails = ({ route }) => {
-  const context = useContext(GradebookContext)
-  const course = context.gradebook.courses.find(
-    (c) => c.title === route.params.title
-  )
-  const assignments = course.marks[0].assignments.map((a) => {
-    return {
-      name: a.name,
-      points: a.points,
-      value: a.score.value,
-      course: course.title
+  const { marks } = useContext(AppContext)
+  const course = marks.courses.get(route.params.title)
+  const data = []
+  for (const [categoryName, category] of course.categories.entries()) {
+    for (const [assignmentName] of category.assignments.entries()) {
+      data.push({
+        name: assignmentName,
+        course: route.params.title,
+        category: categoryName
+      })
     }
-  })
+  }
 
   return (
     <View>
       <FlatList
-        data={assignments}
+        data={data}
         renderItem={({ item }) => (
           <AssignmentComponent
             name={item.name}
-            points={item.points}
-            value={item.value}
             course={item.course}
+            category={item.category}
           ></AssignmentComponent>
         )}
         keyExtractor={(item) => item.name}

@@ -1,47 +1,36 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { TextInput } from 'react-native'
 import { StyleSheet, View, Text } from 'react-native'
-import GradebookContext from '../interfaces/Gradebook'
+import { LightTheme } from '../theme/LightTheme'
+import AppContext from './AppContext'
 
 function AssignmentComponent(props) {
-  const { gradebook, setGradebook } = useContext(GradebookContext)
-  let p = NaN
-  let pT = NaN
-  if (props.value != 'Not Graded' && props.value != 'Not Due') {
-    const points = props.points.split('/').map((p) => p.replace(/\s+/g, ''))
-    p = parseFloat(points[0])
-    pT = parseFloat(points[1])
-  } else {
-    pT = parseFloat(props.points.substring(0, props.points.indexOf(' ')))
-  }
+  const { marks, setMarks } = useContext(AppContext)
+  const assignment = marks.courses
+    .get(props.course)
+    .categories.get(props.category)
+    .assignments.get(props.name)
 
-  const [pointsEarned, setPointsEarned] = useState(p)
-  const [pointsTotal, setPointsTotal] = useState(pT)
-
-  const updatePointsEarned = (input: string) => {
+  const updatePoints = (input: string, type: string) => {
     const points = parseFloat(input)
-    setPointsEarned(points)
+    const newMarks = marks
+    if (type === 'earned') {
+      newMarks.courses
+        .get(props.course)
+        .categories.get(props.category)
+        .assignments.get(props.name).points = points
+    } else if (type === 'total') {
+      newMarks.courses
+        .get(props.course)
+        .categories.get(props.category)
+        .assignments.get(props.name).total = points
+    }
+    newMarks.courses
+      .get(props.course)
+      .categories.get(props.category)
+      .assignments.get(props.name).modified = true
+    setMarks(newMarks)
   }
-
-  const updatePointsTotal = (input: string) => {
-    const points = parseFloat(input)
-    setPointsTotal(points)
-  }
-
-  useEffect(() => {
-    const gb = gradebook
-    const i = gb.courses.findIndex((c) => c.title === props.course)
-    const course = gb.courses[i]
-    const index = course.marks[0].assignments.findIndex(
-      (a) => a.name === props.name
-    )
-    const assignment = course.marks[0].assignments[index]
-    console.log(course.title)
-    console.log(course.marks)
-    assignment.points = `${pointsEarned} / ${pointsTotal}`
-    gb.courses[i].marks[0].assignments[index] = assignment
-    setGradebook(gb)
-  }, [pointsEarned, pointsTotal])
 
   return (
     <View style={[styles.container, props.style]}>
@@ -50,17 +39,24 @@ function AssignmentComponent(props) {
       </Text>
       <View style={styles.inputContainer}>
         <TextInput
-          defaultValue={pointsEarned?.toString()}
-          placeholder={'Points'}
-          style={styles.mark}
-          onChangeText={(input) => updatePointsEarned(input)}
+          defaultValue={assignment.points.toString()}
+          placeholder={'_'}
+          style={[
+            styles.mark,
+            {
+              color: assignment.modified
+                ? LightTheme.colors.light_primary
+                : 'black'
+            }
+          ]}
+          onChangeText={(input) => updatePoints(input, 'earned')}
         />
         <Text style={styles.dash}> / </Text>
         <TextInput
-          defaultValue={pointsTotal?.toString()}
-          placeholder={'Total'}
+          defaultValue={assignment.total.toString()}
+          placeholder={'_'}
           style={[styles.mark, { marginRight: 10 }]}
-          onChangeText={(input) => updatePointsTotal(input)}
+          onChangeText={(input) => updatePoints(input, 'total')}
         />
       </View>
     </View>

@@ -16,6 +16,7 @@ import CustomButton from '../components/CustomButton'
 import AppContext from '../components/AppContext'
 import { LightTheme } from '../theme/LightTheme'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
+import Grades from '../gradebook/Grades'
 
 const colors = LightTheme.colors
 
@@ -31,6 +32,7 @@ const Login = () => {
     setUsername,
     setPassword,
     setClient,
+    setMarks,
     setGradebook
   } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
@@ -54,7 +56,9 @@ const Login = () => {
         password: passwordLocal
       })
       const gradebook = await client.gradebook()
+      const marks = await Grades.convertGradebook(gradebook)
       setClient(client)
+      setMarks(marks)
       setGradebook(gradebook)
     } catch (err) {
       Alert.alert('Error', err.message)
