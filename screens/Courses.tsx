@@ -5,6 +5,7 @@ import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
 import Grades from '../gradebook/Grades'
+import GradeUtil from '../gradebook/GradeUtil'
 
 const Courses = ({ navigation }) => {
   const context = useContext(AppContext)
@@ -23,7 +24,7 @@ const Courses = ({ navigation }) => {
     let isSubscribed = true
     const getGradebook = async () => {
       const gradebook = await context.client.gradebook(value)
-      const marks = await Grades.convertGradebook(gradebook)
+      const marks = await GradeUtil.convertGradebook(gradebook)
       if (isSubscribed) {
         setGradebook(gradebook)
         setMarks(marks)
@@ -58,7 +59,7 @@ const Courses = ({ navigation }) => {
               }
             >
               <CourseComponent
-                name={item[0]}
+                name={GradeUtil.parseCourseName(item[0])}
                 mark={item[1].points}
               ></CourseComponent>
             </TouchableOpacity>

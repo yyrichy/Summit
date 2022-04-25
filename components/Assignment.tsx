@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
+import GradeUtil from '../gradebook/GradeUtil'
 import { LightTheme } from '../theme/LightTheme'
 import AppContext from './AppContext'
 
@@ -12,7 +13,7 @@ function AssignmentComponent(props) {
 
   const updatePoints = (input: string, type: string) => {
     const points = parseFloat(input)
-    const newMarks = Object.assign({}, marks)
+    let newMarks = Object.assign({}, marks)
     if (type === 'earned') {
       newMarks.courses
         .get(props.course)
@@ -28,6 +29,7 @@ function AssignmentComponent(props) {
       .get(props.course)
       .categories.get(props.category)
       .assignments.get(props.name).modified = true
+    newMarks = GradeUtil.calculatePoints(newMarks)
     setMarks(newMarks)
   }
 

@@ -3,25 +3,29 @@ import React, { useContext } from 'react'
 import { FlatList, View } from 'react-native'
 import AppContext from '../components/AppContext'
 import AssignmentComponent from '../components/Assignment'
+import GradeUtil from '../gradebook/GradeUtil'
 
 const CourseDetails = ({ route }) => {
-  const navigation = useNavigation()
-  React.useLayoutEffect(() => {
-    navigation.setOptions({ title: route.params.title })
-  }, [navigation])
-
   const { marks } = useContext(AppContext)
-  const course = marks.courses.get(route.params.title)
+  const courseName = route.params.title
+  const course = marks.courses.get(courseName)
   const data = []
   for (const [categoryName, category] of course.categories.entries()) {
     for (const [assignmentName] of category.assignments.entries()) {
       data.push({
         name: assignmentName,
-        course: route.params.title,
+        course: courseName,
         category: categoryName
       })
     }
   }
+
+  const navigation = useNavigation()
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      title: `${course.points} | ${GradeUtil.parseCourseName(courseName)}`
+    })
+  }, [navigation])
 
   return (
     <View>

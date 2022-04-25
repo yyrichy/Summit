@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   name: {
     color: 'black',
     fontFamily: 'Inter_500Medium',
-    fontSize: 15,
+    fontSize: 20,
     marginLeft: 15,
     marginRight: 15,
     textAlign: 'left',
