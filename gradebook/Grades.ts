@@ -18,7 +18,7 @@ export default class Grades {
   }
 
   static convertGradebook(gradebook: Gradebook) {
-    const marks: Marks = {
+    let marks: Marks = {
       courses: new Map<string, Category>()
     }
     for (const course of gradebook.courses) {
@@ -47,9 +47,55 @@ export default class Grades {
           .categories.get(assignment.type)
           .assignments.set(a.name, a)
       }
+      for (const [categoryName, category] of marks.courses
+        .get(course.title)
+        .categories.entries()) {
+        for (const weightedCategory of course.marks[0].weightedCategories) {
+          if (weightedCategory.type === categoryName) {
+            category.weight = parseFloat(weightedCategory.weight.standard)
+            break
+          }
+        }
+        marks.courses.get(course.title).categories.set(categoryName, category)
+      }
     }
+    marks = this.calculatePoints(marks)
     return new Promise((resolve) => {
       resolve(marks)
     })
+  }
+
+  static calculatePoints(marks: Marks) {
+    console.log('calculate')
+    for (const [courseName, course] of marks.courses.entries()) {
+      for (const [categoryName, category] of course.categories.entries()) {
+        let points: number = 0,
+          total: number = 0
+        for (const assignment of category.assignments.values()) {
+          if (!isNaN(assignment.points)) {
+            points += assignment.points
+          }
+          total += assignment.total
+        }
+        category.points = points
+        category.total = total
+        course.categories.set(categoryName, category)
+      }
+      let points: number = 0,
+        totalWeight: number = 0
+      for (const category of course.categories.values()) {
+        const categoryPoints =
+          (category.points / category.total) * category.weight
+        if (!isNaN(category.points)) {
+          points += categoryPoints
+          totalWeight += category.weight
+        }
+      }
+      console.log(points + ' ' + totalWeight)
+      points = points / totalWeight
+      course.points = points
+      marks.courses.set(courseName, course)
+    }
+    return marks
   }
 }

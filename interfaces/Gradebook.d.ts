@@ -9,6 +9,7 @@ export interface Course {
 
 export interface Category {
   points?: number
+  total?: number
   weight?: number
   assignments?: Map<string, Assignment>
 }
