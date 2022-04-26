@@ -18,7 +18,7 @@ import {
   Inter_800ExtraBold,
   Inter_900Black
 } from '@expo-google-fonts/inter'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -65,7 +65,9 @@ const App = () => {
             options={{
               headerTitleAlign: 'center',
               headerTitle: 'Welcome to ScholarHelper',
-              headerTitleStyle: styles.header
+              headerTitleStyle: {
+                fontFamily: 'Inter_900Black'
+              }
             }}
           />
           <Stack.Screen
@@ -74,7 +76,9 @@ const App = () => {
             options={{
               headerTitle: '',
               headerBackTitle: 'Back to Login',
-              headerBackTitleStyle: styles.header
+              headerBackTitleStyle: {
+                fontFamily: 'Inter_400Regular'
+              }
             }}
           />
         </Stack.Navigator>
@@ -82,11 +86,5 @@ const App = () => {
     </AppContext.Provider>
   )
 }
-
-const styles = StyleSheet.create({
-  header: {
-    fontFamily: 'Inter_900Black'
-  }
-})
 
 export default App

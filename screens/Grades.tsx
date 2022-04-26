@@ -21,7 +21,15 @@ const StackNavigator = () => {
             headerShown: false
           }}
         />
-        <Stack.Screen name="Course Details" component={CourseDetails} />
+        <Stack.Screen
+          name="Course Details"
+          component={CourseDetails}
+          options={{
+            headerBackTitleStyle: {
+              fontFamily: 'Inter_900Black'
+            }
+          }}
+        />
       </Stack.Navigator>
     </GradeContext.Provider>
   )
