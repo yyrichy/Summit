@@ -4,7 +4,7 @@ import BottomNavigation from './navigation/BottomNavigation'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { RootStackParamList } from './types/RootStackParams'
-import AppContext from './components/AppContext'
+import AppContext from './contexts/AppContext'
 import { LightTheme } from './theme/LightTheme'
 import {
   useFonts,

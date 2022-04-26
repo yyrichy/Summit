@@ -13,7 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
-import AppContext from '../components/AppContext'
+import AppContext from '../contexts/AppContext'
 import { LightTheme } from '../theme/LightTheme'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import GradeUtil from '../gradebook/GradeUtil'
@@ -61,7 +61,7 @@ const Login = () => {
       setMarks(marks)
       setGradebook(gradebook)
     } catch (err) {
-      Alert.alert('Error', err.message)
+      Alert.alert('Error' + usernameLocal + passwordLocal, err.message)
       setIsLoading(false)
       return
     }

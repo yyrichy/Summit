@@ -2,9 +2,11 @@ import React, { useContext } from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import GradeUtil from '../gradebook/GradeUtil'
 import { LightTheme } from '../theme/LightTheme'
-import AppContext from './AppContext'
+import AppContext from '../contexts/AppContext'
+import GradeContext from '../contexts/GradeContext'
 
 function AssignmentComponent(props) {
+  const { setCourse } = useContext(GradeContext)
   const { marks, setMarks } = useContext(AppContext)
   const assignment = marks.courses
     .get(props.course)
@@ -31,6 +33,11 @@ function AssignmentComponent(props) {
       .assignments.get(props.name).modified = true
     newMarks = GradeUtil.calculatePoints(newMarks)
     setMarks(newMarks)
+    setCourse(
+      `${marks.courses.get(props.course).points} | ${GradeUtil.parseCourseName(
+        props.course
+      )}`
+    )
   }
 
   return (

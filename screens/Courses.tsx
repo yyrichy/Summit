@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react'
-import AppContext from '../components/AppContext'
+import AppContext from '../contexts/AppContext'
 import { StyleSheet, View } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
-import Grades from '../gradebook/Grades'
 import GradeUtil from '../gradebook/GradeUtil'
 
 const Courses = ({ navigation }) => {
