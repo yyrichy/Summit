@@ -75,6 +75,7 @@ const App = () => {
             component={BottomNavigation}
             options={{
               headerTitle: '',
+              headerTitleAlign: 'center',
               headerBackTitle: 'Back to Login',
               headerBackTitleStyle: {
                 fontFamily: 'Inter_400Regular'

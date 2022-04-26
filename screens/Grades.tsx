@@ -25,6 +25,7 @@ const StackNavigator = () => {
           name="Course Details"
           component={CourseDetails}
           options={{
+            headerTitleAlign: 'center',
             headerBackTitleStyle: {
               fontFamily: 'Inter_900Black'
             }
