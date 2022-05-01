@@ -92,15 +92,15 @@ const Login = () => {
       <View style={styles.checkbox_container}>
         <BouncyCheckbox
           size={20}
-          fillColor={Colors.secondary}
-          unfillColor="white"
+          fillColor={Colors.accent}
+          unfillColor="transparent"
           disableText
           iconStyle={{ borderColor: Colors.secondary }}
           isChecked={isChecked}
           disableBuiltInState
           onPress={() => setToggleCheckBox(!isChecked)}
         />
-        <Text style={{ marginLeft: 8 }}>Save login information</Text>
+        <Text style={{ marginLeft: 8 }}>Save Login Information</Text>
       </View>
       <CustomButton
         onPress={onLogin.bind(this)}
