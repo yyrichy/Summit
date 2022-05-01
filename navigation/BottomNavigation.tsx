@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { LightTheme } from '../theme/LightTheme'
 import Schedule from '../screens/Schedule'
 import Documents from '../screens/Documents'
-import { StyleSheet } from 'react-native'
+import { Platform, StyleSheet } from 'react-native'
 import { Colors } from '../colors/Colors'
 
 const colors = LightTheme.colors
@@ -24,7 +24,9 @@ const App = () => {
     <Tab.Navigator
       screenOptions={() => ({
         tabBarStyle: {
-          paddingBottom: 4
+          marginHorizontal: Platform.OS === 'android' ? 7 : 0,
+          borderRadius: Platform.OS === 'android' ? 7 : 0,
+          marginBottom: Platform.OS === 'android' ? 7 : 0
         }
       })}
     >
