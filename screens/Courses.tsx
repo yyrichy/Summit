@@ -50,7 +50,7 @@ const Courses = ({ navigation }) => {
       ></DropDownPicker>
       {marks != null && (
         <FlatList
-          data={Array.from(marks.courses.entries())}
+          data={[...marks.courses.entries()]}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
@@ -60,6 +60,8 @@ const Courses = ({ navigation }) => {
               <CourseComponent
                 name={GradeUtil.parseCourseName(item[0])}
                 mark={item[1].points}
+                period={item[1].period}
+                teacher={item[1].teacher}
               ></CourseComponent>
             </TouchableOpacity>
           )}
@@ -72,11 +74,11 @@ const Courses = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   dropdown: {
-    borderRadius: 15,
-    height: 50,
+    borderRadius: 0,
+    height: 30,
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop: 7
+    marginBottom: 21
   },
   dropdownText: {
     fontFamily: 'Inter_800ExtraBold'

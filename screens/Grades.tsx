@@ -27,7 +27,7 @@ const StackNavigator = () => {
           options={{
             headerTitleAlign: 'center',
             headerBackTitleStyle: {
-              fontFamily: 'Inter_900Black'
+              fontFamily: 'Inter_700Bold'
             }
           }}
         />

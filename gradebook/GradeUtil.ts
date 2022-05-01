@@ -14,6 +14,9 @@ export default class GradeUtil {
     }
     for (const course of gradebook.courses) {
       marks.courses.set(course.title, {
+        period:
+          gradebook.courses.findIndex((c) => c.title === course.title) + 1,
+        teacher: course.staff.name,
         categories: new Map<string, Category>()
       })
       for (const assignment of course.marks[0].assignments) {

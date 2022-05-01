@@ -19,9 +19,15 @@ function CourseComponent(props) {
 
   return (
     <View style={[styles.container, props.style]}>
-      <Text numberOfLines={1} style={styles.name}>
-        {props.name}
-      </Text>
+      <Text style={styles.period_number}>{`0${props.period}`}</Text>
+      <View style={styles.course_info_container}>
+        <Text numberOfLines={1} style={styles.name}>
+          {props.name}
+        </Text>
+        <Text numberOfLines={1} style={styles.teacher}>
+          {props.teacher}
+        </Text>
+      </View>
       <Text
         style={[
           styles.mark,
@@ -30,7 +36,7 @@ function CourseComponent(props) {
           }
         ]}
       >
-        {props.mark}
+        94.75
       </Text>
     </View>
   )
@@ -42,27 +48,42 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     height: 50,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 7,
-    marginRight: 7,
-    marginTop: 7
+    marginHorizontal: 7,
+    marginTop: 7,
+    padding: 7
+  },
+  period_number: {
+    fontFamily: 'Montserrat_800ExtraBold',
+    fontSize: 32
+  },
+  course_info_container: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginHorizontal: 7,
+    flex: 1
   },
   name: {
     color: 'black',
-    fontFamily: 'Inter_500Medium',
-    fontSize: 20,
-    marginLeft: 15,
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 15,
+    marginRight: 15,
+    textAlign: 'left',
+    flex: 1
+  },
+  teacher: {
+    color: 'black',
+    fontFamily: 'Inter_400Regular',
+    fontSize: 12,
     marginRight: 15,
     textAlign: 'left',
     flex: 1
   },
   mark: {
-    color: 'black',
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 32,
-    alignSelf: 'center',
-    marginRight: 15
+    fontFamily: 'Montserrat_800ExtraBold',
+    fontSize: 30,
+    alignSelf: 'center'
   }
 })
 

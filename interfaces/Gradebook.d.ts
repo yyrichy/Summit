@@ -3,6 +3,8 @@ export interface Marks {
 }
 
 export interface Course {
+  period?: number
+  teacher?: string
   points?: number
   categories?: Map<string, Category>
 }

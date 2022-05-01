@@ -8,6 +8,7 @@ type Props = {
   backgroundColor: string
   textColor: string
   fontFamily: string
+  containerStyle: any
 }
 
 const CustomButton: React.FC<Props> = ({
@@ -15,14 +16,15 @@ const CustomButton: React.FC<Props> = ({
   text,
   backgroundColor,
   textColor,
-  fontFamily
+  fontFamily,
+  containerStyle
 }: Props) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.buttonContainer, { backgroundColor: backgroundColor }]}
+      style={[containerStyle, { backgroundColor: backgroundColor }]}
     >
-      <View style={{ flex: 1 }}>
+      <View>
         <Text
           style={[
             styles.buttonText,
@@ -40,17 +42,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     textAlign: 'center'
-  },
-  buttonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    width: 100,
-    height: 50,
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 0,
-    marginBottom: 10
   }
 })
 

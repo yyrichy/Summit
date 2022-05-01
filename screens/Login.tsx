@@ -90,7 +90,7 @@ const Login = () => {
         secureTextEntry={true}
         style={styles.input}
       />
-      <View style={styles.checkboxContainer}>
+      <View style={styles.checkbox_container}>
         <BouncyCheckbox
           size={20}
           fillColor={colors.primary}
@@ -109,6 +109,7 @@ const Login = () => {
         backgroundColor={colors.card}
         textColor="black"
         fontFamily="Inter_800ExtraBold"
+        containerStyle={styles.button_container}
       ></CustomButton>
       <ActivityIndicator
         color={colors.primary}
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  checkboxContainer: {
+  checkbox_container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -143,6 +144,17 @@ const styles = StyleSheet.create({
   },
   loading: {
     margin: 'auto'
+  },
+  button_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    width: 100,
+    height: 50,
+    padding: 10,
+    borderRadius: 10,
+    borderWidth: 0,
+    marginBottom: 10
   }
 })
 
