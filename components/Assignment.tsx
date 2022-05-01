@@ -4,6 +4,7 @@ import GradeUtil from '../gradebook/GradeUtil'
 import { LightTheme } from '../theme/LightTheme'
 import AppContext from '../contexts/AppContext'
 import GradeContext from '../contexts/GradeContext'
+import { Colors } from '../colors/Colors'
 
 function AssignmentComponent(props) {
   const { setCourse } = useContext(GradeContext)
@@ -47,7 +48,7 @@ function AssignmentComponent(props) {
         style={[
           styles.name,
           {
-            color: assignment.modified ? LightTheme.colors.dark_red : 'black'
+            color: assignment.modified ? Colors.middle_blue_green : 'black'
           }
         ]}
       >
@@ -62,7 +63,7 @@ function AssignmentComponent(props) {
           style={[
             styles.mark,
             {
-              color: assignment.modified ? LightTheme.colors.dark_red : 'black'
+              color: assignment.modified ? Colors.middle_blue_green : 'black'
             }
           ]}
           onChangeText={(input) => updatePoints(input, 'earned')}
@@ -77,7 +78,7 @@ function AssignmentComponent(props) {
             styles.mark,
             {
               marginRight: 10,
-              color: assignment.modified ? LightTheme.colors.dark_red : 'black'
+              color: assignment.modified ? Colors.middle_blue_green : 'black'
             }
           ]}
           onChangeText={(input) => updatePoints(input, 'total')}
@@ -89,7 +90,7 @@ function AssignmentComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: LightTheme.colors.card_background,
+    backgroundColor: Colors.white,
     borderRadius: 10,
     height: 45,
     flexDirection: 'row',

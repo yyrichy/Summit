@@ -10,6 +10,7 @@ import { LightTheme } from '../theme/LightTheme'
 import Schedule from '../screens/Schedule'
 import Documents from '../screens/Documents'
 import { StyleSheet } from 'react-native'
+import { Colors } from '../colors/Colors'
 
 const colors = LightTheme.colors
 
@@ -20,20 +21,27 @@ const App = () => {
   const navigation = useNavigation<navScreenProp>()
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={() => ({
+        tabBarStyle: {
+          paddingBottom: 4
+        }
+      })}
+    >
       <Tab.Screen
         name="Grades"
         component={Grades}
         options={{
           headerShown: false,
           tabBarLabelStyle: styles.header,
-          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: Colors.secondary,
+          tabBarActiveTintColor: Colors.onyx_gray,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="trending-up-outline"
                 size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? colors.primary : colors.gray}
+                color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
               />
             )
           }
@@ -45,13 +53,14 @@ const App = () => {
         options={{
           headerShown: false,
           tabBarLabelStyle: styles.header,
-          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: Colors.secondary,
+          tabBarActiveTintColor: Colors.onyx_gray,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="calendar-outline"
                 size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? colors.primary : colors.gray}
+                color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
               />
             )
           }
@@ -63,13 +72,14 @@ const App = () => {
         options={{
           headerShown: false,
           tabBarLabelStyle: styles.header,
-          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: Colors.secondary,
+          tabBarActiveTintColor: Colors.onyx_gray,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="folder-outline"
                 size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? colors.primary : colors.gray}
+                color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
               />
             )
           }
@@ -81,13 +91,14 @@ const App = () => {
         options={{
           headerShown: false,
           tabBarLabelStyle: styles.header,
-          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: Colors.secondary,
+          tabBarActiveTintColor: Colors.onyx_gray,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
                 name="person-outline"
                 size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? colors.primary : colors.gray}
+                color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
               />
             )
           }

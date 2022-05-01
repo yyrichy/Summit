@@ -1,12 +1,12 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { LightTheme } from '../theme/LightTheme'
+import { Colors } from '../colors/Colors'
 
 function CourseComponent(props) {
   const mark = parseFloat(props.mark)
   let color = 'black'
   if (mark > 89.5) {
-    color = LightTheme.colors.primary
+    color = Colors.accent
   } else if (mark > 79.5) {
     color = 'green'
   } else if (mark > 69.5) {
@@ -36,7 +36,7 @@ function CourseComponent(props) {
           }
         ]}
       >
-        94.75
+        {props.mark}
       </Text>
     </View>
   )
@@ -44,7 +44,7 @@ function CourseComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: LightTheme.colors.card_background,
+    backgroundColor: Colors.white,
     borderRadius: 15,
     height: 50,
     flexDirection: 'row',

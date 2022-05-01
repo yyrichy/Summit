@@ -74,14 +74,16 @@ const Courses = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   dropdown: {
-    borderRadius: 0,
+    borderWidth: 0,
     height: 30,
     alignItems: 'center',
     alignSelf: 'center',
-    marginBottom: 21
+    marginBottom: 21,
+    backgroundColor: 'transparent'
   },
   dropdownText: {
-    fontFamily: 'Inter_800ExtraBold'
+    fontFamily: 'Inter_800ExtraBold',
+    fontSize: 30
   }
 })
 

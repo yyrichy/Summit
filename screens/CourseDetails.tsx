@@ -11,6 +11,7 @@ import { TextInput } from 'react-native-gesture-handler'
 import DropDownPicker from 'react-native-dropdown-picker'
 import CustomButton from '../components/CustomButton'
 import { Assignment } from '../interfaces/Gradebook'
+import { Colors } from '../colors/Colors'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -58,6 +59,7 @@ const CourseDetails = ({ route }) => {
   }
 
   const addAssignment = () => {
+    console.log('add')
     if (!course.categories.has(category)) {
       course.categories.set(category, {
         assignments: new Map<string, Assignment>()
@@ -95,7 +97,7 @@ const CourseDetails = ({ route }) => {
         backgroundColor={LightTheme.colors.background}
         color="black"
         iconStyle={{
-          color: LightTheme.colors.primary
+          color: Colors.secondary
         }}
         style={{
           flexDirection: 'row-reverse'
@@ -177,9 +179,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
-    backfaceVisibility: 'visible',
     backgroundColor: 'white',
     borderRadius: 10
   },

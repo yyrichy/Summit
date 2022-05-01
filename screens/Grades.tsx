@@ -12,7 +12,7 @@ const StackNavigator = () => {
   const [course, setCourse] = useState(undefined)
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: LightTheme.colors.card }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <GradeContext.Provider
         value={{ courseHeader: course, setCourse: setCourse }}
       >
