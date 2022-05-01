@@ -38,7 +38,8 @@ import {
   Montserrat_800ExtraBold_Italic,
   Montserrat_900Black_Italic
 } from '@expo-google-fonts/montserrat'
-import { Button, View } from 'react-native'
+import { View } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -94,35 +95,32 @@ const App = () => {
   }
 
   return (
-    <AppContext.Provider value={user}>
-      <NavigationContainer theme={LightTheme}>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              headerTitleAlign: 'center',
-              headerTitle: 'Welcome to ScholarHelper',
-              headerTitleStyle: {
-                fontFamily: 'Inter_900Black'
-              }
-            }}
-          />
-          <Stack.Screen
-            name="Menu"
-            component={BottomNavigation}
-            options={{
-              headerTitle: '',
-              headerTitleAlign: 'center',
-              headerBackTitle: 'Login',
-              headerBackTitleStyle: {
-                fontFamily: 'Inter_400Regular'
-              }
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AppContext.Provider>
+    <SafeAreaProvider>
+      <AppContext.Provider value={user}>
+        <NavigationContainer theme={LightTheme}>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerTitleAlign: 'center',
+                headerTitle: 'Welcome to ScholarHelper',
+                headerTitleStyle: {
+                  fontFamily: 'Inter_900Black'
+                }
+              }}
+            />
+            <Stack.Screen
+              name="Menu"
+              component={BottomNavigation}
+              options={{
+                headerShown: false
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AppContext.Provider>
+    </SafeAreaProvider>
   )
 }
 

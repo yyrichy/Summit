@@ -3,6 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack'
 import CourseDetails from './CourseDetails'
 import Courses from './Courses'
 import GradeContext from '../contexts/GradeContext'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { LightTheme } from '../theme/LightTheme'
 
 const Stack = createStackNavigator()
 
@@ -10,29 +12,31 @@ const StackNavigator = () => {
   const [course, setCourse] = useState(undefined)
 
   return (
-    <GradeContext.Provider
-      value={{ courseHeader: course, setCourse: setCourse }}
-    >
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Courses"
-          component={Courses}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-          name="Course Details"
-          component={CourseDetails}
-          options={{
-            headerTitleAlign: 'center',
-            headerBackTitleStyle: {
-              fontFamily: 'Inter_700Bold'
-            }
-          }}
-        />
-      </Stack.Navigator>
-    </GradeContext.Provider>
+    <SafeAreaView style={{ flex: 1, backgroundColor: LightTheme.colors.card }}>
+      <GradeContext.Provider
+        value={{ courseHeader: course, setCourse: setCourse }}
+      >
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Courses"
+            component={Courses}
+            options={{
+              headerShown: false
+            }}
+          />
+          <Stack.Screen
+            name="Course Details"
+            component={CourseDetails}
+            options={{
+              headerTitleAlign: 'center',
+              headerBackTitleStyle: {
+                fontFamily: 'Inter_700Bold'
+              }
+            }}
+          />
+        </Stack.Navigator>
+      </GradeContext.Provider>
+    </SafeAreaView>
   )
 }
 
