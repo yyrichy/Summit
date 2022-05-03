@@ -92,7 +92,7 @@ const App = () => {
                   size={iconSize(tabInfo.focused)}
                   color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
                 />
-                <Text style={labelStyle(tabInfo.focused)}>Person</Text>
+                <Text style={labelStyle(tabInfo.focused)}>Profile</Text>
               </View>
             )
           }
