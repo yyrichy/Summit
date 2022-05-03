@@ -59,7 +59,6 @@ const CourseDetails = ({ route }) => {
   }
 
   const addAssignment = () => {
-    console.log('add')
     if (!course.categories.has(category)) {
       course.categories.set(category, {
         assignments: new Map<string, Assignment>()

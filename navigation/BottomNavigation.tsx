@@ -6,16 +6,25 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-import { LightTheme } from '../theme/LightTheme'
-import Schedule from '../screens/Schedule'
 import Documents from '../screens/Documents'
-import { Platform, StyleSheet } from 'react-native'
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native'
 import { Colors } from '../colors/Colors'
-
-const colors = LightTheme.colors
 
 const Tab = createBottomTabNavigator()
 type navScreenProp = StackNavigationProp<RootStackParamList, 'Menu'>
+
+const iconSize = (focused: boolean) => {
+  return focused ? 30 : 28
+}
+
+const labelStyle = (focused: boolean) => {
+  return {
+    fontFamily: focused ? 'Montserrat_600SemiBold' : 'Montserrat_300Light',
+    fontSize: focused ? 14 : 12
+  }
+}
+
+const EmptyComponent = () => null
 
 const App = () => {
   const navigation = useNavigation<navScreenProp>()
@@ -23,11 +32,7 @@ const App = () => {
   return (
     <Tab.Navigator
       screenOptions={() => ({
-        tabBarStyle: {
-          marginHorizontal: Platform.OS === 'android' ? 7 : 0,
-          borderRadius: Platform.OS === 'android' ? 7 : 0,
-          marginBottom: Platform.OS === 'android' ? 7 : 0
-        }
+        tabBarShowLabel: false
       })}
     >
       <Tab.Screen
@@ -35,35 +40,18 @@ const App = () => {
         component={Grades}
         options={{
           headerShown: false,
-          tabBarLabelStyle: styles.header,
           tabBarInactiveTintColor: Colors.secondary,
           tabBarActiveTintColor: Colors.onyx_gray,
           tabBarIcon: (tabInfo) => {
             return (
-              <Ionicons
-                name="trending-up-outline"
-                size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
-              />
-            )
-          }
-        }}
-      />
-      <Tab.Screen
-        name="Schedule"
-        component={Schedule}
-        options={{
-          headerShown: false,
-          tabBarLabelStyle: styles.header,
-          tabBarInactiveTintColor: Colors.secondary,
-          tabBarActiveTintColor: Colors.onyx_gray,
-          tabBarIcon: (tabInfo) => {
-            return (
-              <Ionicons
-                name="calendar-outline"
-                size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
-              />
+              <View style={styles.icon_view_style}>
+                <Ionicons
+                  name="trending-up-outline"
+                  size={iconSize(tabInfo.focused)}
+                  color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
+                />
+                <Text style={labelStyle(tabInfo.focused)}>Grades</Text>
+              </View>
             )
           }
         }}
@@ -73,16 +61,18 @@ const App = () => {
         component={Documents}
         options={{
           headerShown: false,
-          tabBarLabelStyle: styles.header,
           tabBarInactiveTintColor: Colors.secondary,
           tabBarActiveTintColor: Colors.onyx_gray,
           tabBarIcon: (tabInfo) => {
             return (
-              <Ionicons
-                name="folder-outline"
-                size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
-              />
+              <View style={styles.icon_view_style}>
+                <Ionicons
+                  name="folder-outline"
+                  size={iconSize(tabInfo.focused)}
+                  color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
+                />
+                <Text style={labelStyle(tabInfo.focused)}>Documents</Text>
+              </View>
             )
           }
         }}
@@ -92,27 +82,63 @@ const App = () => {
         component={Profile}
         options={{
           headerShown: false,
-          tabBarLabelStyle: styles.header,
           tabBarInactiveTintColor: Colors.secondary,
           tabBarActiveTintColor: Colors.onyx_gray,
           tabBarIcon: (tabInfo) => {
             return (
-              <Ionicons
-                name="person-outline"
-                size={tabInfo.focused ? 32 : 24}
-                color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
-              />
+              <View style={styles.icon_view_style}>
+                <Ionicons
+                  name="person-outline"
+                  size={iconSize(tabInfo.focused)}
+                  color={tabInfo.focused ? Colors.onyx_gray : Colors.secondary}
+                />
+                <Text style={labelStyle(tabInfo.focused)}>Person</Text>
+              </View>
             )
           }
         }}
+      />
+      <Tab.Screen
+        name="Logout"
+        component={EmptyComponent}
+        options={({ navigation }) => ({
+          tabBarIcon: () => {
+            return (
+              <Ionicons
+                name="exit-outline"
+                size={32}
+                color={Colors.middle_blue_green}
+              />
+            )
+          },
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+              onPress={() => navigation.navigate('Login')}
+            />
+          )
+        })}
       />
     </Tab.Navigator>
   )
 }
 
 const styles = StyleSheet.create({
-  header: {
-    fontFamily: 'Inter_700Bold'
+  icon_view_style: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    flex: 1
+  },
+  shadow: {
+    shadowColor: Colors.onyx_gray,
+    shadowOffset: {
+      width: 0,
+      height: 10
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5
   }
 })
 
