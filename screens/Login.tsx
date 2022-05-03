@@ -60,7 +60,7 @@ const Login = () => {
       setMarks(marks)
       setGradebook(gradebook)
     } catch (err) {
-      Alert.alert('Error' + usernameLocal + passwordLocal, err.message)
+      Alert.alert('Error', err.message)
       setIsLoading(false)
       return
     }
@@ -98,7 +98,11 @@ const Login = () => {
           iconStyle={{ borderColor: Colors.secondary }}
           isChecked={isChecked}
           disableBuiltInState
-          onPress={() => setToggleCheckBox(!isChecked)}
+          onPress={async () => {
+            await save('Username', usernameLocal)
+            await save('Password', passwordLocal)
+            setToggleCheckBox(!isChecked)
+          }}
         />
         <Text style={{ marginLeft: 8 }}>Save Login Information</Text>
       </View>
