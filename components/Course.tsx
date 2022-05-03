@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
     borderRadius: 15,
-    height: 50,
+    height: 55,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -67,8 +67,11 @@ const styles = StyleSheet.create({
   name: {
     color: 'black',
     fontFamily: 'Montserrat_700Bold',
-    fontSize: 15,
-    marginRight: 15,
+    fontSize: 18,
+    marginRight: 14,
+    marginLeft: 7,
+    lineHeight: 18 * 0.75,
+    paddingTop: 18 - 18 * 0.75,
     textAlign: 'left',
     flex: 1
   },
@@ -76,13 +79,16 @@ const styles = StyleSheet.create({
     color: 'black',
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
-    marginRight: 15,
+    marginRight: 14,
+    marginLeft: 7,
+    lineHeight: 12 * 0.75,
+    paddingTop: 12 - 12 * 0.75,
     textAlign: 'left',
     flex: 1
   },
   mark: {
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 30,
+    fontSize: 32,
     alignSelf: 'center'
   }
 })
