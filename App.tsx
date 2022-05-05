@@ -38,8 +38,9 @@ import {
   Montserrat_800ExtraBold_Italic,
   Montserrat_900Black_Italic
 } from '@expo-google-fonts/montserrat'
-import { View } from 'react-native'
+import { SafeAreaView, View } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import FlashMessage from 'react-native-flash-message'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
@@ -95,32 +96,35 @@ const App = () => {
   }
 
   return (
-    <SafeAreaProvider>
-      <AppContext.Provider value={user}>
-        <NavigationContainer theme={LightTheme}>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{
-                headerTitleAlign: 'center',
-                headerTitle: 'Welcome to ScholarHelper',
-                headerTitleStyle: {
-                  fontFamily: 'Inter_900Black'
-                }
-              }}
-            />
-            <Stack.Screen
-              name="Menu"
-              component={BottomNavigation}
-              options={{
-                headerShown: false
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </AppContext.Provider>
-    </SafeAreaProvider>
+    <>
+      <SafeAreaProvider>
+        <AppContext.Provider value={user}>
+          <NavigationContainer theme={LightTheme}>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                  headerTitleAlign: 'center',
+                  headerTitle: 'Welcome to ScholarHelper',
+                  headerTitleStyle: {
+                    fontFamily: 'Inter_900Black'
+                  }
+                }}
+              />
+              <Stack.Screen
+                name="Menu"
+                component={BottomNavigation}
+                options={{
+                  headerShown: false
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </AppContext.Provider>
+      </SafeAreaProvider>
+      <FlashMessage position="top" />
+    </>
   )
 }
 

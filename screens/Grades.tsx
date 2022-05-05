@@ -3,7 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack'
 import CourseDetails from './CourseDetails'
 import Courses from './Courses'
 import GradeContext from '../contexts/GradeContext'
-import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Stack = createStackNavigator()
 

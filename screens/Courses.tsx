@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import AppContext from '../contexts/AppContext'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
+import { SafeAreaView, StyleSheet } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'

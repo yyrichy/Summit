@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import AssignmentComponent from '../components/Assignment'
@@ -12,13 +12,12 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import CustomButton from '../components/CustomButton'
 import { Assignment } from '../interfaces/Gradebook'
 import { Colors } from '../colors/Colors'
-import FlashMessage, { showMessage } from 'react-native-flash-message'
+import { showMessage } from 'react-native-flash-message'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
   const navigation = useNavigation()
-  const ref = useRef()
 
   const { marks, gradebook, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(courseName)
@@ -205,7 +204,6 @@ const CourseDetails = ({ route }) => {
           </View>
         </Modal>
       </SafeAreaView>
-      <FlashMessage ref={ref} />
     </View>
   )
 }
