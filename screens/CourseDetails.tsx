@@ -228,8 +228,11 @@ const styles = StyleSheet.create({
   modal: {
     flexDirection: 'column',
     alignItems: 'center',
+    alignSelf: 'center',
     backgroundColor: 'white',
-    borderRadius: 10
+    borderRadius: 10,
+    width: 330,
+    height: 300
   },
   modal_view: {
     width: 330,
