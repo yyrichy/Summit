@@ -7,7 +7,7 @@ import GradeUtil from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { LightTheme } from '../theme/LightTheme'
 import Modal from 'react-native-modal'
-import { TextInput } from 'react-native-gesture-handler'
+import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import DropDownPicker from 'react-native-dropdown-picker'
 import CustomButton from '../components/CustomButton'
 import { Assignment } from '../interfaces/Gradebook'
@@ -90,123 +90,123 @@ const CourseDetails = ({ route }) => {
   }
 
   return (
-    <View>
-      <SafeAreaView>
-        <View style={styles.course_details_container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start'
-            }}
-          >
-            <FontAwesome.Button
-              name="chevron-left"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.secondary
-              }}
-              size={24}
-              onPress={() => navigation.goBack()}
-            ></FontAwesome.Button>
-          </View>
-          <Text numberOfLines={1} style={styles.course_details}>
-            {course.points} | {GradeUtil.parseCourseName(courseName)}
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end'
-            }}
-          >
-            <FontAwesome.Button
-              name="refresh"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.secondary
-              }}
-              size={24}
-              onPress={() => refreshMarks()}
-            ></FontAwesome.Button>
-          </View>
-        </View>
-        <FlatList
-          data={data}
-          renderItem={({ item }) => (
-            <AssignmentComponent
-              name={item.name}
-              course={item.course}
-              category={item.category}
-            ></AssignmentComponent>
-          )}
-          keyExtractor={(item) => item.name}
-        />
-        <FontAwesome.Button
-          name="plus-circle"
-          backgroundColor="transparent"
-          iconStyle={{
-            color: Colors.secondary
-          }}
+    <SafeAreaView>
+      <View style={styles.course_details_container}>
+        <View
           style={{
-            flexDirection: 'row-reverse'
+            flexDirection: 'row',
+            justifyContent: 'flex-start'
           }}
-          size={24}
-          onPress={toggleModal}
-        ></FontAwesome.Button>
-        <Modal
-          isVisible={isModalVisible}
-          coverScreen={true}
-          onBackdropPress={toggleModal}
         >
-          <View style={styles.modal}>
-            <View style={styles.modal_view}>
-              <Text style={styles.modal_title}>New Assignment</Text>
-              <TextInput
-                placeholder="Name"
-                onChangeText={(t) => {
-                  assignmentName = t
-                }}
-                style={styles.input}
-              ></TextInput>
-              <TextInput
-                placeholder="Points Earned"
-                onChangeText={(t) => (points = parseFloat(t))}
-                style={styles.input}
-              ></TextInput>
-              <TextInput
-                placeholder="Total Points"
-                onChangeText={(t) => (total = parseFloat(t))}
-                style={styles.input}
-              ></TextInput>
-              <View
-                style={{
-                  marginHorizontal: 7,
-                  marginTop: 7
-                }}
-              >
-                <DropDownPicker
-                  open={open}
-                  value={category}
-                  items={categories}
-                  setOpen={setOpen}
-                  setValue={setCategory}
-                  setItems={setCategories}
-                  maxHeight={null}
-                  style={styles.dropdown}
-                ></DropDownPicker>
-                <CustomButton
-                  onPress={addAssignment}
-                  text={'Add Assignment'}
-                  backgroundColor={LightTheme.colors.card}
-                  textColor={Colors.black}
-                  fontFamily="Inter_600SemiBold"
-                  containerStyle={styles.button_container}
-                ></CustomButton>
-              </View>
+          <FontAwesome.Button
+            name="chevron-left"
+            backgroundColor="transparent"
+            iconStyle={{
+              color: Colors.secondary
+            }}
+            size={24}
+            onPress={() => navigation.goBack()}
+          ></FontAwesome.Button>
+        </View>
+        <Text numberOfLines={1} style={styles.course_details}>
+          {course.points} | {GradeUtil.parseCourseName(courseName)}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end'
+          }}
+        >
+          <FontAwesome.Button
+            name="refresh"
+            backgroundColor="transparent"
+            iconStyle={{
+              color: Colors.secondary
+            }}
+            size={24}
+            onPress={() => refreshMarks()}
+          ></FontAwesome.Button>
+        </View>
+      </View>
+      <FlatList
+        data={data}
+        ListFooterComponent={
+          <FontAwesome.Button
+            name="plus-circle"
+            backgroundColor="transparent"
+            iconStyle={{
+              color: Colors.secondary
+            }}
+            style={{
+              flexDirection: 'row-reverse'
+            }}
+            size={24}
+            onPress={toggleModal}
+          ></FontAwesome.Button>
+        }
+        renderItem={({ item }) => (
+          <AssignmentComponent
+            name={item.name}
+            course={item.course}
+            category={item.category}
+          ></AssignmentComponent>
+        )}
+        keyExtractor={(item) => item.name}
+      />
+      <Modal
+        isVisible={isModalVisible}
+        coverScreen={true}
+        onBackdropPress={toggleModal}
+      >
+        <View style={styles.modal}>
+          <View style={styles.modal_view}>
+            <Text style={styles.modal_title}>New Assignment</Text>
+            <TextInput
+              placeholder="Name"
+              onChangeText={(t) => {
+                assignmentName = t
+              }}
+              style={styles.input}
+            ></TextInput>
+            <TextInput
+              placeholder="Points Earned"
+              onChangeText={(t) => (points = parseFloat(t))}
+              style={styles.input}
+            ></TextInput>
+            <TextInput
+              placeholder="Total Points"
+              onChangeText={(t) => (total = parseFloat(t))}
+              style={styles.input}
+            ></TextInput>
+            <View
+              style={{
+                marginHorizontal: 7,
+                marginTop: 7
+              }}
+            >
+              <DropDownPicker
+                open={open}
+                value={category}
+                items={categories}
+                setOpen={setOpen}
+                setValue={setCategory}
+                setItems={setCategories}
+                maxHeight={null}
+                style={styles.dropdown}
+              ></DropDownPicker>
+              <CustomButton
+                onPress={addAssignment}
+                text={'Add Assignment'}
+                backgroundColor={LightTheme.colors.card}
+                textColor={Colors.black}
+                fontFamily="Inter_600SemiBold"
+                containerStyle={styles.button_container}
+              ></CustomButton>
             </View>
           </View>
-        </Modal>
-      </SafeAreaView>
-    </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
   )
 }
 
