@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import AppContext from '../contexts/AppContext'
-import { StyleSheet, View } from 'react-native'
+import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -36,7 +36,7 @@ const Courses = ({ navigation }) => {
   }, [value])
 
   return (
-    <View>
+    <SafeAreaView style={{ flex: 1 }}>
       <DropDownPicker
         open={open}
         value={value}
@@ -68,7 +68,7 @@ const Courses = ({ navigation }) => {
           keyExtractor={(item) => item[0]}
         />
       )}
-    </View>
+    </SafeAreaView>
   )
 }
 

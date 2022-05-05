@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import AssignmentComponent from '../components/Assignment'
@@ -12,12 +12,15 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import CustomButton from '../components/CustomButton'
 import { Assignment } from '../interfaces/Gradebook'
 import { Colors } from '../colors/Colors'
+import FlashMessage, { showMessage } from 'react-native-flash-message'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
   const navigation = useNavigation()
+  const ref = useRef()
 
-  const { marks, gradebook, setMarks } = useContext(AppContext)
+  const { marks, gradebook, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(courseName)
   const data = []
   for (const [categoryName, category] of course.categories.entries()) {
@@ -72,88 +75,137 @@ const CourseDetails = ({ route }) => {
     toggleModal()
   }
 
+  const refreshMarks = async () => {
+    const newGradebook = await client.gradebook(
+      gradebook.reportingPeriod.current.index
+    )
+    const newMarks = await GradeUtil.convertGradebook(newGradebook)
+    setMarks(newMarks)
+    showMessage({
+      message: 'Refreshed',
+      type: 'info',
+      icon: 'success'
+    })
+  }
+
   return (
     <View>
-      <Text numberOfLines={1} style={styles.course_details}>
-        {course.points} | {GradeUtil.parseCourseName(courseName)}
-      </Text>
-      <FlatList
-        data={data}
-        renderItem={({ item }) => (
-          <AssignmentComponent
-            name={item.name}
-            course={item.course}
-            category={item.category}
-          ></AssignmentComponent>
-        )}
-        keyExtractor={(item) => item.name}
-      />
-      <FontAwesome.Button
-        name="plus-circle"
-        backgroundColor={LightTheme.colors.background}
-        color="black"
-        iconStyle={{
-          color: Colors.secondary
-        }}
-        style={{
-          flexDirection: 'row-reverse'
-        }}
-        size={32}
-        onPress={toggleModal}
-      ></FontAwesome.Button>
-      <Modal
-        isVisible={isModalVisible}
-        coverScreen={true}
-        onBackdropPress={toggleModal}
-      >
-        <View style={styles.modal}>
-          <View style={styles.modal_view}>
-            <Text style={styles.modal_title}>New Assignment</Text>
-            <TextInput
-              placeholder="Name"
-              onChangeText={(t) => {
-                assignmentName = t
+      <SafeAreaView>
+        <View style={styles.course_details_container}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start'
+            }}
+          >
+            <FontAwesome.Button
+              name="chevron-left"
+              backgroundColor="transparent"
+              iconStyle={{
+                color: Colors.secondary
               }}
-              style={styles.input}
-            ></TextInput>
-            <TextInput
-              placeholder="Points Earned"
-              onChangeText={(t) => (points = parseFloat(t))}
-              style={styles.input}
-            ></TextInput>
-            <TextInput
-              placeholder="Total Points"
-              onChangeText={(t) => (total = parseFloat(t))}
-              style={styles.input}
-            ></TextInput>
-            <View
-              style={{
-                marginHorizontal: 7,
-                marginTop: 7
+              size={24}
+              onPress={() => navigation.goBack()}
+            ></FontAwesome.Button>
+          </View>
+          <Text numberOfLines={1} style={styles.course_details}>
+            {course.points} | {GradeUtil.parseCourseName(courseName)}
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end'
+            }}
+          >
+            <FontAwesome.Button
+              name="refresh"
+              backgroundColor="transparent"
+              iconStyle={{
+                color: Colors.secondary
               }}
-            >
-              <DropDownPicker
-                open={open}
-                value={category}
-                items={categories}
-                setOpen={setOpen}
-                setValue={setCategory}
-                setItems={setCategories}
-                maxHeight={null}
-                style={styles.dropdown}
-              ></DropDownPicker>
-              <CustomButton
-                onPress={addAssignment}
-                text={'Add Assignment'}
-                backgroundColor={LightTheme.colors.card}
-                textColor="black"
-                fontFamily="Inter_600SemiBold"
-                containerStyle={styles.button_container}
-              ></CustomButton>
-            </View>
+              size={24}
+              onPress={() => refreshMarks()}
+            ></FontAwesome.Button>
           </View>
         </View>
-      </Modal>
+        <FlatList
+          data={data}
+          renderItem={({ item }) => (
+            <AssignmentComponent
+              name={item.name}
+              course={item.course}
+              category={item.category}
+            ></AssignmentComponent>
+          )}
+          keyExtractor={(item) => item.name}
+        />
+        <FontAwesome.Button
+          name="plus-circle"
+          backgroundColor="transparent"
+          iconStyle={{
+            color: Colors.secondary
+          }}
+          style={{
+            flexDirection: 'row-reverse'
+          }}
+          size={24}
+          onPress={toggleModal}
+        ></FontAwesome.Button>
+        <Modal
+          isVisible={isModalVisible}
+          coverScreen={true}
+          onBackdropPress={toggleModal}
+        >
+          <View style={styles.modal}>
+            <View style={styles.modal_view}>
+              <Text style={styles.modal_title}>New Assignment</Text>
+              <TextInput
+                placeholder="Name"
+                onChangeText={(t) => {
+                  assignmentName = t
+                }}
+                style={styles.input}
+              ></TextInput>
+              <TextInput
+                placeholder="Points Earned"
+                onChangeText={(t) => (points = parseFloat(t))}
+                style={styles.input}
+              ></TextInput>
+              <TextInput
+                placeholder="Total Points"
+                onChangeText={(t) => (total = parseFloat(t))}
+                style={styles.input}
+              ></TextInput>
+              <View
+                style={{
+                  marginHorizontal: 7,
+                  marginTop: 7
+                }}
+              >
+                <DropDownPicker
+                  open={open}
+                  value={category}
+                  items={categories}
+                  setOpen={setOpen}
+                  setValue={setCategory}
+                  setItems={setCategories}
+                  maxHeight={null}
+                  style={styles.dropdown}
+                ></DropDownPicker>
+                <CustomButton
+                  onPress={addAssignment}
+                  text={'Add Assignment'}
+                  backgroundColor={LightTheme.colors.card}
+                  textColor={Colors.black}
+                  fontFamily="Inter_600SemiBold"
+                  containerStyle={styles.button_container}
+                ></CustomButton>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </SafeAreaView>
+      <FlashMessage ref={ref} />
     </View>
   )
 }
@@ -200,9 +252,15 @@ const styles = StyleSheet.create({
     marginTop: 30
   },
   course_details: {
-    fontSize: 30,
-    margin: 7,
+    fontSize: 22,
+    flex: 1,
+    flexWrap: 'wrap',
     fontFamily: 'Inter_800ExtraBold'
+  },
+  course_details_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 })
 

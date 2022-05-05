@@ -34,8 +34,6 @@ const App = () => {
         component={Grades}
         options={{
           headerShown: false,
-          tabBarInactiveTintColor: Colors.secondary,
-          tabBarActiveTintColor: Colors.middle_blue_green,
           tabBarIcon: (tabInfo) => {
             return (
               <AntDesign name="book" size={30} color={color(tabInfo.focused)} />
@@ -48,8 +46,6 @@ const App = () => {
         component={Documents}
         options={{
           headerShown: false,
-          tabBarInactiveTintColor: Colors.secondary,
-          tabBarActiveTintColor: Colors.middle_blue_green,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
@@ -66,8 +62,6 @@ const App = () => {
         component={Profile}
         options={{
           headerShown: false,
-          tabBarInactiveTintColor: Colors.secondary,
-          tabBarActiveTintColor: Colors.middle_blue_green,
           tabBarIcon: (tabInfo) => {
             return (
               <Ionicons
@@ -84,17 +78,13 @@ const App = () => {
         component={EmptyComponent}
         options={({ navigation }) => ({
           headerShown: false,
-          tabBarShowLabel: false,
           tabBarIcon: () => {
             return (
               <Ionicons name="exit-outline" size={32} color={Colors.black} />
             )
           },
           tabBarButton: (props) => (
-            <TouchableOpacity
-              {...props}
-              onPress={() => navigation.navigate('Login')}
-            />
+            <TouchableOpacity {...props} onPress={() => navigation.goBack()} />
           )
         })}
       />
