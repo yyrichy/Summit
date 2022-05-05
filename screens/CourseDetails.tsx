@@ -19,7 +19,8 @@ const CourseDetails = ({ route }) => {
   const courseName = route.params.title
   const navigation = useNavigation()
 
-  const { marks, gradebook, client, setMarks } = useContext(AppContext)
+  const { marks, gradebook, client, setMarks, setGradebook } =
+    useContext(AppContext)
   const course = marks.courses.get(courseName)
   const data = []
   for (const [categoryName, category] of course.categories.entries()) {
@@ -79,6 +80,7 @@ const CourseDetails = ({ route }) => {
       gradebook.reportingPeriod.current.index
     )
     const newMarks = await GradeUtil.convertGradebook(newGradebook)
+    setGradebook(newGradebook)
     setMarks(newMarks)
     showMessage({
       message: 'Refreshed',

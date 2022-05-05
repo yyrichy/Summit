@@ -1,10 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react'
 import AppContext from '../contexts/AppContext'
-import { SafeAreaView, StyleSheet } from 'react-native'
+import { SafeAreaView, StyleSheet, View } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
 import GradeUtil from '../gradebook/GradeUtil'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { showMessage } from 'react-native-flash-message'
+import { Colors } from '../colors/Colors'
 
 const Courses = ({ navigation }) => {
   const context = useContext(AppContext)
@@ -35,8 +38,36 @@ const Courses = ({ navigation }) => {
     }
   }, [value])
 
+  const refreshMarks = async () => {
+    const newGradebook = await context.client.gradebook(value)
+    const newMarks = await GradeUtil.convertGradebook(newGradebook)
+    setGradebook(newGradebook)
+    setMarks(newMarks)
+    showMessage({
+      message: 'Refreshed',
+      type: 'info',
+      icon: 'success'
+    })
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-end'
+        }}
+      >
+        <FontAwesome.Button
+          name="refresh"
+          backgroundColor="transparent"
+          iconStyle={{
+            color: Colors.secondary
+          }}
+          size={24}
+          onPress={() => refreshMarks()}
+        ></FontAwesome.Button>
+      </View>
       <DropDownPicker
         open={open}
         value={value}
@@ -76,9 +107,7 @@ const styles = StyleSheet.create({
   dropdown: {
     borderWidth: 0,
     height: 30,
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginBottom: 21,
+    marginBottom: 15,
     backgroundColor: 'transparent'
   },
   dropdownText: {
