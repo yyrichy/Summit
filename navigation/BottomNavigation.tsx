@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import Documents from '../screens/Documents'
 import { TouchableOpacity } from 'react-native'
 import { Colors } from '../colors/Colors'
@@ -35,8 +35,18 @@ const App = () => {
         options={{
           headerShown: false,
           tabBarIcon: (tabInfo) => {
-            return (
-              <AntDesign name="book" size={30} color={color(tabInfo.focused)} />
+            return tabInfo.focused ? (
+              <MaterialIcons
+                name="insert-chart"
+                size={30}
+                color={Colors.middle_blue_green}
+              />
+            ) : (
+              <MaterialIcons
+                name="insert-chart-outlined"
+                size={30}
+                color={Colors.secondary}
+              />
             )
           }
         }}
@@ -47,11 +57,17 @@ const App = () => {
         options={{
           headerShown: false,
           tabBarIcon: (tabInfo) => {
-            return (
+            return tabInfo.focused ? (
+              <Ionicons
+                name="folder"
+                size={30}
+                color={Colors.middle_blue_green}
+              />
+            ) : (
               <Ionicons
                 name="folder-outline"
                 size={30}
-                color={color(tabInfo.focused)}
+                color={Colors.secondary}
               />
             )
           }
@@ -63,11 +79,17 @@ const App = () => {
         options={{
           headerShown: false,
           tabBarIcon: (tabInfo) => {
-            return (
+            return tabInfo.focused ? (
+              <Ionicons
+                name="person"
+                size={30}
+                color={Colors.middle_blue_green}
+              />
+            ) : (
               <Ionicons
                 name="person-outline"
                 size={30}
-                color={color(tabInfo.focused)}
+                color={Colors.secondary}
               />
             )
           }
