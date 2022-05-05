@@ -4,7 +4,6 @@ import CourseDetails from './CourseDetails'
 import Courses from './Courses'
 import GradeContext from '../contexts/GradeContext'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { LightTheme } from '../theme/LightTheme'
 
 const Stack = createStackNavigator()
 
@@ -28,10 +27,7 @@ const StackNavigator = () => {
             name="Course Details"
             component={CourseDetails}
             options={{
-              headerTitleAlign: 'center',
-              headerBackTitleStyle: {
-                fontFamily: 'Inter_700Bold'
-              }
+              headerShown: false
             }}
           />
         </Stack.Navigator>

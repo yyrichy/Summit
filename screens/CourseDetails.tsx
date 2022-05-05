@@ -48,12 +48,6 @@ const CourseDetails = ({ route }) => {
   let points: number = 0
   let total: number = 0
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      title: `${course.points} | ${GradeUtil.parseCourseName(courseName)}`
-    })
-  })
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible)
   }
@@ -80,6 +74,9 @@ const CourseDetails = ({ route }) => {
 
   return (
     <View>
+      <Text numberOfLines={1} style={styles.course_details}>
+        {course.points} | {GradeUtil.parseCourseName(courseName)}
+      </Text>
       <FlatList
         data={data}
         renderItem={({ item }) => (
@@ -201,6 +198,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0,
     marginTop: 30
+  },
+  course_details: {
+    fontSize: 30,
+    margin: 7,
+    fontFamily: 'Inter_800ExtraBold'
   }
 })
 

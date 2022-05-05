@@ -1,18 +1,25 @@
-import React, { useContext } from 'react'
-import { StyleSheet, View, Text, TextInput } from 'react-native'
+import React, { useContext, useState } from 'react'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableHighlight
+} from 'react-native'
 import GradeUtil from '../gradebook/GradeUtil'
-import { LightTheme } from '../theme/LightTheme'
 import AppContext from '../contexts/AppContext'
-import GradeContext from '../contexts/GradeContext'
 import { Colors } from '../colors/Colors'
+import { AntDesign } from '@expo/vector-icons'
+import Tooltip from 'react-native-walkthrough-tooltip'
 
 function AssignmentComponent(props) {
-  const { setCourse } = useContext(GradeContext)
   const { marks, setMarks } = useContext(AppContext)
   const assignment = marks.courses
     .get(props.course)
     .categories.get(props.category)
     .assignments.get(props.name)
+
+  const [toolTipVisible, setToolTipVisible] = useState(false)
 
   const updatePoints = (input: string, type: string) => {
     const points = parseFloat(input)
@@ -34,21 +41,33 @@ function AssignmentComponent(props) {
       .assignments.get(props.name).modified = true
     newMarks = GradeUtil.calculatePoints(newMarks)
     setMarks(newMarks)
-    setCourse(
-      `${marks.courses.get(props.course).points} | ${GradeUtil.parseCourseName(
-        props.course
-      )}`
-    )
   }
 
   return (
     <View style={[styles.container, props.style]}>
+      {assignment.modified && (
+        <Tooltip
+          isVisible={toolTipVisible}
+          content={<Text>You have modified this assignment</Text>}
+          placement="top"
+          onClose={() => setToolTipVisible(false)}
+        >
+          <TouchableHighlight onPress={() => setToolTipVisible(true)}>
+            <AntDesign
+              name="exclamationcircleo"
+              color={Colors.black}
+              size={18}
+              style={{ marginLeft: 10 }}
+            />
+          </TouchableHighlight>
+        </Tooltip>
+      )}
       <Text
         numberOfLines={2}
         style={[
           styles.name,
           {
-            color: assignment.modified ? Colors.middle_blue_green : 'black'
+            color: assignment.modified ? Colors.dark_middle_blue_green : 'black'
           }
         ]}
       >
@@ -63,7 +82,9 @@ function AssignmentComponent(props) {
           style={[
             styles.mark,
             {
-              color: assignment.modified ? Colors.middle_blue_green : 'black'
+              color: assignment.modified
+                ? Colors.dark_middle_blue_green
+                : 'black'
             }
           ]}
           onChangeText={(input) => updatePoints(input, 'earned')}
@@ -78,7 +99,9 @@ function AssignmentComponent(props) {
             styles.mark,
             {
               marginRight: 10,
-              color: assignment.modified ? Colors.middle_blue_green : 'black'
+              color: assignment.modified
+                ? Colors.dark_middle_blue_green
+                : 'black'
             }
           ]}
           onChangeText={(input) => updatePoints(input, 'total')}

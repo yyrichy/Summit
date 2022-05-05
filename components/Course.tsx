@@ -36,7 +36,7 @@ function CourseComponent(props) {
           }
         ]}
       >
-        {props.mark}
+        {isNaN(parseFloat(props.mark)) ? '_' : props.mark}
       </Text>
     </View>
   )
