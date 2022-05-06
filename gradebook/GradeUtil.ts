@@ -45,6 +45,7 @@ export default class GradeUtil {
         }
         c.assignments.push(a)
       }
+      c.assignments.reverse()
     }
     marks = this.calculatePoints(marks)
     return new Promise((resolve) => {
