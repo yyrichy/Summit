@@ -52,17 +52,24 @@ function AssignmentComponent(props) {
           style={{ marginLeft: 10 }}
         />
       </TouchableHighlight>
-      <Text
-        numberOfLines={2}
-        style={[
-          styles.name,
-          {
-            color: assignment.modified ? Colors.dark_middle_blue_green : 'black'
-          }
-        ]}
-      >
-        {props.name}
-      </Text>
+      <View style={styles.assignment_info_container}>
+        <Text
+          numberOfLines={1}
+          style={[
+            styles.name,
+            {
+              color: assignment.modified
+                ? Colors.dark_middle_blue_green
+                : 'black'
+            }
+          ]}
+        >
+          {props.name}
+        </Text>
+        <Text numberOfLines={1} style={styles.category}>
+          {assignment.category}
+        </Text>
+      </View>
       <View style={styles.inputContainer}>
         <TextInput
           defaultValue={
@@ -105,7 +112,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
     borderRadius: 10,
-    height: 45,
+    height: 52,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -113,19 +120,35 @@ const styles = StyleSheet.create({
     marginRight: 7,
     marginTop: 7
   },
+  assignment_info_container: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    marginHorizontal: 7,
+    flex: 1
+  },
+  name: {
+    color: 'black',
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 12,
+    marginHorizontal: 7,
+    lineHeight: 12 * 0.75,
+    paddingTop: 12 - 12 * 0.75,
+    textAlign: 'left'
+  },
+  category: {
+    color: 'black',
+    fontFamily: 'Inter_400Regular',
+    fontSize: 11,
+    marginHorizontal: 7,
+    lineHeight: 11 * 0.75,
+    marginTop: 4,
+    paddingTop: 11 - 11 * 0.75,
+    textAlign: 'left'
+  },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
-  },
-  name: {
-    color: 'black',
-    fontSize: 14,
-    fontFamily: 'Inter_500Medium',
-    marginLeft: 10,
-    marginRight: 10,
-    textAlign: 'left',
-    flex: 1
   },
   mark: {
     height: 60,

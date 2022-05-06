@@ -72,8 +72,7 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     lineHeight: 18 * 0.75,
     paddingTop: 18 - 18 * 0.75,
-    textAlign: 'left',
-    flex: 1
+    textAlign: 'left'
   },
   teacher: {
     color: 'black',
@@ -83,8 +82,8 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     lineHeight: 12 * 0.75,
     paddingTop: 12 - 12 * 0.75,
-    textAlign: 'left',
-    flex: 1
+    marginTop: 4,
+    textAlign: 'left'
   },
   mark: {
     fontFamily: 'Montserrat_800ExtraBold',
