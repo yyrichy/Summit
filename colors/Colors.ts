@@ -8,5 +8,6 @@ export const Colors = {
   onyx_gray: '#454545',
   corn_silk_white: '#FEFAE0',
   white: '#FFFFFF',
-  black: '#001219'
+  black: '#001219',
+  red: '#A30800'
 }

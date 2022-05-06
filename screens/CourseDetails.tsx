@@ -7,10 +7,9 @@ import GradeUtil from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { LightTheme } from '../theme/LightTheme'
 import Modal from 'react-native-modal'
-import { ScrollView, TextInput } from 'react-native-gesture-handler'
+import { TextInput } from 'react-native-gesture-handler'
 import DropDownPicker from 'react-native-dropdown-picker'
 import CustomButton from '../components/CustomButton'
-import { Assignment } from '../interfaces/Gradebook'
 import { Colors } from '../colors/Colors'
 import { showMessage } from 'react-native-flash-message'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -53,8 +52,16 @@ const CourseDetails = ({ route }) => {
   }
 
   const addAssignment = () => {
+    let name = assignmentName.length === 0 ? 'Assignment' : assignmentName
+    if (course.assignments.some((a) => a.name === name)) {
+      let indentifier = 2
+      while (course.assignments.some((a) => a.name === name + indentifier)) {
+        indentifier++
+      }
+      name = name + indentifier
+    }
     course.assignments.push({
-      name: assignmentName,
+      name: name,
       category: category,
       status: 'Graded',
       points: points,
@@ -102,7 +109,8 @@ const CourseDetails = ({ route }) => {
           ></FontAwesome.Button>
         </View>
         <Text numberOfLines={1} style={styles.course_details}>
-          {course.value} | {GradeUtil.parseCourseName(courseName)}
+          {isNaN(course.value) ? 'N/A' : course.value} |{' '}
+          {GradeUtil.parseCourseName(courseName)}
         </Text>
         <View
           style={{

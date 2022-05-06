@@ -9,16 +9,13 @@ import {
 import GradeUtil from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
-import { AntDesign } from '@expo/vector-icons'
-import Tooltip from 'react-native-walkthrough-tooltip'
+import { FontAwesome } from '@expo/vector-icons'
 
 function AssignmentComponent(props) {
   const { marks, setMarks } = useContext(AppContext)
   const assignment = marks.courses
     .get(props.course)
     .assignments.find((a) => a.name === props.name)
-
-  const [toolTipVisible, setToolTipVisible] = useState(false)
 
   const updatePoints = (input: string, type: string) => {
     const points = parseFloat(input)
@@ -36,25 +33,25 @@ function AssignmentComponent(props) {
     setMarks(newMarks)
   }
 
+  const deleteAssignment = () => {
+    let newMarks = Object.assign({}, marks)
+    newMarks.courses.get(props.course).assignments = newMarks.courses
+      .get(props.course)
+      .assignments.filter((a) => a.name !== props.name)
+    newMarks = GradeUtil.calculatePoints(newMarks)
+    setMarks(newMarks)
+  }
+
   return (
     <View style={[styles.container, props.style]}>
-      {assignment.modified && (
-        <Tooltip
-          isVisible={toolTipVisible}
-          content={<Text>You have modified this assignment</Text>}
-          placement="top"
-          onClose={() => setToolTipVisible(false)}
-        >
-          <TouchableHighlight onPress={() => setToolTipVisible(true)}>
-            <AntDesign
-              name="exclamationcircleo"
-              color={Colors.black}
-              size={18}
-              style={{ marginLeft: 10 }}
-            />
-          </TouchableHighlight>
-        </Tooltip>
-      )}
+      <TouchableHighlight onPress={() => deleteAssignment()}>
+        <FontAwesome
+          name="trash-o"
+          color={Colors.red}
+          size={18}
+          style={{ marginLeft: 10 }}
+        />
+      </TouchableHighlight>
       <Text
         numberOfLines={2}
         style={[

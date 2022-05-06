@@ -55,6 +55,7 @@ export default class GradeUtil {
 
   static calculatePoints(marks: Marks) {
     marks.gpa = 0
+    let numOfCourses = 0
     for (const course of marks.courses.values()) {
       ;(course.points = 0), (course.total = 0), (course.value = NaN)
       for (const category of course.categories.values()) {
@@ -75,17 +76,20 @@ export default class GradeUtil {
         }
       }
       course.value = this.roundToTwo((course.points / course.total) * 100)
-      if (course.value >= 89.5) {
-        marks.gpa += 4
-      } else if (course.value >= 79.5) {
-        marks.gpa += 3
-      } else if (course.value >= 69.5) {
-        marks.gpa += 2
-      } else if (course.value >= 59.5) {
-        marks.gpa += 1
+      if (!isNaN(course.value)) {
+        if (course.value >= 89.5) {
+          marks.gpa += 4
+        } else if (course.value >= 79.5) {
+          marks.gpa += 3
+        } else if (course.value >= 69.5) {
+          marks.gpa += 2
+        } else if (course.value >= 59.5) {
+          marks.gpa += 1
+        }
+        numOfCourses++
       }
     }
-    marks.gpa = this.roundToTwo(marks.gpa / marks.courses.size)
+    marks.gpa = this.roundToTwo(marks.gpa / numOfCourses)
     return marks
   }
 
