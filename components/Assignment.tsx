@@ -18,28 +18,13 @@ function AssignmentComponent(props) {
     .assignments.find((a) => a.name === props.name)
 
   const updatePoints = (input: string, type: string) => {
-    const points = parseFloat(input)
-    let newMarks = Object.assign({}, marks)
-    const assignment = newMarks.courses
-      .get(props.course)
-      .assignments.find((a) => a.name === props.name)
-    if (type === 'earned') {
-      assignment.points = points
-    } else if (type === 'total') {
-      assignment.total = points
-    }
-    assignment.modified = true
-    newMarks = GradeUtil.calculatePoints(newMarks)
-    setMarks(newMarks)
+    setMarks(
+      GradeUtil.updatePoints(marks, props.course, assignment.name, input, type)
+    )
   }
 
   const deleteAssignment = () => {
-    let newMarks = Object.assign({}, marks)
-    newMarks.courses.get(props.course).assignments = newMarks.courses
-      .get(props.course)
-      .assignments.filter((a) => a.name !== props.name)
-    newMarks = GradeUtil.calculatePoints(newMarks)
-    setMarks(newMarks)
+    setMarks(GradeUtil.deleteAssignment(marks, props.course, assignment.name))
   }
 
   return (

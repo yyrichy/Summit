@@ -4,7 +4,6 @@ import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
 export default class GradeUtil {
   static parseCourseName(name: string) {
     if (!name.includes('(')) return name
-
     return name.substring(0, name.lastIndexOf('(')).trim()
   }
 
@@ -15,6 +14,7 @@ export default class GradeUtil {
     }
     for (const course of gradebook.courses) {
       marks.courses.set(course.title, {
+        name: course.title,
         period:
           gradebook.courses.findIndex((c) => c.title === course.title) + 1,
         teacher: course.staff.name,
@@ -103,10 +103,68 @@ export default class GradeUtil {
     }
   }
 
-  static roundToTwo(n: number) {
-    var multiplicator = Math.pow(10, 2)
-    n = parseFloat((n * multiplicator).toFixed(11))
-    var test = Math.round(n) / multiplicator
+  static roundToTwo(num: number) {
+    const multiplicator = Math.pow(10, 2)
+    num = parseFloat((num * multiplicator).toFixed(11))
+    const test = Math.round(num) / multiplicator
     return +test.toFixed(2)
+  }
+
+  static deleteAssignment(marks: Marks, course: string, assignment: string) {
+    const newMarks = Object.assign({}, marks)
+    newMarks.courses.get(course).assignments = newMarks.courses
+      .get(course)
+      .assignments.filter((a) => a.name !== assignment)
+    return GradeUtil.calculatePoints(newMarks)
+  }
+
+  static updatePoints(
+    marks: Marks,
+    course: string,
+    assignmentName: string,
+    input: string,
+    type: string
+  ) {
+    const points = parseFloat(input)
+    const newMarks = Object.assign({}, marks)
+    const assignment = newMarks.courses
+      .get(course)
+      .assignments.find((a) => a.name === assignmentName)
+    if (type === 'earned') {
+      assignment.points = points
+    } else if (type === 'total') {
+      assignment.total = points
+    }
+    assignment.modified = true
+    return GradeUtil.calculatePoints(newMarks)
+  }
+
+  static addAssignment(
+    marks: Marks,
+    course: Course,
+    assignment: string,
+    category: string,
+    points: number,
+    total: number
+  ) {
+    let name = assignment.length === 0 ? 'Assignment' : assignment
+    if (course.assignments.some((a) => a.name === name)) {
+      let indentifier = 2
+      while (course.assignments.some((a) => a.name === name + indentifier)) {
+        indentifier++
+      }
+      name = name + indentifier
+    }
+    course.assignments.push({
+      name: name,
+      category: category,
+      status: 'Graded',
+      points: points,
+      total: total,
+      modified: true
+    })
+    marks.courses.set(course.name, course)
+    const m = Object.assign({}, marks)
+    return GradeUtil.calculatePoints(m)
   }
 }

@@ -44,34 +44,24 @@ const CourseDetails = ({ route }) => {
       })
   )
   let assignmentName: string = ''
-  let points: number = 0
-  let total: number = 0
+  let points: number = NaN
+  let total: number = NaN
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible)
   }
 
   const addAssignment = () => {
-    let name = assignmentName.length === 0 ? 'Assignment' : assignmentName
-    if (course.assignments.some((a) => a.name === name)) {
-      let indentifier = 2
-      while (course.assignments.some((a) => a.name === name + indentifier)) {
-        indentifier++
-      }
-      name = name + indentifier
-    }
-    course.assignments.push({
-      name: name,
-      category: category,
-      status: 'Graded',
-      points: points,
-      total: total,
-      modified: true
-    })
-    marks.courses.set(courseName, course)
-    let m = Object.assign({}, marks)
-    m = GradeUtil.calculatePoints(m)
-    setMarks(m)
+    setMarks(
+      GradeUtil.addAssignment(
+        marks,
+        course,
+        assignmentName,
+        category,
+        points,
+        total
+      )
+    )
     toggleModal()
   }
 
