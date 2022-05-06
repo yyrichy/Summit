@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import AppContext from '../contexts/AppContext'
-import { SafeAreaView, StyleSheet, View } from 'react-native'
+import { SafeAreaView, StyleSheet, View, Text } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -52,22 +52,6 @@ const Courses = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-end'
-        }}
-      >
-        <FontAwesome.Button
-          name="refresh"
-          backgroundColor="transparent"
-          iconStyle={{
-            color: Colors.secondary
-          }}
-          size={24}
-          onPress={() => refreshMarks()}
-        ></FontAwesome.Button>
-      </View>
       <DropDownPicker
         open={open}
         value={value}
@@ -79,6 +63,49 @@ const Courses = ({ navigation }) => {
         style={styles.dropdown}
         textStyle={styles.dropdownText}
       ></DropDownPicker>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'flex-start'
+          }}
+        >
+          <Text
+            style={{
+              marginLeft: 11,
+              fontFamily: 'Montserrat_700Bold',
+              fontSize: 22
+            }}
+          >
+            {marks.gpa} GPA
+          </Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center'
+          }}
+        >
+          <FontAwesome.Button
+            name="refresh"
+            backgroundColor="transparent"
+            iconStyle={{
+              color: Colors.secondary
+            }}
+            size={24}
+            onPress={() => refreshMarks()}
+          ></FontAwesome.Button>
+        </View>
+      </View>
       {marks != null && (
         <FlatList
           data={[...marks.courses.entries()]}
@@ -90,7 +117,7 @@ const Courses = ({ navigation }) => {
             >
               <CourseComponent
                 name={GradeUtil.parseCourseName(item[0])}
-                mark={item[1].points}
+                mark={item[1].value}
                 period={item[1].period}
                 teacher={item[1].teacher}
               ></CourseComponent>

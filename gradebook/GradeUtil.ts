@@ -1,5 +1,5 @@
 import { Gradebook } from 'studentvue'
-import { Assignment, Category, Marks } from '../interfaces/Gradebook'
+import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
 
 export default class GradeUtil {
   static parseCourseName(name: string) {
@@ -10,25 +10,32 @@ export default class GradeUtil {
 
   static convertGradebook(gradebook: Gradebook) {
     let marks: Marks = {
-      courses: new Map<string, Category>()
+      gpa: 0,
+      courses: new Map<string, Course>()
     }
     for (const course of gradebook.courses) {
       marks.courses.set(course.title, {
         period:
           gradebook.courses.findIndex((c) => c.title === course.title) + 1,
         teacher: course.staff.name,
+        assignments: [],
         categories: new Map<string, Category>()
       })
+      const c = marks.courses.get(course.title)
+      for (const category of course.marks[0].weightedCategories) {
+        c.categories.set(category.type, {
+          name: category.type,
+          points: 0,
+          total: 0,
+          weight: parseFloat(category.weight.standard)
+        })
+      }
       for (const assignment of course.marks[0].assignments) {
-        if (!marks.courses.get(course.title).categories.has(assignment.type)) {
-          marks.courses.get(course.title).categories.set(assignment.type, {
-            assignments: new Map<string, Assignment>()
-          })
-        }
         const value = assignment.score.value
         const points = this.parsePoints(assignment.points)
         const a: Assignment = {
           name: assignment.name,
+          category: assignment.type,
           status:
             value != 'Not Graded' && value != 'Not Due' ? 'Graded' : value,
           notes: assignment.notes,
@@ -36,21 +43,7 @@ export default class GradeUtil {
           total: points[1],
           modified: false
         }
-        marks.courses
-          .get(course.title)
-          .categories.get(assignment.type)
-          .assignments.set(a.name, a)
-      }
-      for (const [categoryName, category] of marks.courses
-        .get(course.title)
-        .categories.entries()) {
-        for (const weightedCategory of course.marks[0].weightedCategories) {
-          if (weightedCategory.type === categoryName) {
-            category.weight = parseFloat(weightedCategory.weight.standard)
-            break
-          }
-        }
-        marks.courses.get(course.title).categories.set(categoryName, category)
+        c.assignments.push(a)
       }
     }
     marks = this.calculatePoints(marks)
@@ -60,35 +53,38 @@ export default class GradeUtil {
   }
 
   static calculatePoints(marks: Marks) {
-    for (const [courseName, course] of marks.courses.entries()) {
-      for (const [categoryName, category] of course.categories.entries()) {
-        let points: number = 0,
-          total: number = 0
-        for (const assignment of category.assignments.values()) {
-          if (!isNaN(assignment.points)) {
-            points += assignment.points
-            total += assignment.total
-          }
-        }
-        category.points = points
-        category.total = total
-        course.categories.set(categoryName, category)
-      }
-      let points: number = 0,
-        totalWeight: number = 0
+    marks.gpa = 0
+    for (const course of marks.courses.values()) {
+      ;(course.points = 0), (course.total = 0), (course.value = NaN)
       for (const category of course.categories.values()) {
-        const categoryPoints =
-          (category.points / category.total) * category.weight
-        if (!isNaN(categoryPoints)) {
-          points += categoryPoints
-          totalWeight += category.weight
+        ;(category.points = 0), (category.total = 0), (category.value = NaN)
+      }
+      for (const assignment of course.assignments) {
+        const category = course.categories.get(assignment.category)
+        if (!isNaN(assignment.points) && !isNaN(assignment.total)) {
+          category.points += assignment.points
+          category.total += assignment.total
+          category.value = category.points / category.total
         }
       }
-      points =
-        Math.round(((points / totalWeight) * 100 + Number.EPSILON) * 100) / 100
-      course.points = points
-      marks.courses.set(courseName, course)
+      for (const category of course.categories.values()) {
+        if (!isNaN(category.value)) {
+          course.points += category.value * category.weight
+          course.total += category.weight
+        }
+      }
+      course.value = this.roundToTwo((course.points / course.total) * 100)
+      if (course.value >= 89.5) {
+        marks.gpa += 4
+      } else if (course.value >= 79.5) {
+        marks.gpa += 3
+      } else if (course.value >= 69.5) {
+        marks.gpa += 2
+      } else if (course.value >= 59.5) {
+        marks.gpa += 1
+      }
     }
+    marks.gpa = this.roundToTwo(marks.gpa / marks.courses.size)
     return marks
   }
 
@@ -100,5 +96,12 @@ export default class GradeUtil {
     } else {
       return [NaN, parseFloat(points)]
     }
+  }
+
+  static roundToTwo(n: number) {
+    var multiplicator = Math.pow(10, 2)
+    n = parseFloat((n * multiplicator).toFixed(11))
+    var test = Math.round(n) / multiplicator
+    return +test.toFixed(2)
   }
 }

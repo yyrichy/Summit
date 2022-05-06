@@ -16,29 +16,22 @@ function AssignmentComponent(props) {
   const { marks, setMarks } = useContext(AppContext)
   const assignment = marks.courses
     .get(props.course)
-    .categories.get(props.category)
-    .assignments.get(props.name)
+    .assignments.find((a) => a.name === props.name)
 
   const [toolTipVisible, setToolTipVisible] = useState(false)
 
   const updatePoints = (input: string, type: string) => {
     const points = parseFloat(input)
     let newMarks = Object.assign({}, marks)
-    if (type === 'earned') {
-      newMarks.courses
-        .get(props.course)
-        .categories.get(props.category)
-        .assignments.get(props.name).points = points
-    } else if (type === 'total') {
-      newMarks.courses
-        .get(props.course)
-        .categories.get(props.category)
-        .assignments.get(props.name).total = points
-    }
-    newMarks.courses
+    const assignment = newMarks.courses
       .get(props.course)
-      .categories.get(props.category)
-      .assignments.get(props.name).modified = true
+      .assignments.find((a) => a.name === props.name)
+    if (type === 'earned') {
+      assignment.points = points
+    } else if (type === 'total') {
+      assignment.total = points
+    }
+    assignment.modified = true
     newMarks = GradeUtil.calculatePoints(newMarks)
     setMarks(newMarks)
   }

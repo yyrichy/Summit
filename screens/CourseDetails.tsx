@@ -23,14 +23,11 @@ const CourseDetails = ({ route }) => {
     useContext(AppContext)
   const course = marks.courses.get(courseName)
   const data = []
-  for (const [categoryName, category] of course.categories.entries()) {
-    for (const [assignmentName] of category.assignments.entries()) {
-      data.push({
-        name: assignmentName,
-        course: courseName,
-        category: categoryName
-      })
-    }
+  for (const assignment of course.assignments) {
+    data.push({
+      name: assignment.name,
+      course: courseName
+    })
   }
 
   const [isModalVisible, setModalVisible] = useState(false)
@@ -56,13 +53,9 @@ const CourseDetails = ({ route }) => {
   }
 
   const addAssignment = () => {
-    if (!course.categories.has(category)) {
-      course.categories.set(category, {
-        assignments: new Map<string, Assignment>()
-      })
-    }
-    course.categories.get(category).assignments.set(assignmentName, {
+    course.assignments.push({
       name: assignmentName,
+      category: category,
       status: 'Graded',
       points: points,
       total: total,
@@ -109,7 +102,7 @@ const CourseDetails = ({ route }) => {
           ></FontAwesome.Button>
         </View>
         <Text numberOfLines={1} style={styles.course_details}>
-          {course.points} | {GradeUtil.parseCourseName(courseName)}
+          {course.value} | {GradeUtil.parseCourseName(courseName)}
         </Text>
         <View
           style={{
@@ -148,7 +141,6 @@ const CourseDetails = ({ route }) => {
           <AssignmentComponent
             name={item.name}
             course={item.course}
-            category={item.category}
           ></AssignmentComponent>
         )}
         keyExtractor={(item) => item.name}

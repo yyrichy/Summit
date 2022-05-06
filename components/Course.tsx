@@ -5,15 +5,15 @@ import { Colors } from '../colors/Colors'
 function CourseComponent(props) {
   const mark = parseFloat(props.mark)
   let color = 'black'
-  if (mark > 89.5) {
+  if (mark >= 89.5) {
     color = Colors.accent
-  } else if (mark > 79.5) {
+  } else if (mark >= 79.5) {
     color = 'green'
-  } else if (mark > 69.5) {
+  } else if (mark >= 69.5) {
     color = 'orange'
-  } else if (mark > 59.5) {
+  } else if (mark >= 59.5) {
     color = 'red'
-  } else if (mark > 49.5) {
+  } else if (mark >= 49.5) {
     color = 'gray'
   }
 
