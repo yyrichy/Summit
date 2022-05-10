@@ -55,7 +55,6 @@ const Documents = () => {
             activeOpacity={0.5}
             size={24}
             onPress={async () => {
-              setDocuments(undefined)
               if (await fetchDocuments()) {
                 showMessage({
                   message: 'Documents refreshed',
