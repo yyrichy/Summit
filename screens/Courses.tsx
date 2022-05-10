@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import AppContext from '../contexts/AppContext'
-import { SafeAreaView, StyleSheet, View, Text } from 'react-native'
+import { SafeAreaView, StyleSheet, View, Text, Alert } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -39,12 +39,17 @@ const Courses = ({ navigation }) => {
   }, [value])
 
   const refreshMarks = async () => {
-    const newGradebook = await context.client.gradebook(value)
-    const newMarks = await GradeUtil.convertGradebook(newGradebook)
-    setGradebook(newGradebook)
-    setMarks(newMarks)
+    try {
+      const newGradebook = await context.client.gradebook(value)
+      const newMarks = await GradeUtil.convertGradebook(newGradebook)
+      setGradebook(newGradebook)
+      setMarks(newMarks)
+    } catch (err) {
+      Alert.alert('Error', err.message)
+      return
+    }
     showMessage({
-      message: 'Refreshed',
+      message: 'Gradebook refreshed',
       type: 'info',
       icon: 'success'
     })
@@ -61,40 +66,13 @@ const Courses = ({ navigation }) => {
         setItems={setPeriods}
         maxHeight={null}
         style={styles.dropdown}
-        textStyle={styles.dropdownText}
+        textStyle={styles.dropdown_text}
       ></DropDownPicker>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'flex-start'
-          }}
-        >
-          <Text
-            style={{
-              marginLeft: 11,
-              fontFamily: 'Montserrat_700Bold',
-              fontSize: 22
-            }}
-          >
-            {marks.gpa} GPA
-          </Text>
+      <View style={styles.row_container}>
+        <View style={styles.gpa_container}>
+          <Text style={styles.gpa}>{marks.gpa} GPA</Text>
         </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            alignItems: 'center'
-          }}
-        >
+        <View style={styles.refresh_button_container}>
           <FontAwesome.Button
             name="refresh"
             backgroundColor="transparent"
@@ -106,7 +84,7 @@ const Courses = ({ navigation }) => {
           ></FontAwesome.Button>
         </View>
       </View>
-      {marks != null && (
+      {marks != undefined && (
         <FlatList
           data={[...marks.courses.entries()]}
           renderItem={({ item }) => (
@@ -137,9 +115,30 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     backgroundColor: 'transparent'
   },
-  dropdownText: {
+  dropdown_text: {
     fontFamily: 'Inter_800ExtraBold',
     fontSize: 30
+  },
+  row_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  gpa_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  gpa: {
+    marginLeft: 11,
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 22
+  },
+  refresh_button_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
   }
 })
 
