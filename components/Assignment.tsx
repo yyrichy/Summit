@@ -10,6 +10,7 @@ import GradeUtil from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { FontAwesome } from '@expo/vector-icons'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function AssignmentComponent(props) {
   const { marks, setMarks } = useContext(AppContext)
@@ -29,14 +30,14 @@ function AssignmentComponent(props) {
 
   return (
     <View style={[styles.container, props.style]}>
-      <TouchableHighlight onPress={() => deleteAssignment()}>
+      <TouchableOpacity onPress={() => deleteAssignment()}>
         <FontAwesome
           name="trash-o"
           color={Colors.red}
           size={18}
           style={{ marginLeft: 10 }}
         />
-      </TouchableHighlight>
+      </TouchableOpacity>
       <View style={styles.assignment_info_container}>
         <Text
           numberOfLines={1}

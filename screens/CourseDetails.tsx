@@ -94,6 +94,7 @@ const CourseDetails = ({ route }) => {
             iconStyle={{
               color: Colors.secondary
             }}
+            underlayColor="none"
             size={24}
             onPress={() => navigation.goBack()}
           ></FontAwesome.Button>
@@ -114,6 +115,7 @@ const CourseDetails = ({ route }) => {
             iconStyle={{
               color: Colors.secondary
             }}
+            underlayColor="none"
             size={24}
             onPress={() => refreshMarks()}
           ></FontAwesome.Button>
@@ -122,18 +124,27 @@ const CourseDetails = ({ route }) => {
       <FlatList
         data={data}
         ListFooterComponent={
-          <FontAwesome.Button
-            name="plus-circle"
-            backgroundColor="transparent"
-            iconStyle={{
-              color: Colors.secondary
-            }}
+          <View
             style={{
-              flexDirection: 'row-reverse'
+              flexDirection: 'row',
+              justifyContent: 'flex-end'
             }}
-            size={24}
-            onPress={toggleModal}
-          ></FontAwesome.Button>
+          >
+            <FontAwesome.Button
+              name="plus-circle"
+              backgroundColor="transparent"
+              iconStyle={{
+                color: Colors.secondary
+              }}
+              style={{
+                flexDirection: 'row',
+                alignSelf: 'flex-end'
+              }}
+              size={24}
+              underlayColor="none"
+              onPress={toggleModal}
+            ></FontAwesome.Button>
+          </View>
         }
         renderItem={({ item }) => (
           <AssignmentComponent
