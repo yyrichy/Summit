@@ -83,11 +83,14 @@ const Documents = () => {
             <TouchableOpacity
               onPress={async () => {
                 const file = item.files[0] as DocumentFile
-                const filePath = `${FileSystem.documentDirectory}/${file.file.name}`
-                await FileSystem.writeAsStringAsync(filePath, file.base64, {
-                  encoding: 'base64'
-                })
-                await Sharing.shareAsync(filePath)
+                const document = item.document as Document
+                const filePath = `${FileSystem.documentDirectory}/${document.comment}`
+                try {
+                  await FileSystem.writeAsStringAsync(filePath, file.base64, {
+                    encoding: 'base64'
+                  })
+                  await Sharing.shareAsync(filePath)
+                } catch (e) {}
               }}
             >
               <DocumentComponent
