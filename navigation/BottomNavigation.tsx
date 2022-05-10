@@ -106,7 +106,10 @@ const App = () => {
             )
           },
           tabBarButton: (props) => (
-            <TouchableOpacity {...props} onPress={() => navigation.goBack()} />
+            <TouchableOpacity
+              {...props}
+              onPress={() => navigation.navigate('Login')}
+            />
           )
         })}
       />
