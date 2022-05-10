@@ -129,7 +129,8 @@ const CourseDetails = ({ route }) => {
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'flex-end'
+              justifyContent: 'flex-end',
+              marginBottom: 40
             }}
           >
             <FontAwesome.Button
