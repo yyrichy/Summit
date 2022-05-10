@@ -80,6 +80,7 @@ const Courses = ({ navigation }) => {
               color: Colors.secondary
             }}
             underlayColor="none"
+            activeOpacity={0.5}
             size={24}
             onPress={() => refreshMarks()}
           ></FontAwesome.Button>

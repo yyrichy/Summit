@@ -52,6 +52,7 @@ const Documents = () => {
               color: Colors.secondary
             }}
             underlayColor="none"
+            activeOpacity={0.5}
             size={24}
             onPress={async () => {
               setDocuments(undefined)

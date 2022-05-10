@@ -91,7 +91,7 @@ const Login = () => {
       />
       <View style={styles.checkbox_container}>
         <BouncyCheckbox
-          size={20}
+          size={24}
           fillColor={Colors.accent}
           unfillColor="transparent"
           disableText
@@ -104,7 +104,7 @@ const Login = () => {
             setToggleCheckBox(!isChecked)
           }}
         />
-        <Text style={{ marginLeft: 8 }}>Save Login Information</Text>
+        <Text style={styles.save_text}>Save Login Information</Text>
       </View>
       <CustomButton
         onPress={onLogin.bind(this)}
@@ -158,6 +158,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0,
     marginBottom: 10
+  },
+  save_text: {
+    marginLeft: 8,
+    fontFamily: 'Inter_400Regular'
   }
 })
 

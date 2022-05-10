@@ -1,11 +1,5 @@
 import React, { useContext } from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableHighlight
-} from 'react-native'
+import { StyleSheet, View, Text, TextInput } from 'react-native'
 import GradeUtil from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
@@ -34,7 +28,7 @@ function AssignmentComponent(props) {
         <FontAwesome
           name="trash-o"
           color={Colors.red}
-          size={18}
+          size={20}
           style={{ marginLeft: 10 }}
         />
       </TouchableOpacity>

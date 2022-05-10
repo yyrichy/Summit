@@ -95,6 +95,7 @@ const CourseDetails = ({ route }) => {
               color: Colors.secondary
             }}
             underlayColor="none"
+            activeOpacity={0.5}
             size={24}
             onPress={() => navigation.goBack()}
           ></FontAwesome.Button>
@@ -116,6 +117,7 @@ const CourseDetails = ({ route }) => {
               color: Colors.secondary
             }}
             underlayColor="none"
+            activeOpacity={0.5}
             size={24}
             onPress={() => refreshMarks()}
           ></FontAwesome.Button>
@@ -140,8 +142,9 @@ const CourseDetails = ({ route }) => {
                 flexDirection: 'row',
                 alignSelf: 'flex-end'
               }}
-              size={24}
+              size={36}
               underlayColor="none"
+              activeOpacity={0.5}
               onPress={toggleModal}
             ></FontAwesome.Button>
           </View>
