@@ -79,6 +79,7 @@ const Courses = ({ navigation }) => {
             iconStyle={{
               color: Colors.secondary
             }}
+            underlayColor="none"
             size={24}
             onPress={() => refreshMarks()}
           ></FontAwesome.Button>

@@ -51,6 +51,7 @@ const Documents = () => {
             iconStyle={{
               color: Colors.secondary
             }}
+            underlayColor="none"
             size={24}
             onPress={async () => {
               setDocuments(undefined)
