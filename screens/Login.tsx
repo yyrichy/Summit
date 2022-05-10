@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
 })
 
 async function save(key: string, value: string) {
+  if (value === null) return
   await SecureStore.setItemAsync(key, value)
 }
 
