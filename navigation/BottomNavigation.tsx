@@ -16,10 +16,6 @@ type navScreenProp = StackNavigationProp<RootStackParamList, 'Menu'>
 
 const EmptyComponent = () => null
 
-const color = (focused: boolean) => {
-  return focused ? Colors.middle_blue_green : Colors.secondary
-}
-
 const App = () => {
   const navigation = useNavigation<navScreenProp>()
 

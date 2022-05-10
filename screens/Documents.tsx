@@ -86,7 +86,10 @@ const Documents = () => {
               onPress={async () => {
                 const file = item.files[0] as DocumentFile
                 const document = item.document as Document
-                const filePath = `${FileSystem.documentDirectory}/${document.comment}`
+                const filePath =
+                  FileSystem.documentDirectory +
+                  document.comment.replaceAll(' ', '_') +
+                  file.file.name.substring(file.file.name.lastIndexOf('.'))
                 try {
                   await FileSystem.writeAsStringAsync(filePath, file.base64, {
                     encoding: 'base64'
