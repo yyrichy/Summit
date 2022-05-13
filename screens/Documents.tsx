@@ -87,7 +87,7 @@ const Documents = () => {
                 const document = item.document as Document
                 const filePath =
                   FileSystem.documentDirectory +
-                  document.comment.replaceAll(' ', '_') +
+                  document.comment.replace(/ /g, '_') +
                   file.file.name.substring(file.file.name.lastIndexOf('.'))
                 try {
                   await FileSystem.writeAsStringAsync(filePath, file.base64, {
