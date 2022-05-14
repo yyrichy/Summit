@@ -25,31 +25,26 @@ type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const {
-    username,
-    password,
-    setUsername,
-    setPassword,
-    setClient,
-    setMarks,
-    setGradebook
-  } = useContext(AppContext)
+  const { setUsername, setPassword, setClient, setMarks, setGradebook } =
+    useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
+  const [usernameLocal, setUsernameLocal] = useState(undefined)
+  const [passwordLocal, setPasswordLocal] = useState(undefined)
 
-  let usernameLocal = username
-  let passwordLocal = password
-
-  savedCredentials()
+  if (usernameLocal === undefined && passwordLocal === undefined) {
+    savedCredentials()
+  }
 
   async function savedCredentials() {
-    setUsername(await getValueFor('Username'))
-    setPassword(await getValueFor('Password'))
+    setUsernameLocal(await getValueFor('Username'))
+    setPasswordLocal(await getValueFor('Password'))
   }
 
   async function onLogin() {
     setIsLoading(true)
     try {
+      console.log('p ' + usernameLocal + passwordLocal)
       const client = await StudentVue.login(DISTRICT_URL, {
         username: usernameLocal,
         password: passwordLocal
@@ -77,14 +72,14 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <TextInput
-        defaultValue={username}
-        onChangeText={(u) => (usernameLocal = u)}
+        defaultValue={usernameLocal}
+        onChangeText={(u) => setUsernameLocal(u)}
         placeholder={'Username'}
         style={styles.input}
       />
       <TextInput
-        defaultValue={password}
-        onChangeText={(p) => (passwordLocal = p)}
+        defaultValue={passwordLocal}
+        onChangeText={(p) => setPasswordLocal(p)}
         placeholder={'Password'}
         secureTextEntry={true}
         style={styles.input}
@@ -99,8 +94,6 @@ const Login = () => {
           isChecked={isChecked}
           disableBuiltInState
           onPress={async () => {
-            await save('Username', usernameLocal)
-            await save('Password', passwordLocal)
             setToggleCheckBox(!isChecked)
           }}
         />
