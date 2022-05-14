@@ -25,29 +25,26 @@ type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const { setUsername, setPassword, setClient, setMarks, setGradebook } =
+  const { username, password, setUsername, setPassword, setClient, setMarks, setGradebook } =
     useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
-  const [usernameLocal, setUsernameLocal] = useState(undefined)
-  const [passwordLocal, setPasswordLocal] = useState(undefined)
 
-  if (usernameLocal === undefined && passwordLocal === undefined) {
+  if (username === undefined && password === undefined) {
     savedCredentials()
   }
 
   async function savedCredentials() {
-    setUsernameLocal(await getValueFor('Username'))
-    setPasswordLocal(await getValueFor('Password'))
+    setUsername(await getValueFor('Username'))
+    setPassword(await getValueFor('Password'))
   }
 
   async function onLogin() {
     setIsLoading(true)
     try {
-      console.log('p ' + usernameLocal + passwordLocal)
       const client = await StudentVue.login(DISTRICT_URL, {
-        username: usernameLocal,
-        password: passwordLocal
+        username: username,
+        password: password
       })
       const gradebook = await client.gradebook()
       const marks = await GradeUtil.convertGradebook(gradebook)
@@ -59,11 +56,11 @@ const Login = () => {
       setIsLoading(false)
       return
     }
-    setUsername(usernameLocal)
-    setPassword(passwordLocal)
+    setUsername(username)
+    setPassword(password)
     if (isChecked) {
-      save('Username', usernameLocal)
-      save('Password', passwordLocal)
+      save('Username', username)
+      save('Password', password)
     }
     setIsLoading(false)
     navigation.navigate('Menu')
@@ -72,14 +69,14 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <TextInput
-        defaultValue={usernameLocal}
-        onChangeText={(u) => setUsernameLocal(u)}
+        defaultValue={username}
+        onChangeText={(u) => setUsername(u)}
         placeholder={'Username'}
         style={styles.input}
       />
       <TextInput
-        defaultValue={passwordLocal}
-        onChangeText={(p) => setPasswordLocal(p)}
+        defaultValue={password}
+        onChangeText={(p) => setPassword(p)}
         placeholder={'Password'}
         secureTextEntry={true}
         style={styles.input}

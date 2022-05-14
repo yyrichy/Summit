@@ -48,8 +48,8 @@ const App = () => {
   const [client, setClient] = useState(undefined)
   const [marks, setMarks] = useState(undefined)
   const [gradebook, setGradebook] = useState(undefined)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState(undefined)
+  const [password, setPassword] = useState(undefined)
   const user = {
     username: username,
     password: password,
