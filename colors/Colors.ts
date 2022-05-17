@@ -9,5 +9,6 @@ export const Colors = {
   corn_silk_white: '#FEFAE0',
   white: '#FFFFFF',
   black: '#001219',
-  red: '#A30800'
+  red: '#A30800',
+  off_white: '#F7F7F7'
 }
