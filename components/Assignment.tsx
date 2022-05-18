@@ -140,7 +140,9 @@ const styles = StyleSheet.create({
   },
   dropdown_container: {
     padding: 10,
-    backgroundColor: Colors.off_white
+    backgroundColor: Colors.off_white,
+    borderTopColor: Colors.onyx_gray,
+    borderTopWidth: 1
   },
   assignment_info_container: {
     flexDirection: 'column',
