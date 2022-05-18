@@ -18,6 +18,9 @@ export default class GradeUtil {
         period:
           gradebook.courses.findIndex((c) => c.title === course.title) + 1,
         teacher: course.staff.name,
+        points: 0,
+        total: 0,
+        value: NaN,
         assignments: [],
         categories: new Map<string, Category>()
       })
@@ -27,6 +30,7 @@ export default class GradeUtil {
           name: category.type,
           points: 0,
           total: 0,
+          value: NaN,
           weight: parseFloat(category.weight.standard)
         })
       }
@@ -41,7 +45,11 @@ export default class GradeUtil {
           notes: assignment.notes,
           points: points[0],
           total: points[1],
-          modified: false
+          modified: false,
+          date: {
+            due: assignment.date.due,
+            start: assignment.date.start
+          }
         }
         c.assignments.push(a)
       }
@@ -159,9 +167,14 @@ export default class GradeUtil {
       name: name,
       category: category,
       status: 'Graded',
+      notes: '',
       points: points,
       total: total,
-      modified: true
+      modified: true,
+      date: {
+        due: new Date(),
+        start: new Date()
+      }
     })
     marks.courses.set(course.name, course)
     const m = Object.assign({}, marks)

@@ -1,13 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import GradeUtil from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
-import { FontAwesome } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function AssignmentComponent(props) {
   const { marks, setMarks } = useContext(AppContext)
+  const [isDropdown, setIsDropdown] = useState(false)
   const assignment = marks.courses
     .get(props.course)
     .assignments.find((a) => a.name === props.name)
@@ -24,66 +25,103 @@ function AssignmentComponent(props) {
 
   return (
     <View style={[styles.container, props.style]}>
-      <TouchableOpacity onPress={() => deleteAssignment()}>
-        <FontAwesome
-          name="trash-o"
-          color={Colors.red}
-          size={20}
-          style={{ marginLeft: 10 }}
-        />
-      </TouchableOpacity>
-      <View style={styles.assignment_info_container}>
-        <Text
-          numberOfLines={1}
-          style={[
-            styles.name,
-            {
-              color: assignment.modified
-                ? Colors.dark_middle_blue_green
-                : 'black'
+      <View style={[styles.horizontal_container, { height: 52 }]}>
+        <View style={styles.assignment_info_container}>
+          <Text
+            numberOfLines={1}
+            style={[
+              styles.name,
+              {
+                color: assignment.modified
+                  ? Colors.dark_middle_blue_green
+                  : 'black'
+              }
+            ]}
+          >
+            {props.name}
+          </Text>
+          <Text numberOfLines={1} style={styles.category}>
+            {assignment.category}
+          </Text>
+        </View>
+        <View style={styles.input_container}>
+          <TextInput
+            defaultValue={
+              isNaN(assignment.points) ? '' : assignment.points.toString()
             }
-          ]}
-        >
-          {props.name}
-        </Text>
-        <Text numberOfLines={1} style={styles.category}>
-          {assignment.category}
-        </Text>
+            placeholder={'_'}
+            style={[
+              styles.mark,
+              {
+                color: assignment.modified
+                  ? Colors.dark_middle_blue_green
+                  : 'black'
+              }
+            ]}
+            onChangeText={(input) => updatePoints(input, 'earned')}
+          />
+          <Text style={styles.dash}> / </Text>
+          <TextInput
+            defaultValue={
+              isNaN(assignment.total) ? '' : assignment.total.toString()
+            }
+            placeholder={'_'}
+            style={[
+              styles.mark,
+              {
+                color: assignment.modified
+                  ? Colors.dark_middle_blue_green
+                  : 'black'
+              }
+            ]}
+            onChangeText={(input) => updatePoints(input, 'total')}
+          />
+        </View>
+        <TouchableOpacity onPress={() => setIsDropdown(!isDropdown)}>
+          <MaterialIcons
+            name={isDropdown ? 'arrow-drop-up' : 'arrow-drop-down'}
+            color={Colors.middle_blue_green}
+            size={36}
+            style={{ marginRight: 5 }}
+          />
+        </TouchableOpacity>
       </View>
-      <View style={styles.inputContainer}>
-        <TextInput
-          defaultValue={
-            isNaN(assignment.points) ? '' : assignment.points.toString()
-          }
-          placeholder={'_'}
-          style={[
-            styles.mark,
-            {
-              color: assignment.modified
-                ? Colors.dark_middle_blue_green
-                : 'black'
-            }
-          ]}
-          onChangeText={(input) => updatePoints(input, 'earned')}
-        />
-        <Text style={styles.dash}> / </Text>
-        <TextInput
-          defaultValue={
-            isNaN(assignment.total) ? '' : assignment.total.toString()
-          }
-          placeholder={'_'}
-          style={[
-            styles.mark,
-            {
-              marginRight: 10,
-              color: assignment.modified
-                ? Colors.dark_middle_blue_green
-                : 'black'
-            }
-          ]}
-          onChangeText={(input) => updatePoints(input, 'total')}
-        />
-      </View>
+      {isDropdown && (
+        <View style={styles.dropdown_container}>
+          <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Name:</Text>
+            <Text style={styles.dropdown_text_value}>{assignment.name}</Text>
+          </View>
+          <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Status:</Text>
+            <Text style={styles.dropdown_text_value}>{assignment.status}</Text>
+          </View>
+          <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Due Date:</Text>
+            <Text style={styles.dropdown_text_value}>
+              {assignment.date.due.toLocaleDateString()}
+            </Text>
+          </View>
+          <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Start Date:</Text>
+            <Text style={styles.dropdown_text_value}>
+              {assignment.date.start.toLocaleDateString()}
+            </Text>
+          </View>
+          <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Notes:</Text>
+            <Text style={styles.dropdown_text_value}>
+              {assignment.notes.length === 0 ? 'None' : assignment.notes}
+            </Text>
+          </View>
+          <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Modified By You:</Text>
+            <Text style={styles.dropdown_text_value}>
+              {assignment.modified ? 'True' : 'False'}
+            </Text>
+          </View>
+        </View>
+      )}
     </View>
   )
 }
@@ -92,13 +130,17 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
     borderRadius: 10,
-    height: 52,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     marginLeft: 7,
     marginRight: 7,
-    marginTop: 7
+    marginTop: 7,
+    overflow: 'hidden'
+  },
+  horizontal_container: {
+    flexDirection: 'row'
+  },
+  dropdown_container: {
+    padding: 10,
+    backgroundColor: Colors.off_white
   },
   assignment_info_container: {
     flexDirection: 'column',
@@ -108,8 +150,8 @@ const styles = StyleSheet.create({
   },
   name: {
     color: 'black',
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 12,
+    fontFamily: 'Inter_700Bold',
+    fontSize: 12.5,
     marginHorizontal: 7,
     lineHeight: 12 * 0.75,
     paddingTop: 12 - 12 * 0.75,
@@ -125,7 +167,7 @@ const styles = StyleSheet.create({
     paddingTop: 11 - 11 * 0.75,
     textAlign: 'left'
   },
-  inputContainer: {
+  input_container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center'
@@ -141,6 +183,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'center',
     textAlignVertical: 'center'
+  },
+  dropdown_text_name: {
+    marginHorizontal: 7,
+    fontFamily: 'Montserrat_600SemiBold'
+  },
+  dropdown_text_value: {
+    fontFamily: 'Inter_400Regular',
+    flex: 1
   }
 })
 
