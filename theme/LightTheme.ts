@@ -4,10 +4,10 @@ export const LightTheme = {
   dark: false,
   colors: {
     primary: Colors.primary,
-    background: Colors.corn_silk_white,
+    background: Colors.white,
     card: Colors.primary,
     text: Colors.black,
-    border: 'transparent',
+    border: Colors.secondary,
     notification: Colors.accent
   }
 }

@@ -22,7 +22,10 @@ const App = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarShowLabel: false
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          borderTopWidth: 1
+        }
       }}
     >
       <Tab.Screen

@@ -5,7 +5,8 @@ import {
   View,
   Text,
   StyleSheet,
-  ActivityIndicator
+  ActivityIndicator,
+  SafeAreaView
 } from 'react-native'
 import StudentVue from 'studentvue'
 import * as SecureStore from 'expo-secure-store'
@@ -14,10 +15,10 @@ import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
 import AppContext from '../contexts/AppContext'
-import { LightTheme } from '../theme/LightTheme'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import GradeUtil from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const DISTRICT_URL = 'https://md-mcps-psv.edupoint.com/'
 
@@ -25,8 +26,15 @@ type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const { username, password, setUsername, setPassword, setClient, setMarks, setGradebook } =
-    useContext(AppContext)
+  const {
+    username,
+    password,
+    setUsername,
+    setPassword,
+    setClient,
+    setMarks,
+    setGradebook
+  } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
 
@@ -67,49 +75,61 @@ const Login = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        defaultValue={username}
-        onChangeText={(u) => setUsername(u)}
-        placeholder={'Username'}
-        style={styles.input}
-      />
-      <TextInput
-        defaultValue={password}
-        onChangeText={(p) => setPassword(p)}
-        placeholder={'Password'}
-        secureTextEntry={true}
-        style={styles.input}
-      />
-      <View style={styles.checkbox_container}>
-        <BouncyCheckbox
-          size={24}
-          fillColor={Colors.accent}
-          unfillColor="transparent"
-          disableText
-          iconStyle={{ borderColor: Colors.secondary }}
-          isChecked={isChecked}
-          disableBuiltInState
-          onPress={async () => {
-            setToggleCheckBox(!isChecked)
-          }}
-        />
-        <Text style={styles.save_text}>Save Login Information</Text>
-      </View>
-      <CustomButton
-        onPress={onLogin.bind(this)}
-        text={'Login'}
-        backgroundColor={LightTheme.colors.card}
-        textColor="black"
-        fontFamily="Inter_800ExtraBold"
-        containerStyle={styles.button_container}
-      ></CustomButton>
-      <ActivityIndicator
-        color={Colors.secondary}
-        animating={isLoading}
-        size="large"
-      />
-    </View>
+    <>
+      <LinearGradient
+        colors={['#FFF785', Colors.primary]}
+        style={{
+          flex: 1
+        }}
+      >
+        <SafeAreaView>
+          <Text style={styles.welcome}>Welcome To{'\n'}ScholarHelper</Text>
+        </SafeAreaView>
+        <View style={styles.container}>
+          <TextInput
+            defaultValue={username}
+            onChangeText={(u) => setUsername(u)}
+            placeholder={'Username'}
+            style={styles.input}
+          />
+          <TextInput
+            defaultValue={password}
+            onChangeText={(p) => setPassword(p)}
+            placeholder={'Password'}
+            secureTextEntry={true}
+            style={styles.input}
+          />
+          <View style={styles.checkbox_container}>
+            <BouncyCheckbox
+              size={24}
+              fillColor={Colors.accent}
+              unfillColor="transparent"
+              disableText
+              iconStyle={{ borderColor: Colors.black }}
+              isChecked={isChecked}
+              disableBuiltInState
+              onPress={async () => {
+                setToggleCheckBox(!isChecked)
+              }}
+            />
+            <Text style={styles.save_text}>Save Login Information</Text>
+          </View>
+          <CustomButton
+            onPress={onLogin.bind(this)}
+            text={'Login'}
+            backgroundColor={Colors.navy}
+            textColor={Colors.white}
+            fontFamily="Inter_800ExtraBold"
+            containerStyle={styles.button_container}
+          ></CustomButton>
+          <ActivityIndicator
+            color={Colors.secondary}
+            animating={isLoading}
+            size="large"
+          />
+        </View>
+      </LinearGradient>
+    </>
   )
 }
 
@@ -119,7 +139,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    alignSelf: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    marginTop: '50%'
+  },
+  welcome: {
+    fontFamily: 'Montserrat_900Black',
+    fontSize: 30,
+    textAlign: 'center'
   },
   checkbox_container: {
     flexDirection: 'row',
@@ -132,7 +160,8 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     borderWidth: 1,
-    borderColor: Colors.secondary,
+    borderColor: Colors.black,
+    borderRadius: 5,
     marginBottom: 10
   },
   loading: {

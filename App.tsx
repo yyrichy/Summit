@@ -105,11 +105,7 @@ const App = () => {
                 name="Login"
                 component={Login}
                 options={{
-                  headerTitleAlign: 'center',
-                  headerTitle: 'Welcome to ScholarHelper',
-                  headerTitleStyle: {
-                    fontFamily: 'Inter_900Black'
-                  }
+                  headerShown: false
                 }}
               />
               <Stack.Screen

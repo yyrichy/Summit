@@ -34,7 +34,7 @@ function AssignmentComponent(props) {
               {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
-                  : 'black'
+                  : Colors.navy
               }
             ]}
           >
@@ -49,13 +49,13 @@ function AssignmentComponent(props) {
             defaultValue={
               isNaN(assignment.points) ? '' : assignment.points.toString()
             }
-            placeholder={'_'}
+            placeholder={'__'}
             style={[
               styles.mark,
               {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
-                  : 'black'
+                  : Colors.black
               }
             ]}
             onChangeText={(input) => updatePoints(input, 'earned')}
@@ -65,13 +65,13 @@ function AssignmentComponent(props) {
             defaultValue={
               isNaN(assignment.total) ? '' : assignment.total.toString()
             }
-            placeholder={'_'}
+            placeholder={'__'}
             style={[
               styles.mark,
               {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
-                  : 'black'
+                  : Colors.black
               }
             ]}
             onChangeText={(input) => updatePoints(input, 'total')}
@@ -128,7 +128,7 @@ function AssignmentComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.primary,
     borderRadius: 10,
     marginLeft: 7,
     marginRight: 7,
@@ -153,11 +153,11 @@ const styles = StyleSheet.create({
   assignment_info_container: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginHorizontal: 7,
+    marginLeft: 7,
     flex: 1
   },
   name: {
-    color: 'black',
+    color: Colors.black,
     fontFamily: 'Inter_700Bold',
     fontSize: 12.5,
     marginHorizontal: 7,
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   category: {
-    color: 'black',
+    color: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 11,
     marginHorizontal: 7,
@@ -185,7 +185,8 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     fontSize: 23,
     fontFamily: 'Inter_600SemiBold',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    minWidth: 30
   },
   dash: {
     fontSize: 20,

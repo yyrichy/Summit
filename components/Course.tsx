@@ -4,7 +4,7 @@ import { Colors } from '../colors/Colors'
 
 function CourseComponent(props) {
   const mark = parseFloat(props.mark)
-  let color = 'black'
+  let color = Colors.black
   if (mark >= 89.5) {
     color = Colors.accent
   } else if (mark >= 79.5) {
@@ -44,7 +44,7 @@ function CourseComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.primary,
     borderRadius: 15,
     height: 55,
     flexDirection: 'row',
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   name: {
-    color: 'black',
+    color: Colors.navy,
     fontFamily: 'Montserrat_700Bold',
     fontSize: 18,
     marginRight: 14,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   teacher: {
-    color: 'black',
+    color: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
     marginRight: 14,

@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderWidth: 1,
     height: 30,
-    borderColor: 'black'
+    borderColor: Colors.black
   },
   modal_title: {
     alignSelf: 'center',

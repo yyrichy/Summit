@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   name: {
-    color: 'black',
+    color: Colors.black,
     fontFamily: 'Montserrat_600SemiBold',
     fontSize: 16,
     lineHeight: 16 * 0.75,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   type: {
-    color: 'black',
+    color: Colors.black,
     fontFamily: 'Inter_300Light',
     fontSize: 12,
     flex: 1,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   date: {
-    color: 'black',
+    color: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
     lineHeight: 12 * 0.75,

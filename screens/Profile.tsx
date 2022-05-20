@@ -47,29 +47,37 @@ const Profile = () => {
               <Text style={styles.description_part_text}>
                 {studentInfo.grade + suffix(parseInt(studentInfo.grade))}
               </Text>
-              <FontAwesome name="graduation-cap" size={18} color="black" />
+              <FontAwesome
+                name="graduation-cap"
+                size={18}
+                color={Colors.black}
+              />
             </View>
             <View style={styles.description_part_container}>
               <Text style={styles.description_part_text}>
                 {studentInfo.birthDate.toLocaleDateString()}
               </Text>
-              <FontAwesome name="birthday-cake" size={18} color="black" />
+              <FontAwesome
+                name="birthday-cake"
+                size={18}
+                color={Colors.black}
+              />
             </View>
           </View>
           <View style={styles.property_container}>
-            <Feather name="phone" size={26} color="black" />
+            <Feather name="phone" size={26} color={Colors.black} />
             <Text style={styles.property_text}>{studentInfo.phone}</Text>
           </View>
           <View style={styles.property_container}>
-            <Feather name="mail" size={26} color="black" />
+            <Feather name="mail" size={26} color={Colors.black} />
             <Text style={styles.property_text}>{studentInfo.email}</Text>
           </View>
           <View style={styles.property_container}>
-            <Feather name="map-pin" size={26} color="black" />
+            <Feather name="map-pin" size={26} color={Colors.black} />
             <Text style={styles.property_text}>{studentInfo.address}</Text>
           </View>
           <View style={styles.property_container}>
-            <FontAwesome name="building-o" size={26} color="black" />
+            <FontAwesome name="building-o" size={26} color={Colors.black} />
             <Text style={styles.property_text}>
               {studentInfo.currentSchool}
             </Text>
