@@ -93,6 +93,19 @@ function AssignmentComponent(props) {
             <Text style={styles.dropdown_text_value}>{assignment.name}</Text>
           </View>
           <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Grade:</Text>
+            <Text style={styles.dropdown_text_value}>
+              {GradeUtil.roundToTwo(
+                (assignment.points / assignment.total) * 100
+              )}{' '}
+              (
+              {GradeUtil.calculateLetterGrade(
+                (assignment.points / assignment.total) * 100
+              )}
+              )
+            </Text>
+          </View>
+          <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Status:</Text>
             <Text style={styles.dropdown_text_value}>{assignment.status}</Text>
           </View>
@@ -159,10 +172,10 @@ const styles = StyleSheet.create({
   name: {
     color: Colors.black,
     fontFamily: 'Inter_700Bold',
-    fontSize: 12.5,
+    fontSize: 14,
     marginHorizontal: 7,
-    lineHeight: 12 * 0.75,
-    paddingTop: 12 - 12 * 0.75,
+    lineHeight: 14 * 0.75,
+    paddingTop: 14 - 14 * 0.75,
     textAlign: 'left'
   },
   category: {

@@ -1,21 +1,10 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { Colors } from '../colors/Colors'
+import GradeUtil from '../gradebook/GradeUtil'
 
 function CourseComponent(props) {
   const mark = parseFloat(props.mark)
-  let color = Colors.black
-  if (mark >= 89.5) {
-    color = Colors.accent
-  } else if (mark >= 79.5) {
-    color = 'green'
-  } else if (mark >= 69.5) {
-    color = 'orange'
-  } else if (mark >= 59.5) {
-    color = 'red'
-  } else if (mark >= 49.5) {
-    color = 'gray'
-  }
 
   return (
     <View style={[styles.container, props.style]}>
@@ -28,15 +17,18 @@ function CourseComponent(props) {
           {props.teacher}
         </Text>
       </View>
+      <Text style={[styles.mark]}>
+        {isNaN(parseFloat(props.mark)) ? 'N/A' : props.mark}
+      </Text>
       <Text
         style={[
-          styles.mark,
+          styles.letter_grade,
           {
-            color: color
+            color: GradeUtil.calculateMarkColor(mark)
           }
         ]}
       >
-        {isNaN(parseFloat(props.mark)) ? 'N/A' : props.mark}
+        {GradeUtil.calculateLetterGrade(mark)}
       </Text>
     </View>
   )
@@ -93,6 +85,12 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   mark: {
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 28,
+    alignSelf: 'center'
+  },
+  letter_grade: {
+    marginLeft: 7,
     fontFamily: 'Montserrat_800ExtraBold',
     fontSize: 32,
     alignSelf: 'center'

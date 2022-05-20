@@ -1,3 +1,4 @@
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 import { Gradebook } from 'studentvue'
 import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
 
@@ -179,5 +180,38 @@ export default class GradeUtil {
     marks.courses.set(course.name, course)
     const m = Object.assign({}, marks)
     return GradeUtil.calculatePoints(m)
+  }
+
+  static calculateMarkColor(mark: number) {
+    switch (this.calculateLetterGrade(mark)) {
+      case 'A':
+        return '#10C212'
+      case 'B':
+        return '#1E2EE6'
+      case 'C':
+        return '#F5A327'
+      case 'D':
+        return '#C72222'
+      case 'E':
+        return '#330505'
+      case 'F':
+        return Colors.black
+    }
+  }
+
+  static calculateLetterGrade(mark: number) {
+    if (mark >= 89.5) {
+      return 'A'
+    } else if (mark >= 79.5) {
+      return 'B'
+    } else if (mark >= 69.5) {
+      return 'C'
+    } else if (mark >= 59.5) {
+      return 'D'
+    } else if (mark >= 49.5) {
+      return 'E'
+    } else {
+      return 'F'
+    }
   }
 }
