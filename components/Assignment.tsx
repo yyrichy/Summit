@@ -133,7 +133,13 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     marginRight: 7,
     marginTop: 7,
-    overflow: 'hidden'
+    elevation: 3,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2
   },
   horizontal_container: {
     flexDirection: 'row'

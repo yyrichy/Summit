@@ -52,7 +52,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 7,
     marginTop: 7,
-    padding: 7
+    padding: 7,
+    elevation: 3,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',
