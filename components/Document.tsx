@@ -24,15 +24,22 @@ function DocumentComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.off_white,
     borderRadius: 10,
-    height: 45,
+    height: 50,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 7,
     marginTop: 7,
-    padding: 7
+    padding: 7,
+    elevation: 3,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2
   },
   doc_info_container: {
     flexDirection: 'column',
