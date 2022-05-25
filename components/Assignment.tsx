@@ -55,7 +55,12 @@ function AssignmentComponent(props) {
               {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
-                  : Colors.black
+                  : Colors.black,
+                width: Math.max(
+                  assignment.points?.toString().replace(/[^0-9]/g, '').length *
+                    20,
+                  40
+                )
               }
             ]}
             onChangeText={(input) => updatePoints(input, 'earned')}
@@ -71,7 +76,12 @@ function AssignmentComponent(props) {
               {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
-                  : Colors.black
+                  : Colors.black,
+                width: Math.max(
+                  assignment.total?.toString().replace(/[^0-9]/g, '').length *
+                    20,
+                  20
+                )
               }
             ]}
             onChangeText={(input) => updatePoints(input, 'total')}
@@ -198,13 +208,14 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     fontSize: 23,
     fontFamily: 'Inter_600SemiBold',
-    alignSelf: 'center',
-    minWidth: 30
+    alignSelf: 'center'
   },
   dash: {
     fontSize: 20,
     alignSelf: 'center',
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
+    marginRight: 8,
+    marginLeft: 0
   },
   dropdown_text_name: {
     marginHorizontal: 7,
