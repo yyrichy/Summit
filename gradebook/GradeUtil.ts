@@ -54,7 +54,6 @@ export default class GradeUtil {
         }
         c.assignments.push(a)
       }
-      c.assignments.reverse()
     }
     marks = this.calculatePoints(marks)
     return new Promise((resolve) => {
@@ -164,7 +163,7 @@ export default class GradeUtil {
       }
       name = name + indentifier
     }
-    course.assignments.push({
+    course.assignments.unshift({
       name: name,
       category: category,
       status: 'Graded',
