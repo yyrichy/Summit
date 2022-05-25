@@ -41,7 +41,7 @@ function AssignmentComponent(props) {
             {props.name}
           </Text>
           <Text numberOfLines={1} style={styles.category}>
-            {assignment.category}
+            {assignment.category} - {assignment.date.due.toLocaleDateString()}
           </Text>
         </View>
         <View style={styles.input_container}>
