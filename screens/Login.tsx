@@ -6,7 +6,8 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  SafeAreaView
+  SafeAreaView,
+  Platform
 } from 'react-native'
 import StudentVue from 'studentvue'
 import * as SecureStore from 'expo-secure-store'
@@ -38,7 +39,11 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
 
-  if (username === undefined && password === undefined) {
+  if (
+    Platform.OS !== 'web' &&
+    username === undefined &&
+    password === undefined
+  ) {
     savedCredentials()
   }
 
@@ -66,7 +71,7 @@ const Login = () => {
     }
     setUsername(username)
     setPassword(password)
-    if (isChecked) {
+    if (Platform.OS !== 'web' && isChecked) {
       save('Username', username)
       save('Password', password)
     }
@@ -99,21 +104,23 @@ const Login = () => {
             secureTextEntry={true}
             style={styles.input}
           />
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox
-              size={24}
-              fillColor={Colors.accent}
-              unfillColor="transparent"
-              disableText
-              iconStyle={{ borderColor: Colors.black }}
-              isChecked={isChecked}
-              disableBuiltInState
-              onPress={async () => {
-                setToggleCheckBox(!isChecked)
-              }}
-            />
-            <Text style={styles.save_text}>Save Login Information</Text>
-          </View>
+          {Platform.OS !== 'web' && (
+            <View style={styles.checkbox_container}>
+              <BouncyCheckbox
+                size={24}
+                fillColor={Colors.accent}
+                unfillColor="transparent"
+                disableText
+                iconStyle={{ borderColor: Colors.black }}
+                isChecked={isChecked}
+                disableBuiltInState
+                onPress={async () => {
+                  setToggleCheckBox(!isChecked)
+                }}
+              />
+              <Text style={styles.save_text}>Save Login Information</Text>
+            </View>
+          )}
           <CustomButton
             onPress={onLogin.bind(this)}
             text={'Login'}
@@ -140,9 +147,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     alignSelf: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    marginTop: '50%'
+    justifyContent: 'center'
   },
   welcome: {
     fontFamily: 'Montserrat_900Black',
