@@ -1,5 +1,5 @@
-import { Colors } from 'react-native/Libraries/NewAppScreen'
 import { Gradebook } from 'studentvue'
+import { Colors } from '../colors/Colors'
 import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
 
 export default class GradeUtil {
