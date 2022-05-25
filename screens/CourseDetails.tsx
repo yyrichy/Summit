@@ -80,7 +80,7 @@ const CourseDetails = ({ route }) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.course_details_container}>
         <View
           style={{
@@ -111,6 +111,17 @@ const CourseDetails = ({ route }) => {
           }}
         >
           <FontAwesome.Button
+            name="plus-circle"
+            backgroundColor="transparent"
+            iconStyle={{
+              color: Colors.secondary
+            }}
+            size={24}
+            underlayColor="none"
+            activeOpacity={0.5}
+            onPress={() => toggleModal()}
+          ></FontAwesome.Button>
+          <FontAwesome.Button
             name="refresh"
             backgroundColor="transparent"
             iconStyle={{
@@ -125,31 +136,6 @@ const CourseDetails = ({ route }) => {
       </View>
       <FlatList
         data={data}
-        ListFooterComponent={
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              marginBottom: 40
-            }}
-          >
-            <FontAwesome.Button
-              name="plus-circle"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.secondary
-              }}
-              style={{
-                flexDirection: 'row',
-                alignSelf: 'flex-end'
-              }}
-              size={36}
-              underlayColor="none"
-              activeOpacity={0.5}
-              onPress={toggleModal}
-            ></FontAwesome.Button>
-          </View>
-        }
         renderItem={({ item }) => (
           <AssignmentComponent
             name={item.name}
