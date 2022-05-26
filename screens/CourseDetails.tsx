@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import AssignmentComponent from '../components/Assignment'
@@ -46,6 +46,14 @@ const CourseDetails = ({ route }) => {
   const [assignmentName, setAssignmentName] = useState('')
   const [points, setPoints] = useState(NaN)
   const [total, setTotal] = useState(NaN)
+
+  useEffect(() => {
+    if (isModalVisible) {
+      setAssignmentName('')
+      setPoints(NaN)
+      setTotal(NaN)
+    }
+  }, [isModalVisible])
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible)
