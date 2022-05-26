@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import GradeUtil from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'

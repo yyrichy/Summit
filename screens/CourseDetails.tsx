@@ -43,9 +43,9 @@ const CourseDetails = ({ route }) => {
         return { label: c.type, value: c.type }
       })
   )
-  let assignmentName: string = ''
-  let points: number = NaN
-  let total: number = NaN
+  const [assignmentName, setAssignmentName] = useState('')
+  const [points, setPoints] = useState(NaN)
+  const [total, setTotal] = useState(NaN)
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible)
@@ -153,20 +153,25 @@ const CourseDetails = ({ route }) => {
           <View style={styles.modal_view}>
             <Text style={styles.modal_title}>New Assignment</Text>
             <TextInput
+              value={assignmentName}
               placeholder="Name"
               onChangeText={(t) => {
-                assignmentName = t
+                setAssignmentName(t)
               }}
               style={styles.input}
             ></TextInput>
             <TextInput
+              defaultValue={isNaN(points) ? '' : points.toString()}
+              keyboardType="numeric"
               placeholder="Points Earned"
-              onChangeText={(t) => (points = parseFloat(t))}
+              onChangeText={(t) => setPoints(parseFloat(t))}
               style={styles.input}
             ></TextInput>
             <TextInput
+              defaultValue={isNaN(total) ? '' : total.toString()}
+              keyboardType="numeric"
               placeholder="Total Points"
-              onChangeText={(t) => (total = parseFloat(t))}
+              onChangeText={(t) => setTotal(parseFloat(t))}
               style={styles.input}
             ></TextInput>
             <View
