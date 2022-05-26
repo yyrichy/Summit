@@ -10,7 +10,6 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 function AssignmentComponent(props) {
   const { marks, setMarks } = useContext(AppContext)
   const [isDropdown, setIsDropdown] = useState(false)
-  console.log('set assi')
   const assignment = marks.courses
     .get(props.course)
     .assignments.find((a) => a.name === props.name)
@@ -26,10 +25,6 @@ function AssignmentComponent(props) {
       )
     )
   }
-
-  useEffect(() => {
-    console.log('effect')
-  })
 
   const deleteAssignment = () => {
     setMarks(GradeUtil.deleteAssignment(marks, props.course, assignment.name))
@@ -69,6 +64,7 @@ function AssignmentComponent(props) {
             }
             placeholder={'__'}
             keyboardType={'number-pad'}
+            autoCompleteType={'off'}
             style={[
               styles.mark,
               {
