@@ -1,35 +1,44 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, Text, TextInput } from 'react-native'
 import GradeUtil from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 function AssignmentComponent(props) {
   const { marks, setMarks } = useContext(AppContext)
   const [isDropdown, setIsDropdown] = useState(false)
+  console.log('set assi')
   const assignment = marks.courses
     .get(props.course)
     .assignments.find((a) => a.name === props.name)
 
   const updatePoints = (input: string, type: string) => {
-    const points = parseFloat(input)
-    // If text input isn't a number and user isn't trying to clear input
-    if (isNaN(points) && input.length > 0) return
     setMarks(
-      GradeUtil.updatePoints(marks, props.course, assignment.name, points, type)
+      GradeUtil.updatePoints(
+        marks,
+        props.course,
+        assignment.name,
+        parseFloat(input),
+        type
+      )
     )
   }
+
+  useEffect(() => {
+    console.log('effect')
+  })
 
   const deleteAssignment = () => {
     setMarks(GradeUtil.deleteAssignment(marks, props.course, assignment.name))
   }
 
   const getWidth = (n: number) => {
-    const min = 32
+    const min = 34
     if (isNaN(n)) return min
-    return Math.max(n.toString().replace(/[^0-9]/g, '').length * 15, min)
+    return Math.max(n.toString().length * 15, min)
   }
 
   return (
@@ -55,8 +64,11 @@ function AssignmentComponent(props) {
         </View>
         <View style={styles.input_container}>
           <TextInput
-            value={isNaN(assignment.points) ? '' : assignment.points.toString()}
+            defaultValue={
+              isNaN(assignment.points) ? '' : assignment.points.toString()
+            }
             placeholder={'__'}
+            keyboardType={'number-pad'}
             style={[
               styles.mark,
               {
@@ -70,8 +82,11 @@ function AssignmentComponent(props) {
           />
           <Text style={styles.dash}> / </Text>
           <TextInput
-            value={isNaN(assignment.total) ? '' : assignment.total.toString()}
+            defaultValue={
+              isNaN(assignment.total) ? '' : assignment.total.toString()
+            }
             placeholder={'__'}
+            keyboardType={'numeric'}
             style={[
               styles.mark,
               {
@@ -140,6 +155,17 @@ function AssignmentComponent(props) {
               {assignment.modified ? 'True' : 'False'}
             </Text>
           </View>
+          <FontAwesome.Button
+            name="trash-o"
+            backgroundColor="transparent"
+            iconStyle={{
+              color: Colors.red
+            }}
+            underlayColor="none"
+            activeOpacity={0.5}
+            size={24}
+            onPress={() => deleteAssignment()}
+          ></FontAwesome.Button>
         </View>
       )}
     </View>
@@ -166,7 +192,7 @@ const styles = StyleSheet.create({
   },
   dropdown_container: {
     padding: 10,
-    backgroundColor: Colors.off_white,
+    backgroundColor: Colors.light_gray,
     borderTopColor: Colors.onyx_gray,
     borderTopWidth: 1
   },
@@ -210,7 +236,8 @@ const styles = StyleSheet.create({
   dash: {
     fontSize: 20,
     alignSelf: 'center',
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
+    marginRight: 3
   },
   dropdown_text_name: {
     marginHorizontal: 7,

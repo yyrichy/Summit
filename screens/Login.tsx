@@ -87,10 +87,10 @@ const Login = () => {
           flex: 1
         }}
       >
-        <SafeAreaView>
+        <SafeAreaView style={{ alignItems: 'center' }}>
           <Text style={styles.welcome}>Welcome To{'\n'}ScholarHelper</Text>
         </SafeAreaView>
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <TextInput
             defaultValue={username}
             onChangeText={(u) => setUsername(u)}
@@ -134,7 +134,7 @@ const Login = () => {
             animating={isLoading}
             size="large"
           />
-        </View>
+        </SafeAreaView>
       </LinearGradient>
     </>
   )
@@ -152,7 +152,8 @@ const styles = StyleSheet.create({
   welcome: {
     fontFamily: 'Montserrat_900Black',
     fontSize: 30,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 10
   },
   checkbox_container: {
     flexDirection: 'row',
