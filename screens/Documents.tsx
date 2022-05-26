@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
+  Platform,
   StyleSheet,
   Text,
   View
@@ -27,7 +28,7 @@ const Documents = () => {
     try {
       const documents = await (client as Client).documents()
       for (const document of documents) {
-        docs.push({ document: document, files: await document.get() })
+        docs.push(document)
       }
     } catch (err) {
       Alert.alert('Error', err.message)
@@ -37,6 +38,38 @@ const Documents = () => {
     return true
   }
   if (documents === undefined) fetchDocuments()
+
+  const base64toBlob = (base64: string, sliceSize = 512) => {
+    const byteCharacters = window.atob(base64)
+    const byteArrays = []
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize)
+      const byteNumbers = new Array(slice.length)
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i)
+      }
+      byteArrays.push(new Uint8Array(byteNumbers))
+    }
+    return new Blob(byteArrays)
+  }
+
+  const downloadDocument = async (document: Document) => {
+    const file = (await document.get())[0]
+    const fileName =
+      document.comment.replace(/ /g, '_') +
+      file.file.name.substring(file.file.name.lastIndexOf('.'))
+    if (Platform.OS === 'android' || Platform.OS === 'ios') {
+      const filePath = FileSystem.documentDirectory + fileName
+      try {
+        await FileSystem.writeAsStringAsync(filePath, file.base64, {
+          encoding: 'base64'
+        })
+        await Sharing.shareAsync(filePath)
+      } catch (e) {}
+    } else {
+      require('file-saver').saveAs(base64toBlob(file.base64), fileName)
+    }
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -82,31 +115,18 @@ const Documents = () => {
           data={documents}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={async () => {
-                const file = item.files[0] as DocumentFile
-                const document = item.document as Document
-                const filePath =
-                  FileSystem.documentDirectory +
-                  document.comment.replace(/ /g, '_') +
-                  file.file.name.substring(file.file.name.lastIndexOf('.'))
-                try {
-                  await FileSystem.writeAsStringAsync(filePath, file.base64, {
-                    encoding: 'base64'
-                  })
-                  await Sharing.shareAsync(filePath)
-                } catch (e) {}
+              onPress={() => {
+                downloadDocument(item)
               }}
             >
               <DocumentComponent
-                name={(item.document as Document).comment}
-                type={(item.document as Document).file.type}
-                date={(
-                  item.document as Document
-                ).file.date.toLocaleDateString()}
+                name={(item as Document).comment}
+                type={(item as Document).file.type}
+                date={(item as Document).file.date.toLocaleDateString()}
               ></DocumentComponent>
             </TouchableOpacity>
           )}
-          keyExtractor={(item) => (item.document as Document).documentGu}
+          keyExtractor={(item) => (item as Document).documentGu}
         ></FlatList>
       )}
     </SafeAreaView>

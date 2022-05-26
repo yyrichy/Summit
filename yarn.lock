@@ -1845,6 +1845,11 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
+"@types/file-saver@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.5.tgz#9ee342a5d1314bb0928375424a2f162f97c310c7"
+  integrity sha512-zv9kNf3keYegP5oThGLaPk8E081DFDuwfqjtiTzm6PoxChdJ1raSuADf2YGCVIyrSynLrgc8JWv296s7Q7pQSQ==
+
 "@types/glob@^7.1.1":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@types/glob/-/glob-7.2.0.tgz#bc1b5bf3aa92f25bd5dd39f35c57361bdce5b2eb"
@@ -4646,6 +4651,11 @@ file-loader@~6.0.0:
   dependencies:
     loader-utils "^2.0.0"
     schema-utils "^2.6.5"
+
+file-saver@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+  integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
