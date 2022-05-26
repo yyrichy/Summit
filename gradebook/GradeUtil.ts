@@ -130,10 +130,9 @@ export default class GradeUtil {
     marks: Marks,
     course: string,
     assignmentName: string,
-    input: string,
+    points: number,
     type: string
   ) {
-    const points = parseFloat(input)
     const newMarks = Object.assign({}, marks)
     const assignment = newMarks.courses
       .get(course)

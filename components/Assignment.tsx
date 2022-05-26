@@ -14,13 +14,22 @@ function AssignmentComponent(props) {
     .assignments.find((a) => a.name === props.name)
 
   const updatePoints = (input: string, type: string) => {
+    const points = parseFloat(input)
+    // If text input isn't a number and user isn't trying to clear input
+    if (isNaN(points) && input.length > 0) return
     setMarks(
-      GradeUtil.updatePoints(marks, props.course, assignment.name, input, type)
+      GradeUtil.updatePoints(marks, props.course, assignment.name, points, type)
     )
   }
 
   const deleteAssignment = () => {
     setMarks(GradeUtil.deleteAssignment(marks, props.course, assignment.name))
+  }
+
+  const getWidth = (n: number) => {
+    const min = 32
+    if (isNaN(n)) return min
+    return Math.max(n.toString().replace(/[^0-9]/g, '').length * 15, min)
   }
 
   return (
@@ -46,9 +55,7 @@ function AssignmentComponent(props) {
         </View>
         <View style={styles.input_container}>
           <TextInput
-            defaultValue={
-              isNaN(assignment.points) ? '' : assignment.points.toString()
-            }
+            value={isNaN(assignment.points) ? '' : assignment.points.toString()}
             placeholder={'__'}
             style={[
               styles.mark,
@@ -56,20 +63,14 @@ function AssignmentComponent(props) {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
                   : Colors.black,
-                width: Math.max(
-                  assignment.points?.toString().replace(/[^0-9]/g, '').length *
-                    20,
-                  40
-                )
+                width: getWidth(assignment.points)
               }
             ]}
             onChangeText={(input) => updatePoints(input, 'earned')}
           />
           <Text style={styles.dash}> / </Text>
           <TextInput
-            defaultValue={
-              isNaN(assignment.total) ? '' : assignment.total.toString()
-            }
+            value={isNaN(assignment.total) ? '' : assignment.total.toString()}
             placeholder={'__'}
             style={[
               styles.mark,
@@ -77,11 +78,7 @@ function AssignmentComponent(props) {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
                   : Colors.black,
-                width: Math.max(
-                  assignment.total?.toString().replace(/[^0-9]/g, '').length *
-                    20,
-                  20
-                )
+                width: getWidth(assignment.total)
               }
             ]}
             onChangeText={(input) => updatePoints(input, 'total')}
@@ -213,9 +210,7 @@ const styles = StyleSheet.create({
   dash: {
     fontSize: 20,
     alignSelf: 'center',
-    textAlignVertical: 'center',
-    marginRight: 8,
-    marginLeft: 0
+    textAlignVertical: 'center'
   },
   dropdown_text_name: {
     marginHorizontal: 7,
