@@ -83,7 +83,7 @@ export default class GradeUtil {
           course.total += category.weight
         }
       }
-      course.value = this.roundToTwo((course.points / course.total) * 100)
+      course.value = this.roundTo((course.points / course.total) * 100, 2)
       if (!isNaN(course.value)) {
         if (course.value >= 89.5) {
           marks.gpa += 4
@@ -97,7 +97,7 @@ export default class GradeUtil {
         numOfCourses++
       }
     }
-    marks.gpa = this.roundToTwo(marks.gpa / numOfCourses)
+    marks.gpa = this.roundTo(marks.gpa / numOfCourses, 2)
     return marks
   }
 
@@ -111,11 +111,11 @@ export default class GradeUtil {
     }
   }
 
-  static roundToTwo(num: number) {
-    const multiplicator = Math.pow(10, 2)
+  static roundTo(num: number, places: number) {
+    const multiplicator = Math.pow(10, places)
     num = parseFloat((num * multiplicator).toFixed(11))
     const test = Math.round(num) / multiplicator
-    return +test.toFixed(2)
+    return +test.toFixed(places)
   }
 
   static deleteAssignment(marks: Marks, course: string, assignment: string) {

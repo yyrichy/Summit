@@ -13,6 +13,9 @@ function AssignmentComponent(props) {
   const assignment = marks.courses
     .get(props.course)
     .assignments.find((a) => a.name === props.name)
+  const totalWeight = Array.from(
+    marks.courses.get(props.course).categories.values()
+  ).reduce((p, c) => (isNaN(c.value) ? p : p + c.weight), 0)
 
   const updatePoints = (input: string, type: string) => {
     setMarks(
@@ -111,16 +114,36 @@ function AssignmentComponent(props) {
             <Text style={styles.dropdown_text_value}>{assignment.name}</Text>
           </View>
           <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Category:</Text>
+            <Text style={styles.dropdown_text_value}>
+              {assignment.category}
+            </Text>
+          </View>
+          <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Weight:</Text>
+            <Text style={styles.dropdown_text_value}>
+              {GradeUtil.roundTo(
+                (marks.courses
+                  .get(props.course)
+                  .categories.get(assignment.category).weight /
+                  totalWeight) *
+                  100,
+                2
+              )}
+              %
+            </Text>
+          </View>
+          <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Grade:</Text>
             <Text style={styles.dropdown_text_value}>
-              {GradeUtil.roundToTwo(
-                (assignment.points / assignment.total) * 100
-              )}{' '}
-              (
-              {GradeUtil.calculateLetterGrade(
-                (assignment.points / assignment.total) * 100
-              )}
-              )
+              {isNaN(assignment.points / assignment.total)
+                ? 'N/A'
+                : `${GradeUtil.roundTo(
+                    (assignment.points / assignment.total) * 100,
+                    2
+                  )} (${GradeUtil.calculateLetterGrade(
+                    (assignment.points / assignment.total) * 100
+                  )})`}
             </Text>
           </View>
           <View style={styles.horizontal_container}>
