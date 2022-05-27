@@ -120,7 +120,7 @@ function AssignmentComponent(props) {
             </Text>
           </View>
           <View style={styles.horizontal_container}>
-            <Text style={styles.dropdown_text_name}>Weight:</Text>
+            <Text style={styles.dropdown_text_name}>Effective Weight:</Text>
             <Text style={styles.dropdown_text_value}>
               {GradeUtil.roundTo(
                 (marks.courses
@@ -130,6 +130,17 @@ function AssignmentComponent(props) {
                   100,
                 2
               )}
+              %
+            </Text>
+          </View>
+          <View style={styles.horizontal_container}>
+            <Text style={styles.dropdown_text_name}>Weight:</Text>
+            <Text style={styles.dropdown_text_value}>
+              {
+                marks.courses
+                  .get(props.course)
+                  .categories.get(assignment.category).weight
+              }
               %
             </Text>
           </View>
