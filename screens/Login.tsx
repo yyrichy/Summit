@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import {
-  Alert,
   TextInput,
   View,
   Text,
@@ -20,6 +19,7 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import GradeUtil from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import { LinearGradient } from 'expo-linear-gradient'
+import AwesomeAlert from 'react-native-awesome-alerts'
 
 const DISTRICT_URL = 'https://md-mcps-psv.edupoint.com/'
 
@@ -27,17 +27,12 @@ type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const {
-    username,
-    password,
-    setUsername,
-    setPassword,
-    setClient,
-    setMarks,
-    setGradebook
-  } = useContext(AppContext)
+  const { username, password, setUsername, setPassword, setClient, setMarks } =
+    useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
+  const [showAlert, setShowAlert] = useState(false)
+  const [errorMessage, setErrorMessage] = useState()
 
   if (
     Platform.OS !== 'web' &&
@@ -63,10 +58,10 @@ const Login = () => {
       const marks = await GradeUtil.convertGradebook(gradebook)
       setClient(client)
       setMarks(marks)
-      setGradebook(gradebook)
     } catch (err) {
-      Alert.alert('Error', err.message)
       setIsLoading(false)
+      setErrorMessage(err.message)
+      setShowAlert(true)
       return
     }
     setUsername(username)
@@ -136,6 +131,22 @@ const Login = () => {
           />
         </SafeAreaView>
       </LinearGradient>
+      <AwesomeAlert
+        show={showAlert}
+        showProgress={false}
+        title={'Error, Try Again'}
+        message={errorMessage}
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={true}
+        showCancelButton={false}
+        showConfirmButton={true}
+        confirmText={'Ok'}
+        confirmButtonColor={Colors.primary}
+        confirmButtonTextStyle={{ color: Colors.black }}
+        onConfirmPressed={() => {
+          setShowAlert(false)
+        }}
+      ></AwesomeAlert>
     </>
   )
 }

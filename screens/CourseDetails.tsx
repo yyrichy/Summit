@@ -1,6 +1,12 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect, useState } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native'
 import AppContext from '../contexts/AppContext'
 import AssignmentComponent from '../components/Assignment'
 import GradeUtil from '../gradebook/GradeUtil'
@@ -13,20 +19,14 @@ import CustomButton from '../components/CustomButton'
 import { Colors } from '../colors/Colors'
 import { showMessage } from 'react-native-flash-message'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import AwesomeAlert from 'react-native-awesome-alerts'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
   const navigation = useNavigation()
 
-  const { marks, client, setMarks, setGradebook } = useContext(AppContext)
+  const { marks, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(courseName)
-  const data = []
-  for (const assignment of course.assignments) {
-    data.push({
-      name: assignment.name,
-      course: courseName
-    })
-  }
 
   const [isModalVisible, setModalVisible] = useState(false)
   const [open, setOpen] = useState(false)
@@ -41,6 +41,10 @@ const CourseDetails = ({ route }) => {
   const [assignmentName, setAssignmentName] = useState('')
   const [points, setPoints] = useState(NaN)
   const [total, setTotal] = useState(NaN)
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [showAlert, setShowAlert] = useState(false)
+  const [errorMessage, setErrorMessage] = useState()
 
   useEffect(() => {
     if (isModalVisible) {
@@ -69,141 +73,175 @@ const CourseDetails = ({ route }) => {
   }
 
   const refreshMarks = async () => {
-    const newGradebook = await client.gradebook(marks.reportingPeriod.index)
-    const newMarks = await GradeUtil.convertGradebook(newGradebook)
-    setGradebook(newGradebook)
-    setMarks(newMarks)
-    showMessage({
-      message: 'Refreshed',
-      type: 'info',
-      icon: 'success'
-    })
+    setIsLoading(true)
+    try {
+      setMarks(
+        await GradeUtil.convertGradebook(
+          await client.gradebook(marks.reportingPeriod.index)
+        )
+      )
+      showMessage({
+        message: 'Refreshed',
+        type: 'info',
+        icon: 'success'
+      })
+    } catch (err) {
+      setErrorMessage(err.message)
+      setShowAlert(true)
+    }
+    setIsLoading(false)
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.course_details_container}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start'
-          }}
-        >
-          <FontAwesome.Button
-            name="chevron-left"
-            backgroundColor="transparent"
-            iconStyle={{
-              color: Colors.secondary
-            }}
-            underlayColor="none"
-            activeOpacity={0.5}
-            size={24}
-            onPress={() => navigation.goBack()}
-          ></FontAwesome.Button>
-        </View>
-        <Text numberOfLines={1} style={styles.course_details}>
-          {isNaN(course.value) ? 'N/A' : course.value} |{' '}
-          {GradeUtil.parseCourseName(courseName)}
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end'
-          }}
-        >
-          <FontAwesome.Button
-            name="plus-circle"
-            backgroundColor="transparent"
-            iconStyle={{
-              color: Colors.secondary
-            }}
-            size={24}
-            underlayColor="none"
-            activeOpacity={0.5}
-            onPress={() => toggleModal()}
-          ></FontAwesome.Button>
-          <FontAwesome.Button
-            name="refresh"
-            backgroundColor="transparent"
-            iconStyle={{
-              color: Colors.secondary
-            }}
-            underlayColor="none"
-            activeOpacity={0.5}
-            size={24}
-            onPress={() => refreshMarks()}
-          ></FontAwesome.Button>
-        </View>
-      </View>
-      <FlatList
-        data={data}
-        renderItem={({ item }) => (
-          <AssignmentComponent
-            name={item.name}
-            course={item.course}
-          ></AssignmentComponent>
-        )}
-        keyExtractor={(item) => item.name}
-      />
-      <Modal
-        isVisible={isModalVisible}
-        coverScreen={true}
-        onBackdropPress={toggleModal}
+    <>
+      <SafeAreaView
+        style={{ flex: 1 }}
+        pointerEvents={isLoading ? 'none' : 'auto'}
       >
-        <View style={styles.modal}>
-          <View style={styles.modal_view}>
-            <Text style={styles.modal_title}>New Assignment</Text>
-            <TextInput
-              value={assignmentName}
-              placeholder="Name"
-              onChangeText={(t) => {
-                setAssignmentName(t)
+        <View style={styles.course_details_container}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start'
+            }}
+          >
+            <FontAwesome.Button
+              name="chevron-left"
+              backgroundColor="transparent"
+              iconStyle={{
+                color: Colors.secondary
               }}
-              style={styles.input}
-            ></TextInput>
-            <TextInput
-              defaultValue={isNaN(points) ? '' : points.toString()}
-              keyboardType="numeric"
-              placeholder="Points Earned"
-              onChangeText={(t) => setPoints(parseFloat(t))}
-              style={styles.input}
-            ></TextInput>
-            <TextInput
-              defaultValue={isNaN(total) ? '' : total.toString()}
-              keyboardType="numeric"
-              placeholder="Total Points"
-              onChangeText={(t) => setTotal(parseFloat(t))}
-              style={styles.input}
-            ></TextInput>
-            <View
-              style={{
-                marginHorizontal: 7,
-                marginTop: 7
+              underlayColor="none"
+              activeOpacity={0.5}
+              size={24}
+              onPress={() => navigation.goBack()}
+            ></FontAwesome.Button>
+          </View>
+          <Text numberOfLines={1} style={styles.course_details}>
+            {isNaN(course.value) ? 'N/A' : course.value} |{' '}
+            {GradeUtil.parseCourseName(courseName)}
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end'
+            }}
+          >
+            <FontAwesome.Button
+              name="plus-circle"
+              backgroundColor="transparent"
+              iconStyle={{
+                color: Colors.secondary
               }}
-            >
-              <DropDownPicker
-                open={open}
-                value={category}
-                items={categories}
-                setOpen={setOpen}
-                setValue={setCategory}
-                setItems={setCategories}
-                maxHeight={null}
-                style={styles.dropdown}
-              ></DropDownPicker>
-              <CustomButton
-                onPress={addAssignment}
-                text={'Add Assignment'}
-                backgroundColor={LightTheme.colors.card}
-                textColor={Colors.black}
-                fontFamily="Inter_600SemiBold"
-                containerStyle={styles.button_container}
-              ></CustomButton>
-            </View>
+              size={24}
+              underlayColor="none"
+              activeOpacity={0.5}
+              onPress={() => toggleModal()}
+            ></FontAwesome.Button>
+            <FontAwesome.Button
+              name="refresh"
+              backgroundColor="transparent"
+              iconStyle={{
+                color: Colors.secondary
+              }}
+              underlayColor="none"
+              activeOpacity={0.5}
+              size={24}
+              onPress={() => refreshMarks()}
+            ></FontAwesome.Button>
           </View>
         </View>
-      </Modal>
-    </SafeAreaView>
+        <FlatList
+          data={course.assignments}
+          renderItem={({ item }) => (
+            <AssignmentComponent
+              name={item.name}
+              course={courseName}
+            ></AssignmentComponent>
+          )}
+          keyExtractor={(item) => item.name}
+        />
+        <Modal
+          isVisible={isModalVisible}
+          coverScreen={true}
+          onBackdropPress={toggleModal}
+        >
+          <View style={styles.modal}>
+            <View style={styles.modal_view}>
+              <Text style={styles.modal_title}>New Assignment</Text>
+              <TextInput
+                value={assignmentName}
+                placeholder="Name"
+                onChangeText={(t) => {
+                  setAssignmentName(t)
+                }}
+                style={styles.input}
+              ></TextInput>
+              <TextInput
+                defaultValue={isNaN(points) ? '' : points.toString()}
+                keyboardType="numeric"
+                placeholder="Points Earned"
+                onChangeText={(t) => setPoints(parseFloat(t))}
+                style={styles.input}
+              ></TextInput>
+              <TextInput
+                defaultValue={isNaN(total) ? '' : total.toString()}
+                keyboardType="numeric"
+                placeholder="Total Points"
+                onChangeText={(t) => setTotal(parseFloat(t))}
+                style={styles.input}
+              ></TextInput>
+              <View
+                style={{
+                  marginHorizontal: 7,
+                  marginTop: 7
+                }}
+              >
+                <DropDownPicker
+                  open={open}
+                  value={category}
+                  items={categories}
+                  setOpen={setOpen}
+                  setValue={setCategory}
+                  setItems={setCategories}
+                  maxHeight={null}
+                  style={styles.dropdown}
+                ></DropDownPicker>
+                <CustomButton
+                  onPress={addAssignment}
+                  text={'Add Assignment'}
+                  backgroundColor={LightTheme.colors.card}
+                  textColor={Colors.black}
+                  fontFamily="Inter_600SemiBold"
+                  containerStyle={styles.button_container}
+                ></CustomButton>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </SafeAreaView>
+      {isLoading && (
+        <SafeAreaView style={styles.loading}>
+          <ActivityIndicator size={'large'} />
+        </SafeAreaView>
+      )}
+      <AwesomeAlert
+        show={showAlert}
+        showProgress={false}
+        title={'Error'}
+        message={errorMessage}
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={true}
+        showCancelButton={false}
+        showConfirmButton={true}
+        confirmText={'Ok'}
+        confirmButtonColor={Colors.primary}
+        confirmButtonTextStyle={{ color: Colors.black }}
+        onConfirmPressed={() => {
+          setShowAlert(false)
+        }}
+      ></AwesomeAlert>
+    </>
   )
 }
 
@@ -261,6 +299,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(200, 200, 200, 0.2)'
   }
 })
 

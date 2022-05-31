@@ -10,5 +10,4 @@ export interface User {
   setPassword: React.Dispatch<React.SetStateAction<string>>
   setClient: React.Dispatch<any>
   setMarks: React.Dispatch<any>
-  setGradebook: React.Dispatch<any>
 }
