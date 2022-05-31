@@ -18,8 +18,7 @@ const CourseDetails = ({ route }) => {
   const courseName = route.params.title
   const navigation = useNavigation()
 
-  const { marks, gradebook, client, setMarks, setGradebook } =
-    useContext(AppContext)
+  const { marks, client, setMarks, setGradebook } = useContext(AppContext)
   const course = marks.courses.get(courseName)
   const data = []
   for (const assignment of course.assignments) {
@@ -32,16 +31,12 @@ const CourseDetails = ({ route }) => {
   const [isModalVisible, setModalVisible] = useState(false)
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState(
-    gradebook.courses
-      .find((c) => c.title === courseName)
-      .marks[0].weightedCategories.map((c) => c.type)[0]
+    marks.courses.get(courseName).categories.values().next().value.name
   )
   const [categories, setCategories] = useState(
-    gradebook.courses
-      .find((c) => c.title === courseName)
-      .marks[0].weightedCategories.map((c) => {
-        return { label: c.type, value: c.type }
-      })
+    Array.from(marks.courses.get(courseName).categories.values()).map((c) => {
+      return { label: c.name, value: c.name }
+    })
   )
   const [assignmentName, setAssignmentName] = useState('')
   const [points, setPoints] = useState(NaN)
@@ -74,9 +69,7 @@ const CourseDetails = ({ route }) => {
   }
 
   const refreshMarks = async () => {
-    const newGradebook = await client.gradebook(
-      gradebook.reportingPeriod.current.index
-    )
+    const newGradebook = await client.gradebook(marks.reportingPeriod.index)
     const newMarks = await GradeUtil.convertGradebook(newGradebook)
     setGradebook(newGradebook)
     setMarks(newMarks)

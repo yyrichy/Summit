@@ -1,6 +1,13 @@
 export interface Marks {
   courses: Map<string, Course>
   gpa: number
+  reportingPeriod: ReportingPeriod
+  reportingPeriods: ReportingPeriod[]
+}
+
+export interface ReportingPeriod {
+  name: string
+  index: number
 }
 
 export interface Course {

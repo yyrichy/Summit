@@ -6,7 +6,6 @@ export interface User {
   password: string
   client: Client
   marks: Marks
-  gradebook: Gradebook
   setUsername: React.Dispatch<React.SetStateAction<string>>
   setPassword: React.Dispatch<React.SetStateAction<string>>
   setClient: React.Dispatch<any>

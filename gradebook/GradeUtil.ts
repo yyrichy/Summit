@@ -11,7 +11,14 @@ export default class GradeUtil {
   static convertGradebook(gradebook: Gradebook) {
     let marks: Marks = {
       gpa: 0,
-      courses: new Map<string, Course>()
+      courses: new Map<string, Course>(),
+      reportingPeriod: {
+        name: gradebook.reportingPeriod.current.name,
+        index: gradebook.reportingPeriod.current.index
+      },
+      reportingPeriods: gradebook.reportingPeriod.available.map((p) => {
+        return { name: p.name, index: p.index }
+      })
     }
     for (const course of gradebook.courses) {
       marks.courses.set(course.title, {

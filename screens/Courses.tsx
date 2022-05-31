@@ -10,22 +10,19 @@ import { showMessage } from 'react-native-flash-message'
 import { Colors } from '../colors/Colors'
 
 const Courses = ({ navigation }) => {
-  const context = useContext(AppContext)
+  const { client, marks, setMarks, setGradebook } = useContext(AppContext)
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(
-    context.gradebook.reportingPeriod.current.index
-  )
+  const [value, setValue] = useState(marks.reportingPeriod.index)
   const [periods, setPeriods] = useState(
-    context.gradebook.reportingPeriod.available.map((p) => {
+    marks.reportingPeriods.map((p) => {
       return { label: p.name, value: p.index }
     })
   )
-  const { marks, setMarks, setGradebook } = useContext(AppContext)
 
   useEffect(() => {
     let isSubscribed = true
     const getGradebook = async () => {
-      const gradebook = await context.client.gradebook(value)
+      const gradebook = await client.gradebook(value)
       const marks = await GradeUtil.convertGradebook(gradebook)
       if (isSubscribed) {
         setGradebook(gradebook)
@@ -40,7 +37,7 @@ const Courses = ({ navigation }) => {
 
   const refreshMarks = async () => {
     try {
-      const newGradebook = await context.client.gradebook(value)
+      const newGradebook = await client.gradebook(value)
       const newMarks = await GradeUtil.convertGradebook(newGradebook)
       setGradebook(newGradebook)
       setMarks(newMarks)
