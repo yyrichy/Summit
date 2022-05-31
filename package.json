@@ -1,4 +1,5 @@
 {
+  "homepage": "http://vaporrrr.github.io/ScholarHelper",
   "name": "scholarhelper",
   "version": "1.0.0",
   "license": "GPL-3.0",
@@ -8,7 +9,9 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "deploy": "gh-pages -d web-build",
+    "predeploy": "expo build:web"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.2",
@@ -50,6 +53,7 @@
     "@types/file-saver": "^2.0.5",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
+    "gh-pages": "^4.0.0",
     "typescript": "~4.3.5"
   },
   "resolutions": {
