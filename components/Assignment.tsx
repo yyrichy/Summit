@@ -86,6 +86,7 @@ function AssignmentComponent(props) {
             }
             placeholder={'__'}
             keyboardType={'numeric'}
+            autoCompleteType={'off'}
             style={[
               styles.mark,
               {
