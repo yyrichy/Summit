@@ -6,7 +6,8 @@ import {
   StyleSheet,
   ActivityIndicator,
   SafeAreaView,
-  Platform
+  Platform,
+  Linking
 } from 'react-native'
 import StudentVue from 'studentvue'
 import * as SecureStore from 'expo-secure-store'
@@ -20,8 +21,9 @@ import GradeUtil from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import { LinearGradient } from 'expo-linear-gradient'
 import AwesomeAlert from 'react-native-awesome-alerts'
-
-const DISTRICT_URL = 'https://md-mcps-psv.edupoint.com/'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
@@ -32,36 +34,84 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
-  const [errorMessage, setErrorMessage] = useState()
+  const [errorMessage, setErrorMessage] = useState(undefined as string)
+
+  const [open, setOpen] = useState(false)
+  const [districts, setDistricts] = useState(undefined as SchoolDistrict[])
+  const [value, setValue] = useState('')
+  const [items, setItems] = useState([] as { label: string; value: string }[])
 
   if (
     Platform.OS !== 'web' &&
     username === undefined &&
-    password === undefined
+    password === undefined &&
+    value === ''
   ) {
     savedCredentials()
   }
 
+  async function fetchDistricts() {
+    setIsLoading(true)
+    try {
+      const districts = [] as SchoolDistrict[]
+      for (let i = 0; i <= 9; i++) {
+        const res = await StudentVue.findDistricts(`${i}  `)
+        for (const district of res) {
+          if (!districts.some((d) => d.name === district.name))
+            districts.push(district)
+        }
+        districts.sort((a, b) => {
+          const nameA = a.name.toUpperCase()
+          const nameB = b.name.toUpperCase()
+          if (nameA < nameB) return -1
+          if (nameA > nameB) return 1
+          return 0
+        })
+        setDistricts(districts)
+        setItems(
+          districts.map((d) => {
+            return { label: d.name, value: d.name }
+          })
+        )
+      }
+    } catch {}
+    setIsLoading(false)
+  }
+  if (!districts && !isLoading) fetchDistricts()
+
   async function savedCredentials() {
     setUsername(await getValueFor('Username'))
     setPassword(await getValueFor('Password'))
+    setValue((await getValueFor('District')) || '')
+  }
+
+  function alert(message: string) {
+    setErrorMessage(message)
+    setShowAlert(true)
   }
 
   async function onLogin() {
     setIsLoading(true)
+    if (value === '') {
+      alert('Select your school district')
+      setIsLoading(false)
+      return
+    }
     try {
-      const client = await StudentVue.login(DISTRICT_URL, {
-        username: username,
-        password: password
-      })
+      const client = await StudentVue.login(
+        districts.find((d) => d.name === value).parentVueUrl,
+        {
+          username: username,
+          password: password
+        }
+      )
       const gradebook = await client.gradebook()
       const marks = await GradeUtil.convertGradebook(gradebook)
       setClient(client)
       setMarks(marks)
     } catch (err) {
       setIsLoading(false)
-      setErrorMessage(err.message)
-      setShowAlert(true)
+      alert(err.message)
       return
     }
     setUsername(username)
@@ -69,9 +119,31 @@ const Login = () => {
     if (Platform.OS !== 'web' && isChecked) {
       save('Username', username)
       save('Password', password)
+      save('District', value)
     }
     setIsLoading(false)
     navigation.navigate('Menu')
+  }
+
+  async function openInstagram() {
+    if (Platform.OS === 'android' || Platform.OS === 'ios') {
+      const appUrl = 'instagram://user?username=richardyin99'
+      try {
+        if (await Linking.canOpenURL(appUrl)) {
+          Linking.openURL(appUrl)
+        } else {
+          alert('Instagram is not installed')
+        }
+      } catch (err) {
+        alert('Cannot open Instagram')
+      }
+    } else {
+      try {
+        Linking.openURL('https://instagram.com/richardyin99')
+      } catch (err) {
+        alert('Cannot open Instagram')
+      }
+    }
   }
 
   return (
@@ -99,6 +171,28 @@ const Login = () => {
             secureTextEntry={true}
             style={styles.input}
           />
+          {items && (
+            <DropDownPicker
+              searchable={true}
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              maxHeight={null}
+              style={styles.dropdown}
+              textStyle={styles.dropdown_text}
+              searchPlaceholder={'Enter School District Name'}
+              placeholder={'Select School District'}
+              containerStyle={styles.dropdown_container}
+              listMode={'FLATLIST'}
+              tickIconStyle={styles.dropdown_tick}
+              listItemLabelStyle={styles.dropdown_item}
+              searchContainerStyle={styles.dropdown_search_container}
+              searchTextInputStyle={styles.dropdown_search_text}
+            ></DropDownPicker>
+          )}
           {Platform.OS !== 'web' && (
             <View style={styles.checkbox_container}>
               <BouncyCheckbox
@@ -117,9 +211,13 @@ const Login = () => {
             </View>
           )}
           <CustomButton
-            onPress={onLogin.bind(this)}
+            onPress={() => {
+              if (!isLoading) onLogin()
+            }}
             text={'Login'}
-            backgroundColor={Colors.navy}
+            backgroundColor={
+              !isLoading ? Colors.navy : 'rgba(100, 100, 100, 0.6)'
+            }
             textColor={Colors.white}
             fontFamily="Inter_800ExtraBold"
             containerStyle={styles.button_container}
@@ -129,12 +227,32 @@ const Login = () => {
             animating={isLoading}
             size="large"
           />
+          <View
+            style={{
+              alignItems: 'center',
+              position: 'absolute',
+              bottom: 20
+            }}
+          >
+            <Text style={styles.credit}>by Richard Yin &copy; 2022</Text>
+            <FontAwesome.Button
+              name="instagram"
+              backgroundColor="transparent"
+              iconStyle={{
+                color: Colors.black
+              }}
+              underlayColor="none"
+              activeOpacity={0.5}
+              size={28}
+              onPress={() => openInstagram()}
+            ></FontAwesome.Button>
+          </View>
         </SafeAreaView>
       </LinearGradient>
       <AwesomeAlert
         show={showAlert}
         showProgress={false}
-        title={'Error, Try Again'}
+        title={'Error'}
         message={errorMessage}
         closeOnTouchOutside={true}
         closeOnHardwareBackPress={true}
@@ -173,13 +291,45 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   input: {
-    width: 220,
+    width: 250,
     height: 50,
     padding: 10,
     borderWidth: 1,
     borderColor: Colors.black,
     borderRadius: 5,
     marginBottom: 10
+  },
+  dropdown: {
+    borderWidth: 1,
+    borderColor: Colors.black,
+    height: 50,
+    width: 250,
+    marginBottom: 10,
+    backgroundColor: 'transparent',
+    padding: 10,
+    borderRadius: 5
+  },
+  dropdown_text: {
+    fontFamily: 'Inter_700Bold',
+    fontSize: 12
+  },
+  dropdown_container: {
+    width: 250
+  },
+  dropdown_item: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    fontFamily: 'Inter_600SemiBold'
+  },
+  dropdown_tick: {
+    marginLeft: 10
+  },
+  dropdown_search_container: {
+    padding: 10,
+    borderBottomWidth: 0
+  },
+  dropdown_search_text: {
+    fontFamily: 'Inter_400Regular'
   },
   loading: {
     margin: 'auto'
@@ -198,6 +348,11 @@ const styles = StyleSheet.create({
   save_text: {
     marginLeft: 8,
     fontFamily: 'Inter_400Regular'
+  },
+  credit: {
+    fontFamily: 'Inter_200ExtraLight',
+    fontSize: 12,
+    textAlign: 'center'
   }
 })
 
