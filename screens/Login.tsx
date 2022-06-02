@@ -7,7 +7,8 @@ import {
   ActivityIndicator,
   SafeAreaView,
   Platform,
-  Linking
+  Linking,
+  KeyboardAvoidingView
 } from 'react-native'
 import StudentVue from 'studentvue'
 import * as SecureStore from 'expo-secure-store'
@@ -92,6 +93,16 @@ const Login = () => {
 
   async function onLogin() {
     setIsLoading(true)
+    if (!username) {
+      alert('Enter your username')
+      setIsLoading(false)
+      return
+    }
+    if (!password) {
+      alert('Enter your password')
+      setIsLoading(false)
+      return
+    }
     if (value === '') {
       alert('Select your school district')
       setIsLoading(false)
@@ -157,7 +168,10 @@ const Login = () => {
         <SafeAreaView style={{ alignItems: 'center' }}>
           <Text style={styles.welcome}>Welcome To{'\n'}ScholarHelper</Text>
         </SafeAreaView>
-        <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
           <TextInput
             defaultValue={username}
             onChangeText={(u) => setUsername(u)}
@@ -247,7 +261,7 @@ const Login = () => {
               onPress={() => openInstagram()}
             ></FontAwesome.Button>
           </View>
-        </SafeAreaView>
+        </KeyboardAvoidingView>
       </LinearGradient>
       <AwesomeAlert
         show={showAlert}
