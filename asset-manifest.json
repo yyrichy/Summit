@@ -1,11 +1,11 @@
 {
   "files": {
-    "app.js": "/ScholarHelper/static/js/app.98860290.chunk.js",
-    "app.js.map": "/ScholarHelper/static/js/app.98860290.chunk.js.map",
+    "app.js": "/ScholarHelper/static/js/app.08e6afbd.chunk.js",
+    "app.js.map": "/ScholarHelper/static/js/app.08e6afbd.chunk.js.map",
     "runtime~app.js": "/ScholarHelper/static/js/runtime~app.0c503a2b.js",
     "runtime~app.js.map": "/ScholarHelper/static/js/runtime~app.0c503a2b.js.map",
-    "static/js/2.ca2655f6.chunk.js": "/ScholarHelper/static/js/2.ca2655f6.chunk.js",
-    "static/js/2.ca2655f6.chunk.js.map": "/ScholarHelper/static/js/2.ca2655f6.chunk.js.map",
+    "static/js/2.40b222db.chunk.js": "/ScholarHelper/static/js/2.40b222db.chunk.js",
+    "static/js/2.40b222db.chunk.js.map": "/ScholarHelper/static/js/2.40b222db.chunk.js.map",
     "fonts/AntDesign.ttf": "/ScholarHelper/./fonts/AntDesign.ttf",
     "fonts/Entypo.ttf": "/ScholarHelper/./fonts/Entypo.ttf",
     "fonts/Feather.ttf": "/ScholarHelper/./fonts/Feather.ttf",
@@ -51,7 +51,7 @@
     "index.html": "/ScholarHelper/index.html",
     "manifest.json": "/ScholarHelper/manifest.json",
     "serve.json": "/ScholarHelper/serve.json",
-    "static/js/2.ca2655f6.chunk.js.LICENSE.txt": "/ScholarHelper/static/js/2.ca2655f6.chunk.js.LICENSE.txt",
+    "static/js/2.40b222db.chunk.js.LICENSE.txt": "/ScholarHelper/static/js/2.40b222db.chunk.js.LICENSE.txt",
     "static/media/arrow-down.png": "/ScholarHelper/static/media/arrow-down.772a5382.png",
     "static/media/arrow-up.png": "/ScholarHelper/static/media/arrow-up.0b0d1af9.png",
     "static/media/close.png": "/ScholarHelper/static/media/close.b65df71a.png",
@@ -59,7 +59,7 @@
   },
   "entrypoints": [
     "static/js/runtime~app.0c503a2b.js",
-    "static/js/2.ca2655f6.chunk.js",
-    "static/js/app.98860290.chunk.js"
+    "static/js/2.40b222db.chunk.js",
+    "static/js/app.08e6afbd.chunk.js"
   ]
 }
