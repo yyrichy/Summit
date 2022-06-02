@@ -143,7 +143,11 @@ const Login = () => {
         if (await Linking.canOpenURL(appUrl)) {
           Linking.openURL(appUrl)
         } else {
-          alert('Instagram is not installed')
+          try {
+            Linking.openURL('https://instagram.com/richardyin99')
+          } catch (err) {
+            alert('Cannot open Instagram')
+          }
         }
       } catch (err) {
         alert('Cannot open Instagram')
