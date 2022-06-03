@@ -1,7 +1,7 @@
 {
   "files": {
-    "app.js": "/ScholarHelper/static/js/app.08e6afbd.chunk.js",
-    "app.js.map": "/ScholarHelper/static/js/app.08e6afbd.chunk.js.map",
+    "app.js": "/ScholarHelper/static/js/app.c05d520d.chunk.js",
+    "app.js.map": "/ScholarHelper/static/js/app.c05d520d.chunk.js.map",
     "runtime~app.js": "/ScholarHelper/static/js/runtime~app.0c503a2b.js",
     "runtime~app.js.map": "/ScholarHelper/static/js/runtime~app.0c503a2b.js.map",
     "static/js/2.40b222db.chunk.js": "/ScholarHelper/static/js/2.40b222db.chunk.js",
@@ -60,6 +60,6 @@
   "entrypoints": [
     "static/js/runtime~app.0c503a2b.js",
     "static/js/2.40b222db.chunk.js",
-    "static/js/app.08e6afbd.chunk.js"
+    "static/js/app.c05d520d.chunk.js"
   ]
 }
