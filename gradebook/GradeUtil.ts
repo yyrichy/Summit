@@ -78,7 +78,7 @@ export default class GradeUtil {
       }
       for (const assignment of course.assignments) {
         const category = course.categories.get(assignment.category)
-        if (!isNaN(assignment.points) && !isNaN(assignment.total)) {
+        if (category && !isNaN(assignment.points) && !isNaN(assignment.total)) {
           category.points += assignment.points
           category.total += assignment.total
           category.value = category.points / category.total
