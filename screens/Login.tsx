@@ -117,12 +117,15 @@ const Login = () => {
         }
       )
       const gradebook = await client.gradebook()
+      console.log(gradebook)
       const marks = await GradeUtil.convertGradebook(gradebook)
+      console.log(marks)
       setClient(client)
       setMarks(marks)
     } catch (err) {
       setIsLoading(false)
       alert(err.message)
+      console.log(err)
       return
     }
     setUsername(username)
