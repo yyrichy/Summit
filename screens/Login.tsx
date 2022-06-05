@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   TextInput,
   View,
@@ -51,34 +51,42 @@ const Login = () => {
     savedCredentials()
   }
 
-  async function fetchDistricts() {
-    setIsLoading(true)
-    try {
-      const districts = [] as SchoolDistrict[]
-      for (let i = 0; i <= 9; i++) {
-        const res = await StudentVue.findDistricts(`${i}  `)
-        for (const district of res) {
-          if (!districts.some((d) => d.name === district.name))
-            districts.push(district)
-        }
-        districts.sort((a, b) => {
-          const nameA = a.name.toUpperCase()
-          const nameB = b.name.toUpperCase()
-          if (nameA < nameB) return -1
-          if (nameA > nameB) return 1
-          return 0
-        })
-        setDistricts(districts)
-        setItems(
-          districts.map((d) => {
-            return { label: d.name, value: d.name }
+  useEffect(() => {
+    let isMounted = true
+    const fetchDistricts = async () => {
+      setIsLoading(true)
+      try {
+        const districts = [] as SchoolDistrict[]
+        for (let i = 0; i <= 9; i++) {
+          const res = await StudentVue.findDistricts(`${i}  `)
+          for (const district of res) {
+            if (!districts.some((d) => d.name === district.name))
+              districts.push(district)
+          }
+          districts.sort((a, b) => {
+            const nameA = a.name.toUpperCase()
+            const nameB = b.name.toUpperCase()
+            if (nameA < nameB) return -1
+            if (nameA > nameB) return 1
+            return 0
           })
-        )
-      }
-    } catch {}
-    setIsLoading(false)
-  }
-  if (!districts && !isLoading) fetchDistricts()
+          if (isMounted) {
+            setDistricts(districts)
+            setItems(
+              districts.map((d) => {
+                return { label: d.name, value: d.name }
+              })
+            )
+          }
+        }
+      } catch {}
+      setIsLoading(false)
+    }
+    fetchDistricts()
+    return () => {
+      isMounted = false
+    }
+  }, [items, districts])
 
   async function savedCredentials() {
     setUsername(await getValueFor('Username'))
