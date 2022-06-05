@@ -3,8 +3,13 @@ import { Colors } from '../colors/Colors'
 import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
 
 export default class GradeUtil {
+  // Some course names have the course ID at the end, ex: AP History A (SOC49351)
   static parseCourseName(name: string) {
-    if (!name.includes('(')) return name
+    if (
+      name.indexOf(')') !== name.length - 1 ||
+      name.indexOf('(') !== name.length - 10
+    )
+      return name
     return name.substring(0, name.lastIndexOf('(')).trim()
   }
 
