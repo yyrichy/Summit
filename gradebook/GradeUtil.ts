@@ -34,13 +34,15 @@ export default class GradeUtil {
       })
       const c = marks.courses.get(course.title)
       for (const category of course.marks[0].weightedCategories) {
-        c.categories.set(category.type, {
-          name: category.type,
-          points: 0,
-          total: 0,
-          value: NaN,
-          weight: parseFloat(category.weight.standard)
-        })
+        if (category.type.toUpperCase() !== 'TOTAL') {
+          c.categories.set(category.type, {
+            name: category.type,
+            points: 0,
+            total: 0,
+            value: NaN,
+            weight: parseFloat(category.weight.standard)
+          })
+        }
       }
       for (const assignment of course.marks[0].assignments) {
         const value = assignment.score.value
