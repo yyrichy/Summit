@@ -1,6 +1,6 @@
 {
-  "homepage": "http://vaporrrr.github.io/ScholarHelper",
-  "name": "scholarhelper",
+  "homepage": "http://vaporrrr.github.io/Summit",
+  "name": "summit",
   "version": "1.0.0",
   "license": "MIT",
   "main": "node_modules/expo/AppEntry.js",

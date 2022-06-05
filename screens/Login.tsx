@@ -170,7 +170,7 @@ const Login = () => {
         }}
       >
         <SafeAreaView style={{ alignItems: 'center' }}>
-          <Text style={styles.welcome}>Welcome To{'\n'}ScholarHelper</Text>
+          <Text style={styles.welcome}>Welcome To{'\n'}Summit</Text>
         </SafeAreaView>
         <KeyboardAvoidingView
           style={styles.container}
