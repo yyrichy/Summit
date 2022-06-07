@@ -46,7 +46,8 @@
     "react-navigation": "^4.4.4",
     "react-navigation-stack": "^2.10.4",
     "studentvue": "https://github.com/vaporrrr/studentvue.js.git",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "use-async-effect": "^2.2.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

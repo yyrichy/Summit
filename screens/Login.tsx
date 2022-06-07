@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   TextInput,
   View,
@@ -23,70 +23,37 @@ import { Colors } from '../colors/Colors'
 import { LinearGradient } from 'expo-linear-gradient'
 import AwesomeAlert from 'react-native-awesome-alerts'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import DropDownPicker from 'react-native-dropdown-picker'
 
 type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const { username, password, setUsername, setPassword, setClient, setMarks } =
-    useContext(AppContext)
+  const {
+    username,
+    password,
+    districts,
+    setUsername,
+    setPassword,
+    setClient,
+    setMarks
+  } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
   const [errorMessage, setErrorMessage] = useState(undefined as string)
 
   const [open, setOpen] = useState(false)
-  const [districts, setDistricts] = useState(undefined as SchoolDistrict[])
-  const [value, setValue] = useState('')
-  const [items, setItems] = useState([] as { label: string; value: string }[])
+  const [value, setValue] = useState(undefined as string)
+  const [list, setList] = useState(
+    districts.map((d) => {
+      return { label: d.name, value: d.name }
+    })
+  )
 
-  if (
-    Platform.OS !== 'web' &&
-    username === undefined &&
-    password === undefined &&
-    value === ''
-  ) {
+  if (Platform.OS !== 'web' && !username && !password && !value) {
     savedCredentials()
   }
-
-  useEffect(() => {
-    let isMounted = true
-    const fetchDistricts = async () => {
-      setIsLoading(true)
-      try {
-        const districts = [] as SchoolDistrict[]
-        for (let i = 0; i <= 9; i++) {
-          const res = await StudentVue.findDistricts(`${i}  `)
-          for (const district of res) {
-            if (!districts.some((d) => d.name === district.name))
-              districts.push(district)
-          }
-          districts.sort((a, b) => {
-            const nameA = a.name.toUpperCase()
-            const nameB = b.name.toUpperCase()
-            if (nameA < nameB) return -1
-            if (nameA > nameB) return 1
-            return 0
-          })
-          if (isMounted) {
-            setDistricts(districts)
-            setItems(
-              districts.map((d) => {
-                return { label: d.name, value: d.name }
-              })
-            )
-          }
-        }
-      } catch {}
-      setIsLoading(false)
-    }
-    fetchDistricts()
-    return () => {
-      isMounted = false
-    }
-  }, [items, districts])
 
   async function savedCredentials() {
     setUsername(await getValueFor('Username'))
@@ -111,7 +78,7 @@ const Login = () => {
       setIsLoading(false)
       return
     }
-    if (value === '') {
+    if (!value) {
       alert('Select your school district')
       setIsLoading(false)
       return
@@ -178,7 +145,7 @@ const Login = () => {
         }}
       >
         <SafeAreaView style={{ alignItems: 'center' }}>
-          <Text style={styles.welcome}>Welcome To{'\n'}Summit</Text>
+          <Text style={styles.welcome}>Welcome To{'\n'}Summit ⛰</Text>
         </SafeAreaView>
         <KeyboardAvoidingView
           style={styles.container}
@@ -197,28 +164,26 @@ const Login = () => {
             secureTextEntry={true}
             style={styles.input}
           />
-          {items && (
-            <DropDownPicker
-              searchable={true}
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              maxHeight={null}
-              style={styles.dropdown}
-              textStyle={styles.dropdown_text}
-              searchPlaceholder={'Enter School District Name'}
-              placeholder={'Select School District'}
-              containerStyle={styles.dropdown_container}
-              listMode={'FLATLIST'}
-              tickIconStyle={styles.dropdown_tick}
-              listItemLabelStyle={styles.dropdown_item}
-              searchContainerStyle={styles.dropdown_search_container}
-              searchTextInputStyle={styles.dropdown_search_text}
-            ></DropDownPicker>
-          )}
+          <DropDownPicker
+            searchable={true}
+            open={open}
+            value={value}
+            items={list}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setList}
+            maxHeight={null}
+            style={styles.dropdown}
+            textStyle={styles.dropdown_text}
+            searchPlaceholder={'Enter School District Name'}
+            placeholder={'Select School District'}
+            containerStyle={styles.dropdown_container}
+            listMode={'FLATLIST'}
+            tickIconStyle={styles.dropdown_tick}
+            listItemLabelStyle={styles.dropdown_item}
+            searchContainerStyle={styles.dropdown_search_container}
+            searchTextInputStyle={styles.dropdown_search_text}
+          ></DropDownPicker>
           {Platform.OS !== 'web' && (
             <View style={styles.checkbox_container}>
               <BouncyCheckbox
@@ -270,7 +235,7 @@ const Login = () => {
               underlayColor="none"
               activeOpacity={0.5}
               size={28}
-              onPress={() => openInstagram()}
+              onPress={openInstagram}
             ></FontAwesome.Button>
           </View>
         </KeyboardAvoidingView>
