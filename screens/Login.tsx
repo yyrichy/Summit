@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   TextInput,
   View,
@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   Platform,
   Linking,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  TouchableOpacity
 } from 'react-native'
 import StudentVue from 'studentvue'
 import * as SecureStore from 'expo-secure-store'
@@ -24,20 +25,15 @@ import { LinearGradient } from 'expo-linear-gradient'
 import AwesomeAlert from 'react-native-awesome-alerts'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
+import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const {
-    username,
-    password,
-    districts,
-    setUsername,
-    setPassword,
-    setClient,
-    setMarks
-  } = useContext(AppContext)
+  const { username, password, setUsername, setPassword, setClient, setMarks } =
+    useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
@@ -46,19 +42,19 @@ const Login = () => {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(undefined as string)
   const [list, setList] = useState(
-    districts.map((d) => {
+    require('../assets/districts.json').map((d: SchoolDistrict) => {
       return { label: d.name, value: d.name }
     })
   )
 
-  if (Platform.OS !== 'web' && !username && !password && !value) {
+  if (Platform.OS !== 'web' && !username && !password) {
     savedCredentials()
   }
 
   async function savedCredentials() {
     setUsername(await getValueFor('Username'))
     setPassword(await getValueFor('Password'))
-    setValue((await getValueFor('District')) || '')
+    setValue(await getValueFor('District'))
   }
 
   function alert(message: string) {
@@ -85,7 +81,9 @@ const Login = () => {
     }
     try {
       const client = await StudentVue.login(
-        districts.find((d) => d.name === value).parentVueUrl,
+        require('../assets/districts.json').find(
+          (d: SchoolDistrict) => d.name === value
+        ).parentVueUrl,
         {
           username: username,
           password: password
@@ -175,14 +173,51 @@ const Login = () => {
             maxHeight={null}
             style={styles.dropdown}
             textStyle={styles.dropdown_text}
-            searchPlaceholder={'Enter School District Name'}
-            placeholder={'Select School District'}
             containerStyle={styles.dropdown_container}
             listMode={'FLATLIST'}
+            translation={{
+              SEARCH_PLACEHOLDER: 'Enter School District Name',
+              PLACEHOLDER: 'Select School District',
+              NOTHING_TO_SHOW:
+                'Nothing found, make sure you are entering your DISTRICT NAME not SCHOOL NAME'
+            }}
             tickIconStyle={styles.dropdown_tick}
             listItemLabelStyle={styles.dropdown_item}
             searchContainerStyle={styles.dropdown_search_container}
             searchTextInputStyle={styles.dropdown_search_text}
+            listItemContainerStyle={styles.dropdown_list_item_container}
+            renderListItem={(props) => {
+              return (
+                <TouchableOpacity
+                  {...props}
+                  style={[
+                    props.listItemContainerStyle,
+                    {
+                      backgroundColor: props.isSelected && Colors.light_gray
+                    }
+                  ]}
+                  onPress={() => {
+                    setValue(props.value)
+                    setOpen(false)
+                  }}
+                >
+                  <View style={styles.district_name_container}>
+                    <Text numberOfLines={1} style={props.listItemLabelStyle}>
+                      {props.label}
+                    </Text>
+                  </View>
+                  {props.isSelected && (
+                    <View style={styles.district_check_container}>
+                      <MaterialCommunityIcons
+                        name={'check'}
+                        size={20}
+                        style={{ marginHorizontal: 5 }}
+                      />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              )
+            }}
           ></DropDownPicker>
           {Platform.OS !== 'web' && (
             <View style={styles.checkbox_container}>
@@ -293,7 +328,6 @@ const styles = StyleSheet.create({
   dropdown: {
     borderWidth: 1,
     borderColor: Colors.black,
-    height: 50,
     width: 250,
     marginBottom: 10,
     backgroundColor: 'transparent',
@@ -321,6 +355,20 @@ const styles = StyleSheet.create({
   },
   dropdown_search_text: {
     fontFamily: 'Inter_400Regular'
+  },
+  dropdown_list_item_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  district_name_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  district_check_container: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   },
   loading: {
     margin: 'auto'
