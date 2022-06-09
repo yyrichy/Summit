@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   TextInput,
   View,
@@ -9,10 +9,10 @@ import {
   Platform,
   Linking,
   KeyboardAvoidingView,
-  TouchableOpacity
+  TouchableOpacity,
+  ImageBackground
 } from 'react-native'
 import StudentVue from 'studentvue'
-import * as SecureStore from 'expo-secure-store'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
@@ -21,12 +21,13 @@ import AppContext from '../contexts/AppContext'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import GradeUtil from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
-import { LinearGradient } from 'expo-linear-gradient'
 import AwesomeAlert from 'react-native-awesome-alerts'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useCookies } from 'react-cookie'
+import * as SecureStore from 'expo-secure-store'
 
 type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
@@ -134,16 +135,32 @@ const Login = () => {
     }
   }
 
+  function nameFontSize(): number {
+    if (Platform.OS === 'web') return 60
+    return 40
+  }
+
+  function descriptionFontSize(): number {
+    if (Platform.OS === 'web') return 25
+    return 20
+  }
+
   return (
     <>
-      <LinearGradient
-        colors={['#FFF785', Colors.primary]}
-        style={{
-          flex: 1
-        }}
+      <ImageBackground
+        source={require('../assets/mountainbackground.png')}
+        resizeMode="cover"
+        style={{ flex: 1 }}
       >
         <SafeAreaView style={{ alignItems: 'center' }}>
-          <Text style={styles.welcome}>Welcome To{'\n'}Summit ⛰</Text>
+          <Text style={[styles.name, { fontSize: nameFontSize() }]}>
+            Summit ⛰
+          </Text>
+          <Text
+            style={[styles.description, { fontSize: descriptionFontSize() }]}
+          >
+            Grade Viewer
+          </Text>
         </SafeAreaView>
         <KeyboardAvoidingView
           style={styles.container}
@@ -274,7 +291,7 @@ const Login = () => {
             ></FontAwesome.Button>
           </View>
         </KeyboardAvoidingView>
-      </LinearGradient>
+      </ImageBackground>
       <AwesomeAlert
         show={showAlert}
         showProgress={false}
@@ -304,11 +321,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center'
   },
-  welcome: {
+  name: {
     fontFamily: 'Montserrat_900Black',
-    fontSize: 30,
     textAlign: 'center',
     marginTop: 10
+  },
+  description: {
+    fontFamily: 'Inter_700Bold',
+    textAlign: 'center'
   },
   checkbox_container: {
     flexDirection: 'row',
