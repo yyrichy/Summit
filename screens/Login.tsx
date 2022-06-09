@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   TextInput,
   View,
@@ -48,14 +48,18 @@ const Login = () => {
     })
   )
 
-  if (Platform.OS !== 'web' && !username && !password) {
+  useEffect(() => {
     savedCredentials()
-  }
+  }, [])
 
   async function savedCredentials() {
-    setUsername(await getValueFor('Username'))
-    setPassword(await getValueFor('Password'))
-    setValue(await getValueFor('District'))
+    if (Platform.OS !== 'web') {
+      setUsername(await getValueFor('Username'))
+      setPassword(await getValueFor('Password'))
+      setValue(await getValueFor('District'))
+    } else {
+      // Web cookie implementation
+    }
   }
 
   function alert(message: string) {
