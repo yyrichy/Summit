@@ -58,8 +58,7 @@ const Login = () => {
     savedCredentials()
     if (!(await getData('firstLaunch'))) {
       setFirstLaunch(true)
-      await storeData('firstLaunch', 'true')
-      console.log(await getData('firstLaunch'))
+      storeData('firstLaunch', 'true')
     }
   }, [])
 
@@ -294,6 +293,7 @@ const Login = () => {
           <ActivityIndicator
             color={Colors.secondary}
             animating={isLoading}
+            style={{ marginBottom: 50 }}
             size="large"
           />
           <View
@@ -345,7 +345,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 10
   },
   name: {
     fontFamily: 'Montserrat_900Black',
@@ -359,7 +360,8 @@ const styles = StyleSheet.create({
   login_info: {
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
-    marginBottom: 10
+    marginBottom: 10,
+    marginTop: 15
   },
   checkbox_container: {
     flexDirection: 'row',
