@@ -28,6 +28,8 @@ import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useCookies } from 'react-cookie'
 import * as SecureStore from 'expo-secure-store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import useAsyncEffect from 'use-async-effect'
 
 type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
@@ -40,6 +42,8 @@ const Login = () => {
   const [showAlert, setShowAlert] = useState(false)
   const [errorMessage, setErrorMessage] = useState(undefined as string)
 
+  const [firstLaunch, setFirstLaunch] = useState(false)
+
   const [cookies, setCookie] = useCookies(['username', 'password', 'district'])
 
   const [open, setOpen] = useState(false)
@@ -50,8 +54,13 @@ const Login = () => {
     })
   )
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     savedCredentials()
+    if (!(await getData('firstLaunch'))) {
+      setFirstLaunch(true)
+      await storeData('firstLaunch', 'true')
+      console.log(await getData('firstLaunch'))
+    }
   }, [])
 
   async function savedCredentials() {
@@ -180,6 +189,11 @@ const Login = () => {
           style={styles.container}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
+          {firstLaunch && (
+            <Text style={styles.login_info}>
+              Username and password are the same as StudentVue
+            </Text>
+          )}
           <TextInput
             defaultValue={username}
             onChangeText={(u) => setUsername(u)}
@@ -342,6 +356,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_700Bold',
     textAlign: 'center'
   },
+  login_info: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 12,
+    marginBottom: 10
+  },
   checkbox_container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -434,4 +453,18 @@ async function save(key: string, value: string) {
 
 async function getValueFor(key: string) {
   return await SecureStore.getItemAsync(key)
+}
+
+const storeData = async (key: string, value: string) => {
+  try {
+    await AsyncStorage.setItem(key, value)
+  } catch (e) {}
+}
+
+const getData = async (key: string): Promise<string> => {
+  try {
+    return await AsyncStorage.getItem(key)
+  } catch (e) {
+    return null
+  }
 }
