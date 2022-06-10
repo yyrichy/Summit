@@ -40,6 +40,8 @@ const Login = () => {
   const [showAlert, setShowAlert] = useState(false)
   const [errorMessage, setErrorMessage] = useState(undefined as string)
 
+  const [cookies, setCookie] = useCookies(['username', 'password', 'district'])
+
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(undefined as string)
   const [list, setList] = useState(
@@ -58,7 +60,9 @@ const Login = () => {
       setPassword(await getValueFor('Password'))
       setValue(await getValueFor('District'))
     } else {
-      // Web cookie implementation
+      setUsername(cookies.username)
+      setPassword(cookies.password)
+      setValue(cookies.district)
     }
   }
 
@@ -105,17 +109,23 @@ const Login = () => {
     }
     setUsername(username)
     setPassword(password)
-    if (Platform.OS !== 'web' && isChecked) {
-      save('Username', username)
-      save('Password', password)
-      save('District', value)
+    if (isChecked) {
+      if (Platform.OS !== 'web') {
+        save('Username', username)
+        save('Password', password)
+        save('District', value)
+      } else {
+        setCookie('username', username, { path: '/' })
+        setCookie('password', password, { path: '/' })
+        setCookie('district', value, { path: '/' })
+      }
     }
     setIsLoading(false)
     navigation.navigate('Menu')
   }
 
   async function openInstagram() {
-    if (Platform.OS === 'android' || Platform.OS === 'ios') {
+    if (Platform.OS !== 'web') {
       const appUrl = 'instagram://user?username=richardyin99'
       try {
         if (await Linking.canOpenURL(appUrl)) {
@@ -240,23 +250,21 @@ const Login = () => {
               )
             }}
           ></DropDownPicker>
-          {Platform.OS !== 'web' && (
-            <View style={styles.checkbox_container}>
-              <BouncyCheckbox
-                size={24}
-                fillColor={Colors.accent}
-                unfillColor="transparent"
-                disableText
-                iconStyle={{ borderColor: Colors.black }}
-                isChecked={isChecked}
-                disableBuiltInState
-                onPress={async () => {
-                  setToggleCheckBox(!isChecked)
-                }}
-              />
-              <Text style={styles.save_text}>Save Login Information</Text>
-            </View>
-          )}
+          <View style={styles.checkbox_container}>
+            <BouncyCheckbox
+              size={24}
+              fillColor={Colors.accent}
+              unfillColor="transparent"
+              disableText
+              iconStyle={{ borderColor: Colors.black }}
+              isChecked={isChecked}
+              disableBuiltInState
+              onPress={async () => {
+                setToggleCheckBox(!isChecked)
+              }}
+            />
+            <Text style={styles.save_text}>Save Login Information</Text>
+          </View>
           <CustomButton
             onPress={() => {
               if (!isLoading) onLogin()
