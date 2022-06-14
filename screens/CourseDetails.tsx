@@ -171,7 +171,7 @@ const CourseDetails = ({ route }) => {
               <Text style={styles.modal_title}>New Assignment</Text>
               <TextInput
                 value={assignmentName}
-                placeholder="Name"
+                placeholder="Name (Optional)"
                 onChangeText={(t) => {
                   setAssignmentName(t)
                 }}
@@ -179,7 +179,7 @@ const CourseDetails = ({ route }) => {
               ></TextInput>
               <TextInput
                 defaultValue={isNaN(points) ? '' : points.toString()}
-                keyboardType="number-pad"
+                keyboardType="numeric"
                 autoCompleteType="off"
                 placeholder="Points Earned"
                 onChangeText={(t) => setPoints(parseFloat(t))}
@@ -187,7 +187,7 @@ const CourseDetails = ({ route }) => {
               ></TextInput>
               <TextInput
                 defaultValue={isNaN(total) ? '' : total.toString()}
-                keyboardType="number-pad"
+                keyboardType="numeric"
                 autoCompleteType="off"
                 placeholder="Total Points"
                 onChangeText={(t) => setTotal(parseFloat(t))}

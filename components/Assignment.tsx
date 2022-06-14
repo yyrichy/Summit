@@ -66,7 +66,7 @@ function AssignmentComponent(props) {
               isNaN(assignment.points) ? '' : assignment.points.toString()
             }
             placeholder={'__'}
-            keyboardType={'number-pad'}
+            keyboardType={'numeric'}
             autoCompleteType={'off'}
             style={[
               styles.mark,
