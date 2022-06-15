@@ -5,6 +5,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
@@ -20,6 +21,7 @@ import { Colors } from '../colors/Colors'
 import { showMessage } from 'react-native-flash-message'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AwesomeAlert from 'react-native-awesome-alerts'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -168,14 +170,13 @@ const CourseDetails = ({ route }) => {
         >
           <View style={styles.modal}>
             <View style={styles.modal_view}>
-              <Text style={styles.modal_title}>New Assignment</Text>
               <TextInput
                 value={assignmentName}
                 placeholder="Name (Optional)"
                 onChangeText={(t) => {
                   setAssignmentName(t)
                 }}
-                style={styles.input}
+                style={[styles.input, { marginTop: 10 }]}
               ></TextInput>
               <TextInput
                 value={points}
@@ -212,6 +213,51 @@ const CourseDetails = ({ route }) => {
                   setItems={setCategories}
                   maxHeight={null}
                   style={styles.dropdown}
+                  textStyle={styles.dropdown_text}
+                  containerStyle={styles.dropdown_container}
+                  translation={{
+                    PLACEHOLDER: 'Select Category'
+                  }}
+                  tickIconStyle={styles.dropdown_tick}
+                  listItemLabelStyle={styles.dropdown_item}
+                  searchContainerStyle={styles.dropdown_search_container}
+                  listItemContainerStyle={styles.dropdown_list_item_container}
+                  renderListItem={(props) => {
+                    return (
+                      <TouchableOpacity
+                        {...props}
+                        style={[
+                          props.listItemContainerStyle,
+                          {
+                            backgroundColor:
+                              props.isSelected && Colors.light_gray
+                          }
+                        ]}
+                        onPress={() => {
+                          setCategory(props.value)
+                          setOpen(false)
+                        }}
+                      >
+                        <View style={styles.category_name_container}>
+                          <Text
+                            numberOfLines={1}
+                            style={props.listItemLabelStyle}
+                          >
+                            {props.label}
+                          </Text>
+                        </View>
+                        {props.isSelected && (
+                          <View style={styles.category_check_container}>
+                            <MaterialCommunityIcons
+                              name={'check'}
+                              size={20}
+                              style={{ marginHorizontal: 5 }}
+                            />
+                          </View>
+                        )}
+                      </TouchableOpacity>
+                    )
+                  }}
                 ></DropDownPicker>
                 <CustomButton
                   onPress={addAssignment}
@@ -253,18 +299,14 @@ const CourseDetails = ({ route }) => {
 
 const styles = StyleSheet.create({
   input: {
-    margin: 7,
+    marginHorizontal: 10,
+    marginVertical: 5,
     padding: 5,
     borderWidth: 1,
     height: 30,
-    borderColor: Colors.black
-  },
-  modal_title: {
-    alignSelf: 'center',
-    marginBottom: 7,
-    marginTop: 14,
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 18
+    borderColor: Colors.black,
+    fontFamily: 'Inter_400Regular',
+    fontSize: 12
   },
   modal: {
     flexDirection: 'column',
@@ -273,17 +315,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
     width: 330,
-    height: 300
+    height: 250
   },
   modal_view: {
     width: 330,
-    height: 300
-  },
-  dropdown: {
-    height: 30,
-    borderRadius: 0,
-    alignItems: 'center',
-    alignSelf: 'center'
+    height: 250
   },
   button_container: {
     justifyContent: 'center',
@@ -293,7 +329,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     borderWidth: 0,
-    marginTop: 30
+    margin: 10
   },
   course_details: {
     fontSize: 22,
@@ -315,6 +351,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(200, 200, 200, 0.2)'
+  },
+  dropdown: {
+    borderWidth: 1,
+    borderColor: Colors.black,
+    backgroundColor: 'transparent',
+    padding: 5,
+    marginHorizontal: 10,
+    width: 310,
+    alignSelf: 'center'
+  },
+  dropdown_text: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 12
+  },
+  dropdown_container: {
+    width: 310,
+    alignSelf: 'center'
+  },
+  category_name_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  category_check_container: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
+  dropdown_item: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    fontFamily: 'Inter_400Regular'
+  },
+  dropdown_tick: {
+    marginLeft: 10
+  },
+  dropdown_search_container: {
+    padding: 10,
+    borderBottomWidth: 0
+  },
+  dropdown_list_item_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   }
 })
 
