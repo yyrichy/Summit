@@ -179,7 +179,7 @@ const CourseDetails = ({ route }) => {
               ></TextInput>
               <TextInput
                 defaultValue={isNaN(points) ? '' : points.toString()}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 autoCompleteType="off"
                 placeholder="Points Earned"
                 onChangeText={(t) => setPoints(parseFloat(t))}
@@ -187,7 +187,7 @@ const CourseDetails = ({ route }) => {
               ></TextInput>
               <TextInput
                 defaultValue={isNaN(total) ? '' : total.toString()}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
                 autoCompleteType="off"
                 placeholder="Total Points"
                 onChangeText={(t) => setTotal(parseFloat(t))}
