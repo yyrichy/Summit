@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { StyleSheet, View, Text, TextInput } from 'react-native'
+import { StyleSheet, View, Text, TextInput, Platform } from 'react-native'
 import GradeUtil from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
@@ -78,7 +78,8 @@ function AssignmentComponent(props) {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
                   : Colors.black,
-                width: getWidth(assignment.points)
+                width: getWidth(assignment.points),
+                ...(Platform.OS === 'web' ? { outlineStyle: 'none' } : {})
               }
             ]}
             onChangeText={(input) => {
@@ -100,7 +101,8 @@ function AssignmentComponent(props) {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
                   : Colors.black,
-                width: getWidth(assignment.total)
+                width: getWidth(assignment.total),
+                ...(Platform.OS === 'web' ? { outlineStyle: 'none' } : {})
               }
             ]}
             onChangeText={(input) => {
@@ -273,8 +275,7 @@ const styles = StyleSheet.create({
     height: 60,
     fontSize: 23,
     fontFamily: 'Inter_600SemiBold',
-    alignSelf: 'center',
-    outlineStyle: 'none'
+    alignSelf: 'center'
   },
   dash: {
     fontSize: 20,
