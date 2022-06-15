@@ -271,10 +271,10 @@ const styles = StyleSheet.create({
   },
   mark: {
     height: 60,
-    borderWidth: 0,
     fontSize: 23,
     fontFamily: 'Inter_600SemiBold',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    outlineStyle: 'none'
   },
   dash: {
     fontSize: 20,
