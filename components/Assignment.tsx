@@ -16,6 +16,12 @@ function AssignmentComponent(props) {
   const totalWeight = Array.from(
     marks.courses.get(props.course).categories.values()
   ).reduce((p, c) => (isNaN(c.value) ? p : p + c.weight), 0)
+  const [points, setPoints] = useState(
+    isNaN(assignment.points) ? '' : assignment.points.toString()
+  )
+  const [total, setTotal] = useState(
+    isNaN(assignment.total) ? '' : assignment.total.toString()
+  )
 
   const updatePoints = (input: string, type: string) => {
     setMarks(
@@ -62,9 +68,7 @@ function AssignmentComponent(props) {
         </View>
         <View style={styles.input_container}>
           <TextInput
-            defaultValue={
-              isNaN(assignment.points) ? '' : assignment.points.toString()
-            }
+            value={points}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
             autoCompleteType={'off'}
@@ -77,13 +81,16 @@ function AssignmentComponent(props) {
                 width: getWidth(assignment.points)
               }
             ]}
-            onChangeText={(input) => updatePoints(input, 'earned')}
+            onChangeText={(input) => {
+              if (GradeUtil.isNumber(input) || input === '') {
+                setPoints(input)
+                updatePoints(input, 'earned')
+              }
+            }}
           />
           <Text style={styles.dash}> / </Text>
           <TextInput
-            defaultValue={
-              isNaN(assignment.total) ? '' : assignment.total.toString()
-            }
+            value={total}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
             autoCompleteType={'off'}
@@ -96,7 +103,12 @@ function AssignmentComponent(props) {
                 width: getWidth(assignment.total)
               }
             ]}
-            onChangeText={(input) => updatePoints(input, 'total')}
+            onChangeText={(input) => {
+              if (GradeUtil.isNumber(input) || input === '') {
+                setTotal(input)
+                updatePoints(input, 'total')
+              }
+            }}
           />
         </View>
         <TouchableOpacity onPress={() => setIsDropdown(!isDropdown)}>

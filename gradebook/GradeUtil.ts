@@ -226,4 +226,8 @@ export default class GradeUtil {
       return 'F'
     }
   }
+
+  static isNumber(input: string) {
+    return /^[0-9.]+$/g.test(input)
+  }
 }

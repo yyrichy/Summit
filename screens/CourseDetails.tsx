@@ -39,8 +39,8 @@ const CourseDetails = ({ route }) => {
     })
   )
   const [assignmentName, setAssignmentName] = useState('')
-  const [points, setPoints] = useState(NaN)
-  const [total, setTotal] = useState(NaN)
+  const [points, setPoints] = useState('')
+  const [total, setTotal] = useState('')
 
   const [isLoading, setIsLoading] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
@@ -49,8 +49,8 @@ const CourseDetails = ({ route }) => {
   useEffect(() => {
     if (isModalVisible) {
       setAssignmentName('')
-      setPoints(NaN)
-      setTotal(NaN)
+      setPoints('')
+      setTotal('')
     }
   }, [isModalVisible])
 
@@ -65,8 +65,8 @@ const CourseDetails = ({ route }) => {
         course,
         assignmentName,
         category,
-        points,
-        total
+        parseFloat(points),
+        parseFloat(total)
       )
     )
     toggleModal()
@@ -178,19 +178,23 @@ const CourseDetails = ({ route }) => {
                 style={styles.input}
               ></TextInput>
               <TextInput
-                defaultValue={isNaN(points) ? '' : points.toString()}
+                value={points}
                 keyboardType="decimal-pad"
                 autoCompleteType="off"
                 placeholder="Points Earned"
-                onChangeText={(t) => setPoints(parseFloat(t))}
+                onChangeText={(t) => {
+                  if (GradeUtil.isNumber(t) || t === '') setPoints(t)
+                }}
                 style={styles.input}
               ></TextInput>
               <TextInput
-                defaultValue={isNaN(total) ? '' : total.toString()}
+                value={total}
                 keyboardType="decimal-pad"
                 autoCompleteType="off"
                 placeholder="Total Points"
-                onChangeText={(t) => setTotal(parseFloat(t))}
+                onChangeText={(t) => {
+                  if (GradeUtil.isNumber(t) || t === '') setTotal(t)
+                }}
                 style={styles.input}
               ></TextInput>
               <View
