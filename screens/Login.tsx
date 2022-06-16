@@ -63,14 +63,44 @@ const Login = () => {
   }, [])
 
   async function savedCredentials() {
+    let username: string
+    let password: string
+    let value: string
     if (Platform.OS !== 'web') {
-      setUsername(await getValueFor('Username'))
-      setPassword(await getValueFor('Password'))
-      setValue(await getValueFor('District'))
+      username = await getValueFor('Username')
+      password = await getValueFor('Password')
+      value = await getValueFor('District')
     } else {
-      setUsername(cookies.username)
-      setPassword(cookies.password)
-      setValue(cookies.district)
+      username = cookies.username
+      password = cookies.password
+      value = cookies.district
+    }
+    if (username && password && value) {
+      setUsername(username)
+      setPassword(password)
+      setValue(value)
+      setIsLoading(true)
+      try {
+        const client = await StudentVue.login(
+          require('../assets/districts.json').find(
+            (d: SchoolDistrict) => d.name === value
+          ).parentVueUrl,
+          {
+            username: username,
+            password: password
+          }
+        )
+        const gradebook = await client.gradebook()
+        const marks = await GradeUtil.convertGradebook(gradebook)
+        setClient(client)
+        setMarks(marks)
+      } catch (err) {
+        setIsLoading(false)
+        alert(err.message)
+        return
+      }
+      setIsLoading(false)
+      navigation.navigate('Menu')
     }
   }
 
@@ -115,8 +145,6 @@ const Login = () => {
       alert(err.message)
       return
     }
-    setUsername(username)
-    setPassword(password)
     if (isChecked) {
       if (Platform.OS !== 'web') {
         save('Username', username)
@@ -289,6 +317,7 @@ const Login = () => {
             textColor={Colors.white}
             fontFamily="Inter_800ExtraBold"
             containerStyle={styles.button_container}
+            disabled={isLoading}
           ></CustomButton>
           <ActivityIndicator
             color={Colors.secondary}

@@ -266,6 +266,7 @@ const CourseDetails = ({ route }) => {
                   textColor={Colors.black}
                   fontFamily="Inter_600SemiBold"
                   containerStyle={styles.button_container}
+                  disabled={false}
                 ></CustomButton>
               </View>
             </View>

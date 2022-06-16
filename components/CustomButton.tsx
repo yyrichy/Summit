@@ -8,6 +8,7 @@ type Props = {
   textColor: string
   fontFamily: string
   containerStyle: any
+  disabled: boolean
 }
 
 const CustomButton: React.FC<Props> = ({
@@ -16,12 +17,14 @@ const CustomButton: React.FC<Props> = ({
   backgroundColor,
   textColor,
   fontFamily,
-  containerStyle
+  containerStyle,
+  disabled
 }: Props) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[containerStyle, { backgroundColor: backgroundColor }]}
+      disabled={disabled}
     >
       <View>
         <Text
