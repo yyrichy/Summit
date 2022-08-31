@@ -90,9 +90,11 @@ const Courses = ({ navigation }) => {
           textStyle={styles.dropdown_text}
         ></DropDownPicker>
         <View style={styles.row_container}>
-          <View style={styles.gpa_container}>
-            <Text style={styles.gpa}>{marks.gpa} GPA</Text>
-          </View>
+          {!isNaN(marks.gpa) && (
+            <View style={styles.gpa_container}>
+              <Text style={styles.gpa}>{marks.gpa} GPA</Text>
+            </View>
+          )}
           <View style={styles.refresh_button_container}>
             <FontAwesome.Button
               name="refresh"

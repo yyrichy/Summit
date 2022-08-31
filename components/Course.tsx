@@ -20,16 +20,18 @@ function CourseComponent(props) {
       <Text style={[styles.mark]}>
         {isNaN(parseFloat(props.mark)) ? 'N/A' : props.mark}
       </Text>
-      <Text
-        style={[
-          styles.letter_grade,
-          {
-            color: GradeUtil.calculateMarkColor(mark)
-          }
-        ]}
-      >
-        {GradeUtil.calculateLetterGrade(mark)}
-      </Text>
+      {!isNaN(parseFloat(props.mark)) && (
+        <Text
+          style={[
+            styles.letter_grade,
+            {
+              color: GradeUtil.calculateMarkColor(mark)
+            }
+          ]}
+        >
+          {GradeUtil.calculateLetterGrade(mark)}
+        </Text>
+      )}
     </View>
   )
 }
