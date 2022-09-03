@@ -33,7 +33,7 @@ const CourseDetails = ({ route }) => {
   const [isModalVisible, setModalVisible] = useState(false)
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState(
-    marks.courses.get(courseName).categories.values().next().value.name
+    marks.courses.get(courseName).categories.values().next().value?.name
   )
   const [categories, setCategories] = useState(
     Array.from(marks.courses.get(courseName).categories.values()).map((c) => {
