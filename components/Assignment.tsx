@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     marginTop: 7,
     elevation: 3,
     shadowOffset: {
-      width: 0,
+      width: 2,
       height: 2
     },
     shadowOpacity: 0.1,
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   },
   dropdown_container: {
     padding: 10,
-    backgroundColor: Colors.light_gray,
+    backgroundColor: Colors.off_white,
     borderTopColor: Colors.onyx_gray,
     borderTopWidth: 1
   },

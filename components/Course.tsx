@@ -38,18 +38,18 @@ function CourseComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.off_white,
     borderRadius: 15,
     height: 55,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 7,
-    marginTop: 7,
-    padding: 7,
+    marginTop: 10,
+    padding: 10,
     elevation: 3,
     shadowOffset: {
-      width: 0,
+      width: 2,
       height: 2
     },
     shadowOpacity: 0.1,
