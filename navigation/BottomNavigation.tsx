@@ -24,7 +24,8 @@ const App = () => {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: {
-          borderTopWidth: 1
+          borderTopWidth: 1,
+          overflow: 'hidden'
         }
       }}
     >
