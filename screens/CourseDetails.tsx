@@ -307,7 +307,8 @@ const styles = StyleSheet.create({
     height: 30,
     borderColor: Colors.black,
     fontFamily: 'Inter_400Regular',
-    fontSize: 12
+    fontSize: 12,
+    borderRadius: 5
   },
   modal: {
     flexDirection: 'column',

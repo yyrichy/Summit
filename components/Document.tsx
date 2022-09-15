@@ -33,13 +33,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     marginTop: 7,
     padding: 7,
-    elevation: 3,
-    shadowOffset: {
-      width: 2,
-      height: 2
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.secondary
   },
   doc_info_container: {
     flexDirection: 'column',

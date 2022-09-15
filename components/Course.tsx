@@ -47,13 +47,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     marginTop: 10,
     padding: 10,
-    elevation: 3,
-    shadowOffset: {
-      width: 2,
-      height: 2
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.secondary
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',

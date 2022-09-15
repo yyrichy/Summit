@@ -219,18 +219,13 @@ function AssignmentComponent(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.off_white,
     borderRadius: 10,
     marginLeft: 7,
     marginRight: 7,
     marginTop: 7,
-    elevation: 3,
-    shadowOffset: {
-      width: 2,
-      height: 2
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.secondary
   },
   horizontal_container: {
     flexDirection: 'row'
@@ -259,7 +254,7 @@ const styles = StyleSheet.create({
   category: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
-    fontSize: 11,
+    fontSize: 12,
     marginHorizontal: 7,
     lineHeight: 11 * 0.75,
     marginTop: 4,
@@ -285,11 +280,13 @@ const styles = StyleSheet.create({
   },
   dropdown_text_name: {
     marginHorizontal: 7,
-    fontFamily: 'Montserrat_600SemiBold'
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 12
   },
   dropdown_text_value: {
     fontFamily: 'Inter_400Regular',
-    flex: 1
+    flex: 1,
+    fontSize: 12
   }
 })
 
