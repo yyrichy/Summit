@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import { ActivityIndicator, Image, StyleSheet, View, Text } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import { StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import AppContext from '../contexts/AppContext'
@@ -31,10 +30,7 @@ const Profile = () => {
         />
       ) : (
         <View>
-          <LinearGradient
-            colors={['#DED140', Colors.primary]}
-            style={styles.header}
-          ></LinearGradient>
+          <View style={styles.header}></View>
           <Image
             style={styles.avatar}
             source={{
@@ -105,7 +101,8 @@ const suffix = (num: number) => {
 
 const styles = StyleSheet.create({
   header: {
-    height: 150
+    height: 150,
+    backgroundColor: Colors.primary
   },
   name: {
     fontSize: 24,
