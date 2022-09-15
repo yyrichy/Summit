@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Platform } from 'react-native'
 import { Colors } from '../colors/Colors'
 import GradeUtil from '../gradebook/GradeUtil'
 
@@ -10,10 +10,16 @@ function CourseComponent(props) {
     <View style={[styles.container, props.style]}>
       <Text style={styles.period_number}>{`0${props.period}`}</Text>
       <View style={styles.course_info_container}>
-        <Text numberOfLines={1} style={styles.name}>
+        <Text
+          numberOfLines={1}
+          style={Platform.OS === 'web' ? styles.name_web : styles.name}
+        >
           {props.name}
         </Text>
-        <Text numberOfLines={1} style={styles.teacher}>
+        <Text
+          numberOfLines={1}
+          style={Platform.OS === 'web' ? styles.teacher_web : styles.teacher}
+        >
           {props.teacher}
         </Text>
       </View>
@@ -60,7 +66,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     flex: 1
   },
-  name: {
+  name_web: {
     color: Colors.navy,
     fontFamily: 'Montserrat_700Bold',
     fontSize: 18,
@@ -70,7 +76,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     paddingBottom: 12 - 12 * 0.75
   },
-  teacher: {
+  teacher_web: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
@@ -78,6 +84,27 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     lineHeight: 12 * 0.75,
     paddingBottom: 2,
+    marginTop: 4,
+    textAlign: 'left'
+  },
+  name: {
+    color: Colors.navy,
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 18,
+    marginRight: 14,
+    marginLeft: 7,
+    lineHeight: 18 * 0.75,
+    paddingTop: 18 - 18 * 0.75,
+    textAlign: 'left'
+  },
+  teacher: {
+    color: Colors.black,
+    fontFamily: 'Inter_400Regular',
+    fontSize: 12,
+    marginRight: 14,
+    marginLeft: 7,
+    lineHeight: 12 * 0.75,
+    paddingTop: 12 - 12 * 0.75,
     marginTop: 4,
     textAlign: 'left'
   },
