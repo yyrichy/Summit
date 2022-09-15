@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
     marginRight: 14,
     marginLeft: 7,
     lineHeight: 18 * 0.75,
-    paddingTop: 18 - 18 * 0.75,
-    textAlign: 'left'
+    textAlign: 'left',
+    paddingBottom: 12 - 12 * 0.75
   },
   teacher: {
     color: Colors.black,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     marginRight: 14,
     marginLeft: 7,
     lineHeight: 12 * 0.75,
-    paddingTop: 12 - 12 * 0.75,
+    paddingBottom: 2,
     marginTop: 4,
     textAlign: 'left'
   },

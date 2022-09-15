@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginHorizontal: 7,
     lineHeight: 14 * 0.75,
-    paddingTop: 14 - 14 * 0.75,
+    paddingBottom: 11 - 11 * 0.75,
     textAlign: 'left'
   },
   category: {
@@ -257,8 +257,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginHorizontal: 7,
     lineHeight: 11 * 0.75,
+    paddingVertical: 2,
     marginTop: 4,
-    paddingTop: 11 - 11 * 0.75,
     textAlign: 'left'
   },
   input_container: {
