@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   TextInput,
   View,
@@ -25,7 +25,6 @@ import AwesomeAlert from 'react-native-awesome-alerts'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useCookies } from 'react-cookie'
 import * as SecureStore from 'expo-secure-store'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -278,15 +277,6 @@ const Login = () => {
                       {props.label}
                     </Text>
                   </View>
-                  {props.isSelected && (
-                    <View style={styles.district_check_container}>
-                      <MaterialCommunityIcons
-                        name={'check'}
-                        size={20}
-                        style={{ marginHorizontal: 5 }}
-                      />
-                    </View>
-                  )}
                 </TouchableOpacity>
               )
             }}
@@ -447,10 +437,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start'
-  },
-  district_check_container: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
   },
   loading: {
     margin: 'auto'
