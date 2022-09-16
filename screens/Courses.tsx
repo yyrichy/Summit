@@ -5,7 +5,8 @@ import {
   StyleSheet,
   View,
   Text,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
@@ -15,6 +16,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { showMessage } from 'react-native-flash-message'
 import { Colors } from '../colors/Colors'
 import AwesomeAlert from 'react-native-awesome-alerts'
+import Constants from 'expo-constants'
 
 const Courses = ({ navigation }) => {
   const { client, marks, setMarks } = useContext(AppContext)
@@ -88,6 +90,30 @@ const Courses = ({ navigation }) => {
           maxHeight={null}
           style={styles.dropdown}
           textStyle={styles.dropdown_text}
+          listItemLabelStyle={styles.dropdown_label}
+          renderListItem={(props) => {
+            return (
+              <TouchableOpacity
+                {...props}
+                style={[
+                  props.listItemContainerStyle,
+                  {
+                    backgroundColor: props.isSelected && Colors.light_gray
+                  }
+                ]}
+                onPress={() => {
+                  setValue(props.value)
+                  setOpen(false)
+                }}
+              >
+                <View style={styles.district_name_container}>
+                  <Text numberOfLines={1} style={props.listItemLabelStyle}>
+                    {props.label}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )
+          }}
         ></DropDownPicker>
         <View style={styles.row_container}>
           {!isNaN(marks.gpa) && (
@@ -156,15 +182,27 @@ const Courses = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  // android status bar not accounted for properly in safeview + dropdownpicker
+  // web needs to be shifted 11 right
   dropdown: {
     borderWidth: 0,
     height: 30,
     marginBottom: 15,
+    marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0,
+    marginLeft: Platform.OS === 'web' ? 11 : 0,
     backgroundColor: 'transparent'
   },
   dropdown_text: {
     fontFamily: 'Inter_800ExtraBold',
     fontSize: 30
+  },
+  dropdown_label: {
+    marginLeft: Platform.OS === 'web' ? 11 : 0
+  },
+  district_name_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
   },
   row_container: {
     flexDirection: 'row',
