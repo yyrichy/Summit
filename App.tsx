@@ -41,8 +41,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import FlashMessage from 'react-native-flash-message'
 import { User } from './interfaces/User'
-import { ActivityIndicator, Text } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
+import { ActivityIndicator, Text, View } from 'react-native'
 import { Colors } from './colors/Colors'
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -95,21 +94,14 @@ const App = () => {
   if (!fontsLoaded) {
     return (
       <>
-        <LinearGradient
-          colors={['#FFF785', Colors.primary]}
-          style={{
-            flex: 2,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
+        <View style={{ backgroundColor: Colors.primary }}>
           <Text style={{ margin: 10 }}>Loading Schools...</Text>
           <ActivityIndicator
             color={Colors.secondary}
             animating={true}
             size="large"
           />
-        </LinearGradient>
+        </View>
       </>
     )
   }
