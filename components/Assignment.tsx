@@ -76,7 +76,7 @@ function AssignmentComponent(props) {
             value={points}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
-            autoCompleteType={'off'}
+            autoComplete={'off'}
             style={[
               styles.mark,
               {
@@ -99,7 +99,7 @@ function AssignmentComponent(props) {
             value={total}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
-            autoCompleteType={'off'}
+            autoComplete={'off'}
             style={[
               styles.mark,
               {

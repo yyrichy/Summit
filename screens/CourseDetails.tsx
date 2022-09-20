@@ -181,7 +181,7 @@ const CourseDetails = ({ route }) => {
               <TextInput
                 value={points}
                 keyboardType="decimal-pad"
-                autoCompleteType="off"
+                autoComplete="off"
                 placeholder="Points Earned"
                 onChangeText={(t) => {
                   if (GradeUtil.isNumber(t) || t === '') setPoints(t)
@@ -191,7 +191,7 @@ const CourseDetails = ({ route }) => {
               <TextInput
                 value={total}
                 keyboardType="decimal-pad"
-                autoCompleteType="off"
+                autoComplete="off"
                 placeholder="Total Points"
                 onChangeText={(t) => {
                   if (GradeUtil.isNumber(t) || t === '') setTotal(t)
