@@ -90,7 +90,6 @@ const Courses = ({ navigation }) => {
           maxHeight={null}
           style={styles.dropdown}
           textStyle={styles.dropdown_text}
-          listItemLabelStyle={styles.dropdown_label}
           renderListItem={(props) => {
             return (
               <TouchableOpacity
@@ -189,15 +188,11 @@ const styles = StyleSheet.create({
     height: 30,
     marginBottom: 15,
     marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0,
-    marginLeft: Platform.OS === 'web' ? 11 : 0,
     backgroundColor: 'transparent'
   },
   dropdown_text: {
     fontFamily: 'Inter_800ExtraBold',
     fontSize: 30
-  },
-  dropdown_label: {
-    marginLeft: Platform.OS === 'web' ? 11 : 0
   },
   district_name_container: {
     flex: 1,
