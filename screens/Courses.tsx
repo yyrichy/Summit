@@ -135,7 +135,7 @@ const Courses = ({ navigation }) => {
             ></FontAwesome.Button>
           </View>
         </View>
-        {marks != undefined && (
+        {marks && (
           <FlatList
             data={[...marks.courses.entries()]}
             renderItem={({ item }) => (

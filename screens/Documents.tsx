@@ -21,7 +21,7 @@ import AwesomeAlert from 'react-native-awesome-alerts'
 
 const Documents = () => {
   const { client } = useContext(AppContext)
-  const [documents, setDocuments] = useState(undefined)
+  const [documents, setDocuments] = useState(undefined as Document[])
   const [isLoading, setIsLoading] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
   const [errorMessage, setErrorMessage] = useState()

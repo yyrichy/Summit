@@ -7,7 +7,7 @@ import GradeContext from '../contexts/GradeContext'
 const Stack = createStackNavigator()
 
 const StackNavigator = () => {
-  const [course, setCourse] = useState(undefined)
+  const [course, setCourse] = useState(undefined as string)
 
   return (
     <GradeContext.Provider

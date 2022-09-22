@@ -43,14 +43,16 @@ import FlashMessage from 'react-native-flash-message'
 import { User } from './interfaces/User'
 import { ActivityIndicator, Text, View } from 'react-native'
 import { Colors } from './colors/Colors'
+import { Client } from 'studentvue'
+import { Marks } from './interfaces/Gradebook'
 
 const Stack = createStackNavigator<RootStackParamList>()
 
 const App = () => {
-  const [client, setClient] = useState(undefined)
-  const [marks, setMarks] = useState(undefined)
-  const [username, setUsername] = useState(undefined)
-  const [password, setPassword] = useState(undefined)
+  const [client, setClient] = useState(undefined as Client)
+  const [marks, setMarks] = useState(undefined as Marks)
+  const [username, setUsername] = useState(undefined as string)
+  const [password, setPassword] = useState(undefined as string)
   const user: User = {
     username: username,
     password: password,
