@@ -278,11 +278,12 @@ const Login = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setList}
-            maxHeight={null}
+            maxHeight={250}
+            dropDownDirection={'BOTTOM'}
             style={styles.dropdown}
             textStyle={styles.dropdown_text}
             containerStyle={styles.dropdown_container}
-            listMode={Platform.OS === 'web' ? 'MODAL' : 'FLATLIST'}
+            listMode={'FLATLIST'}
             translation={{
               SEARCH_PLACEHOLDER: 'Enter School District Name',
               PLACEHOLDER: 'Select School District',
