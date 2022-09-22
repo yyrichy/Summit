@@ -32,6 +32,8 @@ import useAsyncEffect from 'use-async-effect'
 
 type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
+type loginInfo = 'username' | 'password' | 'district'
+
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
   const { username, password, setUsername, setPassword, setClient, setMarks } =
@@ -43,7 +45,11 @@ const Login = () => {
 
   const [firstLaunch, setFirstLaunch] = useState(false)
 
-  const [cookies, setCookie] = useCookies(['username', 'password', 'district'])
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'username',
+    'password',
+    'district'
+  ] as loginInfo[])
 
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(undefined as string)
@@ -55,30 +61,24 @@ const Login = () => {
 
   useAsyncEffect(async () => {
     savedCredentials()
-    if (!(await getData('firstLaunch'))) {
+    if (!(await getAsyncStorage('firstLaunch'))) {
       setFirstLaunch(true)
-      storeData('firstLaunch', 'true')
+      setAsyncStorage('firstLaunch', 'true')
     }
   }, [])
 
   async function savedCredentials() {
-    let username: string
-    let password: string
-    let value: string
-    if (Platform.OS !== 'web') {
-      username = await getValueFor('Username')
-      password = await getValueFor('Password')
-      value = await getValueFor('District')
-    } else {
-      username = cookies.username
-      password = cookies.password
-      value = cookies.district
-    }
+    const username: string = await getValueFor('username')
+    const password: string = await getValueFor('password')
+    const value: string = await getValueFor('district')
+
+    // Auto login
     if (username && password && value) {
       setUsername(username)
       setPassword(password)
       setValue(value)
       setIsLoading(true)
+      setToggleCheckBox(true)
       try {
         const client = await StudentVue.login(
           require('../assets/districts.json').find(
@@ -145,29 +145,27 @@ const Login = () => {
       return
     }
     if (isChecked) {
-      if (Platform.OS !== 'web') {
-        save('Username', username)
-        save('Password', password)
-        save('District', value)
-      } else {
-        setCookie('username', username, { path: '/' })
-        setCookie('password', password, { path: '/' })
-        setCookie('district', value, { path: '/' })
-      }
+      save('username', username)
+      save('password', password)
+      save('district', value)
+    } else {
+      remove('username')
+      remove('password')
+      remove('username')
     }
     setIsLoading(false)
     navigation.navigate('Menu')
   }
 
-  async function openInstagram() {
+  async function openInstagram(username: string) {
     if (Platform.OS !== 'web') {
-      const appUrl = 'instagram://user?username=richardyin99'
+      const appUrl = `instagram://user?username=${username}`
       try {
         if (await Linking.canOpenURL(appUrl)) {
           Linking.openURL(appUrl)
         } else {
           try {
-            Linking.openURL('https://instagram.com/richardyin99')
+            Linking.openURL(`https://instagram.com/${username}`)
           } catch (err) {
             alert('Cannot open Instagram')
           }
@@ -177,7 +175,7 @@ const Login = () => {
       }
     } else {
       try {
-        Linking.openURL('https://instagram.com/richardyin99')
+        Linking.openURL(`https://instagram.com/${username}`)
       } catch (err) {
         alert('Cannot open Instagram')
       }
@@ -192,6 +190,45 @@ const Login = () => {
   function descriptionFontSize(): number {
     if (Platform.OS === 'web') return 25
     return 20
+  }
+
+  async function save(key: loginInfo, value: string) {
+    if (value === null) return
+    if (Platform.OS === 'web') {
+      setCookie(key, value, { path: '/' })
+    } else {
+      await SecureStore.setItemAsync(key, value)
+    }
+  }
+
+  async function getValueFor(key: loginInfo) {
+    if (Platform.OS === 'web') {
+      return await SecureStore.getItemAsync(key)
+    } else {
+      cookies[key]
+    }
+  }
+
+  const remove = async (key: loginInfo) => {
+    if (Platform.OS === 'web') {
+      removeCookie(key, { path: '/' })
+    } else {
+      await SecureStore.deleteItemAsync(key)
+    }
+  }
+
+  const setAsyncStorage = async (key: string, value: string) => {
+    try {
+      await AsyncStorage.setItem(key, value)
+    } catch (e) {}
+  }
+
+  const getAsyncStorage = async (key: string): Promise<string> => {
+    try {
+      return await AsyncStorage.getItem(key)
+    } catch (e) {
+      return null
+    }
   }
 
   return (
@@ -322,18 +359,32 @@ const Login = () => {
               bottom: 20
             }}
           >
-            <Text style={styles.credit}>by Richard Yin &copy; 2022</Text>
-            <FontAwesome.Button
-              name="instagram"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.black
-              }}
-              underlayColor="none"
-              activeOpacity={0.5}
-              size={28}
-              onPress={openInstagram}
-            ></FontAwesome.Button>
+            <View style={styles.row_container}>
+              <View style={styles.insta_button_container}>
+                <FontAwesome.Button
+                  name="instagram"
+                  backgroundColor="transparent"
+                  iconStyle={styles.insta_button}
+                  underlayColor="none"
+                  activeOpacity={0.5}
+                  size={28}
+                  onPress={() => openInstagram('richardyin99')}
+                ></FontAwesome.Button>
+                <Text style={styles.insta_text}>Richard Y</Text>
+              </View>
+              <View style={styles.insta_button_container}>
+                <FontAwesome.Button
+                  name="instagram"
+                  backgroundColor="transparent"
+                  iconStyle={styles.insta_button}
+                  underlayColor="none"
+                  activeOpacity={0.5}
+                  size={28}
+                  onPress={() => openInstagram('karthik.whynot')}
+                ></FontAwesome.Button>
+                <Text style={styles.insta_text}>Karthik M</Text>
+              </View>
+            </View>
           </View>
         </KeyboardAvoidingView>
       </ImageBackground>
@@ -456,32 +507,19 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontFamily: 'Inter_400Regular'
   },
-  credit: {
-    fontFamily: 'Inter_200ExtraLight',
-    fontSize: 12,
-    textAlign: 'center'
+  row_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  insta_button_container: {
+    marginHorizontal: 10
+  },
+  insta_button: {
+    color: Colors.black
+  },
+  insta_text: {
+    fontFamily: 'Inter_300Light',
+    fontSize: 10
   }
 })
-
-async function save(key: string, value: string) {
-  if (value === null) return
-  await SecureStore.setItemAsync(key, value)
-}
-
-async function getValueFor(key: string) {
-  return await SecureStore.getItemAsync(key)
-}
-
-const storeData = async (key: string, value: string) => {
-  try {
-    await AsyncStorage.setItem(key, value)
-  } catch (e) {}
-}
-
-const getData = async (key: string): Promise<string> => {
-  try {
-    return await AsyncStorage.getItem(key)
-  } catch (e) {
-    return null
-  }
-}
