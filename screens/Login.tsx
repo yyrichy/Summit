@@ -10,7 +10,8 @@ import {
   Linking,
   KeyboardAvoidingView,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  Dimensions
 } from 'react-native'
 import StudentVue from 'studentvue'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -278,7 +279,7 @@ const Login = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setList}
-            maxHeight={250}
+            maxHeight={Dimensions.get('window').height / 2 - 125}
             dropDownDirection={'BOTTOM'}
             style={styles.dropdown}
             textStyle={styles.dropdown_text}
