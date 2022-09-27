@@ -39,7 +39,7 @@ const App = () => {
               <MaterialIcons
                 name="insert-chart"
                 size={30}
-                color={Colors.middle_blue_green}
+                color={Colors.navy}
               />
             ) : (
               <MaterialIcons
@@ -58,11 +58,7 @@ const App = () => {
           headerShown: false,
           tabBarIcon: (tabInfo) => {
             return tabInfo.focused ? (
-              <Ionicons
-                name="folder"
-                size={30}
-                color={Colors.middle_blue_green}
-              />
+              <Ionicons name="folder" size={30} color={Colors.navy} />
             ) : (
               <Ionicons
                 name="folder-outline"
@@ -80,11 +76,7 @@ const App = () => {
           headerShown: false,
           tabBarIcon: (tabInfo) => {
             return tabInfo.focused ? (
-              <Ionicons
-                name="person"
-                size={30}
-                color={Colors.middle_blue_green}
-              />
+              <Ionicons name="person" size={30} color={Colors.navy} />
             ) : (
               <Ionicons
                 name="person-outline"
