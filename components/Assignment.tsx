@@ -280,9 +280,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
     marginHorizontal: 7,
-    lineHeight: 11 * 0.75,
+    lineHeight: 12 * 0.75,
     marginTop: 4,
-    paddingTop: 11 - 11 * 0.75,
+    paddingTop: 12 - 12 * 0.75,
     textAlign: 'left'
   },
   input_container: {
