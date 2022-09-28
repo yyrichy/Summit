@@ -194,6 +194,11 @@ const Login = () => {
     return 20
   }
 
+  function mountainSize(): number {
+    if (Platform.OS === 'web') return 40
+    return 30
+  }
+
   async function save(key: loginInfo, value: string) {
     if (value === null) return
     if (Platform.OS === 'web') {
@@ -246,7 +251,11 @@ const Login = () => {
               Summit
             </Text>
             <View style={styles.mountain}>
-              <FontAwesome5 name="mountain" size={30} color="black" />
+              <FontAwesome5
+                name="mountain"
+                size={mountainSize()}
+                color="black"
+              />
             </View>
           </View>
           <Text
