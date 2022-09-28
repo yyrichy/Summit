@@ -38,6 +38,7 @@ import {
   Montserrat_800ExtraBold_Italic,
   Montserrat_900Black_Italic
 } from '@expo-google-fonts/montserrat'
+import { RussoOne_400Regular } from '@expo-google-fonts/russo-one'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import FlashMessage from 'react-native-flash-message'
 import { User } from './interfaces/User'
@@ -90,7 +91,8 @@ const App = () => {
     Montserrat_600SemiBold_Italic,
     Montserrat_700Bold_Italic,
     Montserrat_800ExtraBold_Italic,
-    Montserrat_900Black_Italic
+    Montserrat_900Black_Italic,
+    RussoOne_400Regular
   })
 
   if (!fontsLoaded) {

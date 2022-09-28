@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_900Black'
   },
   description: {
-    fontFamily: 'Inter_700Bold',
+    fontFamily: 'RussoOne_400Regular',
     textAlign: 'center'
   },
   login_info: {
