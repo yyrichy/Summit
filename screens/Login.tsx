@@ -30,6 +30,7 @@ import { useCookies } from 'react-cookie'
 import * as SecureStore from 'expo-secure-store'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import useAsyncEffect from 'use-async-effect'
+import { FontAwesome5 } from '@expo/vector-icons'
 
 type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
 
@@ -240,9 +241,14 @@ const Login = () => {
         style={{ flex: 1 }}
       >
         <SafeAreaView style={{ alignItems: 'center' }}>
-          <Text style={[styles.name, { fontSize: nameFontSize() }]}>
-            Summit ⛰
-          </Text>
+          <View style={styles.horizontal_container}>
+            <Text style={[styles.name, { fontSize: nameFontSize() }]}>
+              Summit
+            </Text>
+            <View style={styles.mountain}>
+              <FontAwesome5 name="mountain" size={30} color="black" />
+            </View>
+          </View>
           <Text
             style={[styles.description, { fontSize: descriptionFontSize() }]}
           >
@@ -420,10 +426,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 10
   },
-  name: {
-    fontFamily: 'Montserrat_900Black',
-    textAlign: 'center',
+  horizontal_container: {
+    flexDirection: 'row',
     marginTop: 10
+  },
+  mountain: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 5
+  },
+  name: {
+    fontFamily: 'Montserrat_900Black'
   },
   description: {
     fontFamily: 'Inter_700Bold',
