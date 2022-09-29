@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Grades from '../screens/Grades'
 import Profile from '../screens/Profile'
 import React from 'react'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
@@ -12,7 +12,7 @@ import { TouchableOpacity } from 'react-native'
 import { Colors } from '../colors/Colors'
 
 const Tab = createBottomTabNavigator()
-type navScreenProp = StackNavigationProp<RootStackParamList, 'Menu'>
+type navScreenProp = NativeStackNavigationProp<RootStackParamList, 'Menu'>
 
 const EmptyComponent = () => null
 
