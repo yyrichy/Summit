@@ -22,6 +22,8 @@ function AssignmentComponent(props) {
   const [total, setTotal] = useState(
     isNaN(assignment.total) ? '' : assignment.total.toString()
   )
+  const score = (assignment.points / assignment.total) * 100
+  const hasScore = !isNaN((assignment.points / assignment.total) * 100)
 
   const updatePoints = (input: string, type: string) => {
     setMarks(
@@ -46,7 +48,18 @@ function AssignmentComponent(props) {
   }
 
   return (
-    <View style={[styles.container, props.style]}>
+    <View
+      style={[
+        styles.container,
+        props.style,
+        hasScore
+          ? {
+              borderLeftColor: GradeUtil.calculateMarkColor(score),
+              borderLeftWidth: 3
+            }
+          : {}
+      ]}
+    >
       <View style={[styles.horizontal_container, { height: 52 }]}>
         <View style={styles.assignment_info_container}>
           <Text
@@ -167,14 +180,12 @@ function AssignmentComponent(props) {
           <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Grade:</Text>
             <Text style={styles.dropdown_text_value}>
-              {isNaN(assignment.points / assignment.total)
-                ? 'N/A'
-                : `${GradeUtil.roundTo(
-                    (assignment.points / assignment.total) * 100,
+              {hasScore
+                ? `${GradeUtil.roundTo(
+                    score,
                     2
-                  )} (${GradeUtil.calculateLetterGrade(
-                    (assignment.points / assignment.total) * 100
-                  )})`}
+                  )}% (${GradeUtil.calculateLetterGrade(score)})`
+                : 'N/A'}
             </Text>
           </View>
           <View style={styles.horizontal_container}>
@@ -197,12 +208,6 @@ function AssignmentComponent(props) {
             <Text style={styles.dropdown_text_name}>Notes:</Text>
             <Text style={styles.dropdown_text_value}>
               {assignment.notes.length === 0 ? 'None' : assignment.notes}
-            </Text>
-          </View>
-          <View style={styles.horizontal_container}>
-            <Text style={styles.dropdown_text_name}>Modified By You:</Text>
-            <Text style={styles.dropdown_text_value}>
-              {assignment.modified ? 'True' : 'False'}
             </Text>
           </View>
           <FontAwesome.Button
