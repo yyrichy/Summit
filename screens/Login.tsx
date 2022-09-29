@@ -14,7 +14,7 @@ import {
   Dimensions
 } from 'react-native'
 import StudentVue from 'studentvue'
-import { StackNavigationProp } from '@react-navigation/stack'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
@@ -32,7 +32,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import useAsyncEffect from 'use-async-effect'
 import { FontAwesome5 } from '@expo/vector-icons'
 
-type loginScreenProp = StackNavigationProp<RootStackParamList, 'Login'>
+type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
 type loginInfo = 'username' | 'password' | 'district'
 

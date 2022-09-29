@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import CourseDetails from './CourseDetails'
 import Courses from './Courses'
 import GradeContext from '../contexts/GradeContext'
 
-const Stack = createStackNavigator()
+const Stack = createNativeStackNavigator()
 
 const StackNavigator = () => {
   const [course, setCourse] = useState(undefined as string)

@@ -2,7 +2,7 @@ import Login from './screens/Login'
 import React, { useState } from 'react'
 import BottomNavigation from './navigation/BottomNavigation'
 import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootStackParamList } from './types/RootStackParams'
 import AppContext from './contexts/AppContext'
 import { LightTheme } from './theme/LightTheme'
@@ -47,7 +47,7 @@ import { Colors } from './colors/Colors'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
 
-const Stack = createStackNavigator<RootStackParamList>()
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 const App = () => {
   const [client, setClient] = useState(undefined as Client)
