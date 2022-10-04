@@ -6,7 +6,7 @@ import {
   calculateMarkColor
 } from '../gradebook/GradeUtil'
 
-function CourseComponent(props) {
+function Course(props) {
   const mark = parseFloat(props.mark)
 
   return (
@@ -124,4 +124,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CourseComponent
+export default Course

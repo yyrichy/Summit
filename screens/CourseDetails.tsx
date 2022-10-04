@@ -9,7 +9,7 @@ import {
   View
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
-import AssignmentComponent from '../components/Assignment'
+import Assignment from '../components/Assignment'
 import {
   addAssignment,
   convertGradebook,
@@ -161,10 +161,7 @@ const CourseDetails = ({ route }) => {
         <FlatList
           data={course.assignments}
           renderItem={({ item }) => (
-            <AssignmentComponent
-              name={item.name}
-              course={courseName}
-            ></AssignmentComponent>
+            <Assignment name={item.name} course={courseName}></Assignment>
           )}
           keyExtractor={(item) => item.name}
         />

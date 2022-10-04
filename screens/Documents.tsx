@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
-import DocumentComponent from '../components/Document'
+import Doc from '../components/Document'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Colors } from '../colors/Colors'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
@@ -115,11 +115,11 @@ const Documents = () => {
                   downloadDocument(item)
                 }}
               >
-                <DocumentComponent
+                <Doc
                   name={(item as Document).comment}
                   type={(item as Document).file.type}
                   date={(item as Document).file.date.toLocaleDateString()}
-                ></DocumentComponent>
+                ></Doc>
               </TouchableOpacity>
             )}
             keyExtractor={(item) => (item as Document).documentGu}

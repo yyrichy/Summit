@@ -14,7 +14,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
-function AssignmentComponent(props) {
+function Assignment(props) {
   const { marks, setMarks } = useContext(AppContext)
   const [isDropdown, setIsDropdown] = useState(false)
   const assignment = marks.courses
@@ -321,4 +321,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AssignmentComponent
+export default Assignment

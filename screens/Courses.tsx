@@ -9,7 +9,7 @@ import {
   Platform
 } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
-import CourseComponent from '../components/Course'
+import Course from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { convertGradebook, parseCourseName } from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
@@ -141,12 +141,12 @@ const Courses = ({ navigation }) => {
                   navigation.navigate('Course Details', { title: item[0] })
                 }
               >
-                <CourseComponent
+                <Course
                   name={parseCourseName(item[0])}
                   mark={item[1].value}
                   period={item[1].period}
                   teacher={item[1].teacher}
-                ></CourseComponent>
+                ></Course>
               </TouchableOpacity>
             )}
             keyExtractor={(item) => item[0]}

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { Colors } from '../colors/Colors'
 
-function DocumentComponent(props) {
+function Doc(props) {
   return (
     <View style={[styles.container, props.style]}>
       <View style={styles.doc_info_container}>
@@ -76,4 +76,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default DocumentComponent
+export default Doc
