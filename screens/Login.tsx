@@ -20,7 +20,7 @@ import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
 import AppContext from '../contexts/AppContext'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
-import GradeUtil from '../gradebook/GradeUtil'
+import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import AwesomeAlert from 'react-native-awesome-alerts'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
@@ -92,7 +92,7 @@ const Login = () => {
           }
         )
         const gradebook = await client.gradebook()
-        const marks = await GradeUtil.convertGradebook(gradebook)
+        const marks = await convertGradebook(gradebook)
         setClient(client)
         setMarks(marks)
       } catch (err) {
@@ -138,7 +138,7 @@ const Login = () => {
         }
       )
       const gradebook = await client.gradebook()
-      const marks = await GradeUtil.convertGradebook(gradebook)
+      const marks = await convertGradebook(gradebook)
       setClient(client)
       setMarks(marks)
     } catch (err) {

@@ -10,7 +10,12 @@ import {
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import AssignmentComponent from '../components/Assignment'
-import GradeUtil from '../gradebook/GradeUtil'
+import {
+  addAssignment,
+  convertGradebook,
+  parseCourseName,
+  isNumber
+} from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { LightTheme } from '../theme/LightTheme'
 import Modal from 'react-native-modal'
@@ -60,9 +65,9 @@ const CourseDetails = ({ route }) => {
     setModalVisible(!isModalVisible)
   }
 
-  const addAssignment = () => {
+  const add = () => {
     setMarks(
-      GradeUtil.addAssignment(
+      addAssignment(
         marks,
         course,
         assignmentName,
@@ -78,7 +83,7 @@ const CourseDetails = ({ route }) => {
     setIsLoading(true)
     try {
       setMarks(
-        await GradeUtil.convertGradebook(
+        await convertGradebook(
           await client.gradebook(marks.reportingPeriod.index)
         )
       )
@@ -121,7 +126,7 @@ const CourseDetails = ({ route }) => {
           </View>
           <Text numberOfLines={1} style={styles.course_details}>
             {isNaN(course.value) ? 'N/A' : course.value} |{' '}
-            {GradeUtil.parseCourseName(courseName)}
+            {parseCourseName(courseName)}
           </Text>
           <View
             style={{
@@ -184,7 +189,7 @@ const CourseDetails = ({ route }) => {
                 autoComplete="off"
                 placeholder="Points Earned"
                 onChangeText={(t) => {
-                  if (GradeUtil.isNumber(t) || t === '') setPoints(t)
+                  if (isNumber(t) || t === '') setPoints(t)
                 }}
                 style={styles.input}
               ></TextInput>
@@ -194,7 +199,7 @@ const CourseDetails = ({ route }) => {
                 autoComplete="off"
                 placeholder="Total Points"
                 onChangeText={(t) => {
-                  if (GradeUtil.isNumber(t) || t === '') setTotal(t)
+                  if (isNumber(t) || t === '') setTotal(t)
                 }}
                 style={styles.input}
               ></TextInput>
@@ -260,7 +265,7 @@ const CourseDetails = ({ route }) => {
                   }}
                 ></DropDownPicker>
                 <CustomButton
-                  onPress={addAssignment}
+                  onPress={add}
                   text={'Add Assignment'}
                   backgroundColor={LightTheme.colors.card}
                   textColor={Colors.black}

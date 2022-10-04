@@ -11,7 +11,7 @@ import {
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import CourseComponent from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
-import GradeUtil from '../gradebook/GradeUtil'
+import { convertGradebook, parseCourseName } from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { showMessage } from 'react-native-flash-message'
 import { Colors } from '../colors/Colors'
@@ -36,9 +36,7 @@ const Courses = ({ navigation }) => {
     let isSubscribed = true
     const getGradebook = async () => {
       try {
-        const marks = await GradeUtil.convertGradebook(
-          await client.gradebook(value)
-        )
+        const marks = await convertGradebook(await client.gradebook(value))
         if (isSubscribed) {
           setMarks(marks)
         }
@@ -58,7 +56,7 @@ const Courses = ({ navigation }) => {
     setIsLoading(true)
     try {
       const gradebook = await client.gradebook(value)
-      const newMarks = await GradeUtil.convertGradebook(gradebook)
+      const newMarks = await convertGradebook(gradebook)
       setMarks(newMarks)
     } catch (err) {
       setErrorMessage(err.message)
@@ -144,7 +142,7 @@ const Courses = ({ navigation }) => {
                 }
               >
                 <CourseComponent
-                  name={GradeUtil.parseCourseName(item[0])}
+                  name={parseCourseName(item[0])}
                   mark={item[1].value}
                   period={item[1].period}
                   teacher={item[1].teacher}
