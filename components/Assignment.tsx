@@ -1,6 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { StyleSheet, View, Text, TextInput, Platform } from 'react-native'
-import GradeUtil from '../gradebook/GradeUtil'
+import {
+  calculateMarkColor,
+  updatePoints,
+  deleteAssignment,
+  isNumber,
+  roundTo,
+  calculateLetterGrade
+} from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -25,9 +32,9 @@ function AssignmentComponent(props) {
   const score = (assignment.points / assignment.total) * 100
   const hasScore = !isNaN((assignment.points / assignment.total) * 100)
 
-  const updatePoints = (input: string, type: string) => {
+  const update = (input: string, type: string) => {
     setMarks(
-      GradeUtil.updatePoints(
+      updatePoints(
         marks,
         props.course,
         assignment.name,
@@ -35,10 +42,6 @@ function AssignmentComponent(props) {
         type
       )
     )
-  }
-
-  const deleteAssignment = () => {
-    setMarks(GradeUtil.deleteAssignment(marks, props.course, assignment.name))
   }
 
   const getWidth = (n: number) => {
@@ -54,7 +57,7 @@ function AssignmentComponent(props) {
         props.style,
         hasScore
           ? {
-              borderLeftColor: GradeUtil.calculateMarkColor(score),
+              borderLeftColor: calculateMarkColor(score),
               borderLeftWidth: 3
             }
           : {}
@@ -101,9 +104,9 @@ function AssignmentComponent(props) {
               }
             ]}
             onChangeText={(input) => {
-              if (GradeUtil.isNumber(input) || input === '') {
+              if (isNumber(input) || input === '') {
                 setPoints(input)
-                updatePoints(input, 'earned')
+                update(input, 'earned')
               }
             }}
           />
@@ -124,9 +127,9 @@ function AssignmentComponent(props) {
               }
             ]}
             onChangeText={(input) => {
-              if (GradeUtil.isNumber(input) || input === '') {
+              if (isNumber(input) || input === '') {
                 setTotal(input)
-                updatePoints(input, 'total')
+                update(input, 'total')
               }
             }}
           />
@@ -155,7 +158,7 @@ function AssignmentComponent(props) {
           <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Effective Weight:</Text>
             <Text style={styles.dropdown_text_value}>
-              {GradeUtil.roundTo(
+              {roundTo(
                 (marks.courses
                   .get(props.course)
                   .categories.get(assignment.category).weight /
@@ -181,10 +184,7 @@ function AssignmentComponent(props) {
             <Text style={styles.dropdown_text_name}>Grade:</Text>
             <Text style={styles.dropdown_text_value}>
               {hasScore
-                ? `${GradeUtil.roundTo(
-                    score,
-                    2
-                  )}% (${GradeUtil.calculateLetterGrade(score)})`
+                ? `${roundTo(score, 2)}% (${calculateLetterGrade(score)})`
                 : 'N/A'}
             </Text>
           </View>
@@ -219,7 +219,9 @@ function AssignmentComponent(props) {
             underlayColor="none"
             activeOpacity={0.5}
             size={24}
-            onPress={() => deleteAssignment()}
+            onPress={() =>
+              setMarks(deleteAssignment(marks, props.course, assignment.name))
+            }
           ></FontAwesome.Button>
         </View>
       )}

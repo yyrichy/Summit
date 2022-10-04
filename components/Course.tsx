@@ -1,16 +1,17 @@
 import React from 'react'
 import { StyleSheet, View, Text, Platform } from 'react-native'
 import { Colors } from '../colors/Colors'
-import GradeUtil from '../gradebook/GradeUtil'
+import {
+  calculateLetterGrade,
+  calculateMarkColor
+} from '../gradebook/GradeUtil'
 
 function CourseComponent(props) {
   const mark = parseFloat(props.mark)
 
   return (
     <View style={[styles.container, props.style]}>
-      <Text style={styles.period_number}>
-        {('0' + props.period).slice(-2)}
-      </Text>
+      <Text style={styles.period_number}>{('0' + props.period).slice(-2)}</Text>
       <View style={styles.course_info_container}>
         <Text
           numberOfLines={1}
@@ -33,11 +34,11 @@ function CourseComponent(props) {
           style={[
             styles.letter_grade,
             {
-              color: GradeUtil.calculateMarkColor(mark)
+              color: calculateMarkColor(mark)
             }
           ]}
         >
-          {GradeUtil.calculateLetterGrade(mark)}
+          {calculateLetterGrade(mark)}
         </Text>
       )}
     </View>
