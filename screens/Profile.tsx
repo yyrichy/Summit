@@ -5,6 +5,7 @@ import { Colors } from '../colors/Colors'
 import AppContext from '../contexts/AppContext'
 import { FontAwesome } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
+import { AntDesign } from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
 
 const Profile = () => {
@@ -15,6 +16,7 @@ const Profile = () => {
     setStudentInfo(await client.studentInfo())
   }
   if (!studentInfo) fetchStudentInfo()
+  console.log(studentInfo)
 
   return (
     <View style={{ flex: 1 }}>
@@ -60,6 +62,30 @@ const Profile = () => {
                 color={Colors.black}
               />
             </View>
+          </View>
+          <View style={styles.property_container}>
+            <AntDesign name="idcard" size={26} color={Colors.black} />
+            <Text style={styles.property_text}>
+              {studentInfo.id ? `ID #${studentInfo.id}` : ''}
+            </Text>
+          </View>
+          <View style={styles.property_container}>
+            <Feather name="user" size={26} color={Colors.black} />
+            <Text style={styles.property_text}>{studentInfo.gender}</Text>
+          </View>
+          <View style={styles.property_container}>
+            <Feather name="home" size={26} color={Colors.black} />
+            <Text style={styles.property_text}>
+              {studentInfo.homeRoom ? `Room #${studentInfo.homeRoom}` : ''}
+            </Text>
+          </View>
+          <View style={styles.property_container}>
+            <Feather name="heart" size={26} color={Colors.black} />
+            <Text style={styles.property_text}>
+              {studentInfo.counselor
+                ? `Counselor: ${studentInfo.counselor.name}`
+                : ''}
+            </Text>
           </View>
           <View style={styles.property_container}>
             <Feather name="phone" size={26} color={Colors.black} />
