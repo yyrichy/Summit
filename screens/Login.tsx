@@ -31,6 +31,7 @@ import * as SecureStore from 'expo-secure-store'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import useAsyncEffect from 'use-async-effect'
 import { FontAwesome5 } from '@expo/vector-icons'
+import Modal from 'react-native-modal'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -46,6 +47,8 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState(undefined as string)
 
   const [firstLaunch, setFirstLaunch] = useState(false)
+
+  const [isModalVisible, setModalVisible] = useState(false)
 
   const [cookies, setCookie, removeCookie] = useCookies([
     'username',
@@ -63,10 +66,6 @@ const Login = () => {
 
   useAsyncEffect(async () => {
     savedCredentials()
-    if (!(await getAsyncStorage('firstLaunch'))) {
-      setFirstLaunch(true)
-      setAsyncStorage('firstLaunch', 'true')
-    }
   }, [])
 
   async function savedCredentials() {
@@ -102,6 +101,8 @@ const Login = () => {
       }
       setIsLoading(false)
       navigation.navigate('Menu')
+    } else {
+      setFirstLaunch(true)
     }
   }
 
@@ -240,6 +241,35 @@ const Login = () => {
 
   return (
     <>
+      <Modal
+        isVisible={isModalVisible}
+        coverScreen={true}
+        onBackdropPress={() => setModalVisible(!isModalVisible)}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+      >
+        <View style={styles.modal}>
+          <View style={styles.modal_view}>
+            <Text style={styles.security_modal}>
+              We do not collect/save your login information. Info entered is
+              sent directly to your school district's StudentVue website.
+            </Text>
+            <FontAwesome.Button
+              name="github"
+              backgroundColor="transparent"
+              iconStyle={{
+                color: Colors.black
+              }}
+              underlayColor="none"
+              activeOpacity={0.5}
+              size={25}
+              onPress={() =>
+                Linking.openURL('https://github.com/vaporrrr/Summit')
+              }
+            ></FontAwesome.Button>
+          </View>
+        </View>
+      </Modal>
       <ImageBackground
         source={require('../assets/mountainbackground.png')}
         resizeMode="cover"
@@ -269,9 +299,27 @@ const Login = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           {firstLaunch && (
-            <Text style={styles.login_info}>
-              Username and password are the same as StudentVue
-            </Text>
+            <>
+              <View style={styles.horizontal_container}>
+                <Text style={styles.security}>
+                  This app is safe to use and open source
+                </Text>
+                <FontAwesome.Button
+                  name="info-circle"
+                  backgroundColor="transparent"
+                  iconStyle={{
+                    color: Colors.black
+                  }}
+                  underlayColor="none"
+                  activeOpacity={0.5}
+                  size={18}
+                  onPress={() => setModalVisible(true)}
+                ></FontAwesome.Button>
+              </View>
+              <Text style={styles.login_info}>
+                Login info is the same as StudentVue
+              </Text>
+            </>
           )}
           <TextInput
             defaultValue={username}
@@ -439,6 +487,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 10
   },
+  modal: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    width: 250,
+    height: 140
+  },
+  modal_view: {
+    width: 250,
+    height: 140,
+    padding: 15
+  },
+  security_modal: {
+    fontFamily: 'Inter_400Regular'
+  },
   mountain: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -452,10 +517,15 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   login_info: {
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'Montserrat_300Light_Italic',
     fontSize: 12,
     marginBottom: 10,
     marginTop: 15
+  },
+  security: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 14,
+    marginTop: 8
   },
   checkbox_container: {
     flexDirection: 'row',
