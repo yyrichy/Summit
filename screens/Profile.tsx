@@ -6,17 +6,17 @@ import AppContext from '../contexts/AppContext'
 import { FontAwesome } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
+import useAsyncEffect from 'use-async-effect'
 
 const Profile = () => {
   const { client } = useContext(AppContext)
   const [studentInfo, setStudentInfo] = useState(undefined as StudentInfo)
 
-  const fetchStudentInfo = async () => {
+  useAsyncEffect(async () => {
     setStudentInfo(await client.studentInfo())
-  }
-  if (!studentInfo) fetchStudentInfo()
-  console.log(studentInfo)
+  }, [])
 
   return (
     <View style={{ flex: 1 }}>
@@ -66,21 +66,25 @@ const Profile = () => {
           <View style={styles.property_container}>
             <AntDesign name="idcard" size={26} color={Colors.black} />
             <Text style={styles.property_text}>
-              {studentInfo.id ? `ID #${studentInfo.id}` : ''}
+              {studentInfo.id ? `#${studentInfo.id}` : ''}
             </Text>
           </View>
           <View style={styles.property_container}>
-            <Feather name="user" size={26} color={Colors.black} />
+            <MaterialCommunityIcons
+              name="gender-male-female"
+              size={26}
+              color={Colors.black}
+            />
             <Text style={styles.property_text}>{studentInfo.gender}</Text>
           </View>
           <View style={styles.property_container}>
             <Feather name="home" size={26} color={Colors.black} />
             <Text style={styles.property_text}>
-              {studentInfo.homeRoom ? `Room #${studentInfo.homeRoom}` : ''}
+              {studentInfo.homeRoom ? `Room ${studentInfo.homeRoom}` : ''}
             </Text>
           </View>
           <View style={styles.property_container}>
-            <Feather name="heart" size={26} color={Colors.black} />
+            <Feather name="user" size={26} color={Colors.black} />
             <Text style={styles.property_text}>
               {studentInfo.counselor
                 ? `Counselor: ${studentInfo.counselor.name}`
