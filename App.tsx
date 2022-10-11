@@ -97,16 +97,21 @@ const App = () => {
 
   if (!fontsLoaded) {
     return (
-      <>
-        <View style={{ backgroundColor: Colors.primary }}>
-          <Text style={{ margin: 10 }}>Loading Schools...</Text>
-          <ActivityIndicator
-            color={Colors.secondary}
-            animating={true}
-            size="large"
-          />
-        </View>
-      </>
+      <View
+        style={{
+          backgroundColor: Colors.primary,
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <Text style={{ marginBottom: 10 }}>Loading Schools...</Text>
+        <ActivityIndicator
+          color={Colors.secondary}
+          animating={true}
+          size="large"
+        />
+      </View>
     )
   }
 
