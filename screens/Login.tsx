@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import {
   TextInput,
   View,
@@ -39,6 +39,7 @@ type loginInfo = 'username' | 'password' | 'district'
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
+  const refInput = useRef<TextInput | null>(null)
   const { username, password, setUsername, setPassword, setClient, setMarks } =
     useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
@@ -326,6 +327,9 @@ const Login = () => {
             onChangeText={(u) => setUsername(u)}
             placeholder={'Username'}
             style={styles.input}
+            returnKeyType="next"
+            onSubmitEditing={() => refInput.current.focus()}
+            blurOnSubmit={false}
           />
           <TextInput
             defaultValue={password}
@@ -333,6 +337,9 @@ const Login = () => {
             placeholder={'Password'}
             secureTextEntry={true}
             style={styles.input}
+            returnKeyType="next"
+            ref={refInput}
+            onSubmitEditing={() => setOpen(true)}
           />
           <DropDownPicker
             searchable={true}
