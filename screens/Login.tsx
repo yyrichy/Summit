@@ -300,7 +300,7 @@ const Login = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           {firstLaunch && (
-            <>
+            <View style={styles.login_info_container}>
               <View style={styles.horizontal_container}>
                 <Text style={styles.security}>
                   This app is safe to use and open source
@@ -320,7 +320,7 @@ const Login = () => {
               <Text style={styles.login_info}>
                 Login info is the same as StudentVue
               </Text>
-            </>
+            </View>
           )}
           <TextInput
             defaultValue={username}
@@ -522,6 +522,10 @@ const styles = StyleSheet.create({
   description: {
     fontFamily: 'RussoOne_400Regular',
     textAlign: 'center'
+  },
+  login_info_container: {
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   login_info: {
     fontFamily: 'Montserrat_300Light_Italic',
