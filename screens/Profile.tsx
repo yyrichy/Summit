@@ -9,6 +9,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const Profile = () => {
   const { client } = useContext(AppContext)
@@ -32,7 +33,7 @@ const Profile = () => {
           }}
         />
       ) : (
-        <View>
+        <View style={{ flex: 1 }}>
           <View style={styles.header}></View>
           <Image
             style={styles.avatar}
@@ -63,52 +64,54 @@ const Profile = () => {
               />
             </View>
           </View>
-          <View style={styles.property_container}>
-            <AntDesign name="idcard" size={26} color={Colors.black} />
-            <Text style={styles.property_text}>
-              {studentInfo.id ? `#${studentInfo.id}` : ''}
-            </Text>
-          </View>
-          <View style={styles.property_container}>
-            <MaterialCommunityIcons
-              name="gender-male-female"
-              size={26}
-              color={Colors.black}
-            />
-            <Text style={styles.property_text}>{studentInfo.gender}</Text>
-          </View>
-          <View style={styles.property_container}>
-            <Feather name="home" size={26} color={Colors.black} />
-            <Text style={styles.property_text}>
-              {studentInfo.homeRoom ? `Room ${studentInfo.homeRoom}` : ''}
-            </Text>
-          </View>
-          <View style={styles.property_container}>
-            <Feather name="user" size={26} color={Colors.black} />
-            <Text style={styles.property_text}>
-              {studentInfo.counselor
-                ? `Counselor: ${studentInfo.counselor.name}`
-                : ''}
-            </Text>
-          </View>
-          <View style={styles.property_container}>
-            <Feather name="phone" size={26} color={Colors.black} />
-            <Text style={styles.property_text}>{studentInfo.phone}</Text>
-          </View>
-          <View style={styles.property_container}>
-            <Feather name="mail" size={26} color={Colors.black} />
-            <Text style={styles.property_text}>{studentInfo.email}</Text>
-          </View>
-          <View style={styles.property_container}>
-            <Feather name="map-pin" size={26} color={Colors.black} />
-            <Text style={styles.property_text}>{studentInfo.address}</Text>
-          </View>
-          <View style={styles.property_container}>
-            <FontAwesome name="building-o" size={26} color={Colors.black} />
-            <Text style={styles.property_text}>
-              {studentInfo.currentSchool}
-            </Text>
-          </View>
+          <ScrollView>
+            <View style={styles.property_container}>
+              <AntDesign name="idcard" size={26} color={Colors.black} />
+              <Text style={styles.property_text}>
+                {studentInfo.id ? `#${studentInfo.id}` : ''}
+              </Text>
+            </View>
+            <View style={styles.property_container}>
+              <MaterialCommunityIcons
+                name="gender-male-female"
+                size={26}
+                color={Colors.black}
+              />
+              <Text style={styles.property_text}>{studentInfo.gender}</Text>
+            </View>
+            <View style={styles.property_container}>
+              <Feather name="home" size={26} color={Colors.black} />
+              <Text style={styles.property_text}>
+                {studentInfo.homeRoom ? `Room ${studentInfo.homeRoom}` : ''}
+              </Text>
+            </View>
+            <View style={styles.property_container}>
+              <Feather name="user" size={26} color={Colors.black} />
+              <Text style={styles.property_text}>
+                {studentInfo.counselor
+                  ? `Counselor: ${studentInfo.counselor.name}`
+                  : ''}
+              </Text>
+            </View>
+            <View style={styles.property_container}>
+              <Feather name="phone" size={26} color={Colors.black} />
+              <Text style={styles.property_text}>{studentInfo.phone}</Text>
+            </View>
+            <View style={styles.property_container}>
+              <Feather name="mail" size={26} color={Colors.black} />
+              <Text style={styles.property_text}>{studentInfo.email}</Text>
+            </View>
+            <View style={styles.property_container}>
+              <Feather name="map-pin" size={26} color={Colors.black} />
+              <Text style={styles.property_text}>{studentInfo.address}</Text>
+            </View>
+            <View style={styles.property_container}>
+              <FontAwesome name="building-o" size={26} color={Colors.black} />
+              <Text style={styles.property_text}>
+                {studentInfo.currentSchool}
+              </Text>
+            </View>
+          </ScrollView>
         </View>
       )}
     </View>
