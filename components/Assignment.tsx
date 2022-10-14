@@ -23,12 +23,6 @@ function Assignment(props) {
   const totalWeight = Array.from(
     marks.courses.get(props.course).categories.values()
   ).reduce((p, c) => (isNaN(c.value) ? p : p + c.weight), 0)
-  const [points, setPoints] = useState(
-    isNaN(assignment.points) ? '' : assignment.points.toString()
-  )
-  const [total, setTotal] = useState(
-    isNaN(assignment.total) ? '' : assignment.total.toString()
-  )
   const score = (assignment.points / assignment.total) * 100
   const hasScore = !isNaN((assignment.points / assignment.total) * 100)
 
@@ -89,7 +83,7 @@ function Assignment(props) {
         </View>
         <View style={styles.input_container}>
           <TextInput
-            value={points}
+            value={isNaN(assignment.points) ? '' : assignment.points.toString()}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
             autoComplete={'off'}
@@ -104,15 +98,12 @@ function Assignment(props) {
               }
             ]}
             onChangeText={(input) => {
-              if (isNumber(input) || input === '') {
-                setPoints(input)
-                update(input, 'earned')
-              }
+              if (isNumber(input) || input === '') update(input, 'earned')
             }}
           />
           <Text style={styles.dash}> / </Text>
           <TextInput
-            value={total}
+            value={isNaN(assignment.total) ? '' : assignment.total.toString()}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
             autoComplete={'off'}
@@ -127,10 +118,7 @@ function Assignment(props) {
               }
             ]}
             onChangeText={(input) => {
-              if (isNumber(input) || input === '') {
-                setTotal(input)
-                update(input, 'total')
-              }
+              if (isNumber(input) || input === '') update(input, 'total')
             }}
           />
         </View>
