@@ -349,9 +349,13 @@ const Login = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setList}
-            maxHeight={Dimensions.get('window').height / 2 - 125}
             dropDownDirection={'BOTTOM'}
             style={styles.dropdown}
+            dropDownContainerStyle={{
+              ...(open
+                ? { height: Dimensions.get('window').height / 2 - 125 }
+                : {})
+            }}
             textStyle={styles.dropdown_text}
             containerStyle={styles.dropdown_container}
             listMode={'FLATLIST'}
