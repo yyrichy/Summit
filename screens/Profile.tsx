@@ -120,7 +120,7 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   header: {
-    height: 150,
+    height: 100,
     backgroundColor: Colors.primary
   },
   name: {
