@@ -6,7 +6,6 @@ import AppContext from '../contexts/AppContext'
 import { FontAwesome } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -47,50 +46,19 @@ const Profile = () => {
               <Text style={styles.description_part_text}>
                 {studentInfo.grade + suffix(parseInt(studentInfo.grade))}
               </Text>
-              <FontAwesome
-                name="graduation-cap"
-                size={18}
-                color={Colors.black}
-              />
             </View>
             <View style={styles.description_part_container}>
               <Text style={styles.description_part_text}>
-                {studentInfo.birthDate.toLocaleDateString()}
+                {studentInfo.birthDate.getMonth() + 1}/
+                {studentInfo.birthDate.getDate()}
               </Text>
-              <FontAwesome
-                name="birthday-cake"
-                size={18}
-                color={Colors.black}
-              />
             </View>
           </View>
-          <ScrollView>
+          <ScrollView style={styles.property_view}>
             <View style={styles.property_container}>
               <AntDesign name="idcard" size={26} color={Colors.black} />
               <Text style={styles.property_text}>
                 {studentInfo.id ? `#${studentInfo.id}` : ''}
-              </Text>
-            </View>
-            <View style={styles.property_container}>
-              <MaterialCommunityIcons
-                name="gender-male-female"
-                size={26}
-                color={Colors.black}
-              />
-              <Text style={styles.property_text}>{studentInfo.gender}</Text>
-            </View>
-            <View style={styles.property_container}>
-              <Feather name="home" size={26} color={Colors.black} />
-              <Text style={styles.property_text}>
-                {studentInfo.homeRoom ? `Room ${studentInfo.homeRoom}` : ''}
-              </Text>
-            </View>
-            <View style={styles.property_container}>
-              <Feather name="user" size={26} color={Colors.black} />
-              <Text style={styles.property_text}>
-                {studentInfo.counselor
-                  ? `Counselor: ${studentInfo.counselor.name}`
-                  : ''}
               </Text>
             </View>
             <View style={styles.property_container}>
@@ -111,6 +79,20 @@ const Profile = () => {
                 {studentInfo.currentSchool}
               </Text>
             </View>
+            <View style={styles.property_container}>
+              <Feather name="home" size={26} color={Colors.black} />
+              <Text style={styles.property_text}>
+                {studentInfo.homeRoom ? `Room ${studentInfo.homeRoom}` : ''}
+              </Text>
+            </View>
+            <View style={styles.property_container}>
+              <Feather name="user" size={26} color={Colors.black} />
+              <Text style={styles.property_text}>
+                {studentInfo.counselor
+                  ? `Counselor: ${studentInfo.counselor.name}`
+                  : ''}
+              </Text>
+            </View>
           </ScrollView>
         </View>
       )}
@@ -120,41 +102,53 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   header: {
-    height: 100,
-    backgroundColor: Colors.primary
+    height: 150,
+    backgroundColor: Colors.primary,
+    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5
   },
   name: {
-    fontSize: 24,
+    fontSize: 30,
     fontFamily: 'Montserrat_700Bold',
     alignSelf: 'center',
-    marginTop: 10
+    margin: 5
   },
   avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 130 / 2,
-    borderWidth: 4,
+    width: 150,
+    height: 150,
+    borderRadius: 150 / 2,
+    borderWidth: 0,
     borderColor: 'white',
     alignSelf: 'center',
-    marginTop: -130 / 2
+    marginTop: -150 / 2
   },
   description_container: {
-    marginTop: 10,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderColor: Colors.secondary,
-    borderWidth: 1
+    justifyContent: 'space-between'
   },
   description_part_container: {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10
   },
   description_part_text: {
-    marginTop: 5,
-    fontSize: 22,
+    fontSize: 32,
     fontFamily: 'Montserrat_800ExtraBold'
+  },
+  property_view: {
+    flex: 1,
+    borderRadius: 30,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.secondary,
+    backgroundColor: Colors.off_white,
+    padding: 10,
+    marginHorizontal: 20,
+    marginBottom: 20
   },
   property_container: {
     flexDirection: 'row',
