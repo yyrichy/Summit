@@ -13,12 +13,11 @@ import { Colors } from '../colors/Colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { Assignment } from '../interfaces/Gradebook'
 
 function Assignment(props) {
   const { marks, setMarks } = useContext(AppContext)
   const [isDropdown, setIsDropdown] = useState(false)
-  const assignment: Assignment = marks.courses
+  const assignment = marks.courses
     .get(props.course)
     .assignments.find((a) => a.name === props.name)
   const totalWeight: number = Array.from(
