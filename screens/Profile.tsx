@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { ActivityIndicator, Image, StyleSheet, View, Text } from 'react-native'
-import { StudentInfo } from 'studentvue'
+import { SchoolInfo, StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import AppContext from '../contexts/AppContext'
 import { FontAwesome } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Feather } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
@@ -13,14 +14,16 @@ import { ScrollView } from 'react-native-gesture-handler'
 const Profile = () => {
   const { client } = useContext(AppContext)
   const [studentInfo, setStudentInfo] = useState(undefined as StudentInfo)
+  const [schoolInfo, setSchoolInfo] = useState(undefined as SchoolInfo)
 
   useAsyncEffect(async () => {
     setStudentInfo(await client.studentInfo())
+    setSchoolInfo(await client.schoolInfo())
   }, [])
 
   return (
     <View style={{ flex: 1 }}>
-      {!studentInfo ? (
+      {!studentInfo || !schoolInfo ? (
         <ActivityIndicator
           color={Colors.secondary}
           animating={true}
@@ -42,57 +45,90 @@ const Profile = () => {
           />
           <Text style={styles.name}>{studentInfo.student.name}</Text>
           <View style={styles.description_container}>
-            <View style={styles.description_part_container}>
-              <Text style={styles.description_part_text}>
-                {studentInfo.grade + suffix(parseInt(studentInfo.grade))}
-              </Text>
-            </View>
-            <View style={styles.description_part_container}>
-              <Text style={styles.description_part_text}>
-                {studentInfo.birthDate.getMonth() + 1}/
-                {studentInfo.birthDate.getDate()}
-              </Text>
-            </View>
+            <Text style={styles.description_part_text}>
+              {studentInfo.grade + suffix(parseInt(studentInfo.grade))}
+            </Text>
+            <Text style={styles.description_part_text}>
+              {studentInfo.birthDate.toLocaleDateString()}
+            </Text>
           </View>
           <ScrollView style={styles.property_view}>
-            <View style={styles.property_container}>
-              <AntDesign name="idcard" size={26} color={Colors.black} />
-              <Text style={styles.property_text}>
-                {studentInfo.id ? `#${studentInfo.id}` : ''}
-              </Text>
-            </View>
-            <View style={styles.property_container}>
-              <Feather name="phone" size={26} color={Colors.black} />
-              <Text style={styles.property_text}>{studentInfo.phone}</Text>
-            </View>
-            <View style={styles.property_container}>
-              <Feather name="mail" size={26} color={Colors.black} />
-              <Text style={styles.property_text}>{studentInfo.email}</Text>
-            </View>
-            <View style={styles.property_container}>
-              <Feather name="map-pin" size={26} color={Colors.black} />
-              <Text style={styles.property_text}>{studentInfo.address}</Text>
-            </View>
-            <View style={styles.property_container}>
-              <FontAwesome name="building-o" size={26} color={Colors.black} />
-              <Text style={styles.property_text}>
-                {studentInfo.currentSchool}
-              </Text>
-            </View>
-            <View style={styles.property_container}>
-              <Feather name="home" size={26} color={Colors.black} />
-              <Text style={styles.property_text}>
-                {studentInfo.homeRoom ? `Room ${studentInfo.homeRoom}` : ''}
-              </Text>
-            </View>
-            <View style={styles.property_container}>
-              <Feather name="user" size={26} color={Colors.black} />
-              <Text style={styles.property_text}>
-                {studentInfo.counselor
-                  ? `Counselor: ${studentInfo.counselor.name}`
-                  : ''}
-              </Text>
-            </View>
+            {studentInfo.id && (
+              <View style={styles.property_container}>
+                <AntDesign name="idcard" size={26} color={Colors.black} />
+                <Text style={styles.property_text}>
+                  {studentInfo.id ? studentInfo.id : ''}
+                </Text>
+              </View>
+            )}
+            {studentInfo.phone && (
+              <View style={styles.property_container}>
+                <Feather name="phone" size={26} color={Colors.black} />
+                <Text style={styles.property_text}>{studentInfo.phone}</Text>
+              </View>
+            )}
+            {studentInfo.address && (
+              <View style={styles.property_container}>
+                <Feather name="home" size={26} color={Colors.black} />
+                <Text style={styles.property_text}>{studentInfo.address}</Text>
+              </View>
+            )}
+            {studentInfo.email && (
+              <View style={styles.property_container}>
+                <Feather name="mail" size={26} color={Colors.black} />
+                <Text style={styles.property_text}>{studentInfo.email}</Text>
+              </View>
+            )}
+            {studentInfo.currentSchool && (
+              <View style={styles.property_container}>
+                <FontAwesome name="building-o" size={26} color={Colors.black} />
+                <Text style={styles.property_text}>
+                  {studentInfo.currentSchool}
+                </Text>
+              </View>
+            )}
+            {schoolInfo.school.address && (
+              <View style={styles.property_container}>
+                <Feather name="map-pin" size={26} color={Colors.black} />
+                <Text style={styles.property_text}>
+                  {schoolInfo.school.address}
+                </Text>
+              </View>
+            )}
+            {studentInfo.homeRoom && (
+              <View style={styles.property_container}>
+                <FontAwesome
+                  name="pencil-square-o"
+                  size={26}
+                  color={Colors.black}
+                />
+                <Text style={styles.property_text}>
+                  Homeroom: {studentInfo.homeRoom}
+                </Text>
+              </View>
+            )}
+            {studentInfo.counselor && (
+              <View style={styles.property_container}>
+                <Feather name="user" size={26} color={Colors.black} />
+                <Text style={styles.property_text}>
+                  Counselor: {studentInfo.counselor.name}{' '}
+                  {studentInfo.counselor.email}
+                </Text>
+              </View>
+            )}
+            {schoolInfo.school.principal && (
+              <View style={styles.property_container}>
+                <MaterialCommunityIcons
+                  name="crown-outline"
+                  size={26}
+                  color={Colors.black}
+                />
+                <Text style={styles.property_text}>
+                  Principal: {schoolInfo.school.principal.name}{' '}
+                  {schoolInfo.school.principal.email}
+                </Text>
+              </View>
+            )}
           </ScrollView>
         </View>
       )}
@@ -108,11 +144,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 5
+    shadowRadius: 6
   },
   name: {
-    fontSize: 30,
-    fontFamily: 'Montserrat_700Bold',
+    fontSize: 32,
+    fontFamily: 'Montserrat_800ExtraBold',
     alignSelf: 'center',
     margin: 5
   },
@@ -120,35 +156,30 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 150 / 2,
-    borderWidth: 0,
-    borderColor: 'white',
+    borderWidth: 1,
+    borderColor: Colors.black,
     alignSelf: 'center',
     marginTop: -150 / 2
   },
   description_container: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  description_part_container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10
+    justifyContent: 'center'
   },
   description_part_text: {
-    fontSize: 32,
-    fontFamily: 'Montserrat_800ExtraBold'
+    marginHorizontal: 20,
+    marginBottom: 10,
+    fontSize: 24,
+    fontFamily: 'Montserrat_600SemiBold'
   },
   property_view: {
-    flex: 1,
     borderRadius: 30,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: Colors.secondary,
     backgroundColor: Colors.off_white,
     padding: 10,
+    paddingBottom: 0,
     marginHorizontal: 20,
-    marginBottom: 20
+    flexGrow: 0
   },
   property_container: {
     flexDirection: 'row',
