@@ -69,7 +69,7 @@ const Login = () => {
     savedCredentials()
   }, [])
 
-  async function savedCredentials() {
+  async function savedCredentials(): Promise<void> {
     const username: string = await getValueFor('username')
     const password: string = await getValueFor('password')
     const value: string = await getValueFor('district')
@@ -107,12 +107,12 @@ const Login = () => {
     }
   }
 
-  function alert(message: string) {
+  function alert(message: string): void {
     setErrorMessage(message)
     setShowAlert(true)
   }
 
-  async function onLogin() {
+  async function onLogin(): Promise<void> {
     setIsLoading(true)
     if (!username) {
       alert('Enter your username')
@@ -161,7 +161,7 @@ const Login = () => {
     navigation.navigate('Menu')
   }
 
-  async function openInstagram(username: string) {
+  async function openInstagram(username: string): Promise<void> {
     if (Platform.OS !== 'web') {
       const appUrl = `instagram://user?username=${username}`
       try {
@@ -201,7 +201,7 @@ const Login = () => {
     return 30
   }
 
-  async function save(key: loginInfo, value: string) {
+  async function save(key: loginInfo, value: string): Promise<void> {
     if (value === null) return
     if (Platform.OS === 'web') {
       setCookie(key, value, { path: '/' })
@@ -210,7 +210,7 @@ const Login = () => {
     }
   }
 
-  async function getValueFor(key: loginInfo) {
+  async function getValueFor(key: loginInfo): Promise<string> {
     if (Platform.OS === 'web') {
       cookies[key]
     } else {
@@ -218,7 +218,7 @@ const Login = () => {
     }
   }
 
-  const remove = async (key: loginInfo) => {
+  const remove = async (key: loginInfo): Promise<void> => {
     if (Platform.OS === 'web') {
       removeCookie(key, { path: '/' })
     } else {
@@ -226,7 +226,7 @@ const Login = () => {
     }
   }
 
-  const setAsyncStorage = async (key: string, value: string) => {
+  const setAsyncStorage = async (key: string, value: string): Promise<void> => {
     try {
       await AsyncStorage.setItem(key, value)
     } catch (e) {}

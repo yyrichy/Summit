@@ -3,11 +3,11 @@ import { Colors } from '../colors/Colors'
 import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
 
 // Some course names have the course ID at the end, ex: AP History A (SOC49351)
-const parseCourseName = (name: string) => {
+const parseCourseName = (name: string): string => {
   return name.substring(0, name.lastIndexOf('(')).trim()
 }
 
-const convertGradebook = (gradebook: Gradebook) => {
+const convertGradebook = (gradebook: Gradebook): Promise<Marks> => {
   let marks: Marks = {
     gpa: 0,
     courses: new Map<string, Course>(),
@@ -67,7 +67,7 @@ const convertGradebook = (gradebook: Gradebook) => {
   })
 }
 
-const calculatePoints = (marks: Marks) => {
+const calculatePoints = (marks: Marks): Marks => {
   marks.gpa = 0
   let numOfCourses = 0
   for (const course of marks.courses.values()) {
@@ -107,7 +107,7 @@ const calculatePoints = (marks: Marks) => {
   return marks
 }
 
-const parsePoints = (points: string) => {
+const parsePoints = (points: string): number[] => {
   const regex = /^(\d+\.?\d*|\.\d+) \/ (\d+\.?\d*|\.\d+)$/
   if (points.match(regex)) {
     const p = points.split(regex)
@@ -117,14 +117,18 @@ const parsePoints = (points: string) => {
   }
 }
 
-const roundTo = (num: number, places: number) => {
+const roundTo = (num: number, places: number): number => {
   const multiplicator = Math.pow(10, places)
   num = parseFloat((num * multiplicator).toFixed(11))
   const test = Math.round(num) / multiplicator
   return +test.toFixed(places)
 }
 
-const deleteAssignment = (marks: Marks, course: string, assignment: string) => {
+const deleteAssignment = (
+  marks: Marks,
+  course: string,
+  assignment: string
+): Marks => {
   const newMarks = Object.assign({}, marks)
   newMarks.courses.get(course).assignments = newMarks.courses
     .get(course)
@@ -138,7 +142,7 @@ const updatePoints = (
   assignmentName: string,
   points: number,
   type: string
-) => {
+): Marks => {
   const newMarks = Object.assign({}, marks)
   const assignment = newMarks.courses
     .get(course)
@@ -159,7 +163,7 @@ const addAssignment = (
   category: string,
   points: number,
   total: number
-) => {
+): Marks => {
   let name = assignment.length === 0 ? 'Assignment' : assignment
   if (course.assignments.some((a) => a.name === name)) {
     let indentifier = 2
@@ -186,7 +190,7 @@ const addAssignment = (
   return calculatePoints(m)
 }
 
-const calculateMarkColor = (mark: number) => {
+const calculateMarkColor = (mark: number): string => {
   switch (calculateLetterGrade(mark)) {
     case 'A':
       return '#10C212'
@@ -203,7 +207,9 @@ const calculateMarkColor = (mark: number) => {
   }
 }
 
-const calculateLetterGrade = (mark: number) => {
+const calculateLetterGrade = (
+  mark: number
+): 'A' | 'B' | 'C' | 'D' | 'E' | 'F' => {
   if (mark >= 89.5) {
     return 'A'
   } else if (mark >= 79.5) {
@@ -219,11 +225,11 @@ const calculateLetterGrade = (mark: number) => {
   }
 }
 
-const isNumber = (input: string) => {
+const isNumber = (input: string): boolean => {
   return /^[0-9.]+$/g.test(input)
 }
 
-const suffix = (num: number) => {
+const suffix = (num: number): 'st' | 'nd' | 'rd' | 'th' => {
   const j = num % 10,
     k = num % 100
   if (j === 1 && k !== 11) {

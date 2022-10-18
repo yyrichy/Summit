@@ -61,7 +61,7 @@ const CourseDetails = ({ route }) => {
     }
   }, [isModalVisible])
 
-  const toggleModal = () => {
+  const toggleModal = (): void => {
     setModalVisible(!isModalVisible)
   }
 
@@ -79,7 +79,7 @@ const CourseDetails = ({ route }) => {
     toggleModal()
   }
 
-  const refreshMarks = async () => {
+  const refreshMarks = async (): Promise<void> => {
     setIsLoading(true)
     try {
       setMarks(

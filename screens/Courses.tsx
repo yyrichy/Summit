@@ -52,7 +52,7 @@ const Courses = ({ navigation }) => {
     }
   }, [value])
 
-  const refreshMarks = async () => {
+  const refreshMarks = async (): Promise<void> => {
     setIsLoading(true)
     try {
       const gradebook = await client.gradebook(value)

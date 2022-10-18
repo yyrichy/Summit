@@ -7,7 +7,7 @@ import {
 } from '../gradebook/GradeUtil'
 
 function Course(props) {
-  const mark = parseFloat(props.mark)
+  const mark: number = parseFloat(props.mark)
 
   return (
     <View style={[styles.container, props.style]}>

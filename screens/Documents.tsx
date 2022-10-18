@@ -26,7 +26,7 @@ const Documents = () => {
   const [showAlert, setShowAlert] = useState(false)
   const [errorMessage, setErrorMessage] = useState()
 
-  const fetchDocuments = async () => {
+  const fetchDocuments = async (): Promise<void> => {
     setIsLoading(true)
     try {
       setDocuments(await client.documents())
@@ -38,7 +38,7 @@ const Documents = () => {
   }
   if (!documents && !isLoading) fetchDocuments()
 
-  const base64toBlob = (base64: string, sliceSize = 512) => {
+  const base64toBlob = (base64: string, sliceSize = 512): Blob => {
     const byteCharacters = window.atob(base64)
     const byteArrays = []
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
@@ -52,7 +52,7 @@ const Documents = () => {
     return new Blob(byteArrays)
   }
 
-  const downloadDocument = async (document: Document) => {
+  const downloadDocument = async (document: Document): Promise<void> => {
     const file = (await document.get())[0]
     const fileName =
       document.comment.replace(/ /g, '_') +
