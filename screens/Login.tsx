@@ -397,10 +397,13 @@ const Login = () => {
           <View style={styles.checkbox_container}>
             <BouncyCheckbox
               size={24}
-              fillColor={Colors.accent}
+              fillColor={Colors.navy}
               unfillColor="transparent"
               disableText
-              iconStyle={{ borderColor: Colors.black }}
+              innerIconStyle={{
+                borderWidth: 1,
+                borderColor: Colors.black
+              }}
               isChecked={isChecked}
               disableBuiltInState
               onPress={async () => {

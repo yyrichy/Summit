@@ -8719,10 +8719,10 @@ react-native-awesome-alerts@^1.5.2:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-bouncy-checkbox@^2.1.10:
-  version "2.1.13"
-  resolved "https://registry.yarnpkg.com/react-native-bouncy-checkbox/-/react-native-bouncy-checkbox-2.1.13.tgz#d9234b1d34f31178ad1d6d6528fee4949f67df0f"
-  integrity sha512-E9F5d7Lp2K/w0JjNnaRr6gTy8+oD8GGHCmIjWI/+A447Vy/jLfmGd9AVcM6Gunj75xdi9+DmtbaE4dJKwltehQ==
+react-native-bouncy-checkbox@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-bouncy-checkbox/-/react-native-bouncy-checkbox-3.0.5.tgz#8f9960247e4651c33db043f45a7793aa7e58e26b"
+  integrity sha512-lEUBgqZjJa7ru4SA9pPd3dYhsdPW8a+CIgRv6Gp9J/WxAvgbrzcYdODRngE5xbQboQPjQzPePpp5/w9janWHYg==
 
 react-native-codegen@^0.69.2:
   version "0.69.2"
