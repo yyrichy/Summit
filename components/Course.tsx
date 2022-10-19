@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginRight: 14,
     marginLeft: 7,
-    lineHeight: 12 * 0.75,
+    lineHeight: 12 * 0.75 + 2,
     paddingBottom: 2,
     marginTop: 4,
     textAlign: 'left'
