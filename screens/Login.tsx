@@ -209,7 +209,7 @@ const Login = () => {
 
   async function getValueFor(key: loginInfo): Promise<string> {
     if (Platform.OS === 'web') {
-      cookies[key]
+      return cookies[key]
     } else {
       return await SecureStore.getItemAsync(key)
     }
