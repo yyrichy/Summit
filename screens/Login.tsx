@@ -113,22 +113,19 @@ const Login = () => {
   }
 
   async function onLogin(): Promise<void> {
-    setIsLoading(true)
     if (!username) {
       alert('Enter your username')
-      setIsLoading(false)
       return
     }
     if (!password) {
       alert('Enter your password')
-      setIsLoading(false)
       return
     }
     if (!value) {
       alert('Select your school district')
-      setIsLoading(false)
       return
     }
+    setIsLoading(true)
     try {
       const client = await StudentVue.login(
         require('../assets/districts.json').find(
