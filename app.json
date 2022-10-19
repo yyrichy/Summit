@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FEF156"
-      }
+      },
+      "package": "com.vaporrrr.Summit"
     },
     "web": {
       "favicon": "./assets/favicon.png"
