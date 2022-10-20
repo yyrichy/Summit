@@ -122,7 +122,10 @@ function Assignment(props) {
             }}
           />
         </View>
-        <TouchableOpacity onPress={() => setIsDropdown(!isDropdown)}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => setIsDropdown(!isDropdown)}
+        >
           <MaterialIcons
             name={isDropdown ? 'arrow-drop-up' : 'arrow-drop-down'}
             color={Colors.middle_blue_green}

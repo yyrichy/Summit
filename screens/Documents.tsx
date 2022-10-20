@@ -114,6 +114,7 @@ const Documents = () => {
                 onPress={() => {
                   downloadDocument(item)
                 }}
+                activeOpacity={0.5}
               >
                 <Doc
                   name={(item as Document).comment}

@@ -241,6 +241,7 @@ const CourseDetails = ({ route }) => {
                           setCategory(props.value)
                           setOpen(false)
                         }}
+                        activeOpacity={0.5}
                       >
                         <View style={styles.category_name_container}>
                           <Text

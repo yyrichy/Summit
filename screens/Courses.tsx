@@ -102,6 +102,7 @@ const Courses = ({ navigation }) => {
                   setValue(props.value)
                   setOpen(false)
                 }}
+                activeOpacity={0.5}
               >
                 <View style={styles.district_name_container}>
                   <Text numberOfLines={1} style={props.listItemLabelStyle}>
@@ -137,6 +138,7 @@ const Courses = ({ navigation }) => {
             data={[...marks.courses.entries()]}
             renderItem={({ item }) => (
               <TouchableOpacity
+                activeOpacity={0.5}
                 onPress={() =>
                   navigation.navigate('Course Details', { title: item[0] })
                 }

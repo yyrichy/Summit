@@ -101,6 +101,7 @@ const App = () => {
             <TouchableOpacity
               {...props}
               onPress={() => navigation.navigate('Login')}
+              activeOpacity={0.5}
             />
           )
         })}

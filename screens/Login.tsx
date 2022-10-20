@@ -9,9 +9,7 @@ import {
   Platform,
   Linking,
   KeyboardAvoidingView,
-  TouchableOpacity,
-  ImageBackground,
-  Dimensions
+  ImageBackground
 } from 'react-native'
 import StudentVue from 'studentvue'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -32,6 +30,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import useAsyncEffect from 'use-async-effect'
 import { FontAwesome5 } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
+import District from '../components/District'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -348,11 +347,6 @@ const Login = () => {
             setItems={setList}
             dropDownDirection={'BOTTOM'}
             style={styles.dropdown}
-            dropDownContainerStyle={{
-              ...(open
-                ? { height: Dimensions.get('window').height / 2 - 125 }
-                : {})
-            }}
             textStyle={styles.dropdown_text}
             containerStyle={styles.dropdown_container}
             listMode={'FLATLIST'}
@@ -369,26 +363,17 @@ const Login = () => {
             listItemContainerStyle={styles.dropdown_list_item_container}
             renderListItem={(props) => {
               return (
-                <TouchableOpacity
+                <District
                   {...props}
-                  style={[
-                    props.listItemContainerStyle,
-                    {
-                      backgroundColor: props.isSelected && Colors.light_gray
-                    }
-                  ]}
                   onPress={() => {
                     setValue(props.value)
                     setOpen(false)
                   }}
-                >
-                  <View style={styles.district_name_container}>
-                    <Text numberOfLines={1} style={props.listItemLabelStyle}>
-                      {props.label}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                ></District>
               )
+            }}
+            props={{
+              activeOpacity: 0.5
             }}
           ></DropDownPicker>
           <View style={styles.checkbox_container}>
@@ -428,41 +413,33 @@ const Login = () => {
             style={{ marginBottom: 50 }}
             size="large"
           />
-          <View
-            style={{
-              alignItems: 'center',
-              position: 'absolute',
-              bottom: 20
-            }}
-          >
-            <View style={styles.row_container}>
-              <View style={styles.insta_button_container}>
-                <FontAwesome.Button
-                  name="instagram"
-                  backgroundColor="transparent"
-                  iconStyle={styles.insta_button}
-                  underlayColor="none"
-                  activeOpacity={0.5}
-                  size={28}
-                  onPress={() => openInstagram('richardyin99')}
-                ></FontAwesome.Button>
-                <Text style={styles.insta_text}>Richard Y</Text>
-              </View>
-              <View style={styles.insta_button_container}>
-                <FontAwesome.Button
-                  name="instagram"
-                  backgroundColor="transparent"
-                  iconStyle={styles.insta_button}
-                  underlayColor="none"
-                  activeOpacity={0.5}
-                  size={28}
-                  onPress={() => openInstagram('karthik.whynot')}
-                ></FontAwesome.Button>
-                <Text style={styles.insta_text}>Karthik M</Text>
-              </View>
-            </View>
-          </View>
         </KeyboardAvoidingView>
+        <View style={styles.row_container}>
+          <View style={styles.insta_button_container}>
+            <FontAwesome.Button
+              name="instagram"
+              backgroundColor="transparent"
+              iconStyle={styles.insta_button}
+              underlayColor="none"
+              activeOpacity={0.5}
+              size={28}
+              onPress={() => openInstagram('richardyin99')}
+            ></FontAwesome.Button>
+            <Text style={styles.insta_text}>Richard Y</Text>
+          </View>
+          <View style={styles.insta_button_container}>
+            <FontAwesome.Button
+              name="instagram"
+              backgroundColor="transparent"
+              iconStyle={styles.insta_button}
+              underlayColor="none"
+              activeOpacity={0.5}
+              size={28}
+              onPress={() => openInstagram('karthik.whynot')}
+            ></FontAwesome.Button>
+            <Text style={styles.insta_text}>Karthik M</Text>
+          </View>
+        </View>
       </ImageBackground>
       <AwesomeAlert
         show={showAlert}
@@ -618,8 +595,9 @@ const styles = StyleSheet.create({
   },
   row_container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 25
   },
   insta_button_container: {
     marginHorizontal: 10

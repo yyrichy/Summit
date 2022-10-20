@@ -25,6 +25,7 @@ const CustomButton: React.FC<Props> = ({
       onPress={onPress}
       style={[containerStyle, { backgroundColor: backgroundColor }]}
       disabled={disabled}
+      activeOpacity={0.5}
     >
       <View>
         <Text

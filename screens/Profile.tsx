@@ -3,10 +3,12 @@ import { ActivityIndicator, Image, StyleSheet, View, Text } from 'react-native'
 import { SchoolInfo, StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import AppContext from '../contexts/AppContext'
-import { FontAwesome } from '@expo/vector-icons'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { Feather } from '@expo/vector-icons'
-import { AntDesign } from '@expo/vector-icons'
+import {
+  FontAwesome,
+  MaterialCommunityIcons,
+  Feather,
+  AntDesign
+} from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
 import { ScrollView } from 'react-native-gesture-handler'
