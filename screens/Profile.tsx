@@ -10,6 +10,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
 import { ScrollView } from 'react-native-gesture-handler'
+import Constants from 'expo-constants'
 
 const Profile = () => {
   const { client } = useContext(AppContext)
@@ -138,12 +139,12 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   header: {
-    height: 150,
+    height: Constants.statusBarHeight + 90,
     backgroundColor: Colors.primary,
-    borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 25,
+    borderBottomLeftRadius: 25,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.15,
     shadowRadius: 6
   },
   name: {
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_600SemiBold'
   },
   property_view: {
-    borderRadius: 30,
+    borderRadius: 25,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: Colors.secondary,
     backgroundColor: Colors.off_white,
