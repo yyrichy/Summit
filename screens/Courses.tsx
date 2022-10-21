@@ -104,7 +104,7 @@ const Courses = ({ navigation }) => {
                 }}
                 activeOpacity={0.5}
               >
-                <View style={styles.district_name_container}>
+                <View style={styles.marking_period_container}>
                   <Text numberOfLines={1} style={props.listItemLabelStyle}>
                     {props.label}
                   </Text>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_800ExtraBold',
     fontSize: 30
   },
-  district_name_container: {
+  marking_period_container: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start'
