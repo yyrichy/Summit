@@ -139,9 +139,11 @@ const Courses = ({ navigation }) => {
             renderItem={({ item }) => (
               <TouchableOpacity
                 activeOpacity={0.5}
-                onPress={() =>
-                  navigation.navigate('Course Details', { title: item[0] })
-                }
+                onPress={() => {
+                  if (item[1].categories.size > 1) {
+                    navigation.navigate('Course Details', { title: item[0] })
+                  }
+                }}
               >
                 <Course
                   name={parseCourseName(item[0])}

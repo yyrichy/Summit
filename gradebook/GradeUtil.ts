@@ -31,34 +31,37 @@ const convertGradebook = (gradebook: Gradebook): Promise<Marks> => {
       categories: new Map<string, Category>()
     })
     const c = marks.courses.get(course.title)
-    for (const category of course.marks[0].weightedCategories) {
-      if (category.type.toUpperCase() !== 'TOTAL') {
-        c.categories.set(category.type, {
-          name: category.type,
-          points: 0,
-          total: 0,
-          value: NaN,
-          weight: parseFloat(category.weight.standard)
-        })
-      }
-    }
-    for (const assignment of course.marks[0].assignments) {
-      const value = assignment.score.value
-      const points = parsePoints(assignment.points)
-      const a: Assignment = {
-        name: assignment.name,
-        category: assignment.type,
-        status: value != 'Not Graded' && value != 'Not Due' ? 'Graded' : value,
-        notes: assignment.notes,
-        points: points[0],
-        total: points[1],
-        modified: false,
-        date: {
-          due: assignment.date.due,
-          start: assignment.date.start
+    if (course.marks.length > 0) {
+      for (const category of course.marks[0].weightedCategories) {
+        if (category.type.toUpperCase() !== 'TOTAL') {
+          c.categories.set(category.type, {
+            name: category.type,
+            points: 0,
+            total: 0,
+            value: NaN,
+            weight: parseFloat(category.weight.standard)
+          })
         }
       }
-      c.assignments.push(a)
+      for (const assignment of course.marks[0].assignments) {
+        const value = assignment.score.value
+        const points = parsePoints(assignment.points)
+        const a: Assignment = {
+          name: assignment.name,
+          category: assignment.type,
+          status:
+            value != 'Not Graded' && value != 'Not Due' ? 'Graded' : value,
+          notes: assignment.notes,
+          points: points[0],
+          total: points[1],
+          modified: false,
+          date: {
+            due: assignment.date.due,
+            start: assignment.date.start
+          }
+        }
+        c.assignments.push(a)
+      }
     }
   }
   marks = calculatePoints(marks)
