@@ -22,7 +22,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FEF156"
       },
-      "package": "com.vaporrrr.Summit"
+      "package": "com.vaporrrr.Summit",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"
