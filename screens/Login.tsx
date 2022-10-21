@@ -39,7 +39,7 @@ type loginInfo = 'username' | 'password' | 'district'
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
-  const [keyboardStatus, setKeyboardStatus] = useState(undefined)
+  const [keyboardShown, setKeyboardShown] = useState(undefined)
   const refInput = useRef<TextInput | null>(null)
   const { username, password, setUsername, setPassword, setClient, setMarks } =
     useContext(AppContext)
@@ -69,10 +69,10 @@ const Login = () => {
   useAsyncEffect(async () => {
     savedCredentials()
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-      setKeyboardStatus('Keyboard Shown')
+      setKeyboardShown(true)
     })
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-      setKeyboardStatus('Keyboard Hidden')
+      setKeyboardShown(false)
     })
 
     return () => {
@@ -302,7 +302,7 @@ const Login = () => {
           style={styles.container}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          {firstLaunch && !keyboardStatus && (
+          {firstLaunch && !keyboardShown && (
             <View style={styles.login_info_container}>
               <View style={styles.horizontal_container}>
                 <Text style={styles.security}>
@@ -421,7 +421,7 @@ const Login = () => {
             size="large"
           />
         </KeyboardAvoidingView>
-        {!keyboardStatus && (
+        {!keyboardShown && (
           <View style={styles.row_container}>
             <View style={styles.insta_button_container}>
               <FontAwesome.Button
