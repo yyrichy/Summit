@@ -1,3 +1,4 @@
+import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
 import React, { useState } from 'react'
 import BottomNavigation from './navigation/BottomNavigation'
