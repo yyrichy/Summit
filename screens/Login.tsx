@@ -179,19 +179,13 @@ const Login = () => {
         } else {
           try {
             Linking.openURL(`https://instagram.com/${username}`)
-          } catch (err) {
-            alert('Cannot open Instagram')
-          }
+          } catch (err) {}
         }
-      } catch (err) {
-        alert('Cannot open Instagram')
-      }
+      } catch (err) {}
     } else {
       try {
         Linking.openURL(`https://instagram.com/${username}`)
-      } catch (err) {
-        alert('Cannot open Instagram')
-      }
+      } catch (err) {}
     }
   }
 
