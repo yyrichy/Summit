@@ -9,7 +9,8 @@ import {
   Platform,
   Linking,
   KeyboardAvoidingView,
-  ImageBackground
+  ImageBackground,
+  Keyboard
 } from 'react-native'
 import StudentVue from 'studentvue'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -38,6 +39,7 @@ type loginInfo = 'username' | 'password' | 'district'
 
 const Login = () => {
   const navigation = useNavigation<loginScreenProp>()
+  const [keyboardStatus, setKeyboardStatus] = useState(undefined)
   const refInput = useRef<TextInput | null>(null)
   const { username, password, setUsername, setPassword, setClient, setMarks } =
     useContext(AppContext)
@@ -66,6 +68,17 @@ const Login = () => {
 
   useAsyncEffect(async () => {
     savedCredentials()
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardStatus('Keyboard Shown')
+    })
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardStatus('Keyboard Hidden')
+    })
+
+    return () => {
+      showSubscription.remove()
+      hideSubscription.remove()
+    }
   }, [])
 
   async function savedCredentials(): Promise<void> {
@@ -295,7 +308,7 @@ const Login = () => {
           style={styles.container}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          {firstLaunch && (
+          {firstLaunch && !keyboardStatus && (
             <View style={styles.login_info_container}>
               <View style={styles.horizontal_container}>
                 <Text style={styles.security}>
@@ -414,32 +427,34 @@ const Login = () => {
             size="large"
           />
         </KeyboardAvoidingView>
-        <View style={styles.row_container}>
-          <View style={styles.insta_button_container}>
-            <FontAwesome.Button
-              name="instagram"
-              backgroundColor="transparent"
-              iconStyle={styles.insta_button}
-              underlayColor="none"
-              activeOpacity={0.5}
-              size={28}
-              onPress={() => openInstagram('richardyin99')}
-            ></FontAwesome.Button>
-            <Text style={styles.insta_text}>Richard Y</Text>
+        {!keyboardStatus && (
+          <View style={styles.row_container}>
+            <View style={styles.insta_button_container}>
+              <FontAwesome.Button
+                name="instagram"
+                backgroundColor="transparent"
+                iconStyle={styles.insta_button}
+                underlayColor="none"
+                activeOpacity={0.5}
+                size={28}
+                onPress={() => openInstagram('richardyin99')}
+              ></FontAwesome.Button>
+              <Text style={styles.insta_text}>Richard Y</Text>
+            </View>
+            <View style={styles.insta_button_container}>
+              <FontAwesome.Button
+                name="instagram"
+                backgroundColor="transparent"
+                iconStyle={styles.insta_button}
+                underlayColor="none"
+                activeOpacity={0.5}
+                size={28}
+                onPress={() => openInstagram('karthik.whynot')}
+              ></FontAwesome.Button>
+              <Text style={styles.insta_text}>Karthik M</Text>
+            </View>
           </View>
-          <View style={styles.insta_button_container}>
-            <FontAwesome.Button
-              name="instagram"
-              backgroundColor="transparent"
-              iconStyle={styles.insta_button}
-              underlayColor="none"
-              activeOpacity={0.5}
-              size={28}
-              onPress={() => openInstagram('karthik.whynot')}
-            ></FontAwesome.Button>
-            <Text style={styles.insta_text}>Karthik M</Text>
-          </View>
-        </View>
+        )}
       </ImageBackground>
       <AwesomeAlert
         show={showAlert}
