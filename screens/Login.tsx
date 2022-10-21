@@ -32,6 +32,7 @@ import useAsyncEffect from 'use-async-effect'
 import { FontAwesome5 } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 import District from '../components/District'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -298,11 +299,8 @@ const Login = () => {
             Grade Viewer
           </Text>
         </SafeAreaView>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-          {firstLaunch && !keyboardShown && (
+        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+          {firstLaunch && (
             <View style={styles.login_info_container}>
               <View style={styles.horizontal_container}>
                 <Text style={styles.security}>
@@ -356,7 +354,7 @@ const Login = () => {
             style={styles.dropdown}
             textStyle={styles.dropdown_text}
             containerStyle={styles.dropdown_container}
-            listMode={'FLATLIST'}
+            listMode={'MODAL'}
             translation={{
               SEARCH_PLACEHOLDER: 'Enter School District Name',
               PLACEHOLDER: 'Select School District',
@@ -420,35 +418,34 @@ const Login = () => {
             style={{ marginBottom: 50 }}
             size="large"
           />
-        </KeyboardAvoidingView>
-        {!keyboardShown && (
-          <View style={styles.row_container}>
-            <View style={styles.insta_button_container}>
-              <FontAwesome.Button
-                name="instagram"
-                backgroundColor="transparent"
-                iconStyle={styles.insta_button}
-                underlayColor="none"
-                activeOpacity={0.5}
-                size={28}
-                onPress={() => openInstagram('richardyin99')}
-              ></FontAwesome.Button>
-              <Text style={styles.insta_text}>Richard Y</Text>
-            </View>
-            <View style={styles.insta_button_container}>
-              <FontAwesome.Button
-                name="instagram"
-                backgroundColor="transparent"
-                iconStyle={styles.insta_button}
-                underlayColor="none"
-                activeOpacity={0.5}
-                size={28}
-                onPress={() => openInstagram('karthik.whynot')}
-              ></FontAwesome.Button>
-              <Text style={styles.insta_text}>Karthik M</Text>
-            </View>
+        </KeyboardAwareScrollView>
+
+        <View style={styles.row_container}>
+          <View style={styles.insta_button_container}>
+            <FontAwesome.Button
+              name="instagram"
+              backgroundColor="transparent"
+              iconStyle={styles.insta_button}
+              underlayColor="none"
+              activeOpacity={0.5}
+              size={28}
+              onPress={() => openInstagram('richardyin99')}
+            ></FontAwesome.Button>
+            <Text style={styles.insta_text}>Richard Y</Text>
           </View>
-        )}
+          <View style={styles.insta_button_container}>
+            <FontAwesome.Button
+              name="instagram"
+              backgroundColor="transparent"
+              iconStyle={styles.insta_button}
+              underlayColor="none"
+              activeOpacity={0.5}
+              size={28}
+              onPress={() => openInstagram('karthik.whynot')}
+            ></FontAwesome.Button>
+            <Text style={styles.insta_text}>Karthik M</Text>
+          </View>
+        </View>
       </ImageBackground>
       <AwesomeAlert
         show={showAlert}
