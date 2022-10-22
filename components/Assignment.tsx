@@ -1,5 +1,12 @@
 import React, { useContext, useState } from 'react'
-import { StyleSheet, View, Text, TextInput, Platform } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  Platform,
+  TouchableOpacity
+} from 'react-native'
 import {
   calculateMarkColor,
   updatePoints,
@@ -11,7 +18,6 @@ import {
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { MaterialIcons } from '@expo/vector-icons'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 function Assignment(props) {

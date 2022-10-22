@@ -9,11 +9,11 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
 import Doc from '../components/Document'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Colors } from '../colors/Colors'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { showMessage } from 'react-native-flash-message'

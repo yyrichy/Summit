@@ -6,9 +6,10 @@ import {
   View,
   Text,
   ActivityIndicator,
-  Platform
+  Platform,
+  FlatList,
+  TouchableOpacity
 } from 'react-native'
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import Course from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { convertGradebook, parseCourseName } from '../gradebook/GradeUtil'
