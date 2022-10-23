@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     marginTop: 10,
     padding: 10,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     borderColor: Colors.secondary
   },
   period_number: {

@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     marginRight: 7,
     marginTop: 7,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     borderColor: Colors.secondary
   },
   horizontal_container: {

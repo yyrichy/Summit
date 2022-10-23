@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     marginTop: 7,
     padding: 7,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     borderColor: Colors.secondary
   },
   doc_info_container: {

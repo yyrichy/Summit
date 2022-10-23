@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   property_view: {
     borderRadius: 25,
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: 1,
     borderColor: Colors.secondary,
     backgroundColor: Colors.off_white,
     padding: 10,
