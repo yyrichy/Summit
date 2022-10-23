@@ -76,7 +76,10 @@ const Courses = ({ navigation }) => {
   return (
     <>
       <SafeAreaView
-        style={{ flex: 1 }}
+        style={{
+          flex: 1,
+          marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0
+        }}
         pointerEvents={isLoading ? 'none' : 'auto'}
       >
         <DropDownPicker
@@ -89,6 +92,9 @@ const Courses = ({ navigation }) => {
           maxHeight={null}
           style={styles.dropdown}
           textStyle={styles.dropdown_text}
+          translation={{
+            PLACEHOLDER: 'Select Marking Period'
+          }}
           renderListItem={(props) => {
             return (
               <TouchableOpacity
@@ -190,7 +196,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     height: 30,
     marginBottom: 15,
-    marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0,
     backgroundColor: 'transparent'
   },
   dropdown_text: {

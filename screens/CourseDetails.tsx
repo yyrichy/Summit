@@ -26,7 +26,6 @@ import { Colors } from '../colors/Colors'
 import { showMessage } from 'react-native-flash-message'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AwesomeAlert from 'react-native-awesome-alerts'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -222,10 +221,6 @@ const CourseDetails = ({ route }) => {
                   translation={{
                     PLACEHOLDER: 'Select Category'
                   }}
-                  tickIconStyle={styles.dropdown_tick}
-                  listItemLabelStyle={styles.dropdown_item}
-                  searchContainerStyle={styles.dropdown_search_container}
-                  listItemContainerStyle={styles.dropdown_list_item_container}
                   renderListItem={(props) => {
                     return (
                       <TouchableOpacity
@@ -251,15 +246,6 @@ const CourseDetails = ({ route }) => {
                             {props.label}
                           </Text>
                         </View>
-                        {props.isSelected && (
-                          <View style={styles.category_check_container}>
-                            <MaterialCommunityIcons
-                              name={'check'}
-                              size={20}
-                              style={{ marginHorizontal: 5 }}
-                            />
-                          </View>
-                        )}
                       </TouchableOpacity>
                     )
                   }}
@@ -380,27 +366,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start'
-  },
-  category_check_container: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  },
-  dropdown_item: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    fontFamily: 'Inter_400Regular'
-  },
-  dropdown_tick: {
-    marginLeft: 10
-  },
-  dropdown_search_container: {
-    padding: 10,
-    borderBottomWidth: 0
-  },
-  dropdown_list_item_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
   }
 })
 
