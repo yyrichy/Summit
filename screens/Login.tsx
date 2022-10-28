@@ -26,7 +26,6 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import { useCookies } from 'react-cookie'
 import * as SecureStore from 'expo-secure-store'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { FontAwesome5 } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 import District from '../components/District'
@@ -172,18 +171,15 @@ const Login = () => {
   }
 
   function nameFontSize(): number {
-    if (Platform.OS === 'web') return 60
-    return 40
+    return Platform.OS === 'web' ? 60 : 40
   }
 
   function descriptionFontSize(): number {
-    if (Platform.OS === 'web') return 25
-    return 20
+    return Platform.OS === 'web' ? 25 : 20
   }
 
   function mountainSize(): number {
-    if (Platform.OS === 'web') return 40
-    return 30
+    return Platform.OS === 'web' ? 40 : 30
   }
 
   async function save(key: loginInfo, value: string): Promise<void> {
@@ -208,20 +204,6 @@ const Login = () => {
       removeCookie(key, { path: '/' })
     } else {
       await SecureStore.deleteItemAsync(key)
-    }
-  }
-
-  const setAsyncStorage = async (key: string, value: string): Promise<void> => {
-    try {
-      await AsyncStorage.setItem(key, value)
-    } catch (e) {}
-  }
-
-  const getAsyncStorage = async (key: string): Promise<string> => {
-    try {
-      return await AsyncStorage.getItem(key)
-    } catch (e) {
-      return null
     }
   }
 
