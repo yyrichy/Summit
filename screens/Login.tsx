@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   TextInput,
   View,
@@ -61,6 +61,10 @@ const Login = () => {
       return { label: d.name, value: d.name }
     })
   )
+
+  useEffect(() => {
+    savedCredentials()
+  }, [])
 
   async function savedCredentials(): Promise<void> {
     const username: string = await getValueFor('username')
@@ -382,7 +386,6 @@ const Login = () => {
             size="large"
           />
         </LoginView>
-
         <View style={styles.row_container}>
           <View style={styles.insta_button_container}>
             <FontAwesome.Button
