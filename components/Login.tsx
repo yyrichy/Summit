@@ -10,10 +10,7 @@ const LoginView = ({ children }) =>
       </KeyboardAvoidingView>
     ),
     android: () => (
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
+      <KeyboardAvoidingView style={styles.container} behavior={'height'}>
         {children}
       </KeyboardAvoidingView>
     )
