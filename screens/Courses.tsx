@@ -76,10 +76,7 @@ const Courses = ({ navigation }) => {
   return (
     <>
       <SafeAreaView
-        style={{
-          flex: 1,
-          marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0
-        }}
+        style={styles.container}
         pointerEvents={isLoading ? 'none' : 'auto'}
       >
         <DropDownPicker
@@ -190,6 +187,14 @@ const Courses = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    ...Platform.select({
+      android: {
+        marginTop: Constants.statusBarHeight
+      }
+    })
+  },
   // android status bar not accounted for properly in safeview + dropdownpicker
   // web needs to be shifted 11 right
   dropdown: {

@@ -68,7 +68,7 @@ function Assignment(props) {
           <Text
             numberOfLines={1}
             style={[
-              Platform.OS === 'web' ? styles.name_web : styles.name,
+              styles.name,
               {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
@@ -78,12 +78,7 @@ function Assignment(props) {
           >
             {props.name}
           </Text>
-          <Text
-            numberOfLines={1}
-            style={
-              Platform.OS === 'web' ? styles.category_web : styles.category
-            }
-          >
+          <Text numberOfLines={1} style={styles.category}>
             {assignment.category} - {assignment.date.due.toLocaleDateString()}
           </Text>
         </View>
@@ -99,8 +94,7 @@ function Assignment(props) {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
                   : Colors.black,
-                width: getWidth(assignment.points),
-                ...(Platform.OS === 'web' ? { outlineStyle: 'none' } : {})
+                width: getWidth(assignment.points)
               }
             ]}
             onChangeText={(input) => {
@@ -119,8 +113,7 @@ function Assignment(props) {
                 color: assignment.modified
                   ? Colors.dark_middle_blue_green
                   : Colors.black,
-                width: getWidth(assignment.total),
-                ...(Platform.OS === 'web' ? { outlineStyle: 'none' } : {})
+                width: getWidth(assignment.total)
               }
             ]}
             onChangeText={(input) => {
@@ -251,43 +244,40 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     flex: 1
   },
-  name_web: {
-    color: Colors.black,
-    fontFamily: 'Inter_700Bold',
-    fontSize: 14,
-    marginHorizontal: 7,
-    lineHeight: 14 * 0.75,
-    paddingBottom: 11 - 11 * 0.75,
-    textAlign: 'left'
-  },
-  category_web: {
-    color: Colors.black,
-    fontFamily: 'Inter_400Regular',
-    fontSize: 12,
-    marginHorizontal: 7,
-    lineHeight: 11 * 0.75,
-    paddingVertical: 2,
-    marginTop: 4,
-    textAlign: 'left'
-  },
+
   name: {
     color: Colors.black,
     fontFamily: 'Inter_700Bold',
     fontSize: 14,
     marginHorizontal: 7,
     lineHeight: 14 * 0.75,
-    paddingTop: 14 - 14 * 0.75,
-    textAlign: 'left'
+    textAlign: 'left',
+    ...Platform.select({
+      web: {
+        paddingBottom: 11 - 11 * 0.75
+      },
+      default: {
+        paddingTop: 14 - 14 * 0.75
+      }
+    })
   },
   category: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
     marginHorizontal: 7,
-    lineHeight: 12 * 0.75,
     marginTop: 4,
-    paddingTop: 12 - 12 * 0.75,
-    textAlign: 'left'
+    textAlign: 'left',
+    ...Platform.select({
+      web: {
+        lineHeight: 11 * 0.75,
+        paddingVertical: 2
+      },
+      default: {
+        lineHeight: 12 * 0.75,
+        paddingTop: 12 - 12 * 0.75
+      }
+    })
   },
   input_container: {
     flexDirection: 'row',
