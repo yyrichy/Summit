@@ -47,6 +47,7 @@ import { ActivityIndicator, Text, View } from 'react-native'
 import { Colors } from './colors/Colors'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
+import { CookiesProvider } from 'react-cookie'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -117,7 +118,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <CookiesProvider>
       <SafeAreaProvider>
         <AppContext.Provider value={user}>
           <NavigationContainer theme={LightTheme}>
@@ -141,7 +142,7 @@ const App = () => {
         </AppContext.Provider>
       </SafeAreaProvider>
       <FlashMessage position="top" />
-    </>
+    </CookiesProvider>
   )
 }
 
