@@ -13,10 +13,16 @@ function Course(props) {
     <View style={[styles.container, props.style]}>
       <Text style={styles.period_number}>{('0' + props.period).slice(-2)}</Text>
       <View style={styles.course_info_container}>
-        <Text numberOfLines={1} style={styles.name}>
+        <Text
+          numberOfLines={1}
+          style={Platform.OS === 'web' ? styles.name_web : styles.name}
+        >
           {props.name}
         </Text>
-        <Text numberOfLines={1} style={styles.teacher}>
+        <Text
+          numberOfLines={1}
+          style={Platform.OS === 'web' ? styles.teacher_web : styles.teacher}
+        >
           {props.teacher}
         </Text>
       </View>
@@ -63,8 +69,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     flex: 1
   },
-
-  name: {
+  name_web: {
     color: Colors.navy,
     fontFamily: 'Montserrat_700Bold',
     fontSize: 18,
@@ -72,14 +77,28 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     lineHeight: 18 * 0.75,
     textAlign: 'left',
-    ...Platform.select({
-      web: {
-        paddingBottom: 12 - 12 * 0.75
-      },
-      default: {
-        paddingTop: 18 - 18 * 0.75
-      }
-    })
+    paddingBottom: 12 - 12 * 0.75
+  },
+  teacher_web: {
+    color: Colors.black,
+    fontFamily: 'Inter_400Regular',
+    fontSize: 12,
+    marginRight: 14,
+    marginLeft: 7,
+    lineHeight: 12 * 0.75 + 2,
+    paddingBottom: 2,
+    marginTop: 4,
+    textAlign: 'left'
+  },
+  name: {
+    color: Colors.navy,
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 18,
+    marginRight: 14,
+    marginLeft: 7,
+    lineHeight: 18 * 0.75,
+    paddingTop: 18 - 18 * 0.75,
+    textAlign: 'left'
   },
   teacher: {
     color: Colors.black,
@@ -88,16 +107,9 @@ const styles = StyleSheet.create({
     marginRight: 14,
     marginLeft: 7,
     lineHeight: 12 * 0.75,
+    paddingTop: 12 - 12 * 0.75,
     marginTop: 4,
-    textAlign: 'left',
-    ...Platform.select({
-      web: {
-        paddingBottom: 2
-      },
-      default: {
-        paddingTop: 12 - 12 * 0.75
-      }
-    })
+    textAlign: 'left'
   },
   mark: {
     fontFamily: 'Montserrat_500Medium',

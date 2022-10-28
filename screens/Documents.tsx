@@ -57,9 +57,7 @@ const Documents = () => {
     const fileName =
       document.comment.replace(/ /g, '_') +
       file.file.name.substring(file.file.name.lastIndexOf('.'))
-    if (Platform.OS === 'web') {
-      require('file-saver').saveAs(base64toBlob(file.base64), fileName)
-    } else {
+    if (Platform.OS === 'android' || Platform.OS === 'ios') {
       const filePath = FileSystem.documentDirectory + fileName
       try {
         await FileSystem.writeAsStringAsync(filePath, file.base64, {
@@ -67,6 +65,8 @@ const Documents = () => {
         })
         await Sharing.shareAsync(filePath)
       } catch (e) {}
+    } else {
+      require('file-saver').saveAs(base64toBlob(file.base64), fileName)
     }
   }
 
