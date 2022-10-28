@@ -136,14 +136,8 @@ function Assignment(props) {
       {isDropdown && (
         <View style={styles.dropdown_container}>
           <View style={styles.horizontal_container}>
-            <Text style={styles.dropdown_text_name}>Name:</Text>
+            <Text style={styles.dropdown_text_name}>Full Name:</Text>
             <Text style={styles.dropdown_text_value}>{assignment.name}</Text>
-          </View>
-          <View style={styles.horizontal_container}>
-            <Text style={styles.dropdown_text_name}>Category:</Text>
-            <Text style={styles.dropdown_text_value}>
-              {assignment.category}
-            </Text>
           </View>
           <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Effective Weight:</Text>
@@ -156,17 +150,6 @@ function Assignment(props) {
                   100,
                 2
               )}
-              %
-            </Text>
-          </View>
-          <View style={styles.horizontal_container}>
-            <Text style={styles.dropdown_text_name}>Weight:</Text>
-            <Text style={styles.dropdown_text_value}>
-              {
-                marks.courses
-                  .get(props.course)
-                  .categories.get(assignment.category).weight
-              }
               %
             </Text>
           </View>
