@@ -8,7 +8,6 @@ import {
   SafeAreaView,
   Platform,
   Linking,
-  KeyboardAvoidingView,
   ImageBackground
 } from 'react-native'
 import StudentVue from 'studentvue'
@@ -16,6 +15,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
+import LoginView from '../components/Login'
 import AppContext from '../contexts/AppContext'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { convertGradebook } from '../gradebook/GradeUtil'
@@ -280,10 +280,7 @@ const Login = () => {
             Grade Viewer
           </Text>
         </SafeAreaView>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
+        <LoginView>
           {firstLaunch && (
             <View style={styles.login_info_container}>
               <View style={styles.horizontal_container}>
@@ -402,7 +399,7 @@ const Login = () => {
             style={{ marginBottom: 50 }}
             size="large"
           />
-        </KeyboardAvoidingView>
+        </LoginView>
 
         <View style={styles.row_container}>
           <View style={styles.insta_button_container}>
