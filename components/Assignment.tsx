@@ -227,7 +227,6 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     flex: 1
   },
-
   name: {
     color: Colors.black,
     fontFamily: 'Inter_700Bold',
@@ -271,7 +270,8 @@ const styles = StyleSheet.create({
     height: 60,
     fontSize: 23,
     fontFamily: 'Inter_600SemiBold',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    outlineStyle: 'none'
   },
   dash: {
     fontSize: 20,
