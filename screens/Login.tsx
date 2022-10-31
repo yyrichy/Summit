@@ -483,8 +483,7 @@ const styles = StyleSheet.create({
   login_info: {
     fontFamily: 'Montserrat_300Light_Italic',
     fontSize: 12,
-    marginBottom: 10,
-    marginTop: 15
+    marginBottom: 10
   },
   security: {
     fontFamily: 'Inter_600SemiBold',
