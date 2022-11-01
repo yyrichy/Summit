@@ -72,36 +72,37 @@ const Login = () => {
     const value: string = await getValueFor('district')
 
     // Auto login
-    if (username && password && value) {
-      setUsername(username)
-      setPassword(password)
-      setValue(value)
-      setIsLoading(true)
-      setToggleCheckBox(true)
-      try {
-        const client = await StudentVue.login(
-          require('../assets/districts.json').find(
-            (d: SchoolDistrict) => d.name === value
-          ).parentVueUrl,
-          {
-            username: username,
-            password: password
-          }
-        )
-        const gradebook = await client.gradebook()
-        const marks = await convertGradebook(gradebook)
-        setClient(client)
-        setMarks(marks)
-      } catch (err) {
-        setIsLoading(false)
-        alert(err.message)
-        return
-      }
-      setIsLoading(false)
-      navigation.navigate('Menu')
-    } else {
+    if (!username || !password || !value) {
       setFirstLaunch(true)
+      return
     }
+
+    setUsername(username)
+    setPassword(password)
+    setValue(value)
+    setIsLoading(true)
+    setToggleCheckBox(true)
+    try {
+      const client = await StudentVue.login(
+        require('../assets/districts.json').find(
+          (d: SchoolDistrict) => d.name === value
+        ).parentVueUrl,
+        {
+          username: username,
+          password: password
+        }
+      )
+      const gradebook = await client.gradebook()
+      const marks = await convertGradebook(gradebook)
+      setClient(client)
+      setMarks(marks)
+    } catch (err) {
+      setIsLoading(false)
+      alert(err.message)
+      return
+    }
+    setIsLoading(false)
+    navigation.navigate('Menu')
   }
 
   function alert(message: string): void {
