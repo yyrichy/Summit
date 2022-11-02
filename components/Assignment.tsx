@@ -87,6 +87,7 @@ function Assignment(props) {
             value={isNaN(assignment.points) ? '' : assignment.points.toString()}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
+            returnKeyType={'done'}
             autoComplete={'off'}
             style={[
               styles.mark,
@@ -106,6 +107,7 @@ function Assignment(props) {
             value={isNaN(assignment.total) ? '' : assignment.total.toString()}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
+            returnKeyType={'done'}
             autoComplete={'off'}
             style={[
               styles.mark,

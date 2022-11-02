@@ -296,7 +296,7 @@ const Login = () => {
             onChangeText={(u) => setUsername(u)}
             placeholder={'Username'}
             style={styles.input}
-            returnKeyType="next"
+            returnKeyType={'next'}
             onSubmitEditing={() => refInput.current.focus()}
             blurOnSubmit={false}
           />
@@ -306,7 +306,7 @@ const Login = () => {
             placeholder={'Password'}
             secureTextEntry={true}
             style={styles.input}
-            returnKeyType="next"
+            returnKeyType={'next'}
             ref={refInput}
             onSubmitEditing={() => setOpen(true)}
           />

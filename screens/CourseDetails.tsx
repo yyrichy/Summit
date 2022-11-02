@@ -5,6 +5,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View
 } from 'react-native'
@@ -19,7 +20,6 @@ import {
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { LightTheme } from '../theme/LightTheme'
 import Modal from 'react-native-modal'
-import { TextInput } from 'react-native-gesture-handler'
 import DropDownPicker from 'react-native-dropdown-picker'
 import CustomButton from '../components/CustomButton'
 import { Colors } from '../colors/Colors'
@@ -174,14 +174,16 @@ const CourseDetails = ({ route }) => {
           <View style={styles.modal}>
             <View style={styles.modal_view}>
               <TextInput
+                returnKeyType={'next'}
                 value={assignmentName}
                 placeholder="Name (Optional)"
                 onChangeText={(t) => {
                   setAssignmentName(t)
                 }}
                 style={[styles.input, { marginTop: 10 }]}
-              ></TextInput>
+              />
               <TextInput
+                returnKeyType={'next'}
                 value={points}
                 keyboardType="decimal-pad"
                 autoComplete="off"
@@ -190,8 +192,9 @@ const CourseDetails = ({ route }) => {
                   if (isNumber(t) || t === '') setPoints(t)
                 }}
                 style={styles.input}
-              ></TextInput>
+              />
               <TextInput
+                returnKeyType={'next'}
                 value={total}
                 keyboardType="decimal-pad"
                 autoComplete="off"
@@ -200,7 +203,7 @@ const CourseDetails = ({ route }) => {
                   if (isNumber(t) || t === '') setTotal(t)
                 }}
                 style={styles.input}
-              ></TextInput>
+              />
               <View
                 style={{
                   marginHorizontal: 7,
