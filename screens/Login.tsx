@@ -216,7 +216,7 @@ const Login = () => {
     <>
       <Modal
         isVisible={isModalVisible}
-        coverScreen={true}
+        coverScreen={false}
         onBackdropPress={() => setModalVisible(!isModalVisible)}
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}

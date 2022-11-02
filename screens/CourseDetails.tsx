@@ -166,7 +166,7 @@ const CourseDetails = ({ route }) => {
         />
         <Modal
           isVisible={isModalVisible}
-          coverScreen={true}
+          coverScreen={false}
           onBackdropPress={toggleModal}
           animationIn={'fadeIn'}
           animationOut={'fadeOut'}
