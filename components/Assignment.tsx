@@ -17,7 +17,6 @@ import {
 } from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
-import { MaterialIcons } from '@expo/vector-icons'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 function Assignment(props) {
@@ -51,14 +50,16 @@ function Assignment(props) {
   }
 
   return (
-    <View
+    <TouchableOpacity
+      onPress={() => setIsDropdown(!isDropdown)}
+      activeOpacity={0.5}
       style={[
         styles.container,
         props.style,
         hasScore
           ? {
               borderLeftColor: calculateMarkColor(score),
-              borderLeftWidth: 3
+              borderLeftWidth: 4
             }
           : {}
       ]}
@@ -123,17 +124,6 @@ function Assignment(props) {
             }}
           />
         </View>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => setIsDropdown(!isDropdown)}
-        >
-          <MaterialIcons
-            name={isDropdown ? 'arrow-drop-up' : 'arrow-drop-down'}
-            color={Colors.middle_blue_green}
-            size={36}
-            style={{ marginRight: 5 }}
-          />
-        </TouchableOpacity>
       </View>
       {isDropdown && (
         <View style={styles.dropdown_container}>
@@ -200,7 +190,7 @@ function Assignment(props) {
           ></FontAwesome.Button>
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -212,16 +202,18 @@ const styles = StyleSheet.create({
     marginRight: 7,
     marginTop: 7,
     borderWidth: 1,
-    borderColor: Colors.secondary
+    borderTopColor: Colors.secondary,
+    borderRightColor: Colors.secondary,
+    borderBottomColor: Colors.secondary,
+    borderLeftColor: Colors.secondary
   },
   horizontal_container: {
     flexDirection: 'row'
   },
   dropdown_container: {
     padding: 10,
-    backgroundColor: Colors.off_white,
-    borderTopColor: Colors.onyx_gray,
-    borderTopWidth: 1
+    paddingTop: 0,
+    backgroundColor: Colors.off_white
   },
   assignment_info_container: {
     flexDirection: 'column',
@@ -266,7 +258,8 @@ const styles = StyleSheet.create({
   input_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginRight: 7
   },
   mark: {
     height: 60,
