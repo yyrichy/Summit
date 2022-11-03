@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 32
+    fontSize: 32,
+    lineHeight: 36
   },
   course_info_container: {
     flexDirection: 'column',
@@ -101,14 +102,14 @@ const styles = StyleSheet.create({
   },
   mark: {
     fontFamily: 'Montserrat_500Medium',
-    fontSize: 28,
-    alignSelf: 'center'
+    fontSize: 32,
+    lineHeight: 36
   },
   letter_grade: {
     marginLeft: 7,
     fontFamily: 'Montserrat_800ExtraBold',
     fontSize: 32,
-    alignSelf: 'center'
+    lineHeight: 36
   }
 })
 
