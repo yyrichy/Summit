@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   ActivityIndicator,
   FlatList,
@@ -33,6 +33,9 @@ const CourseDetails = ({ route }) => {
 
   const { marks, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(courseName)
+
+  const refInput = useRef<TextInput | null>(null)
+  const refInput2 = useRef<TextInput | null>(null)
 
   const [isModalVisible, setModalVisible] = useState(false)
   const [open, setOpen] = useState(false)
@@ -181,6 +184,8 @@ const CourseDetails = ({ route }) => {
                   setAssignmentName(t)
                 }}
                 style={[styles.input, { marginTop: 10 }]}
+                blurOnSubmit={false}
+                onSubmitEditing={() => refInput.current.focus()}
               />
               <TextInput
                 returnKeyType={'next'}
@@ -192,6 +197,9 @@ const CourseDetails = ({ route }) => {
                   if (isNumber(t) || t === '') setPoints(t)
                 }}
                 style={styles.input}
+                blurOnSubmit={false}
+                ref={refInput}
+                onSubmitEditing={() => refInput2.current.focus()}
               />
               <TextInput
                 returnKeyType={'next'}
@@ -203,6 +211,8 @@ const CourseDetails = ({ route }) => {
                   if (isNumber(t) || t === '') setTotal(t)
                 }}
                 style={styles.input}
+                ref={refInput2}
+                onSubmitEditing={() => setOpen(true)}
               />
               <View
                 style={{
