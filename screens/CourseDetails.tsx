@@ -26,6 +26,11 @@ import { Colors } from '../colors/Colors'
 import { showMessage } from 'react-native-flash-message'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AwesomeAlert from 'react-native-awesome-alerts'
+import Animated, {
+  Layout,
+  Transition,
+  Transitioning
+} from 'react-native-reanimated'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -54,6 +59,8 @@ const CourseDetails = ({ route }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
   const [errorMessage, setErrorMessage] = useState()
+
+  const ref = useRef(null)
 
   useEffect(() => {
     if (isModalVisible) {
@@ -100,6 +107,14 @@ const CourseDetails = ({ route }) => {
     }
     setIsLoading(false)
   }
+
+  const transition = (
+    <Transition.Together>
+      <Transition.In type="fade" durationMs={500} />
+      <Transition.Change />
+      <Transition.Out type="fade" durationMs={500} />
+    </Transition.Together>
+  )
 
   return (
     <>
@@ -160,13 +175,21 @@ const CourseDetails = ({ route }) => {
             ></FontAwesome.Button>
           </View>
         </View>
-        <FlatList
-          data={course.assignments}
-          renderItem={({ item }) => (
-            <Assignment name={item.name} course={courseName}></Assignment>
-          )}
-          keyExtractor={(item) => item.name}
-        />
+        <Transitioning.View ref={ref} transition={transition}>
+          <Animated.FlatList
+            data={course.assignments}
+            renderItem={({ item }) => (
+              <Assignment
+                name={item.name}
+                course={courseName}
+                onPress={() => ref.current.animateNextTransition()}
+              ></Assignment>
+            )}
+            keyExtractor={(item) => item.name}
+            //@ts-ignore
+            itemLayoutAnimation={Layout.springify()}
+          />
+        </Transitioning.View>
         <Modal
           isVisible={isModalVisible}
           coverScreen={false}

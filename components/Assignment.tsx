@@ -18,6 +18,7 @@ import {
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import Animated from 'react-native-reanimated'
 
 function Assignment(props) {
   const { marks, setMarks } = useContext(AppContext)
@@ -51,7 +52,10 @@ function Assignment(props) {
 
   return (
     <TouchableOpacity
-      onPress={() => setIsDropdown(!isDropdown)}
+      onPress={() => {
+        props.onPress()
+        setIsDropdown(!isDropdown)
+      }}
       activeOpacity={0.5}
       style={[
         styles.container,
@@ -211,14 +215,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   dropdown_container: {
-    padding: 10,
-    paddingTop: 0,
-    backgroundColor: Colors.off_white
+    padding: 7,
+    paddingTop: 0
   },
   assignment_info_container: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginLeft: 7,
+    marginLeft: 3,
     flex: 1
   },
   name: {
