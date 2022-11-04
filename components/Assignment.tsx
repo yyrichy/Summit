@@ -51,12 +51,7 @@ function Assignment(props) {
   }
 
   return (
-    <TouchableOpacity
-      onPress={() => {
-        props.onPress()
-        setIsDropdown(!isDropdown)
-      }}
-      activeOpacity={0.5}
+    <View
       style={[
         styles.container,
         props.style,
@@ -69,7 +64,14 @@ function Assignment(props) {
       ]}
     >
       <View style={[styles.horizontal_container, { height: 52 }]}>
-        <View style={styles.assignment_info_container}>
+        <TouchableOpacity
+          onPress={() => {
+            props.onPress()
+            setIsDropdown(!isDropdown)
+          }}
+          activeOpacity={0.5}
+          style={styles.assignment_info_container}
+        >
           <Text
             numberOfLines={1}
             style={[
@@ -86,7 +88,7 @@ function Assignment(props) {
           <Text numberOfLines={1} style={styles.category}>
             {assignment.category} - {assignment.date.due.toLocaleDateString()}
           </Text>
-        </View>
+        </TouchableOpacity>
         <View style={styles.input_container}>
           <TextInput
             value={isNaN(assignment.points) ? '' : assignment.points.toString()}
@@ -194,7 +196,7 @@ function Assignment(props) {
           ></FontAwesome.Button>
         </View>
       )}
-    </TouchableOpacity>
+    </View>
   )
 }
 
