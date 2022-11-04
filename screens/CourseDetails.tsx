@@ -337,7 +337,8 @@ const styles = StyleSheet.create({
   course_details_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 3.5
   },
   dropdown: {
     borderWidth: 1,
