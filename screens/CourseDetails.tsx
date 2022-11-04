@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   ActivityIndicator,
-  FlatList,
   StyleSheet,
   Text,
   TextInput,
