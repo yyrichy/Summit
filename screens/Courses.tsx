@@ -5,18 +5,16 @@ import {
   StyleSheet,
   View,
   Text,
-  ActivityIndicator,
   Platform,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  RefreshControl
 } from 'react-native'
 import Course from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { convertGradebook, parseCourseName } from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { showMessage } from 'react-native-flash-message'
 import { Colors } from '../colors/Colors'
-import AwesomeAlert from 'react-native-awesome-alerts'
 import Constants from 'expo-constants'
 
 const Courses = ({ navigation }) => {
@@ -28,101 +26,68 @@ const Courses = ({ navigation }) => {
       return { label: p.name, value: p.index }
     })
   )
-  const [isLoading, setIsLoading] = useState(false)
-  const [showAlert, setShowAlert] = useState(false)
-  const [errorMessage, setErrorMessage] = useState()
 
   useEffect(() => {
-    setIsLoading(true)
-    let isSubscribed = true
-    const getGradebook = async () => {
-      try {
-        const marks = await convertGradebook(await client.gradebook(value))
-        if (isSubscribed) {
-          setMarks(marks)
-        }
-      } catch (err) {
-        setErrorMessage(err.message)
-        setShowAlert(true)
-      }
-    }
-    getGradebook()
-    setIsLoading(false)
-    return () => {
-      isSubscribed = false
-    }
+    onRefresh()
   }, [value])
 
-  const refreshMarks = async (): Promise<void> => {
-    setIsLoading(true)
+  const [refreshing, setRefreshing] = useState(false)
+
+  const onRefresh = async () => {
+    setRefreshing(true)
     try {
-      const gradebook = await client.gradebook(value)
-      const newMarks = await convertGradebook(gradebook)
-      setMarks(newMarks)
-    } catch (err) {
-      setErrorMessage(err.message)
-      setShowAlert(true)
-      setIsLoading(false)
-      return
-    }
-    showMessage({
-      message: 'Gradebook refreshed',
-      type: 'info',
-      icon: 'success'
-    })
-    setIsLoading(false)
+      setMarks(await convertGradebook(await client.gradebook(value)))
+    } catch (err) {}
+    setRefreshing(false)
   }
 
   return (
-    <>
-      <SafeAreaView
-        style={styles.container}
-        pointerEvents={isLoading ? 'none' : 'auto'}
-      >
-        <DropDownPicker
-          open={open}
-          value={value}
-          items={periods}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setPeriods}
-          maxHeight={null}
-          style={styles.dropdown}
-          textStyle={styles.dropdown_text}
-          translation={{
-            PLACEHOLDER: 'Select Marking Period'
-          }}
-          renderListItem={(props) => {
-            return (
-              <TouchableOpacity
-                {...props}
-                style={[
-                  props.listItemContainerStyle,
-                  {
-                    backgroundColor: props.isSelected && Colors.light_gray
-                  }
-                ]}
-                onPress={() => {
-                  setValue(props.value)
-                  setOpen(false)
-                }}
-                activeOpacity={0.5}
-              >
-                <View style={styles.marking_period_container}>
-                  <Text numberOfLines={1} style={props.listItemLabelStyle}>
-                    {props.label}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            )
-          }}
-        ></DropDownPicker>
-        <View style={styles.row_container}>
-          {!isNaN(marks.gpa) && (
-            <View style={styles.gpa_container}>
-              <Text style={styles.gpa}>{marks.gpa} GPA</Text>
-            </View>
-          )}
+    <SafeAreaView style={styles.container}>
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={periods}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setPeriods}
+        maxHeight={null}
+        style={styles.dropdown}
+        textStyle={styles.dropdown_text}
+        translation={{
+          PLACEHOLDER: 'Select Marking Period'
+        }}
+        renderListItem={(props) => {
+          return (
+            <TouchableOpacity
+              {...props}
+              style={[
+                props.listItemContainerStyle,
+                {
+                  backgroundColor: props.isSelected && Colors.light_gray
+                }
+              ]}
+              onPress={() => {
+                setValue(props.value)
+                setOpen(false)
+              }}
+              activeOpacity={0.5}
+            >
+              <View style={styles.marking_period_container}>
+                <Text numberOfLines={1} style={props.listItemLabelStyle}>
+                  {props.label}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )
+        }}
+      ></DropDownPicker>
+      <View style={styles.row_container}>
+        {!isNaN(marks.gpa) && (
+          <View style={styles.gpa_container}>
+            <Text style={styles.gpa}>{marks.gpa} GPA</Text>
+          </View>
+        )}
+        {Platform.OS === 'web' && (
           <View style={styles.refresh_button_container}>
             <FontAwesome.Button
               name="refresh"
@@ -133,56 +98,38 @@ const Courses = ({ navigation }) => {
               underlayColor="none"
               activeOpacity={0.5}
               size={24}
-              onPress={() => refreshMarks()}
+              onPress={onRefresh}
             ></FontAwesome.Button>
           </View>
-        </View>
-        {marks && (
-          <FlatList
-            data={[...marks.courses.entries()]}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                activeOpacity={0.5}
-                onPress={() => {
-                  if (item[1].categories.size > 1) {
-                    navigation.navigate('Course Details', { title: item[0] })
-                  }
-                }}
-              >
-                <Course
-                  name={parseCourseName(item[0])}
-                  mark={item[1].value}
-                  period={item[1].period}
-                  teacher={item[1].teacher}
-                ></Course>
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item) => item[0]}
-          />
         )}
-      </SafeAreaView>
-      {isLoading && (
-        <SafeAreaView style={styles.loading}>
-          <ActivityIndicator size={'large'} />
-        </SafeAreaView>
+      </View>
+      {marks && (
+        <FlatList
+          data={[...marks.courses.entries()]}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => {
+                if (item[1].categories.size > 1) {
+                  navigation.navigate('Course Details', { title: item[0] })
+                }
+              }}
+            >
+              <Course
+                name={parseCourseName(item[0])}
+                mark={item[1].value}
+                period={item[1].period}
+                teacher={item[1].teacher}
+              ></Course>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item[0]}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        />
       )}
-      <AwesomeAlert
-        show={showAlert}
-        showProgress={false}
-        title={'Error'}
-        message={errorMessage}
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={true}
-        showCancelButton={false}
-        showConfirmButton={true}
-        confirmText={'Ok'}
-        confirmButtonColor={Colors.primary}
-        confirmButtonTextStyle={{ color: Colors.black }}
-        onConfirmPressed={() => {
-          setShowAlert(false)
-        }}
-      ></AwesomeAlert>
-    </>
+    </SafeAreaView>
   )
 }
 

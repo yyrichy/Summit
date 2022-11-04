@@ -1,7 +1,14 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import {
-  ActivityIndicator,
+  Platform,
+  RefreshControl,
   StyleSheet,
   Text,
   TextInput,
@@ -22,14 +29,16 @@ import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
 import CustomButton from '../components/CustomButton'
 import { Colors } from '../colors/Colors'
-import { showMessage } from 'react-native-flash-message'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import AwesomeAlert from 'react-native-awesome-alerts'
-import Animated, {
-  Layout,
-  Transition,
-  Transitioning
-} from 'react-native-reanimated'
+import Animated, { Transition, Transitioning } from 'react-native-reanimated'
+
+const transition = (
+  <Transition.Together>
+    <Transition.In type="fade" durationMs={500} />
+    <Transition.Change />
+    <Transition.Out type="fade" durationMs={250} />
+  </Transition.Together>
+)
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -55,11 +64,21 @@ const CourseDetails = ({ route }) => {
   const [points, setPoints] = useState('')
   const [total, setTotal] = useState('')
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [showAlert, setShowAlert] = useState(false)
-  const [errorMessage, setErrorMessage] = useState()
-
   const ref = useRef(null)
+
+  const [refreshing, setRefreshing] = useState(false)
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      setMarks(
+        await convertGradebook(
+          await client.gradebook(marks.reportingPeriod.index)
+        )
+      )
+    } catch (err) {}
+    setRefreshing(false)
+  }, [])
 
   useEffect(() => {
     if (isModalVisible) {
@@ -87,80 +106,49 @@ const CourseDetails = ({ route }) => {
     toggleModal()
   }
 
-  const refreshMarks = async (): Promise<void> => {
-    setIsLoading(true)
-    try {
-      setMarks(
-        await convertGradebook(
-          await client.gradebook(marks.reportingPeriod.index)
-        )
-      )
-      showMessage({
-        message: 'Refreshed',
-        type: 'info',
-        icon: 'success'
-      })
-    } catch (err) {
-      setErrorMessage(err.message)
-      setShowAlert(true)
-    }
-    setIsLoading(false)
-  }
-
-  const transition = (
-    <Transition.Together>
-      <Transition.In type="fade" durationMs={500} />
-      <Transition.Change />
-      <Transition.Out type="fade" durationMs={500} />
-    </Transition.Together>
-  )
-
   return (
-    <>
-      <SafeAreaView
-        style={{ flex: 1 }}
-        pointerEvents={isLoading ? 'none' : 'auto'}
-      >
-        <View style={styles.course_details_container}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start'
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.course_details_container}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-start'
+          }}
+        >
+          <FontAwesome.Button
+            name="chevron-left"
+            backgroundColor="transparent"
+            iconStyle={{
+              color: Colors.secondary
             }}
-          >
-            <FontAwesome.Button
-              name="chevron-left"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.secondary
-              }}
-              underlayColor="none"
-              activeOpacity={0.5}
-              size={24}
-              onPress={() => navigation.goBack()}
-            ></FontAwesome.Button>
-          </View>
-          <Text numberOfLines={1} style={styles.course_details}>
-            {isNaN(course.value) ? 'N/A' : course.value} |{' '}
-            {parseCourseName(courseName)}
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end'
+            underlayColor="none"
+            activeOpacity={0.5}
+            size={24}
+            onPress={() => navigation.goBack()}
+          ></FontAwesome.Button>
+        </View>
+        <Text numberOfLines={1} style={styles.course_details}>
+          {isNaN(course.value) ? 'N/A' : course.value} |{' '}
+          {parseCourseName(courseName)}
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end'
+          }}
+        >
+          <FontAwesome.Button
+            name="plus-circle"
+            backgroundColor="transparent"
+            iconStyle={{
+              color: Colors.secondary
             }}
-          >
-            <FontAwesome.Button
-              name="plus-circle"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.secondary
-              }}
-              size={24}
-              underlayColor="none"
-              activeOpacity={0.5}
-              onPress={() => toggleModal()}
-            ></FontAwesome.Button>
+            size={24}
+            underlayColor="none"
+            activeOpacity={0.5}
+            onPress={() => toggleModal()}
+          ></FontAwesome.Button>
+          {Platform.OS === 'web' && (
             <FontAwesome.Button
               name="refresh"
               backgroundColor="transparent"
@@ -170,157 +158,138 @@ const CourseDetails = ({ route }) => {
               underlayColor="none"
               activeOpacity={0.5}
               size={24}
-              onPress={() => refreshMarks()}
+              onPress={onRefresh}
             ></FontAwesome.Button>
-          </View>
+          )}
         </View>
-        <Transitioning.View ref={ref} transition={transition}>
-          <Animated.FlatList
-            data={course.assignments}
-            renderItem={({ item }) => (
+      </View>
+      <Transitioning.View ref={ref} transition={transition}>
+        <Animated.ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {course.assignments.map((item, index) => {
+            return (
               <Assignment
                 name={item.name}
                 course={courseName}
                 onPress={() => ref.current.animateNextTransition()}
+                key={index}
               ></Assignment>
-            )}
-            keyExtractor={(item) => item.name}
-            //@ts-ignore
-            itemLayoutAnimation={Layout.springify()}
-          />
-        </Transitioning.View>
-        <Modal
-          isVisible={isModalVisible}
-          coverScreen={false}
-          onBackdropPress={toggleModal}
-          animationIn={'fadeIn'}
-          animationOut={'fadeOut'}
-        >
-          <View style={styles.modal}>
-            <View style={styles.modal_view}>
-              <TextInput
-                returnKeyType={'next'}
-                value={assignmentName}
-                placeholder="Name (Optional)"
-                onChangeText={(t) => {
-                  setAssignmentName(t)
+            )
+          })}
+        </Animated.ScrollView>
+      </Transitioning.View>
+      <Modal
+        isVisible={isModalVisible}
+        coverScreen={false}
+        onBackdropPress={toggleModal}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+      >
+        <View style={styles.modal}>
+          <View style={styles.modal_view}>
+            <TextInput
+              returnKeyType={'next'}
+              value={assignmentName}
+              placeholder="Name (Optional)"
+              onChangeText={(t) => {
+                setAssignmentName(t)
+              }}
+              style={[styles.input, { marginTop: 10 }]}
+              blurOnSubmit={false}
+              onSubmitEditing={() => refInput.current.focus()}
+            />
+            <TextInput
+              returnKeyType={'next'}
+              value={points}
+              keyboardType="decimal-pad"
+              autoComplete="off"
+              placeholder="Points Earned"
+              onChangeText={(t) => {
+                if (isNumber(t) || t === '') setPoints(t)
+              }}
+              style={styles.input}
+              blurOnSubmit={false}
+              ref={refInput}
+              onSubmitEditing={() => refInput2.current.focus()}
+            />
+            <TextInput
+              returnKeyType={'next'}
+              value={total}
+              keyboardType="decimal-pad"
+              autoComplete="off"
+              placeholder="Total Points"
+              onChangeText={(t) => {
+                if (isNumber(t) || t === '') setTotal(t)
+              }}
+              style={styles.input}
+              ref={refInput2}
+              onSubmitEditing={() => setOpen(true)}
+            />
+            <View
+              style={{
+                marginHorizontal: 7,
+                marginTop: 7
+              }}
+            >
+              <DropDownPicker
+                open={open}
+                value={category}
+                items={categories}
+                setOpen={setOpen}
+                setValue={setCategory}
+                setItems={setCategories}
+                maxHeight={null}
+                style={styles.dropdown}
+                textStyle={styles.dropdown_text}
+                containerStyle={styles.dropdown_container}
+                translation={{
+                  PLACEHOLDER: 'Select Category'
                 }}
-                style={[styles.input, { marginTop: 10 }]}
-                blurOnSubmit={false}
-                onSubmitEditing={() => refInput.current.focus()}
-              />
-              <TextInput
-                returnKeyType={'next'}
-                value={points}
-                keyboardType="decimal-pad"
-                autoComplete="off"
-                placeholder="Points Earned"
-                onChangeText={(t) => {
-                  if (isNumber(t) || t === '') setPoints(t)
+                renderListItem={(props) => {
+                  return (
+                    <TouchableOpacity
+                      {...props}
+                      style={[
+                        props.listItemContainerStyle,
+                        {
+                          backgroundColor: props.isSelected && Colors.light_gray
+                        }
+                      ]}
+                      onPress={() => {
+                        setCategory(props.value)
+                        setOpen(false)
+                      }}
+                      activeOpacity={0.5}
+                    >
+                      <View style={styles.category_name_container}>
+                        <Text
+                          numberOfLines={1}
+                          style={props.listItemLabelStyle}
+                        >
+                          {props.label}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )
                 }}
-                style={styles.input}
-                blurOnSubmit={false}
-                ref={refInput}
-                onSubmitEditing={() => refInput2.current.focus()}
-              />
-              <TextInput
-                returnKeyType={'next'}
-                value={total}
-                keyboardType="decimal-pad"
-                autoComplete="off"
-                placeholder="Total Points"
-                onChangeText={(t) => {
-                  if (isNumber(t) || t === '') setTotal(t)
-                }}
-                style={styles.input}
-                ref={refInput2}
-                onSubmitEditing={() => setOpen(true)}
-              />
-              <View
-                style={{
-                  marginHorizontal: 7,
-                  marginTop: 7
-                }}
-              >
-                <DropDownPicker
-                  open={open}
-                  value={category}
-                  items={categories}
-                  setOpen={setOpen}
-                  setValue={setCategory}
-                  setItems={setCategories}
-                  maxHeight={null}
-                  style={styles.dropdown}
-                  textStyle={styles.dropdown_text}
-                  containerStyle={styles.dropdown_container}
-                  translation={{
-                    PLACEHOLDER: 'Select Category'
-                  }}
-                  renderListItem={(props) => {
-                    return (
-                      <TouchableOpacity
-                        {...props}
-                        style={[
-                          props.listItemContainerStyle,
-                          {
-                            backgroundColor:
-                              props.isSelected && Colors.light_gray
-                          }
-                        ]}
-                        onPress={() => {
-                          setCategory(props.value)
-                          setOpen(false)
-                        }}
-                        activeOpacity={0.5}
-                      >
-                        <View style={styles.category_name_container}>
-                          <Text
-                            numberOfLines={1}
-                            style={props.listItemLabelStyle}
-                          >
-                            {props.label}
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    )
-                  }}
-                ></DropDownPicker>
-                <CustomButton
-                  onPress={add}
-                  text={'Add Assignment'}
-                  backgroundColor={LightTheme.colors.card}
-                  textColor={Colors.black}
-                  fontFamily="Inter_600SemiBold"
-                  containerStyle={styles.button_container}
-                  disabled={false}
-                ></CustomButton>
-              </View>
+              ></DropDownPicker>
+              <CustomButton
+                onPress={add}
+                text={'Add Assignment'}
+                backgroundColor={LightTheme.colors.card}
+                textColor={Colors.black}
+                fontFamily="Inter_600SemiBold"
+                containerStyle={styles.button_container}
+                disabled={false}
+              ></CustomButton>
             </View>
           </View>
-        </Modal>
-      </SafeAreaView>
-      {isLoading && (
-        <SafeAreaView style={styles.loading}>
-          <ActivityIndicator size={'large'} />
-        </SafeAreaView>
-      )}
-      <AwesomeAlert
-        show={showAlert}
-        showProgress={false}
-        title={'Error'}
-        message={errorMessage}
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={true}
-        showCancelButton={false}
-        showConfirmButton={true}
-        confirmText={'Ok'}
-        confirmButtonColor={Colors.primary}
-        confirmButtonTextStyle={{ color: Colors.black }}
-        onConfirmPressed={() => {
-          setShowAlert(false)
-        }}
-      ></AwesomeAlert>
-    </>
+        </View>
+      </Modal>
+    </SafeAreaView>
   )
 }
 

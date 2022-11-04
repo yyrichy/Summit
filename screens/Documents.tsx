@@ -1,42 +1,29 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AppContext from '../contexts/AppContext'
 import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
 import {
-  ActivityIndicator,
   FlatList,
   Platform,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  RefreshControl
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
 import Doc from '../components/Document'
 import { Colors } from '../colors/Colors'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { showMessage } from 'react-native-flash-message'
-import AwesomeAlert from 'react-native-awesome-alerts'
 
 const Documents = () => {
   const { client } = useContext(AppContext)
   const [documents, setDocuments] = useState(undefined as Document[])
-  const [isLoading, setIsLoading] = useState(false)
-  const [showAlert, setShowAlert] = useState(false)
-  const [errorMessage, setErrorMessage] = useState()
 
-  const fetchDocuments = async (): Promise<void> => {
-    setIsLoading(true)
-    try {
-      setDocuments(await client.documents())
-    } catch (err) {
-      setErrorMessage(err.message)
-      setShowAlert(true)
-    }
-    setIsLoading(false)
-  }
-  if (!documents && !isLoading) fetchDocuments()
+  useEffect(() => {
+    onRefresh()
+  }, [])
 
   const base64toBlob = (base64: string, sliceSize = 512): Blob => {
     const byteCharacters = window.atob(base64)
@@ -70,16 +57,23 @@ const Documents = () => {
     }
   }
 
+  const [refreshing, setRefreshing] = useState(false)
+
+  const onRefresh = async () => {
+    setRefreshing(true)
+    try {
+      setDocuments(await client.documents())
+    } catch (err) {}
+    setRefreshing(false)
+  }
+
   return (
-    <>
-      <SafeAreaView
-        style={{ flex: 1 }}
-        pointerEvents={isLoading ? 'none' : 'auto'}
-      >
-        <View style={styles.row_container}>
-          <View style={styles.title_container}>
-            <Text style={styles.title}>Documents</Text>
-          </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.row_container}>
+        <View style={styles.title_container}>
+          <Text style={styles.title}>Documents</Text>
+        </View>
+        {Platform.OS === 'web' && (
           <View style={styles.refresh_button_container}>
             <FontAwesome.Button
               name="refresh"
@@ -90,65 +84,35 @@ const Documents = () => {
               underlayColor="none"
               activeOpacity={0.5}
               size={24}
-              onPress={async () => {
-                try {
-                  setDocuments(await client.documents())
-                  showMessage({
-                    message: 'Refreshed',
-                    type: 'info',
-                    icon: 'success'
-                  })
-                } catch (err) {
-                  setErrorMessage(err.message)
-                  setShowAlert(true)
-                }
-              }}
+              onPress={onRefresh}
             ></FontAwesome.Button>
           </View>
-        </View>
-        {documents && (
-          <FlatList
-            data={documents}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => {
-                  downloadDocument(item)
-                }}
-                activeOpacity={0.5}
-              >
-                <Doc
-                  name={(item as Document).comment}
-                  type={(item as Document).file.type}
-                  date={(item as Document).file.date.toLocaleDateString()}
-                ></Doc>
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item) => (item as Document).documentGu}
-          ></FlatList>
         )}
-      </SafeAreaView>
-      {isLoading && (
-        <SafeAreaView style={styles.loading}>
-          <ActivityIndicator size={'large'} />
-        </SafeAreaView>
+      </View>
+      {documents && (
+        <FlatList
+          data={documents}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => {
+                downloadDocument(item)
+              }}
+              activeOpacity={0.5}
+            >
+              <Doc
+                name={(item as Document).comment}
+                type={(item as Document).file.type}
+                date={(item as Document).file.date.toLocaleDateString()}
+              ></Doc>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item) => (item as Document).documentGu}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        ></FlatList>
       )}
-      <AwesomeAlert
-        show={showAlert}
-        showProgress={false}
-        title={'Error'}
-        message={errorMessage}
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={true}
-        showCancelButton={false}
-        showConfirmButton={true}
-        confirmText={'Ok'}
-        confirmButtonColor={Colors.primary}
-        confirmButtonTextStyle={{ color: Colors.black }}
-        onConfirmPressed={() => {
-          setShowAlert(false)
-        }}
-      ></AwesomeAlert>
-    </>
+    </SafeAreaView>
   )
 }
 
