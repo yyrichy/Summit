@@ -5,7 +5,9 @@ import {
   Text,
   TextInput,
   Platform,
-  TouchableOpacity
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle
 } from 'react-native'
 import {
   calculateMarkColor,
@@ -18,30 +20,28 @@ import {
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import Animated from 'react-native-reanimated'
 
-function Assignment(props) {
+type Props = {
+  course: string
+  name: string
+  style?: StyleProp<ViewStyle>
+  onPress: any
+}
+
+const Assignment: React.FC<Props> = ({ course, name, style, onPress }) => {
   const { marks, setMarks } = useContext(AppContext)
   const [isDropdown, setIsDropdown] = useState(false)
   const assignment = marks.courses
-    .get(props.course)
-    .assignments.find((a) => a.name === props.name)
+    .get(course)
+    .assignments.find((a) => a.name === name)
   const totalWeight: number = Array.from(
-    marks.courses.get(props.course).categories.values()
+    marks.courses.get(course).categories.values()
   ).reduce((p, c) => (isNaN(c.value) ? p : p + c.weight), 0)
   const score: number = (assignment.points / assignment.total) * 100
   const hasScore: boolean = !isNaN((assignment.points / assignment.total) * 100)
 
   const update = (input: string, type: string) => {
-    setMarks(
-      updatePoints(
-        marks,
-        props.course,
-        assignment.name,
-        parseFloat(input),
-        type
-      )
-    )
+    setMarks(updatePoints(marks, course, name, parseFloat(input), type))
   }
 
   const getWidth = (n: number) => {
@@ -54,7 +54,7 @@ function Assignment(props) {
     <View
       style={[
         styles.container,
-        props.style,
+        style,
         hasScore
           ? {
               borderLeftColor: calculateMarkColor(score),
@@ -66,7 +66,7 @@ function Assignment(props) {
       <View style={[styles.horizontal_container, { height: 52 }]}>
         <TouchableOpacity
           onPress={() => {
-            props.onPress()
+            onPress()
             setIsDropdown(!isDropdown)
           }}
           activeOpacity={0.5}
@@ -83,7 +83,7 @@ function Assignment(props) {
               }
             ]}
           >
-            {props.name}
+            {name}
           </Text>
           <Text numberOfLines={1} style={styles.category}>
             {assignment.category} - {assignment.date.due.toLocaleDateString()}
@@ -135,15 +135,14 @@ function Assignment(props) {
         <View style={styles.dropdown_container}>
           <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Full Name:</Text>
-            <Text style={styles.dropdown_text_value}>{assignment.name}</Text>
+            <Text style={styles.dropdown_text_value}>{name}</Text>
           </View>
           <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Effective Weight:</Text>
             <Text style={styles.dropdown_text_value}>
               {roundTo(
-                (marks.courses
-                  .get(props.course)
-                  .categories.get(assignment.category).weight /
+                (marks.courses.get(course).categories.get(assignment.category)
+                  .weight /
                   totalWeight) *
                   100,
                 2
@@ -190,9 +189,7 @@ function Assignment(props) {
             underlayColor="none"
             activeOpacity={0.5}
             size={24}
-            onPress={() =>
-              setMarks(deleteAssignment(marks, props.course, assignment.name))
-            }
+            onPress={() => setMarks(deleteAssignment(marks, course, name))}
           ></FontAwesome.Button>
         </View>
       )}
