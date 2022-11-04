@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -34,13 +34,22 @@ const Assignment: React.FC<Props> = ({ course, name, style, onPress }) => {
   const assignment = marks.courses
     .get(course)
     .assignments.find((a) => a.name === name)
+  const pointsString = isNaN(assignment.points)
+    ? ''
+    : assignment.points.toString()
+  const totalString = isNaN(assignment.total) ? '' : assignment.total.toString()
   const totalWeight: number = Array.from(
     marks.courses.get(course).categories.values()
   ).reduce((p, c) => (isNaN(c.value) ? p : p + c.weight), 0)
   const score: number = (assignment.points / assignment.total) * 100
   const hasScore: boolean = !isNaN((assignment.points / assignment.total) * 100)
 
-  const update = (input: string, type: string) => {
+  const update = (input: string, type: 'total' | 'earned') => {
+    if (type === 'total') {
+      total.current = input
+    } else {
+      points.current = input
+    }
     setMarks(updatePoints(marks, course, name, parseFloat(input), type))
   }
 
@@ -49,6 +58,14 @@ const Assignment: React.FC<Props> = ({ course, name, style, onPress }) => {
     if (isNaN(n)) return min
     return Math.max(n.toString().length * 15, min)
   }
+
+  const points = useRef(pointsString)
+  const total = useRef(totalString)
+
+  useEffect(() => {
+    points.current = pointsString
+    total.current = totalString
+  }, [marks])
 
   return (
     <View
@@ -91,7 +108,7 @@ const Assignment: React.FC<Props> = ({ course, name, style, onPress }) => {
         </TouchableOpacity>
         <View style={styles.input_container}>
           <TextInput
-            value={isNaN(assignment.points) ? '' : assignment.points.toString()}
+            value={points.current}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
             returnKeyType={'done'}
@@ -111,7 +128,7 @@ const Assignment: React.FC<Props> = ({ course, name, style, onPress }) => {
           />
           <Text style={styles.dash}> / </Text>
           <TextInput
-            value={isNaN(assignment.total) ? '' : assignment.total.toString()}
+            value={total.current}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
             returnKeyType={'done'}
