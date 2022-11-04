@@ -169,13 +169,13 @@ const CourseDetails = ({ route }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          {course.assignments.map((item, index) => {
+          {course.assignments.map((item) => {
             return (
               <Assignment
                 name={item.name}
                 course={courseName}
                 onPress={() => ref.current.animateNextTransition()}
-                key={index}
+                key={item.name}
               ></Assignment>
             )
           })}
