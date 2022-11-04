@@ -89,29 +89,31 @@ const Documents = () => {
           </View>
         )}
       </View>
-      {documents && (
-        <FlatList
-          data={documents}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                downloadDocument(item)
-              }}
-              activeOpacity={0.5}
-            >
-              <Doc
-                name={(item as Document).comment}
-                type={(item as Document).file.type}
-                date={(item as Document).file.date.toLocaleDateString()}
-              ></Doc>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => (item as Document).documentGu}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        ></FlatList>
-      )}
+      <View style={{ height: '100%' }}>
+        {documents && (
+          <FlatList
+            data={documents}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => {
+                  downloadDocument(item)
+                }}
+                activeOpacity={0.5}
+              >
+                <Doc
+                  name={(item as Document).comment}
+                  type={(item as Document).file.type}
+                  date={(item as Document).file.date.toLocaleDateString()}
+                ></Doc>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => (item as Document).documentGu}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          ></FlatList>
+        )}
+      </View>
     </SafeAreaView>
   )
 }
