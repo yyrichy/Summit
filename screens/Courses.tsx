@@ -52,7 +52,8 @@ const Courses = ({ navigation }) => {
         setItems={setPeriods}
         maxHeight={null}
         style={styles.dropdown}
-        textStyle={styles.dropdown_text}
+        labelProps={{ numberOfLines: 1 }}
+        textStyle={[styles.dropdown_text, { fontSize: 50 }]}
         translation={{
           PLACEHOLDER: 'Select Marking Period'
         }}
@@ -61,7 +62,6 @@ const Courses = ({ navigation }) => {
             <TouchableOpacity
               {...props}
               style={[
-                props.listItemContainerStyle,
                 {
                   backgroundColor: props.isSelected && Colors.light_gray
                 }
@@ -73,7 +73,10 @@ const Courses = ({ navigation }) => {
               activeOpacity={0.5}
             >
               <View style={styles.marking_period_container}>
-                <Text numberOfLines={1} style={props.listItemLabelStyle}>
+                <Text
+                  numberOfLines={1}
+                  style={[styles.dropdown_text, { fontSize: 25 }]}
+                >
                   {props.label}
                 </Text>
               </View>
@@ -146,18 +149,16 @@ const styles = StyleSheet.create({
   // web needs to be shifted 11 right
   dropdown: {
     borderWidth: 0,
-    height: 30,
-    marginBottom: 15,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    justifyContent: 'center'
   },
   dropdown_text: {
-    fontFamily: 'Inter_800ExtraBold',
-    fontSize: 30
+    fontFamily: 'Inter_800ExtraBold'
   },
   marking_period_container: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    marginLeft: 11
   },
   row_container: {
     flexDirection: 'row',
@@ -172,7 +173,7 @@ const styles = StyleSheet.create({
   gpa: {
     marginLeft: 11,
     fontFamily: 'Montserrat_700Bold',
-    fontSize: 22
+    fontSize: 25
   },
   refresh_button_container: {
     flex: 1,

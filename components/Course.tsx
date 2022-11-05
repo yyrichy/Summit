@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   name: {
     color: Colors.navy,
     fontFamily: 'Montserrat_700Bold',
-    fontSize: 18,
+    fontSize: 16,
     marginRight: 14,
     marginLeft: 7,
     lineHeight: 18 * 0.75,
@@ -102,13 +102,13 @@ const styles = StyleSheet.create({
   },
   mark: {
     fontFamily: 'Montserrat_500Medium',
-    fontSize: 32,
+    fontSize: 30,
     lineHeight: 36
   },
   letter_grade: {
     marginLeft: 7,
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 32,
+    fontSize: 30,
     lineHeight: 36
   }
 })

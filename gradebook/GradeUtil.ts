@@ -1,6 +1,20 @@
 import { Gradebook } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
+import { Dimensions, Platform, PixelRatio } from 'react-native'
+
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window')
+
+const scale = SCREEN_WIDTH / 320
+
+const normalize = (size: number): number => {
+  const newSize = size * scale
+  if (Platform.OS === 'ios') {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize))
+  } else {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
+  }
+}
 
 // Some course names have the course ID at the end, ex: AP History A (SOC49351)
 const parseCourseName = (name: string): string => {
@@ -259,5 +273,6 @@ export {
   calculateMarkColor,
   calculateLetterGrade,
   isNumber,
-  suffix
+  suffix,
+  normalize
 }
