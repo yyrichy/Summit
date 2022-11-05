@@ -1,5 +1,12 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle
+} from 'react-native'
 
 type Props = {
   onPress: any
@@ -7,7 +14,7 @@ type Props = {
   backgroundColor: string
   textColor: string
   fontFamily: string
-  containerStyle: any
+  containerStyle: StyleProp<ViewStyle>
   disabled: boolean
 }
 

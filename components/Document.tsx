@@ -1,24 +1,44 @@
 import React from 'react'
-import { StyleSheet, View, Text, Platform } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Platform,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle
+} from 'react-native'
 import { Colors } from '../colors/Colors'
 
-function Doc(props) {
+type Props = {
+  name: string
+  type: string
+  date: string
+  onPress: any
+  style?: StyleProp<ViewStyle>
+}
+
+const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
   return (
-    <View style={[styles.container, props.style]}>
+    <TouchableOpacity
+      style={[styles.container, style]}
+      activeOpacity={0.5}
+      onPress={onPress}
+    >
       <View style={styles.doc_info_container}>
         <Text numberOfLines={1} style={styles.name}>
-          {props.name}
+          {name}
         </Text>
         <View style={styles.info_container}>
           <Text numberOfLines={1} style={[styles.type, { flex: 1 }]}>
-            {props.type}
+            {type}
           </Text>
           <Text numberOfLines={1} style={styles.type}>
-            {props.date}
+            {date}
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

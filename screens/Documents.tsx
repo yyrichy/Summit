@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
   RefreshControl
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
@@ -94,18 +93,14 @@ const Documents = () => {
           <FlatList
             data={documents}
             renderItem={({ item }) => (
-              <TouchableOpacity
+              <Doc
+                name={(item as Document).comment}
+                type={(item as Document).file.type}
+                date={(item as Document).file.date.toLocaleDateString()}
                 onPress={() => {
                   downloadDocument(item)
                 }}
-                activeOpacity={0.5}
-              >
-                <Doc
-                  name={(item as Document).comment}
-                  type={(item as Document).file.type}
-                  date={(item as Document).file.date.toLocaleDateString()}
-                ></Doc>
-              </TouchableOpacity>
+              ></Doc>
             )}
             keyExtractor={(item) => (item as Document).documentGu}
             refreshControl={
