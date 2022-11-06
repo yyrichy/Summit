@@ -152,7 +152,7 @@ const CourseDetails = ({ route }) => {
               name="refresh"
               backgroundColor="transparent"
               iconStyle={{
-                color: Colors.secondary
+                color: Colors.navy
               }}
               underlayColor="none"
               activeOpacity={0.5}
