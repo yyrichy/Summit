@@ -5,11 +5,11 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  SafeAreaView,
   Platform,
   Linking,
   ImageBackground
 } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
@@ -445,8 +445,7 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   horizontal_container: {
-    flexDirection: 'row',
-    marginTop: 10
+    flexDirection: 'row'
   },
   modal: {
     flexDirection: 'column',

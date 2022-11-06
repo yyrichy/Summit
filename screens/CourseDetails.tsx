@@ -9,7 +9,6 @@ import React, {
 import {
   Platform,
   RefreshControl,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -30,6 +29,7 @@ import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import Animated, { Transition, Transitioning } from 'react-native-reanimated'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const transition = (
   <Transition.Together>

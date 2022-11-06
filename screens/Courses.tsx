@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import AppContext from '../contexts/AppContext'
 import {
-  SafeAreaView,
   StyleSheet,
   View,
   Text,
@@ -15,7 +14,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import { convertGradebook, parseCourseName } from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Colors } from '../colors/Colors'
-import Constants from 'expo-constants'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Courses = ({ navigation }) => {
   const { client, marks, setMarks } = useContext(AppContext)
@@ -138,12 +137,7 @@ const Courses = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    ...Platform.select({
-      android: {
-        marginTop: Constants.statusBarHeight
-      }
-    })
+    flex: 1
   },
   // android status bar not accounted for properly in safeview + dropdownpicker
   // web needs to be shifted 11 right
