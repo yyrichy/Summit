@@ -13,7 +13,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  SafeAreaView
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import Assignment from '../components/Assignment'
@@ -29,7 +30,7 @@ import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import Animated, { Transition, Transitioning } from 'react-native-reanimated'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import Constants from 'expo-constants'
 
 const transition = (
   <Transition.Together>
@@ -358,7 +359,12 @@ const styles = StyleSheet.create({
   course_name_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    ...Platform.select({
+      android: {
+        marginTop: Constants.statusBarHeight
+      }
+    })
   },
   dropdown: {
     borderWidth: 1,
@@ -384,7 +390,6 @@ const styles = StyleSheet.create({
   },
   course_mark_container: {
     backgroundColor: Colors.white,
-    marginTop: 20,
     marginBottom: 30,
     margin: 10,
     alignSelf: 'center',
