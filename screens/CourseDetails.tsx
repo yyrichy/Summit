@@ -9,6 +9,7 @@ import React, {
 import {
   Platform,
   RefreshControl,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -21,15 +22,13 @@ import {
   addAssignment,
   convertGradebook,
   parseCourseName,
-  isNumber
+  isNumber,
+  calculateMarkColor
 } from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { LightTheme } from '../theme/LightTheme'
 import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
-import CustomButton from '../components/CustomButton'
 import { Colors } from '../colors/Colors'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import Animated, { Transition, Transitioning } from 'react-native-reanimated'
 
 const transition = (
@@ -107,8 +106,8 @@ const CourseDetails = ({ route }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.course_details_container}>
+    <View style={{ flex: 1, backgroundColor: Colors.primary }}>
+      <SafeAreaView style={styles.course_name_container}>
         <View
           style={{
             flexDirection: 'row',
@@ -119,16 +118,15 @@ const CourseDetails = ({ route }) => {
             name="chevron-left"
             backgroundColor="transparent"
             iconStyle={{
-              color: Colors.secondary
+              color: Colors.navy
             }}
             underlayColor="none"
             activeOpacity={0.5}
-            size={24}
+            size={30}
             onPress={() => navigation.goBack()}
           ></FontAwesome.Button>
         </View>
-        <Text numberOfLines={1} style={styles.course_details}>
-          {isNaN(course.value) ? 'N/A' : course.value} |{' '}
+        <Text numberOfLines={1} style={styles.course_name}>
           {parseCourseName(courseName)}
         </Text>
         <View
@@ -141,9 +139,9 @@ const CourseDetails = ({ route }) => {
             name="plus-circle"
             backgroundColor="transparent"
             iconStyle={{
-              color: Colors.secondary
+              color: Colors.navy
             }}
-            size={24}
+            size={30}
             underlayColor="none"
             activeOpacity={0.5}
             onPress={() => toggleModal()}
@@ -157,17 +155,43 @@ const CourseDetails = ({ route }) => {
               }}
               underlayColor="none"
               activeOpacity={0.5}
-              size={24}
+              size={30}
               onPress={onRefresh}
             ></FontAwesome.Button>
           )}
         </View>
+      </SafeAreaView>
+      <View
+        style={[
+          styles.course_mark_container,
+          { borderColor: calculateMarkColor(course.value) }
+        ]}
+      >
+        <Text numberOfLines={1} style={styles.course_mark}>
+          {isNaN(course.value) ? 'N/A' : course.value}
+        </Text>
       </View>
-      <Transitioning.View ref={ref} transition={transition}>
+      <Transitioning.View
+        ref={ref}
+        transition={transition}
+        style={{
+          backgroundColor: Colors.white,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          borderColor: Colors.secondary,
+          borderTopWidth: 1,
+          borderEndWidth: 1,
+          borderStartWidth: 1,
+          flex: 1
+        }}
+      >
         <Animated.ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          contentContainerStyle={{
+            flexGrow: 1
+          }}
         >
           {course.assignments.map((item) => {
             return (
@@ -230,8 +254,9 @@ const CourseDetails = ({ route }) => {
             />
             <View
               style={{
-                marginHorizontal: 7,
-                marginTop: 7
+                marginHorizontal: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-between'
               }}
             >
               <DropDownPicker
@@ -276,20 +301,25 @@ const CourseDetails = ({ route }) => {
                   )
                 }}
               ></DropDownPicker>
-              <CustomButton
+              <FontAwesome.Button
+                name="plus-circle"
+                backgroundColor="transparent"
+                iconStyle={{
+                  color: Colors.navy
+                }}
+                style={{
+                  margin: 0
+                }}
+                size={45}
+                underlayColor="none"
+                activeOpacity={0.5}
                 onPress={add}
-                text={'Add Assignment'}
-                backgroundColor={LightTheme.colors.card}
-                textColor={Colors.black}
-                fontFamily="Inter_600SemiBold"
-                containerStyle={styles.button_container}
-                disabled={false}
-              ></CustomButton>
+              ></FontAwesome.Button>
             </View>
           </View>
         </View>
       </Modal>
-    </SafeAreaView>
+    </View>
   )
 }
 
@@ -311,34 +341,24 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
-    width: 330,
-    height: 250
+    width: 300,
+    height: 195
   },
   modal_view: {
-    width: 330,
-    height: 250
+    width: 300,
+    height: 195
   },
-  button_container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-    width: 200,
-    height: 50,
-    borderRadius: 10,
-    borderWidth: 0,
-    margin: 10
-  },
-  course_details: {
-    fontSize: 22,
+  course_name: {
+    fontSize: 24,
     flex: 1,
     flexWrap: 'wrap',
-    fontFamily: 'Inter_800ExtraBold'
+    fontFamily: 'Inter_800ExtraBold',
+    textAlign: 'center'
   },
-  course_details_container: {
+  course_name_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 3.5
+    alignItems: 'center'
   },
   dropdown: {
     borderWidth: 1,
@@ -346,7 +366,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     padding: 5,
     marginHorizontal: 10,
-    width: 310,
+    width: 200,
     alignSelf: 'center'
   },
   dropdown_text: {
@@ -354,13 +374,31 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   dropdown_container: {
-    width: 310,
+    width: 200,
     alignSelf: 'center'
   },
   category_name_container: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start'
+  },
+  course_mark_container: {
+    backgroundColor: Colors.white,
+    marginTop: 20,
+    marginBottom: 30,
+    margin: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    borderWidth: 3
+  },
+  course_mark: {
+    textAlignVertical: 'center',
+    fontFamily: 'Montserrat_800ExtraBold',
+    fontSize: 50
   }
 })
 
