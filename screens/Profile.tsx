@@ -77,7 +77,7 @@ const Profile = ({ navigation }) => {
           <ScrollView style={styles.property_view}>
             {studentInfo.id && (
               <View style={styles.property_container}>
-                <AntDesign name="idcard" size={26} color={Colors.black} />
+                <AntDesign name="idcard" size={22} color={Colors.black} />
                 <Text style={styles.property_text}>
                   {studentInfo.id ? studentInfo.id : ''}
                 </Text>
@@ -85,25 +85,25 @@ const Profile = ({ navigation }) => {
             )}
             {studentInfo.phone && (
               <View style={styles.property_container}>
-                <Feather name="phone" size={26} color={Colors.black} />
+                <Feather name="phone" size={22} color={Colors.black} />
                 <Text style={styles.property_text}>{studentInfo.phone}</Text>
               </View>
             )}
             {studentInfo.address && (
               <View style={styles.property_container}>
-                <Feather name="home" size={26} color={Colors.black} />
+                <Feather name="home" size={22} color={Colors.black} />
                 <Text style={styles.property_text}>{studentInfo.address}</Text>
               </View>
             )}
             {studentInfo.email && (
               <View style={styles.property_container}>
-                <Feather name="mail" size={26} color={Colors.black} />
+                <Feather name="mail" size={22} color={Colors.black} />
                 <Text style={styles.property_text}>{studentInfo.email}</Text>
               </View>
             )}
             {studentInfo.currentSchool && (
               <View style={styles.property_container}>
-                <FontAwesome name="building-o" size={26} color={Colors.black} />
+                <FontAwesome name="building-o" size={22} color={Colors.black} />
                 <Text style={styles.property_text}>
                   {studentInfo.currentSchool}
                 </Text>
@@ -111,7 +111,7 @@ const Profile = ({ navigation }) => {
             )}
             {schoolInfo.school.address && (
               <View style={styles.property_container}>
-                <Feather name="map-pin" size={26} color={Colors.black} />
+                <Feather name="map-pin" size={22} color={Colors.black} />
                 <Text style={styles.property_text}>
                   {schoolInfo.school.address}
                 </Text>
@@ -121,7 +121,7 @@ const Profile = ({ navigation }) => {
               <View style={styles.property_container}>
                 <FontAwesome
                   name="pencil-square-o"
-                  size={26}
+                  size={22}
                   color={Colors.black}
                 />
                 <Text style={styles.property_text}>
@@ -131,10 +131,9 @@ const Profile = ({ navigation }) => {
             )}
             {studentInfo.counselor && (
               <View style={styles.property_container}>
-                <Feather name="user" size={26} color={Colors.black} />
+                <Feather name="user" size={22} color={Colors.black} />
                 <Text style={styles.property_text}>
-                  Counselor: {studentInfo.counselor.name}{' '}
-                  {studentInfo.counselor.email}
+                  Counselor: {studentInfo.counselor.email}
                 </Text>
               </View>
             )}
@@ -142,12 +141,11 @@ const Profile = ({ navigation }) => {
               <View style={styles.property_container}>
                 <MaterialCommunityIcons
                   name="crown-outline"
-                  size={26}
+                  size={22}
                   color={Colors.black}
                 />
                 <Text style={styles.property_text}>
-                  Principal: {schoolInfo.school.principal.name}{' '}
-                  {schoolInfo.school.principal.email}
+                  Principal: {schoolInfo.school.principal.email}
                 </Text>
               </View>
             )}
@@ -161,12 +159,7 @@ const Profile = ({ navigation }) => {
 const styles = StyleSheet.create({
   header: {
     height: Constants.statusBarHeight + 90,
-    backgroundColor: Colors.primary,
-    borderBottomRightRadius: 25,
-    borderBottomLeftRadius: 25,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6
+    backgroundColor: Colors.primary
   },
   name: {
     fontSize: 32,
@@ -188,19 +181,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   description_part_text: {
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     marginBottom: 10,
     fontSize: 24,
     fontFamily: 'Montserrat_600SemiBold'
   },
   property_view: {
-    borderRadius: 25,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: Colors.secondary,
     backgroundColor: Colors.off_white,
     padding: 10,
     paddingBottom: 0,
-    marginHorizontal: 20,
+    marginHorizontal: 7,
+    marginBottom: 7,
     flexGrow: 0
   },
   property_container: {
@@ -210,7 +204,7 @@ const styles = StyleSheet.create({
   property_text: {
     marginHorizontal: 8,
     fontFamily: 'Inter_400Regular',
-    fontSize: 18,
+    fontSize: 16,
     color: Colors.onyx_gray
   }
 })

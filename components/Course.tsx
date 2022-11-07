@@ -64,7 +64,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     flex: 1
   },
-
   name: {
     color: Colors.navy,
     fontFamily: 'Montserrat_700Bold',
