@@ -14,7 +14,8 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  SafeAreaView
+  SafeAreaView,
+  BackHandler
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import Assignment from '../components/Assignment'
@@ -87,6 +88,20 @@ const CourseDetails = ({ route }) => {
       setTotal('')
     }
   }, [isModalVisible])
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.goBack()
+      return true
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    )
+
+    return () => backHandler.remove()
+  }, [])
 
   const toggleModal = (): void => {
     setModalVisible(!isModalVisible)

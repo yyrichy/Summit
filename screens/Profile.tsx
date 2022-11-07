@@ -1,5 +1,12 @@
 import React, { useContext, useState } from 'react'
-import { ActivityIndicator, Image, StyleSheet, View, Text } from 'react-native'
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  View,
+  Text,
+  BackHandler
+} from 'react-native'
 import { SchoolInfo, StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import AppContext from '../contexts/AppContext'
@@ -14,7 +21,7 @@ import useAsyncEffect from 'use-async-effect'
 import { ScrollView } from 'react-native-gesture-handler'
 import Constants from 'expo-constants'
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const { client } = useContext(AppContext)
   const [studentInfo, setStudentInfo] = useState(undefined as StudentInfo)
   const [schoolInfo, setSchoolInfo] = useState(undefined as SchoolInfo)
@@ -22,6 +29,18 @@ const Profile = () => {
   useAsyncEffect(async () => {
     setStudentInfo(await client.studentInfo())
     setSchoolInfo(await client.schoolInfo())
+
+    const backAction = () => {
+      navigation.goBack()
+      return true
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    )
+
+    return () => backHandler.remove()
   }, [])
 
   return (

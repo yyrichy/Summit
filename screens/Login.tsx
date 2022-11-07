@@ -7,7 +7,8 @@ import {
   ActivityIndicator,
   Platform,
   Linking,
-  ImageBackground
+  ImageBackground,
+  BackHandler
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -64,6 +65,18 @@ const Login = () => {
 
   useEffect(() => {
     savedCredentials()
+
+    const backAction = () => {
+      BackHandler.exitApp()
+      return true
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    )
+
+    return () => backHandler.remove()
   }, [])
 
   async function savedCredentials(): Promise<void> {

@@ -7,7 +7,8 @@ import {
   Platform,
   FlatList,
   TouchableOpacity,
-  RefreshControl
+  RefreshControl,
+  BackHandler
 } from 'react-native'
 import Course from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
@@ -15,8 +16,10 @@ import { convertGradebook, parseCourseName } from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useNavigation } from '@react-navigation/native'
+import { NavigationActions } from 'react-navigation'
 
-const Courses = ({ navigation }) => {
+const Courses = ({ navigation, route }) => {
   const { client, marks, setMarks } = useContext(AppContext)
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(marks.reportingPeriod.index)
@@ -29,6 +32,20 @@ const Courses = ({ navigation }) => {
   useEffect(() => {
     onRefresh()
   }, [value])
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.goBack()
+      return true
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    )
+
+    return () => backHandler.remove()
+  }, [])
 
   const [refreshing, setRefreshing] = useState(false)
 

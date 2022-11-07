@@ -9,19 +9,32 @@ import {
   StyleSheet,
   Text,
   View,
-  RefreshControl
+  RefreshControl,
+  BackHandler
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
 import Doc from '../components/Document'
 import { Colors } from '../colors/Colors'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
-const Documents = () => {
+const Documents = ({ navigation }) => {
   const { client } = useContext(AppContext)
   const [documents, setDocuments] = useState(undefined as Document[])
 
   useEffect(() => {
     onRefresh()
+
+    const backAction = () => {
+      navigation.goBack()
+      return true
+    }
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    )
+
+    return () => backHandler.remove()
   }, [])
 
   const base64toBlob = (base64: string, sliceSize = 512): Blob => {
