@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
     margin: 5
   },
   avatar: {
-    width: 150,
-    height: 150,
-    borderRadius: 150 / 2,
+    width: 125,
+    height: 125,
+    borderRadius: 125 / 2,
     borderWidth: 1,
     borderColor: Colors.black,
     alignSelf: 'center',
-    marginTop: -150 / 2
+    marginTop: -125 / 2
   },
   description_container: {
     flexDirection: 'row',
@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
     borderColor: Colors.secondary,
     backgroundColor: Colors.off_white,
     padding: 10,
-    paddingBottom: 0,
-    marginHorizontal: 7,
+    paddingBottom: 10,
+    marginHorizontal: 25,
     marginBottom: 7,
     flexGrow: 0
   },
