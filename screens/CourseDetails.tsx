@@ -191,7 +191,9 @@ const CourseDetails = ({ route }) => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           contentContainerStyle={{
-            flexGrow: 1
+            flexGrow: 1,
+            paddingHorizontal: 12,
+            paddingTop: 5
           }}
         >
           {course.assignments.map((item) => {
