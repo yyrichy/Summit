@@ -119,6 +119,11 @@ const Documents = ({ navigation }) => {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
+            contentContainerStyle={{
+              flexGrow: 1,
+              paddingHorizontal: 7,
+              paddingTop: 3.5
+            }}
           ></FlatList>
         )}
       </View>

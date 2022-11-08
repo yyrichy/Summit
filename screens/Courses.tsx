@@ -123,30 +123,36 @@ const Courses = ({ navigation, route }) => {
         )}
       </View>
       {marks && (
-        <FlatList
-          data={[...marks.courses.entries()]}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() => {
-                if (item[1].categories.size > 1) {
-                  navigation.navigate('Course Details', { title: item[0] })
-                }
-              }}
-            >
-              <Course
-                name={parseCourseName(item[0])}
-                mark={item[1].value}
-                period={item[1].period}
-                teacher={item[1].teacher}
-              ></Course>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item[0]}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        />
+        <View style={{ height: '100%' }}>
+          <FlatList
+            data={[...marks.courses.entries()]}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                activeOpacity={0.5}
+                onPress={() => {
+                  if (item[1].categories.size > 1) {
+                    navigation.navigate('Course Details', { title: item[0] })
+                  }
+                }}
+              >
+                <Course
+                  name={parseCourseName(item[0])}
+                  mark={item[1].value}
+                  period={item[1].period}
+                  teacher={item[1].teacher}
+                ></Course>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item[0]}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            contentContainerStyle={{
+              flexGrow: 1,
+              paddingHorizontal: 7
+            }}
+          />
+        </View>
       )}
     </SafeAreaView>
   )

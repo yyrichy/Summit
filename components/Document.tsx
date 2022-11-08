@@ -46,12 +46,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.off_white,
     borderRadius: 10,
-    height: 50,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 7,
-    marginTop: 7,
+    marginVertical: 3.5,
     padding: 7,
     borderWidth: 1,
     borderColor: Colors.secondary
