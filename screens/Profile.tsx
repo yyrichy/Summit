@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import {
   ActivityIndicator,
   Image,
@@ -6,7 +6,8 @@ import {
   View,
   Text,
   BackHandler,
-  SafeAreaView
+  SafeAreaView,
+  RefreshControl
 } from 'react-native'
 import { SchoolInfo, StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
@@ -41,6 +42,17 @@ const Profile = ({ navigation }) => {
     )
 
     return () => backHandler.remove()
+  }, [])
+
+  const [refreshing, setRefreshing] = useState(false)
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    try {
+      setStudentInfo(await client.studentInfo())
+      setSchoolInfo(await client.schoolInfo())
+    } catch (err) {}
+    setRefreshing(false)
   }, [])
 
   if (!studentInfo || !schoolInfo) {
@@ -87,7 +99,13 @@ const Profile = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <ScrollView style={styles.property_view}>
+      <ScrollView
+        style={styles.property_view}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        contentContainerStyle={styles.property_view_content_container}
+      >
         {studentInfo.id && (
           <View style={styles.property_container}>
             <AntDesign name="idcard" size={22} color={Colors.black} />
@@ -180,13 +198,16 @@ const styles = StyleSheet.create({
     borderColor: Colors.black
   },
   avatar_info_container: {
-    margin: 25,
+    marginHorizontal: 25,
+    marginTop: 15,
+    marginBottom: 25,
     flexDirection: 'row',
     justifyContent: 'flex-start'
   },
   info_container: {
     justifyContent: 'center',
-    marginLeft: 20
+    marginLeft: 20,
+    flex: 1
   },
   details_container: {
     flexDirection: 'row',
@@ -209,11 +230,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.secondary,
     backgroundColor: Colors.off_white,
-    padding: 10,
-    paddingBottom: 10,
     marginHorizontal: 25,
-    marginBottom: 7,
-    flexGrow: 0
+    marginBottom: 7
+  },
+  property_view_content_container: {
+    flexGrow: 1,
+    padding: 10
   },
   property_container: {
     flexDirection: 'row',
