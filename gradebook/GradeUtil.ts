@@ -246,7 +246,8 @@ const isNumber = (input: string): boolean => {
   return /^[0-9.]+$/g.test(input)
 }
 
-const suffix = (num: number): 'st' | 'nd' | 'rd' | 'th' => {
+const suffix = (num: number): 'st' | 'nd' | 'rd' | 'th' | '' => {
+  if (isNaN(num)) return ''
   const j = num % 10,
     k = num % 100
   if (j === 1 && k !== 11) {
