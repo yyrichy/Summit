@@ -6,7 +6,6 @@ import {
   View,
   Text,
   BackHandler,
-  SafeAreaView,
   RefreshControl
 } from 'react-native'
 import { SchoolInfo, StudentInfo } from 'studentvue'
@@ -21,6 +20,7 @@ import {
 import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
 import { ScrollView } from 'react-native-gesture-handler'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Profile = ({ navigation }) => {
   const { client } = useContext(AppContext)
@@ -28,8 +28,7 @@ const Profile = ({ navigation }) => {
   const [schoolInfo, setSchoolInfo] = useState(undefined as SchoolInfo)
 
   useAsyncEffect(async () => {
-    setStudentInfo(await client.studentInfo())
-    setSchoolInfo(await client.schoolInfo())
+    onRefresh()
 
     const backAction = () => {
       navigation.goBack()
@@ -100,7 +99,6 @@ const Profile = ({ navigation }) => {
         </View>
       </View>
       <ScrollView
-        style={styles.property_view}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -109,9 +107,7 @@ const Profile = ({ navigation }) => {
         {studentInfo.id && (
           <View style={styles.property_container}>
             <AntDesign name="idcard" size={22} color={Colors.black} />
-            <Text style={styles.property_text}>
-              {studentInfo.id ? studentInfo.id : ''}
-            </Text>
+            <Text style={styles.property_text}>{studentInfo.id}</Text>
           </View>
         )}
         {studentInfo.phone && (
@@ -164,7 +160,8 @@ const Profile = ({ navigation }) => {
           <View style={styles.property_container}>
             <Feather name="user" size={22} color={Colors.black} />
             <Text style={styles.property_text}>
-              Counselor: {studentInfo.counselor.email}
+              Counselor:{'\n'}
+              {studentInfo.counselor.email}
             </Text>
           </View>
         )}
@@ -176,7 +173,8 @@ const Profile = ({ navigation }) => {
               color={Colors.black}
             />
             <Text style={styles.property_text}>
-              Principal: {schoolInfo.school.principal.email}
+              Principal:{'\n'}
+              {schoolInfo.school.principal.email}
             </Text>
           </View>
         )}
@@ -199,7 +197,7 @@ const styles = StyleSheet.create({
   },
   avatar_info_container: {
     marginHorizontal: 25,
-    marginTop: 15,
+    marginTop: 10,
     marginBottom: 25,
     flexDirection: 'row',
     justifyContent: 'flex-start'
@@ -224,17 +222,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_300Light',
     fontSize: 14
   },
-  property_view: {
+  property_view_content_container: {
+    padding: 10,
     borderRadius: 15,
     borderWidth: 1,
     borderColor: Colors.secondary,
     backgroundColor: Colors.off_white,
     marginHorizontal: 25,
     marginBottom: 7
-  },
-  property_view_content_container: {
-    flexGrow: 1,
-    padding: 10
   },
   property_container: {
     flexDirection: 'row',
