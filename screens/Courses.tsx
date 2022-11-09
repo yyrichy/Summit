@@ -149,7 +149,15 @@ const Courses = ({ navigation, route }) => {
             }
             contentContainerStyle={{
               flexGrow: 1,
-              paddingHorizontal: 7
+              paddingHorizontal: 7,
+              ...Platform.select({
+                web: {
+                  paddingBottom: 60
+                },
+                default: {
+                  paddingBottom: 10
+                }
+              })
             }}
           />
         </View>

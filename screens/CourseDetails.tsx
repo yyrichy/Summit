@@ -208,7 +208,8 @@ const CourseDetails = ({ route }) => {
           contentContainerStyle={{
             flexGrow: 1,
             paddingHorizontal: 12,
-            paddingTop: 8.5
+            paddingTop: 8.5,
+            paddingBottom: 10
           }}
         >
           {course.assignments.map((item) => {

@@ -122,7 +122,15 @@ const Documents = ({ navigation }) => {
             contentContainerStyle={{
               flexGrow: 1,
               paddingHorizontal: 7,
-              paddingTop: 3.5
+              paddingTop: 3.5,
+              ...Platform.select({
+                web: {
+                  paddingBottom: 50
+                },
+                default: {
+                  paddingBottom: 10
+                }
+              })
             }}
           ></FlatList>
         )}
