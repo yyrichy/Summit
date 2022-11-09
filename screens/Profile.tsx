@@ -204,7 +204,8 @@ const styles = StyleSheet.create({
   },
   info_container: {
     justifyContent: 'center',
-    marginLeft: 20
+    marginLeft: 20,
+    flex: 1
   },
   details_container: {
     flexDirection: 'row',
