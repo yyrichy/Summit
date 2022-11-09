@@ -16,10 +16,8 @@ import { convertGradebook, parseCourseName } from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useNavigation } from '@react-navigation/native'
-import { NavigationActions } from 'react-navigation'
 
-const Courses = ({ navigation, route }) => {
+const Courses = ({ navigation }) => {
   const { client, marks, setMarks } = useContext(AppContext)
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(marks.reportingPeriod.index)
@@ -56,6 +54,8 @@ const Courses = ({ navigation, route }) => {
     } catch (err) {}
     setRefreshing(false)
   }
+
+  marks.gpa = 4.0
 
   return (
     <SafeAreaView style={styles.container}>
@@ -100,12 +100,12 @@ const Courses = ({ navigation, route }) => {
           )
         }}
       ></DropDownPicker>
+      <Text style={styles.date}>
+        {marks.reportingPeriods[value].date.start.toLocaleDateString()} -{' '}
+        {marks.reportingPeriods[value].date.end.toLocaleDateString()}
+      </Text>
       <View style={styles.row_container}>
-        {!isNaN(marks.gpa) && (
-          <View style={styles.gpa_container}>
-            <Text style={styles.gpa}>{marks.gpa} GPA</Text>
-          </View>
-        )}
+        {!isNaN(marks.gpa) && <Text style={styles.gpa}>{marks.gpa} GPA</Text>}
         {Platform.OS === 'web' && (
           <View style={styles.refresh_button_container}>
             <FontAwesome.Button
@@ -179,10 +179,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginLeft: 11
   },
+  date: {
+    marginLeft: 11,
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 18
+  },
   row_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 10,
+    marginLeft: 11
   },
   gpa_container: {
     flex: 1,
@@ -190,7 +197,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   gpa: {
-    marginLeft: 11,
     fontFamily: 'Montserrat_700Bold',
     fontSize: 25
   },

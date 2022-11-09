@@ -8,6 +8,10 @@ export interface Marks {
 export interface ReportingPeriod {
   name: string
   index: number
+  date: {
+    start: Date
+    end: Date
+  }
 }
 
 export interface Course {

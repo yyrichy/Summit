@@ -25,13 +25,8 @@ const convertGradebook = (gradebook: Gradebook): Promise<Marks> => {
   let marks: Marks = {
     gpa: 0,
     courses: new Map<string, Course>(),
-    reportingPeriod: {
-      name: gradebook.reportingPeriod.current.name,
-      index: gradebook.reportingPeriod.current.index
-    },
-    reportingPeriods: gradebook.reportingPeriod.available.map((p) => {
-      return { name: p.name, index: p.index }
-    })
+    reportingPeriod: gradebook.reportingPeriod.current,
+    reportingPeriods: gradebook.reportingPeriod.available
   }
   for (const course of gradebook.courses) {
     marks.courses.set(course.title, {
