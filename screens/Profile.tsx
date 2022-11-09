@@ -160,8 +160,7 @@ const Profile = ({ navigation }) => {
           <View style={styles.property_container}>
             <Feather name="user" size={22} color={Colors.black} />
             <Text style={styles.property_text}>
-              Counselor:{'\n'}
-              {studentInfo.counselor.email}
+              Counselor: {studentInfo.counselor.name}
             </Text>
           </View>
         )}
@@ -173,8 +172,7 @@ const Profile = ({ navigation }) => {
               color={Colors.black}
             />
             <Text style={styles.property_text}>
-              Principal:{'\n'}
-              {schoolInfo.school.principal.email}
+              Principal: {schoolInfo.school.principal.name}
             </Text>
           </View>
         )}
