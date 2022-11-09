@@ -34,11 +34,12 @@ import Animated, { Transition, Transitioning } from 'react-native-reanimated'
 import Constants from 'expo-constants'
 
 const transition = (
-  <Transition.Together>
-    <Transition.In type="fade" durationMs={500} />
+  <Transition.Sequence>
     <Transition.Change />
+    <Transition.In type="fade" durationMs={250} />
     <Transition.Out type="fade" durationMs={250} />
-  </Transition.Together>
+    <Transition.Change />
+  </Transition.Sequence>
 )
 
 const CourseDetails = ({ route }) => {
@@ -216,7 +217,7 @@ const CourseDetails = ({ route }) => {
             return (
               <Assignment
                 name={item.name}
-                course={courseName}
+                courseName={courseName}
                 onPress={() => ref.current.animateNextTransition()}
                 key={item.name}
               ></Assignment>

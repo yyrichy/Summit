@@ -25,18 +25,16 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
       activeOpacity={0.5}
       onPress={onPress}
     >
-      <View style={styles.doc_info_container}>
-        <Text numberOfLines={1} style={styles.name}>
-          {name}
+      <Text numberOfLines={1} style={styles.name}>
+        {name}
+      </Text>
+      <View style={styles.info_container}>
+        <Text numberOfLines={1} style={[styles.type, { flex: 1 }]}>
+          {type}
         </Text>
-        <View style={styles.info_container}>
-          <Text numberOfLines={1} style={[styles.type, { flex: 1 }]}>
-            {type}
-          </Text>
-          <Text numberOfLines={1} style={styles.type}>
-            {date}
-          </Text>
-        </View>
+        <Text numberOfLines={1} style={styles.type}>
+          {date}
+        </Text>
       </View>
     </TouchableOpacity>
   )
@@ -46,19 +44,14 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.off_white,
     borderRadius: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     marginVertical: 3.5,
-    padding: 7,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
     borderWidth: 1,
-    borderColor: Colors.secondary
-  },
-  doc_info_container: {
+    borderColor: Colors.secondary,
     flexDirection: 'column',
     justifyContent: 'center',
-    flex: 1,
-    marginHorizontal: 4
+    flex: 1
   },
   info_container: {
     flexDirection: 'row',

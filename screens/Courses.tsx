@@ -127,21 +127,15 @@ const Courses = ({ navigation, route }) => {
           <FlatList
             data={[...marks.courses.entries()]}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                activeOpacity={0.5}
+              <Course
+                name={parseCourseName(item[0])}
+                mark={item[1].value}
+                period={item[1].period}
+                teacher={item[1].teacher}
                 onPress={() => {
-                  if (item[1].categories.size > 1) {
-                    navigation.navigate('Course Details', { title: item[0] })
-                  }
+                  navigation.navigate('Course Details', { title: item[0] })
                 }}
-              >
-                <Course
-                  name={parseCourseName(item[0])}
-                  mark={item[1].value}
-                  period={item[1].period}
-                  teacher={item[1].teacher}
-                ></Course>
-              </TouchableOpacity>
+              ></Course>
             )}
             keyExtractor={(item) => item[0]}
             refreshControl={

@@ -22,25 +22,25 @@ import { Colors } from '../colors/Colors'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 type Props = {
-  course: string
+  courseName: string
   name: string
   style?: StyleProp<ViewStyle>
   onPress: any
 }
 
-const Assignment: React.FC<Props> = ({ course, name, style, onPress }) => {
+const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
   const { marks, setMarks } = useContext(AppContext)
   const [isDropdown, setIsDropdown] = useState(false)
-  const assignment = marks.courses
-    .get(course)
-    .assignments.find((a) => a.name === name)
+  const course = marks.courses.get(courseName)
+  const assignment = course.assignments.find((a) => a.name === name)
   const pointsString = isNaN(assignment.points)
     ? ''
     : assignment.points.toString()
   const totalString = isNaN(assignment.total) ? '' : assignment.total.toString()
-  const totalWeight: number = Array.from(
-    marks.courses.get(course).categories.values()
-  ).reduce((p, c) => (isNaN(c.value) ? p : p + c.weight), 0)
+  const totalWeight: number = Array.from(course.categories.values()).reduce(
+    (p, c) => (isNaN(c.value) ? p : p + c.weight),
+    0
+  )
   const score: number = (assignment.points / assignment.total) * 100
   const hasScore: boolean = !isNaN((assignment.points / assignment.total) * 100)
 
@@ -50,7 +50,7 @@ const Assignment: React.FC<Props> = ({ course, name, style, onPress }) => {
     } else {
       points.current = input
     }
-    setMarks(updatePoints(marks, course, name, parseFloat(input), type))
+    setMarks(updatePoints(marks, courseName, name, parseFloat(input), type))
   }
 
   const getWidth = (n: number) => {
@@ -154,19 +154,20 @@ const Assignment: React.FC<Props> = ({ course, name, style, onPress }) => {
             <Text style={styles.dropdown_text_name}>Full Name:</Text>
             <Text style={styles.dropdown_text_value}>{name}</Text>
           </View>
-          <View style={styles.horizontal_container}>
-            <Text style={styles.dropdown_text_name}>Effective Weight:</Text>
-            <Text style={styles.dropdown_text_value}>
-              {roundTo(
-                (marks.courses.get(course).categories.get(assignment.category)
-                  .weight /
-                  totalWeight) *
-                  100,
-                2
-              )}
-              %
-            </Text>
-          </View>
+          {course.categories.size > 0 && (
+            <View style={styles.horizontal_container}>
+              <Text style={styles.dropdown_text_name}>Effective Weight:</Text>
+              <Text style={styles.dropdown_text_value}>
+                {roundTo(
+                  (course.categories.get(assignment.category).weight /
+                    totalWeight) *
+                    100,
+                  2
+                )}
+                %
+              </Text>
+            </View>
+          )}
           <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Grade:</Text>
             <Text style={styles.dropdown_text_value}>
@@ -206,7 +207,7 @@ const Assignment: React.FC<Props> = ({ course, name, style, onPress }) => {
             underlayColor="none"
             activeOpacity={0.5}
             size={24}
-            onPress={() => setMarks(deleteAssignment(marks, course, name))}
+            onPress={() => setMarks(deleteAssignment(marks, courseName, name))}
           ></FontAwesome.Button>
         </View>
       )}
