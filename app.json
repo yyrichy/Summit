@@ -23,7 +23,8 @@
         "backgroundColor": "#FEF156"
       },
       "package": "com.vaporrrr.Summit",
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
