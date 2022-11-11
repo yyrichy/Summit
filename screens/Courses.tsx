@@ -12,7 +12,11 @@ import {
 } from 'react-native'
 import Course from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
-import { convertGradebook, parseCourseName } from '../gradebook/GradeUtil'
+import {
+  convertGradebook,
+  dateDiffInDays,
+  parseCourseName
+} from '../gradebook/GradeUtil'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -99,7 +103,9 @@ const Courses = ({ navigation }) => {
         }}
       ></DropDownPicker>
       <Text style={styles.date}>
-        Ends {marks.reportingPeriods[value].date.end.toLocaleDateString()}
+        Ends {marks.reportingPeriods[value].date.end.toLocaleDateString()} in{' '}
+        {dateDiffInDays(new Date(), marks.reportingPeriods[value].date.end)}{' '}
+        days
       </Text>
       <View style={styles.row_container}>
         {!isNaN(marks.gpa) && <Text style={styles.gpa}>{marks.gpa} GPA</Text>}
