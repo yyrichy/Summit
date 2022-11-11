@@ -30,6 +30,11 @@ const Courses = ({ navigation }) => {
       return { label: p.name, value: p.index }
     })
   )
+  const endDate = marks.reportingPeriods[value].date.end
+  const daysDiff = dateDiffInDays(
+    new Date(),
+    marks.reportingPeriods[value].date.end
+  )
 
   useEffect(() => {
     onRefresh()
@@ -103,9 +108,10 @@ const Courses = ({ navigation }) => {
         }}
       ></DropDownPicker>
       <Text style={styles.date}>
-        Ends {marks.reportingPeriods[value].date.end.toLocaleDateString()} in{' '}
-        {dateDiffInDays(new Date(), marks.reportingPeriods[value].date.end)}{' '}
-        days
+        {daysDiff < 0
+          ? `Ended ${Math.abs(daysDiff)} days ago`
+          : `Ends in ${daysDiff} days`}{' '}
+        on {endDate.toLocaleDateString()}
       </Text>
       <View style={styles.row_container}>
         {!isNaN(marks.gpa) && <Text style={styles.gpa}>{marks.gpa} GPA</Text>}

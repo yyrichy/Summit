@@ -202,7 +202,11 @@ const CourseDetails = ({ route }) => {
         >
           {course.assignments.map((item) => {
             return (
-              <Assignment name={item.name} courseName={courseName}></Assignment>
+              <Assignment
+                name={item.name}
+                courseName={courseName}
+                key={item.name}
+              ></Assignment>
             )
           })}
         </ScrollView>
