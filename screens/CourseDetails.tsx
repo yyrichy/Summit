@@ -215,8 +215,10 @@ const CourseDetails = ({ route }) => {
         isVisible={isModalVisible}
         coverScreen={false}
         onBackdropPress={toggleModal}
-        animationIn={'fadeIn'}
-        animationOut={'fadeOut'}
+        animationIn={'zoomIn'}
+        animationOut={'zoomOut'}
+        animationInTiming={150}
+        animationOutTiming={150}
         backdropTransitionOutTiming={0}
       >
         <View style={styles.modal}>
