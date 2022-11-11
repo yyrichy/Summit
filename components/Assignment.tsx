@@ -7,7 +7,9 @@ import {
   Platform,
   TouchableOpacity,
   StyleProp,
-  ViewStyle
+  ViewStyle,
+  LayoutAnimation,
+  UIManager
 } from 'react-native'
 import {
   calculateMarkColor,
@@ -25,7 +27,14 @@ type Props = {
   courseName: string
   name: string
   style?: StyleProp<ViewStyle>
-  onPress: any
+  onPress?: any
+}
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
 const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
@@ -83,7 +92,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
       <View style={[styles.horizontal_container, { height: 52 }]}>
         <TouchableOpacity
           onPress={() => {
-            onPress()
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
             setIsDropdown(!isDropdown)
           }}
           activeOpacity={0.2}
@@ -224,7 +233,8 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.secondary,
     borderRightColor: Colors.secondary,
     borderBottomColor: Colors.secondary,
-    borderLeftColor: Colors.secondary
+    borderLeftColor: Colors.secondary,
+    overflow: 'hidden'
   },
   horizontal_container: {
     flexDirection: 'row'

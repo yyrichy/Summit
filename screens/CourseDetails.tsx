@@ -15,7 +15,8 @@ import {
   TouchableOpacity,
   View,
   SafeAreaView,
-  BackHandler
+  BackHandler,
+  ScrollView
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import Assignment from '../components/Assignment'
@@ -30,17 +31,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
-import Animated, { Transition, Transitioning } from 'react-native-reanimated'
 import Constants from 'expo-constants'
-
-const transition = (
-  <Transition.Sequence>
-    <Transition.Change />
-    <Transition.In type="fade" durationMs={250} />
-    <Transition.Out type="fade" durationMs={250} />
-    <Transition.Change />
-  </Transition.Sequence>
-)
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -65,8 +56,6 @@ const CourseDetails = ({ route }) => {
   const [assignmentName, setAssignmentName] = useState('')
   const [points, setPoints] = useState('')
   const [total, setTotal] = useState('')
-
-  const ref = useRef(null)
 
   const [refreshing, setRefreshing] = useState(false)
 
@@ -188,9 +177,7 @@ const CourseDetails = ({ route }) => {
           {isNaN(course.value) ? 'N/A' : course.value}
         </Text>
       </View>
-      <Transitioning.View
-        ref={ref}
-        transition={transition}
+      <View
         style={{
           backgroundColor: Colors.white,
           borderTopLeftRadius: 10,
@@ -202,7 +189,7 @@ const CourseDetails = ({ route }) => {
           flex: 1
         }}
       >
-        <Animated.ScrollView
+        <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -215,16 +202,11 @@ const CourseDetails = ({ route }) => {
         >
           {course.assignments.map((item) => {
             return (
-              <Assignment
-                name={item.name}
-                courseName={courseName}
-                onPress={() => ref.current.animateNextTransition()}
-                key={item.name}
-              ></Assignment>
+              <Assignment name={item.name} courseName={courseName}></Assignment>
             )
           })}
-        </Animated.ScrollView>
-      </Transitioning.View>
+        </ScrollView>
+      </View>
       <Modal
         isVisible={isModalVisible}
         coverScreen={false}
