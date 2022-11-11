@@ -114,7 +114,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
       <View style={[styles.horizontal_container, { height: 52 }]}>
         <TouchableOpacity
           onPress={transition}
-          activeOpacity={0.2}
+          activeOpacity={1}
           style={styles.assignment_info_container}
         >
           <View ref={ref}>
@@ -182,7 +182,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
         <TouchableOpacity
           style={styles.dropdown_container}
           onPress={transition}
-          activeOpacity={0.2}
+          activeOpacity={1}
         >
           <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Full Name:</Text>
