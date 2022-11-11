@@ -28,8 +28,6 @@ const registerForPushNotificationsAsync = async () => {
   if (finalStatus !== 'granted') return
 
   await scheduleGradeCheck()
-  const token = (await Notifications.getExpoPushTokenAsync()).data
-  console.log(token)
 }
 
 const scheduleGradeCheck = async () => {
