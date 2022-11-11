@@ -43,11 +43,17 @@ import { RussoOne_400Regular } from '@expo-google-fonts/russo-one'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import FlashMessage from 'react-native-flash-message'
 import { User } from './interfaces/User'
-import { ActivityIndicator, Text, View } from 'react-native'
+import { ActivityIndicator, Platform, Text, View } from 'react-native'
 import { Colors } from './colors/Colors'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
 import { CookiesProvider } from 'react-cookie'
+import registerForPushNotificationsAsync from './Notification'
+
+if (Platform.OS === 'android' || Platform.OS === 'ios')
+  registerForPushNotificationsAsync()
+
+const startGradeCheck = async () => {}
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 

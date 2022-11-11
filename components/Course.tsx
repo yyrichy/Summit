@@ -1,6 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Text, Platform } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import {
+  StyleSheet,
+  View,
+  Text,
+  Platform,
+  TouchableOpacity
+} from 'react-native'
 import { Colors } from '../colors/Colors'
 import {
   calculateLetterGrade,
@@ -14,7 +19,7 @@ function Course(props) {
     <TouchableOpacity
       style={[styles.container, props.style]}
       onPress={props.onPress}
-      activeOpacity={0.5}
+      activeOpacity={0.2}
     >
       <Text style={styles.period_number}>{('0' + props.period).slice(-2)}</Text>
       <View style={styles.course_info_container}>

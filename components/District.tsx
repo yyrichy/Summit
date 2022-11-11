@@ -13,7 +13,7 @@ const District = (props) => {
         }
       ]}
       onPress={props.onPress}
-      activeOpacity={0.5}
+      activeOpacity={0.2}
     >
       <View style={styles.district_name_container}>
         <Text numberOfLines={1} style={props.listItemLabelStyle}>

@@ -30,6 +30,9 @@ import * as SecureStore from 'expo-secure-store'
 import { FontAwesome5 } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 import District from '../components/District'
+import * as Notifications from 'expo-notifications'
+import useAsyncEffect from 'use-async-effect'
+import Constants from 'expo-constants'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -63,7 +66,7 @@ const Login = () => {
     })
   )
 
-  useEffect(() => {
+  useAsyncEffect(async () => {
     savedCredentials()
 
     const backAction = () => {
@@ -247,7 +250,7 @@ const Login = () => {
                 color: Colors.black
               }}
               underlayColor="none"
-              activeOpacity={0.5}
+              activeOpacity={0.2}
               size={25}
               onPress={() =>
                 Linking.openURL('https://github.com/vaporrrr/Summit')
@@ -294,7 +297,7 @@ const Login = () => {
                     color: Colors.black
                   }}
                   underlayColor="none"
-                  activeOpacity={0.5}
+                  activeOpacity={0.2}
                   size={18}
                   onPress={() => setModalVisible(true)}
                 ></FontAwesome.Button>
@@ -407,7 +410,7 @@ const Login = () => {
               backgroundColor="transparent"
               iconStyle={styles.insta_button}
               underlayColor="none"
-              activeOpacity={0.5}
+              activeOpacity={0.2}
               size={28}
               onPress={() => openInstagram('richardyin99')}
             ></FontAwesome.Button>
@@ -419,7 +422,7 @@ const Login = () => {
               backgroundColor="transparent"
               iconStyle={styles.insta_button}
               underlayColor="none"
-              activeOpacity={0.5}
+              activeOpacity={0.2}
               size={28}
               onPress={() => openInstagram('karthik.whynot')}
             ></FontAwesome.Button>

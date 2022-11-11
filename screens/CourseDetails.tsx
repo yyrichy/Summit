@@ -138,7 +138,7 @@ const CourseDetails = ({ route }) => {
               color: Colors.navy
             }}
             underlayColor="none"
-            activeOpacity={0.5}
+            activeOpacity={0.2}
             size={30}
             onPress={() => navigation.goBack()}
           ></FontAwesome.Button>
@@ -160,7 +160,7 @@ const CourseDetails = ({ route }) => {
             }}
             size={30}
             underlayColor="none"
-            activeOpacity={0.5}
+            activeOpacity={0.2}
             onPress={() => toggleModal()}
           ></FontAwesome.Button>
           {Platform.OS === 'web' && (
@@ -171,7 +171,7 @@ const CourseDetails = ({ route }) => {
                 color: Colors.navy
               }}
               underlayColor="none"
-              activeOpacity={0.5}
+              activeOpacity={0.2}
               size={30}
               onPress={onRefresh}
             ></FontAwesome.Button>
@@ -276,7 +276,8 @@ const CourseDetails = ({ route }) => {
               style={{
                 marginHorizontal: 10,
                 flexDirection: 'row',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
+                marginVertical: 5
               }}
             >
               <DropDownPicker
@@ -307,7 +308,7 @@ const CourseDetails = ({ route }) => {
                         setCategory(props.value)
                         setOpen(false)
                       }}
-                      activeOpacity={0.5}
+                      activeOpacity={0.2}
                     >
                       <View style={styles.category_name_container}>
                         <Text
@@ -328,11 +329,12 @@ const CourseDetails = ({ route }) => {
                   color: Colors.navy
                 }}
                 style={{
-                  margin: 0
+                  margin: 0,
+                  padding: 0
                 }}
-                size={45}
+                size={55}
                 underlayColor="none"
-                activeOpacity={0.5}
+                activeOpacity={0.2}
                 onPress={add}
               ></FontAwesome.Button>
             </View>
@@ -391,7 +393,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     padding: 5,
     marginHorizontal: 10,
-    width: 200,
+    width: 210,
     alignSelf: 'center'
   },
   dropdown_text: {
@@ -399,7 +401,7 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   dropdown_container: {
-    width: 200,
+    width: 210,
     alignSelf: 'center'
   },
   category_name_container: {

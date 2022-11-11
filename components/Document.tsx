@@ -22,7 +22,7 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
   return (
     <TouchableOpacity
       style={[styles.container, style]}
-      activeOpacity={0.5}
+      activeOpacity={0.2}
       onPress={onPress}
     >
       <Text numberOfLines={1} style={styles.name}>

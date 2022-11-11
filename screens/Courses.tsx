@@ -55,8 +55,6 @@ const Courses = ({ navigation }) => {
     setRefreshing(false)
   }
 
-  marks.gpa = 4.0
-
   return (
     <SafeAreaView style={styles.container}>
       <DropDownPicker
@@ -86,7 +84,7 @@ const Courses = ({ navigation }) => {
                 setValue(props.value)
                 setOpen(false)
               }}
-              activeOpacity={0.5}
+              activeOpacity={0.2}
             >
               <View style={styles.marking_period_container}>
                 <Text
@@ -101,8 +99,7 @@ const Courses = ({ navigation }) => {
         }}
       ></DropDownPicker>
       <Text style={styles.date}>
-        {marks.reportingPeriods[value].date.start.toLocaleDateString()} -{' '}
-        {marks.reportingPeriods[value].date.end.toLocaleDateString()}
+        Ends {marks.reportingPeriods[value].date.end.toLocaleDateString()}
       </Text>
       <View style={styles.row_container}>
         {!isNaN(marks.gpa) && <Text style={styles.gpa}>{marks.gpa} GPA</Text>}
@@ -115,7 +112,7 @@ const Courses = ({ navigation }) => {
                 color: Colors.secondary
               }}
               underlayColor="none"
-              activeOpacity={0.5}
+              activeOpacity={0.2}
               size={24}
               onPress={onRefresh}
             ></FontAwesome.Button>

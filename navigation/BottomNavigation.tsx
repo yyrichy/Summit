@@ -70,7 +70,7 @@ const App = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name="ProfileNav"
         component={Profile}
         options={{
           headerShown: false,
@@ -86,25 +86,6 @@ const App = () => {
             )
           }
         }}
-      />
-      <Tab.Screen
-        name="Logout"
-        component={EmptyComponent}
-        options={({ navigation }) => ({
-          headerShown: false,
-          tabBarIcon: () => {
-            return (
-              <Ionicons name="exit-outline" size={32} color={Colors.black} />
-            )
-          },
-          tabBarButton: (props) => (
-            <TouchableOpacity
-              {...props}
-              onPress={() => navigation.navigate('Login')}
-              activeOpacity={0.5}
-            />
-          )
-        })}
       />
     </Tab.Navigator>
   )

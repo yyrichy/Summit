@@ -94,7 +94,7 @@ const Documents = ({ navigation }) => {
                 color: Colors.secondary
               }}
               underlayColor="none"
-              activeOpacity={0.5}
+              activeOpacity={0.2}
               size={24}
               onPress={onRefresh}
             ></FontAwesome.Button>

@@ -86,7 +86,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
             onPress()
             setIsDropdown(!isDropdown)
           }}
-          activeOpacity={0.5}
+          activeOpacity={0.2}
           style={styles.assignment_info_container}
         >
           <Text
@@ -205,7 +205,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
               color: Colors.red
             }}
             underlayColor="none"
-            activeOpacity={0.5}
+            activeOpacity={0.2}
             size={24}
             onPress={() => setMarks(deleteAssignment(marks, courseName, name))}
           ></FontAwesome.Button>
