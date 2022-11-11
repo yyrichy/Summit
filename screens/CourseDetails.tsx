@@ -217,6 +217,7 @@ const CourseDetails = ({ route }) => {
         onBackdropPress={toggleModal}
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}
+        backdropTransitionOutTiming={0}
       >
         <View style={styles.modal}>
           <View style={styles.modal_view}>
