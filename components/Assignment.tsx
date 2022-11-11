@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import {
   StyleSheet,
   View,
@@ -76,8 +82,24 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
     total.current = totalString
   }, [marks])
 
+  const ref = useRef<TouchableOpacity>()
+  const setOpacityTo = useCallback((value) => {
+    // Redacted: animation related code
+    ref.current.setNativeProps({
+      opacity: value
+    })
+  }, [])
+  const transition = () => {
+    setOpacityTo(0.2)
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut, () => {
+      setOpacityTo(1)
+    })
+    setIsDropdown(!isDropdown)
+  }
+
   return (
     <View
+      ref={ref}
       style={[
         styles.container,
         style,
@@ -91,29 +113,28 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
     >
       <View style={[styles.horizontal_container, { height: 52 }]}>
         <TouchableOpacity
-          onPress={() => {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-            setIsDropdown(!isDropdown)
-          }}
+          onPress={transition}
           activeOpacity={0.2}
           style={styles.assignment_info_container}
         >
-          <Text
-            numberOfLines={1}
-            style={[
-              styles.name,
-              {
-                color: assignment.modified
-                  ? Colors.dark_middle_blue_green
-                  : Colors.navy
-              }
-            ]}
-          >
-            {name}
-          </Text>
-          <Text numberOfLines={1} style={styles.category}>
-            {assignment.category} - {assignment.date.due.toLocaleDateString()}
-          </Text>
+          <View ref={ref}>
+            <Text
+              numberOfLines={1}
+              style={[
+                styles.name,
+                {
+                  color: assignment.modified
+                    ? Colors.dark_middle_blue_green
+                    : Colors.navy
+                }
+              ]}
+            >
+              {name}
+            </Text>
+            <Text numberOfLines={1} style={styles.category}>
+              {assignment.category} - {assignment.date.due.toLocaleDateString()}
+            </Text>
+          </View>
         </TouchableOpacity>
         <View style={styles.input_container}>
           <TextInput
@@ -158,7 +179,11 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
         </View>
       </View>
       {isDropdown && (
-        <View style={styles.dropdown_container}>
+        <TouchableOpacity
+          style={styles.dropdown_container}
+          onPress={transition}
+          activeOpacity={0.2}
+        >
           <View style={styles.horizontal_container}>
             <Text style={styles.dropdown_text_name}>Full Name:</Text>
             <Text style={styles.dropdown_text_value}>{name}</Text>
@@ -218,7 +243,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
             size={24}
             onPress={() => setMarks(deleteAssignment(marks, courseName, name))}
           ></FontAwesome.Button>
-        </View>
+        </TouchableOpacity>
       )}
     </View>
   )
