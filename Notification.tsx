@@ -47,7 +47,6 @@ const scheduleGradeCheck = async () => {
       date = new Date(JSON.parse(value))
     }
   } catch (e) {}
-  console.log(date)
 
   const strings: string[] = require('./assets/config.json').gradeCheck
   Notifications.scheduleNotificationAsync({

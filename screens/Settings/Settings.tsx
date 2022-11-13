@@ -14,7 +14,6 @@ const SettingsScreen = () => {
   }
 
   const handleConfirm = (date) => {
-    console.warn('A date has been picked: ', date)
     hideDatePicker()
   }
 

@@ -53,8 +53,6 @@ import { registerForPushNotificationsAsync } from './Notification'
 if (Platform.OS === 'android' || Platform.OS === 'ios')
   registerForPushNotificationsAsync()
 
-const startGradeCheck = async () => {}
-
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 const App = () => {

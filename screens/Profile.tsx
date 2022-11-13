@@ -248,10 +248,10 @@ const Profile = ({ navigation }) => {
             style={
               Platform.OS === 'android'
                 ? {
-                    transform: [{ scaleX: 1.25 }, { scaleY: 1.25 }]
+                    transform: [{ scale: 1.25 }]
                   }
                 : {
-                    transform: [{ scaleX: 0.75 }, { scaleY: 0.75 }]
+                    transform: [{ scale: 0.75 }]
                   }
             }
           ></Switch>
