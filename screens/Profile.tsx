@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import {
   ActivityIndicator,
   Image,
@@ -6,9 +6,12 @@ import {
   View,
   Text,
   BackHandler,
-  RefreshControl
+  RefreshControl,
+  Switch,
+  Platform,
+  Alert
 } from 'react-native'
-import { SchoolInfo, StudentInfo } from 'studentvue'
+import { StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import AppContext from '../contexts/AppContext'
 import {
@@ -16,23 +19,76 @@ import {
   Feather,
   AntDesign,
   Ionicons,
-  MaterialCommunityIcons
+  Entypo
 } from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import Settings from './Settings'
+import SettingsScreen from './Settings/Settings'
+import Setting from '../components/Setting'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { scheduleGradeCheck } from '../Notification'
+import { cancelScheduledNotificationAsync } from 'expo-notifications'
 
 const Profile = ({ navigation }) => {
   const { client } = useContext(AppContext)
   const [studentInfo, setStudentInfo] = useState(undefined as StudentInfo)
-  const [schoolInfo, setSchoolInfo] = useState(undefined as SchoolInfo)
+
+  const [switchOn, switchEnabled] = useState(false)
+  const toggleSwitch = async () => {
+    const newState = !switchOn
+    switchEnabled((previousState) => !previousState)
+    if (newState) await cancelScheduledNotificationAsync('GradeCheck')
+    try {
+      await AsyncStorage.setItem(
+        'GradeCheckReminderDisabled',
+        JSON.stringify(newState)
+      )
+    } catch (e) {
+      Alert.alert('Error saving')
+    }
+    if (!newState) {
+      scheduleGradeCheck()
+    }
+  }
+
+  const [date, setDate] = useState(new Date() as Date)
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true)
+  }
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false)
+  }
+
+  const handleConfirm = async (date: Date) => {
+    hideDatePicker()
+    setDate(date)
+    try {
+      await AsyncStorage.setItem('GradeCheckReminderDate', JSON.stringify(date))
+    } catch (e) {
+      Alert.alert('Error saving reminder date')
+    }
+    scheduleGradeCheck()
+  }
 
   useAsyncEffect(async () => {
     onRefresh()
+    try {
+      const value = await AsyncStorage.getItem('GradeCheckReminderDate')
+      if (value !== null) {
+        setDate(new Date(JSON.parse(value)))
+      }
+      const enabled = await AsyncStorage.getItem('GradeCheckReminderDisabled')
+      if (enabled !== null) {
+        switchEnabled(JSON.parse(enabled))
+      }
+    } catch (e) {}
 
     const backAction = () => {
       navigation.goBack()
@@ -53,12 +109,11 @@ const Profile = ({ navigation }) => {
     setRefreshing(true)
     try {
       setStudentInfo(await client.studentInfo())
-      setSchoolInfo(await client.schoolInfo())
     } catch (err) {}
     setRefreshing(false)
   }, [])
 
-  if (!studentInfo || !schoolInfo) {
+  if (!studentInfo) {
     return (
       <View style={{ flex: 1 }}>
         <ActivityIndicator
@@ -80,7 +135,7 @@ const Profile = ({ navigation }) => {
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'center'
         }}
       >
@@ -96,29 +151,10 @@ const Profile = ({ navigation }) => {
           }}
           style={{
             padding: 0,
-            marginLeft: 25
-          }}
-          onPress={() => {
-            navigation.navigate('Login')
-          }}
-        />
-        <Ionicons.Button
-          name="settings-outline"
-          size={32}
-          underlayColor="none"
-          activeOpacity={0.2}
-          backgroundColor="transparent"
-          iconStyle={{
-            color: Colors.black,
-            margin: 0,
-            padding: 0
-          }}
-          style={{
-            padding: 3,
             marginRight: 20
           }}
           onPress={() => {
-            navigation.navigate('Settings')
+            navigation.navigate('Login')
           }}
         />
       </View>
@@ -172,25 +208,11 @@ const Profile = ({ navigation }) => {
               <Text style={styles.property_text}>{studentInfo.email}</Text>
             </View>
           )}
-          {studentInfo.address && (
-            <View style={styles.property_container}>
-              <Feather name="home" size={22} color={Colors.black} />
-              <Text style={styles.property_text}>{studentInfo.address}</Text>
-            </View>
-          )}
           {studentInfo.currentSchool && (
             <View style={styles.property_container}>
               <FontAwesome name="building-o" size={22} color={Colors.black} />
               <Text style={styles.property_text}>
                 {studentInfo.currentSchool}
-              </Text>
-            </View>
-          )}
-          {schoolInfo.school.address && (
-            <View style={styles.property_container}>
-              <Feather name="map-pin" size={22} color={Colors.black} />
-              <Text style={styles.property_text}>
-                {schoolInfo.school.address}
               </Text>
             </View>
           )}
@@ -206,28 +228,42 @@ const Profile = ({ navigation }) => {
               </Text>
             </View>
           )}
-          {studentInfo.counselor && (
-            <View style={styles.property_container}>
-              <Feather name="user" size={22} color={Colors.black} />
-              <Text style={styles.property_text}>
-                Counselor: {studentInfo.counselor.name}
-              </Text>
-            </View>
-          )}
-          {schoolInfo.school.principal && (
-            <View style={styles.property_container}>
-              <MaterialCommunityIcons
-                name="crown-outline"
-                size={22}
-                color={Colors.black}
-              />
-              <Text style={styles.property_text}>
-                Principal: {schoolInfo.school.principal.name}
-              </Text>
-            </View>
-          )}
         </View>
+        <Text style={styles.settings_title}>Settings</Text>
+        <Setting
+          title="Daily Grade Check Reminder"
+          description="Reminds you to check your grades"
+          onPress={showDatePicker}
+          position="top"
+        >
+          <Entypo name="chevron-right" size={24} color={Colors.onyx_gray} />
+        </Setting>
+        <Setting title="Disable Reminder" position="bottom">
+          <Switch
+            trackColor={{ false: Colors.medium_gray, true: Colors.baby_blue }}
+            thumbColor={switchOn ? Colors.primary : Colors.white}
+            ios_backgroundColor={Colors.medium_gray}
+            onValueChange={toggleSwitch}
+            value={switchOn}
+            style={
+              Platform.OS === 'android'
+                ? {
+                    transform: [{ scaleX: 1.25 }, { scaleY: 1.25 }]
+                  }
+                : {
+                    transform: [{ scaleX: 0.75 }, { scaleY: 0.75 }]
+                  }
+            }
+          ></Switch>
+        </Setting>
       </ScrollView>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="time"
+        date={date}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
     </SafeAreaView>
   )
 }
@@ -248,8 +284,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
     marginBottom: 25,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginTop: 5
+    justifyContent: 'flex-start'
   },
   info_container: {
     justifyContent: 'center',
@@ -273,7 +308,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   content_container: {
-    marginBottom: 7
+    paddingBottom: 20
   },
   property_view: {
     padding: 10,
@@ -292,6 +327,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     fontSize: 16,
     color: Colors.onyx_gray
+  },
+  settings_title: {
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 24,
+    marginHorizontal: 25,
+    marginTop: 15,
+    marginBottom: 10
   }
 })
 
@@ -307,7 +349,7 @@ export default function ProfileNav() {
           headerShown: false
         }}
       />
-      <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
     </Stack.Navigator>
   )
 }

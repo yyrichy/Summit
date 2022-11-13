@@ -1,0 +1,89 @@
+import React from 'react'
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'
+import { Colors } from '../colors/Colors'
+
+type Props = {
+  title: string
+  description?: string
+  onPress?: any
+  position: 'top' | 'middle' | 'bottom'
+  children?: any
+}
+
+const Setting: React.FC<Props> = ({
+  title,
+  onPress,
+  position,
+  description,
+  children
+}: Props) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={onPress ? 0.2 : 1}
+      style={styles['container_' + position]}
+    >
+      <View>
+        <Text style={styles.title}>{title}</Text>
+        {description && <Text style={styles.description}>{description}</Text>}
+      </View>
+      {children}
+    </TouchableOpacity>
+  )
+}
+
+const styles = StyleSheet.create({
+  container_middle: {
+    marginHorizontal: 25,
+    borderWidth: 1,
+    borderBottomWidth: 0.5,
+    borderTopWidth: 0.5,
+    borderColor: Colors.secondary,
+    backgroundColor: Colors.off_white,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    alignItems: 'center'
+  },
+  container_top: {
+    marginHorizontal: 25,
+    borderWidth: 1,
+    borderBottomWidth: 0.5,
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    borderColor: Colors.secondary,
+    backgroundColor: Colors.off_white,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    alignItems: 'center'
+  },
+  container_bottom: {
+    marginHorizontal: 25,
+    borderWidth: 1,
+    borderTopWidth: 0.5,
+    borderColor: Colors.secondary,
+    backgroundColor: Colors.off_white,
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    alignItems: 'center'
+  },
+  title: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 17
+  },
+  description: {
+    fontFamily: 'Inter_300Light',
+    fontSize: 12,
+    color: Colors.onyx_gray,
+    marginTop: 3
+  }
+})
+
+export default Setting

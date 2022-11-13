@@ -1,5 +1,6 @@
 import { Platform } from 'react-native'
 import * as Notifications from 'expo-notifications'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const registerForPushNotificationsAsync = async () => {
   Notifications.setNotificationHandler({
@@ -31,13 +32,22 @@ const registerForPushNotificationsAsync = async () => {
 }
 
 const scheduleGradeCheck = async () => {
-  const notifications = await Notifications.getAllScheduledNotificationsAsync()
-  if (
-    notifications.some(
-      (notification) => notification.identifier === 'GradeCheck'
-    )
-  )
-    return
+  try {
+    const disabled = await AsyncStorage.getItem('GradeCheckReminderDisabled')
+    if (disabled !== null) {
+      if (JSON.parse(disabled)) return
+    }
+
+    await Notifications.cancelScheduledNotificationAsync('GradeCheck')
+
+    var date = new Date()
+    date.setHours(18, 0)
+    const value = await AsyncStorage.getItem('GradeCheckReminderDate')
+    if (value !== null) {
+      date = new Date(JSON.parse(value))
+    }
+  } catch (e) {}
+  console.log(date)
 
   const strings: string[] = require('./assets/config.json').gradeCheck
   Notifications.scheduleNotificationAsync({
@@ -47,11 +57,11 @@ const scheduleGradeCheck = async () => {
     },
     trigger: {
       repeats: true,
-      hour: 7,
-      minute: 0
+      hour: date.getHours(),
+      minute: date.getMinutes()
     },
     identifier: 'GradeCheck'
   })
 }
 
-export default registerForPushNotificationsAsync
+export { registerForPushNotificationsAsync, scheduleGradeCheck }
