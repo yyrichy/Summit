@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import {
   TextInput,
   View,
@@ -8,7 +8,8 @@ import {
   Platform,
   Linking,
   ImageBackground,
-  BackHandler
+  BackHandler,
+  Alert
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -21,7 +22,6 @@ import AppContext from '../contexts/AppContext'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
-import AwesomeAlert from 'react-native-awesome-alerts'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
@@ -30,9 +30,7 @@ import * as SecureStore from 'expo-secure-store'
 import { FontAwesome5 } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 import District from '../components/District'
-import * as Notifications from 'expo-notifications'
 import useAsyncEffect from 'use-async-effect'
-import Constants from 'expo-constants'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -45,8 +43,6 @@ const Login = () => {
     useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
-  const [showAlert, setShowAlert] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(undefined as string)
 
   const [firstLaunch, setFirstLaunch] = useState(false)
 
@@ -114,29 +110,24 @@ const Login = () => {
       setMarks(marks)
     } catch (err) {
       setIsLoading(false)
-      alert(err.message)
+      Alert.alert(err.message)
       return
     }
     setIsLoading(false)
     navigation.navigate('Menu')
   }
 
-  function alert(message: string): void {
-    setErrorMessage(message)
-    setShowAlert(true)
-  }
-
   async function onLogin(): Promise<void> {
     if (!username) {
-      alert('Enter your username')
+      Alert.alert('Enter your username')
       return
     }
     if (!password) {
-      alert('Enter your password')
+      Alert.alert('Enter your password')
       return
     }
     if (!value) {
-      alert('Select your school district')
+      Alert.alert('Select your school district')
       return
     }
     setIsLoading(true)
@@ -156,7 +147,7 @@ const Login = () => {
       setMarks(marks)
     } catch (err) {
       setIsLoading(false)
-      alert(err.message)
+      Alert.alert('Error logging in', err.message)
       return
     }
     if (isChecked) {
@@ -430,22 +421,6 @@ const Login = () => {
           </View>
         </View>
       </ImageBackground>
-      <AwesomeAlert
-        show={showAlert}
-        showProgress={false}
-        title={'Error'}
-        message={errorMessage}
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={true}
-        showCancelButton={false}
-        showConfirmButton={true}
-        confirmText={'Ok'}
-        confirmButtonColor={Colors.primary}
-        confirmButtonTextStyle={{ color: Colors.black }}
-        onConfirmPressed={() => {
-          setShowAlert(false)
-        }}
-      ></AwesomeAlert>
     </>
   )
 }

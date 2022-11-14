@@ -29,9 +29,14 @@ import { createStackNavigator } from '@react-navigation/stack'
 import SettingsScreen from './Settings/Settings'
 import Setting from '../components/Setting'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { scheduleGradeCheck } from '../Notification'
-import { cancelScheduledNotificationAsync } from 'expo-notifications'
+import {
+  cancelReminder,
+  getReminderDate,
+  getReminderIsDisabled,
+  scheduleGradeCheck,
+  setReminderDate,
+  setReminderIsDisabled
+} from '../util/Notification'
 
 const Profile = ({ navigation }) => {
   const { client } = useContext(AppContext)
@@ -40,19 +45,16 @@ const Profile = ({ navigation }) => {
   const [switchOn, switchEnabled] = useState(false)
   const toggleSwitch = async () => {
     const newState = !switchOn
-    switchEnabled((previousState) => !previousState)
-    if (newState) await cancelScheduledNotificationAsync('GradeCheck')
+    if (newState) await cancelReminder()
     try {
-      await AsyncStorage.setItem(
-        'GradeCheckReminderDisabled',
-        JSON.stringify(newState)
-      )
+      await setReminderIsDisabled(newState)
+      if (!newState) {
+        await scheduleGradeCheck()
+      }
     } catch (e) {
       Alert.alert('Error saving')
     }
-    if (!newState) {
-      scheduleGradeCheck()
-    }
+    switchEnabled(newState)
   }
 
   const [date, setDate] = useState(new Date() as Date)
@@ -68,27 +70,19 @@ const Profile = ({ navigation }) => {
 
   const handleConfirm = async (date: Date) => {
     hideDatePicker()
-    setDate(date)
     try {
-      await AsyncStorage.setItem('GradeCheckReminderDate', JSON.stringify(date))
+      await setReminderDate(date)
+      await scheduleGradeCheck()
     } catch (e) {
       Alert.alert('Error saving reminder date')
     }
-    scheduleGradeCheck()
+    setDate(date)
   }
 
   useAsyncEffect(async () => {
     onRefresh()
-    try {
-      const value = await AsyncStorage.getItem('GradeCheckReminderDate')
-      if (value !== null) {
-        setDate(new Date(JSON.parse(value)))
-      }
-      const enabled = await AsyncStorage.getItem('GradeCheckReminderDisabled')
-      if (enabled !== null) {
-        switchEnabled(JSON.parse(enabled))
-      }
-    } catch (e) {}
+    setDate(await getReminderDate())
+    switchEnabled(await getReminderIsDisabled())
 
     const backAction = () => {
       navigation.goBack()
