@@ -124,11 +124,11 @@ const Documents = ({ navigation }) => {
               paddingHorizontal: 7,
               paddingTop: 3.5,
               ...Platform.select({
-                web: {
-                  paddingBottom: 50
+                ios: {
+                  paddingBottom: 10
                 },
                 default: {
-                  paddingBottom: 10
+                  paddingBottom: 50
                 }
               })
             }}

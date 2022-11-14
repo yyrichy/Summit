@@ -14,9 +14,7 @@ const registerForPushNotificationsAsync = async () => {
   if (Platform.OS === 'android') {
     Notifications.setNotificationChannelAsync('default', {
       name: 'default',
-      importance: Notifications.AndroidImportance.DEFAULT,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C'
+      importance: Notifications.AndroidImportance.DEFAULT
     })
   }
 
