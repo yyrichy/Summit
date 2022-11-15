@@ -266,6 +266,10 @@ const dateDiffInDays = (a: Date, b: Date): number => {
 
   return Math.floor((utc2 - utc1) / _MS_PER_DAY)
 }
+const prependZero = (number): string => {
+  if (number < 9) return '0' + number
+  else return number
+}
 
 export {
   parseCourseName,
@@ -281,5 +285,6 @@ export {
   isNumber,
   suffix,
   normalize,
-  dateDiffInDays
+  dateDiffInDays,
+  prependZero
 }

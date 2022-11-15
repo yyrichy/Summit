@@ -14,7 +14,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  SafeAreaView,
   BackHandler,
   ScrollView
 } from 'react-native'
@@ -31,7 +30,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
-import Constants from 'expo-constants'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -369,12 +368,7 @@ const styles = StyleSheet.create({
   course_name_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    ...Platform.select({
-      android: {
-        marginTop: Constants.statusBarHeight
-      }
-    })
+    alignItems: 'center'
   },
   dropdown: {
     borderWidth: 1,

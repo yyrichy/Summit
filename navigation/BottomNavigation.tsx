@@ -8,17 +8,12 @@ import { useNavigation } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
 import Documents from '../screens/Documents'
-import { TouchableOpacity } from 'react-native'
 import { Colors } from '../colors/Colors'
+import CalendarScreen from '../screens/Calendar'
 
 const Tab = createBottomTabNavigator()
-type navScreenProp = NativeStackNavigationProp<RootStackParamList, 'Menu'>
-
-const EmptyComponent = () => null
 
 const App = () => {
-  const navigation = useNavigation<navScreenProp>()
-
   return (
     <Tab.Navigator
       screenOptions={{
@@ -62,6 +57,24 @@ const App = () => {
             ) : (
               <Ionicons
                 name="folder-outline"
+                size={30}
+                color={Colors.secondary}
+              />
+            )
+          }
+        }}
+      />
+      <Tab.Screen
+        name="Calendar"
+        component={CalendarScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: (tabInfo) => {
+            return tabInfo.focused ? (
+              <Ionicons name="calendar" size={30} color={Colors.navy} />
+            ) : (
+              <Ionicons
+                name="calendar-outline"
                 size={30}
                 color={Colors.secondary}
               />

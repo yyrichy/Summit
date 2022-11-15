@@ -80,7 +80,7 @@ const Documents = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
       <View style={styles.row_container}>
         <View style={styles.title_container}>
           <Text style={styles.title}>Documents</Text>
@@ -101,40 +101,30 @@ const Documents = ({ navigation }) => {
           </View>
         )}
       </View>
-      <View style={{ height: '100%' }}>
-        {documents && (
-          <FlatList
-            data={documents}
-            renderItem={({ item }) => (
-              <Doc
-                name={(item as Document).comment}
-                type={(item as Document).file.type}
-                date={(item as Document).file.date.toLocaleDateString()}
-                onPress={() => {
-                  downloadDocument(item)
-                }}
-              ></Doc>
-            )}
-            keyExtractor={(item) => (item as Document).documentGu}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            contentContainerStyle={{
-              flexGrow: 1,
-              paddingHorizontal: 7,
-              paddingTop: 3.5,
-              ...Platform.select({
-                ios: {
-                  paddingBottom: 10
-                },
-                default: {
-                  paddingBottom: 50
-                }
-              })
-            }}
-          ></FlatList>
-        )}
-      </View>
+
+      {documents && (
+        <FlatList
+          data={documents}
+          renderItem={({ item }) => (
+            <Doc
+              name={(item as Document).comment}
+              type={(item as Document).file.type}
+              date={(item as Document).file.date.toLocaleDateString()}
+              onPress={() => {
+                downloadDocument(item)
+              }}
+            ></Doc>
+          )}
+          keyExtractor={(item) => (item as Document).documentGu}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          contentContainerStyle={{
+            paddingHorizontal: 7,
+            paddingTop: 3.5
+          }}
+        ></FlatList>
+      )}
     </SafeAreaView>
   )
 }

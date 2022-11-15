@@ -65,7 +65,7 @@ const Courses = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <DropDownPicker
         open={open}
         value={value}
@@ -132,38 +132,27 @@ const Courses = ({ navigation }) => {
         )}
       </View>
       {marks && (
-        <View style={{ height: '100%' }}>
-          <FlatList
-            data={[...marks.courses.entries()]}
-            renderItem={({ item }) => (
-              <Course
-                name={parseCourseName(item[0])}
-                mark={item[1].value}
-                period={item[1].period}
-                teacher={item[1].teacher}
-                onPress={() => {
-                  navigation.navigate('Course Details', { title: item[0] })
-                }}
-              ></Course>
-            )}
-            keyExtractor={(item) => item[0]}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            contentContainerStyle={{
-              flexGrow: 1,
-              paddingHorizontal: 7,
-              ...Platform.select({
-                web: {
-                  paddingBottom: 60
-                },
-                default: {
-                  paddingBottom: 10
-                }
-              })
-            }}
-          />
-        </View>
+        <FlatList
+          data={[...marks.courses.entries()]}
+          renderItem={({ item }) => (
+            <Course
+              name={parseCourseName(item[0])}
+              mark={item[1].value}
+              period={item[1].period}
+              teacher={item[1].teacher}
+              onPress={() => {
+                navigation.navigate('Course Details', { title: item[0] })
+              }}
+            ></Course>
+          )}
+          keyExtractor={(item) => item[0]}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          contentContainerStyle={{
+            paddingHorizontal: 7
+          }}
+        />
       )}
     </SafeAreaView>
   )
