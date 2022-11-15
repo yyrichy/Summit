@@ -26,7 +26,6 @@ import useAsyncEffect from 'use-async-effect'
 import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { createStackNavigator } from '@react-navigation/stack'
-import SettingsScreen from './Settings/Settings'
 import Setting from '../components/Setting'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import {
@@ -343,7 +342,6 @@ export default function ProfileNav() {
           headerShown: false
         }}
       />
-      <Stack.Screen name="Settings" component={SettingsScreen} />
     </Stack.Navigator>
   )
 }

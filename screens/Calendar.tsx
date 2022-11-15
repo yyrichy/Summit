@@ -8,7 +8,6 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AppContext from '../contexts/AppContext'
-
 import { Agenda, AgendaEntry, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
 import { prependZero } from '../gradebook/GradeUtil'
