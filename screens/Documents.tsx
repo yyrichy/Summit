@@ -10,7 +10,8 @@ import {
   Text,
   View,
   RefreshControl,
-  BackHandler
+  BackHandler,
+  ActivityIndicator
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
 import Doc from '../components/Document'
@@ -101,8 +102,7 @@ const Documents = ({ navigation }) => {
           </View>
         )}
       </View>
-
-      {documents && (
+      {documents ? (
         <FlatList
           data={documents}
           renderItem={({ item }) => (
@@ -124,6 +124,17 @@ const Documents = ({ navigation }) => {
             paddingTop: 3.5
           }}
         ></FlatList>
+      ) : (
+        <ActivityIndicator
+          color={Colors.secondary}
+          animating={true}
+          size="large"
+          style={{
+            alignSelf: 'center',
+            flex: 1,
+            justifyContent: 'center'
+          }}
+        />
       )}
     </SafeAreaView>
   )
