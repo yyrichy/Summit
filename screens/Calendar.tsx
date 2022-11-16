@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AppContext from '../contexts/AppContext'
-import { Agenda, AgendaEntry, AgendaSchedule } from 'react-native-calendars'
+import { Agenda, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
 import Item from '../components/Item'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
@@ -46,16 +46,16 @@ const CalendarScreen = ({ navigation }) => {
         }
       })
 
-      const currentItems: AgendaSchedule = {}
+      const currentItems = {}
       for (const date of getDatesFromDateRange(start, end)) {
         currentItems[toTimeString(date)] = []
       }
       for (const event of fullCalendar.events) {
         const dateString = toTimeString(event.date)
         currentItems[dateString].push({
-          name: `${event.startTime && `${event.startTime} - `}${event.title}`,
-          height: 30,
-          day: dateString
+          name: event.title,
+          day: dateString,
+          startTime: event.startTime
         })
       }
       const newItems = {}
@@ -78,7 +78,7 @@ const CalendarScreen = ({ navigation }) => {
     return dates
   }
 
-  const renderItem = (item: AgendaEntry) => {
+  const renderItem = (item) => {
     return <Item item={item}></Item>
   }
 

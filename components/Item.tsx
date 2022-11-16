@@ -1,16 +1,16 @@
 import React from 'react'
 import { memo } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { AgendaEntry } from 'react-native-calendars'
 
 type Props = {
-  item: AgendaEntry
+  item: { name: string; day: string; startTime: string }
 }
 
-const Item: React.FC<Props> = ({ item }) => {
+const Item: React.FC<Props> = ({ item: { name, startTime } }) => {
   return (
     <View style={styles.item}>
-      <Text style={styles.item_text}>{item.name}</Text>
+      {startTime && <Text style={styles.time_text}>{startTime}</Text>}
+      <Text style={styles.item_text}>{name}</Text>
     </View>
   )
 }
@@ -26,7 +26,12 @@ const styles = StyleSheet.create({
   },
   item_text: {
     fontFamily: 'Inter_400Regular',
-    fontSize: 14
+    fontSize: 14,
+    paddingTop: 2
+  },
+  time_text: {
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 18
   }
 })
 
