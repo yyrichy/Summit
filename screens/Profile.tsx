@@ -9,7 +9,8 @@ import {
   RefreshControl,
   Switch,
   Platform,
-  Alert
+  Alert,
+  ScrollView
 } from 'react-native'
 import { StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
@@ -23,7 +24,6 @@ import {
 } from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
-import { ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { createStackNavigator } from '@react-navigation/stack'
 import Setting from '../components/Setting'
