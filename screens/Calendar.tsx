@@ -10,15 +10,12 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import AppContext from '../contexts/AppContext'
 import { Agenda, AgendaEntry, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
-import { prependZero } from '../gradebook/GradeUtil'
 import Item from '../components/Item'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const CalendarScreen = ({ navigation }) => {
   const { client } = useContext(AppContext)
   const [items, setItems] = useState(undefined as AgendaSchedule)
-  const [startDate, setStartDate] = useState(undefined as string)
-  const [endDate, setEndDate] = useState(undefined as string)
 
   useAsyncEffect(async () => {
     const backAction = () => {
@@ -33,25 +30,14 @@ const CalendarScreen = ({ navigation }) => {
 
     try {
       const calendar = await client.calendar()
-
       const start =
         calendar.schoolDate.start instanceof Date
           ? calendar.schoolDate.start
           : new Date(calendar.schoolDate.start)
-      setStartDate(
-        `${start.getFullYear()}-${prependZero(
-          start.getMonth() + 1
-        )}-${start.getDate()}`
-      )
       const end =
         calendar.schoolDate.end instanceof Date
           ? calendar.schoolDate.end
           : new Date(calendar.schoolDate.end)
-      setEndDate(
-        `${end.getFullYear()}-${prependZero(
-          end.getMonth() + 1
-        )}-${end.getDate()}`
-      )
 
       const fullCalendar = await client.calendar({
         interval: {
@@ -66,7 +52,6 @@ const CalendarScreen = ({ navigation }) => {
       }
       for (const event of fullCalendar.events) {
         const dateString = toTimeString(event.date)
-        currentItems[dateString] = []
         currentItems[dateString].push({
           name: `${event.startTime && `${event.startTime} - `}${event.title}`,
           height: 30,
@@ -108,12 +93,12 @@ const CalendarScreen = ({ navigation }) => {
           <Text style={styles.title}>Calendar</Text>
         </View>
       </View>
-      {startDate && endDate && items ? (
+      {items ? (
         <Agenda
           items={items}
           renderItem={(item) => renderItem(item)}
-          minDate={startDate}
-          maxDate={endDate}
+          minDate={Object.keys(items)[0]}
+          maxDate={Object.keys(items)[Object.keys(items).length - 1]}
           removeClippedSubviews
         />
       ) : (
