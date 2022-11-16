@@ -9,7 +9,8 @@ import {
 import { Colors } from '../colors/Colors'
 import {
   calculateLetterGrade,
-  calculateMarkColor
+  calculateMarkColor,
+  prependZero
 } from '../gradebook/GradeUtil'
 
 function Course(props) {
@@ -21,7 +22,7 @@ function Course(props) {
       onPress={props.onPress}
       activeOpacity={0.2}
     >
-      <Text style={styles.period_number}>{('0' + props.period).slice(-2)}</Text>
+      <Text style={styles.period_number}>{prependZero(props.period)}</Text>
       <View style={styles.course_info_container}>
         <Text numberOfLines={1} style={styles.name}>
           {props.name}
