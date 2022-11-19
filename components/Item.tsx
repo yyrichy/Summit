@@ -1,18 +1,39 @@
 import React from 'react'
 import { memo } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
+import { Event, EventType } from 'studentvue'
 
 type Props = {
-  item: { name: string; day: string; startTime: string }
+  item: { event: Event; day: string }
 }
 
-const Item: React.FC<Props> = ({ item: { name, startTime } }) => {
-  return (
-    <View style={styles.item}>
-      {startTime && <Text style={styles.time_text}>{startTime}</Text>}
-      <Text style={styles.item_text}>{name}</Text>
-    </View>
-  )
+const Item: React.FC<Props> = ({ item: { event } }) => {
+  switch (event.type.toString()) {
+    case EventType.ASSIGNMENT:
+      return (
+        <View style={styles.item}>
+          <Text style={styles.item_text}>{event.title}</Text>
+        </View>
+      )
+    case EventType.HOLIDAY:
+      return (
+        <View style={styles.item}>
+          <Text style={styles.time_text}>
+            HOLIDAY{event.startTime.length !== 0 ? ` - ${event.startTime}` : ''}
+          </Text>
+          <Text style={styles.item_text}>{event.title}</Text>
+        </View>
+      )
+    default:
+      return (
+        <View style={styles.item}>
+          <Text style={styles.time_text}>
+            EVENT{event.startTime.length !== 0 ? ` - ${event.startTime}` : ''}
+          </Text>
+          <Text style={styles.item_text}>{event.title}</Text>
+        </View>
+      )
+  }
 }
 
 const styles = StyleSheet.create({

@@ -12,6 +12,7 @@ import { Agenda, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
 import Item from '../components/Item'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { EventType } from 'studentvue'
 
 const CalendarScreen = ({ navigation }) => {
   const { client } = useContext(AppContext)
@@ -53,9 +54,8 @@ const CalendarScreen = ({ navigation }) => {
       for (const event of fullCalendar.events) {
         const dateString = toTimeString(event.date)
         currentItems[dateString].push({
-          name: event.title,
-          day: dateString,
-          startTime: event.startTime
+          event: event,
+          day: dateString
         })
       }
       const newItems = {}
