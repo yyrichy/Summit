@@ -209,6 +209,7 @@ const Login = () => {
   }
 
   const onPress = async () => {
+    Keyboard.dismiss()
     setDistrictModalVisible(true)
     const { status } = await Location.requestForegroundPermissionsAsync()
     if (status !== 'granted') {
@@ -422,6 +423,7 @@ const Login = () => {
             style={styles.input}
             returnKeyType={'next'}
             onSubmitEditing={() => refInput.current.focus()}
+            blurOnSubmit={false}
           />
           <TextInput
             defaultValue={password}
@@ -432,9 +434,9 @@ const Login = () => {
             returnKeyType={'next'}
             ref={refInput}
             onSubmitEditing={() => {
-              Keyboard.dismiss()
               onPress()
             }}
+            blurOnSubmit={false}
           />
           <TouchableOpacity
             style={{
