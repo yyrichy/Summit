@@ -9,9 +9,11 @@ import {
   Linking,
   ImageBackground,
   BackHandler,
-  Alert
+  Alert,
+  TouchableOpacity,
+  FlatList
 } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
@@ -22,21 +24,20 @@ import AppContext from '../contexts/AppContext'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
-import DropDownPicker from 'react-native-dropdown-picker'
-import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
+import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { useCookies } from 'react-cookie'
 import * as SecureStore from 'expo-secure-store'
-import { FontAwesome5 } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
-import District from '../components/District'
 import useAsyncEffect from 'use-async-effect'
+import * as Location from 'expo-location'
+import allDistricts from '../assets/districts.json'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
 type loginInfo = 'username' | 'password' | 'district'
 
 const Login = () => {
+  const insets = useSafeAreaInsets()
   const navigation = useNavigation<loginScreenProp>()
   const refInput = useRef<TextInput | null>(null)
   const { username, password, setUsername, setPassword, setClient, setMarks } =
@@ -47,6 +48,7 @@ const Login = () => {
   const [firstLaunch, setFirstLaunch] = useState(false)
 
   const [isModalVisible, setModalVisible] = useState(false)
+  const [isDistrictModalVisible, setDistrictModalVisible] = useState(false)
 
   const [cookies, setCookie, removeCookie] = useCookies([
     'username',
@@ -54,13 +56,9 @@ const Login = () => {
     'district'
   ] as loginInfo[])
 
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(undefined as string)
-  const [list, setList] = useState(
-    require('../assets/districts.json').map((d: SchoolDistrict) => {
-      return { label: d.name, value: d.name }
-    })
-  )
+  const [selected, setSelected] = useState(null)
+  const [districts, setDistricts] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   useAsyncEffect(async () => {
     savedCredentials()
@@ -91,19 +89,14 @@ const Login = () => {
 
     setUsername(username)
     setPassword(password)
-    setValue(value)
+    setSelected(allDistricts.find((d) => d.parentVueUrl === value))
     setIsLoading(true)
     setToggleCheckBox(true)
     try {
-      const client = await StudentVue.login(
-        require('../assets/districts.json').find(
-          (d: SchoolDistrict) => d.name === value
-        ).parentVueUrl,
-        {
-          username: username,
-          password: password
-        }
-      )
+      const client = await StudentVue.login(value, {
+        username: username,
+        password: password
+      })
       const gradebook = await client.gradebook()
       const marks = await convertGradebook(gradebook)
       setClient(client)
@@ -126,21 +119,16 @@ const Login = () => {
       Alert.alert('Enter your password')
       return
     }
-    if (!value) {
+    if (!selected) {
       Alert.alert('Select your school district')
       return
     }
     setIsLoading(true)
     try {
-      const client = await StudentVue.login(
-        require('../assets/districts.json').find(
-          (d: SchoolDistrict) => d.name === value
-        ).parentVueUrl,
-        {
-          username: username,
-          password: password
-        }
-      )
+      const client = await StudentVue.login(selected.parentVueUrl, {
+        username: username,
+        password: password
+      })
       const gradebook = await client.gradebook()
       const marks = await convertGradebook(gradebook)
       setClient(client)
@@ -153,7 +141,7 @@ const Login = () => {
     if (isChecked) {
       save('username', username)
       save('password', password)
-      save('district', value)
+      save('district', selected.parentVueUrl)
     } else {
       remove('username')
       remove('password')
@@ -219,6 +207,42 @@ const Login = () => {
     }
   }
 
+  const onPress = async () => {
+    setDistrictModalVisible(true)
+    const { status } = await Location.requestForegroundPermissionsAsync()
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied')
+      setDistricts(null)
+      return
+    } else {
+      setErrorMsg(null)
+    }
+
+    let { coords } = await Location.getCurrentPositionAsync()
+    const { latitude, longitude } = coords
+    let reverse = await Location.reverseGeocodeAsync({ latitude, longitude })
+    const districtsFound = await StudentVue.findDistricts(reverse[0].postalCode)
+    const newDistricts = allDistricts.filter((d) =>
+      districtsFound.some((e) => e.name === d.name)
+    )
+    let d = newDistricts.map((d) => ({
+      ...d,
+      distance: distance(
+        { lat: latitude, long: longitude },
+        { lat: d.latitude, long: d.longitude }
+      )
+    }))
+    d.sort((a, b) => {
+      if (a.distance > b.distance) {
+        return 1
+      } else if (a.distance < b.distance) {
+        return -1
+      }
+      return 0
+    })
+    setDistricts(d)
+  }
+
   return (
     <>
       <Modal
@@ -228,7 +252,7 @@ const Login = () => {
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}
       >
-        <View style={styles.modal}>
+        <View style={[styles.modal, { width: 250 }]}>
           <View style={styles.modal_view}>
             <Text style={styles.security_modal}>
               We do not collect/save your login information. Info entered is
@@ -242,11 +266,95 @@ const Login = () => {
               }}
               underlayColor="none"
               activeOpacity={0.2}
-              size={25}
+              size={28}
               onPress={() =>
                 Linking.openURL('https://github.com/vaporrrr/Summit')
               }
+              style={{ padding: 0, alignSelf: 'flex-end' }}
             ></FontAwesome.Button>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        isVisible={isDistrictModalVisible}
+        coverScreen={false}
+        onBackdropPress={() => setDistrictModalVisible(!isDistrictModalVisible)}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+      >
+        <View style={[styles.modal, { marginTop: insets.top }]}>
+          <View style={[styles.modal_view, {}]}>
+            {errorMsg ? (
+              <>
+                <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
+                  {errorMsg}
+                </Text>
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      padding: 10,
+                      alignItems: 'center',
+                      marginTop: 10,
+                      alignSelf: 'center',
+                      backgroundColor: Colors.off_white
+                    }}
+                    onPress={async () => {
+                      setDistrictModalVisible(false)
+                      Linking.openSettings()
+                    }}
+                  >
+                    <Text
+                      style={{ fontFamily: 'Inter_500Medium', fontSize: 18 }}
+                    >
+                      Settings
+                    </Text>
+                    <Ionicons
+                      name="settings-outline"
+                      size={24}
+                      color="black"
+                      style={{ padding: 0, marginLeft: 4 }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : (
+              !districts && (
+                <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 14 }}>
+                  Waiting...
+                </Text>
+              )
+            )}
+            <FlatList
+              data={districts}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelected(item)
+                    setDistrictModalVisible(!isDistrictModalVisible)
+                  }}
+                  style={{ paddingVertical: 10 }}
+                >
+                  <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 16 }}>
+                    {item.name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter_400Regular',
+                      fontSize: 16,
+                      color: Colors.onyx_gray,
+                      marginTop: 2
+                    }}
+                  >
+                    {item.distance.toFixed(2)} mi
+                  </Text>
+                </TouchableOpacity>
+              )}
+              style={{ flexGrow: 0 }}
+              ItemSeparatorComponent={Seperator}
+            ></FlatList>
           </View>
         </View>
       </Modal>
@@ -289,8 +397,12 @@ const Login = () => {
                   }}
                   underlayColor="none"
                   activeOpacity={0.2}
-                  size={18}
+                  size={20}
                   onPress={() => setModalVisible(true)}
+                  style={{
+                    padding: 0,
+                    paddingLeft: 6
+                  }}
                 ></FontAwesome.Button>
               </View>
               <Text style={styles.login_info}>
@@ -315,47 +427,36 @@ const Login = () => {
             style={styles.input}
             returnKeyType={'next'}
             ref={refInput}
-            onSubmitEditing={() => setOpen(true)}
           />
-          <DropDownPicker
-            searchable={true}
-            open={open}
-            value={value}
-            items={list}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setList}
-            dropDownDirection={'BOTTOM'}
-            style={styles.dropdown}
-            textStyle={styles.dropdown_text}
-            containerStyle={styles.dropdown_container}
-            listMode={'FLATLIST'}
-            translation={{
-              SEARCH_PLACEHOLDER: 'Enter School District Name',
-              PLACEHOLDER: 'Select School District',
-              NOTHING_TO_SHOW:
-                'Nothing found, make sure you are entering your DISTRICT NAME not SCHOOL NAME'
+          <TouchableOpacity
+            style={{
+              width: 250,
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderRadius: 5,
+              padding: 10,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 10
             }}
-            tickIconStyle={styles.dropdown_tick}
-            listItemLabelStyle={styles.dropdown_item}
-            searchContainerStyle={styles.dropdown_search_container}
-            searchTextInputStyle={styles.dropdown_search_text}
-            listItemContainerStyle={styles.dropdown_list_item_container}
-            renderListItem={(props) => {
-              return (
-                <District
-                  {...props}
-                  onPress={() => {
-                    setValue(props.value)
-                    setOpen(false)
-                  }}
-                ></District>
-              )
-            }}
-            props={{
-              activeOpacity: 0.5
-            }}
-          ></DropDownPicker>
+            onPress={async () => onPress()}
+          >
+            <Text
+              style={{
+                fontFamily: 'Inter_400Regular',
+                fontSize: 14,
+                flexWrap: 'wrap',
+                flex: 1
+              }}
+            >
+              {selected ? selected.name : 'Find Your School District'}
+            </Text>
+            {selected ? (
+              <Ionicons name="school-outline" size={24} color="black" />
+            ) : (
+              <Ionicons name="location-outline" size={24} color="black" />
+            )}
+          </TouchableOpacity>
           <View style={styles.checkbox_container}>
             <BouncyCheckbox
               size={24}
@@ -427,6 +528,35 @@ const Login = () => {
 
 export default Login
 
+const Seperator = () => {
+  return <View style={{ borderWidth: 1, borderColor: Colors.secondary }}></View>
+}
+
+const distance = ({ lat: x1, long: y1 }, { lat: x2, long: y2 }) => {
+  function toRadians(value) {
+    return (value * Math.PI) / 180
+  }
+
+  var R = 6371.071
+  var rlat1 = toRadians(x1) // Convert degrees to radians
+  var rlat2 = toRadians(x2) // Convert degrees to radians
+  var difflat = rlat2 - rlat1 // Radian difference (latitudes)
+  var difflon = toRadians(y2 - y1) // Radian difference (longitudes)
+  return (
+    2 *
+    R *
+    Math.asin(
+      Math.sqrt(
+        Math.sin(difflat / 2) * Math.sin(difflat / 2) +
+          Math.cos(rlat1) *
+            Math.cos(rlat2) *
+            Math.sin(difflon / 2) *
+            Math.sin(difflon / 2)
+      )
+    )
+  )
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -443,13 +573,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: 'white',
-    borderRadius: 10,
-    width: 250,
-    height: 140
+    borderRadius: 10
   },
   modal_view: {
-    width: 250,
-    height: 140,
     padding: 15
   },
   security_modal: {
@@ -474,12 +600,12 @@ const styles = StyleSheet.create({
   login_info: {
     fontFamily: 'Montserrat_300Light_Italic',
     fontSize: 12,
-    marginBottom: 10
+    marginBottom: 10,
+    marginTop: 5
   },
   security: {
     fontFamily: 'Inter_600SemiBold',
-    fontSize: 14,
-    marginTop: 8
+    fontSize: 14
   },
   checkbox_container: {
     flexDirection: 'row',
