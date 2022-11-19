@@ -11,7 +11,8 @@ import {
   BackHandler,
   Alert,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  Keyboard
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -335,7 +336,6 @@ const Login = () => {
                     setSelected(item)
                     setDistrictModalVisible(!isDistrictModalVisible)
                   }}
-                  style={{ paddingVertical: 10 }}
                 >
                   <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 16 }}>
                     {item.name}
@@ -417,7 +417,6 @@ const Login = () => {
             style={styles.input}
             returnKeyType={'next'}
             onSubmitEditing={() => refInput.current.focus()}
-            blurOnSubmit={false}
           />
           <TextInput
             defaultValue={password}
@@ -427,6 +426,10 @@ const Login = () => {
             style={styles.input}
             returnKeyType={'next'}
             ref={refInput}
+            onSubmitEditing={() => {
+              Keyboard.dismiss()
+              onPress()
+            }}
           />
           <TouchableOpacity
             style={{
@@ -443,7 +446,7 @@ const Login = () => {
           >
             <Text
               style={{
-                fontFamily: 'Inter_400Regular',
+                fontFamily: 'Inter_500Medium',
                 fontSize: 14,
                 flexWrap: 'wrap',
                 flex: 1
@@ -529,7 +532,15 @@ const Login = () => {
 export default Login
 
 const Seperator = () => {
-  return <View style={{ borderWidth: 1, borderColor: Colors.secondary }}></View>
+  return (
+    <View
+      style={{
+        borderWidth: 1,
+        borderColor: Colors.secondary,
+        marginVertical: 10
+      }}
+    ></View>
+  )
 }
 
 const distance = ({ lat: x1, long: y1 }, { lat: x2, long: y2 }) => {
