@@ -11,8 +11,7 @@ import AppContext from '../contexts/AppContext'
 import { Agenda, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
 import Item from '../components/Item'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
-import { EventType } from 'studentvue'
+import { Colors } from '../colors/Colors'
 
 const CalendarScreen = ({ navigation }) => {
   const { client } = useContext(AppContext)
