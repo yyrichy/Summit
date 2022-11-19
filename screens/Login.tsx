@@ -11,7 +11,6 @@ import {
   BackHandler,
   Alert,
   TouchableOpacity,
-  FlatList,
   Keyboard
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -32,6 +31,7 @@ import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
 import * as Location from 'expo-location'
 import allDistricts from '../assets/districts.json'
+import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -328,8 +328,13 @@ const Login = () => {
                 </Text>
               )
             )}
-            <FlatList
+            <FadeInFlatList
+              initialDelay={0}
+              durationPerItem={500}
+              parallelItems={5}
+              itemsToFadeIn={10}
               data={districts}
+              keyExtractor={(item) => item.name}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => {
@@ -354,7 +359,7 @@ const Login = () => {
               )}
               style={{ flexGrow: 0 }}
               ItemSeparatorComponent={Seperator}
-            ></FlatList>
+            />
           </View>
         </View>
       </Modal>

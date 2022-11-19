@@ -4,19 +4,20 @@ import AppContext from '../contexts/AppContext'
 import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
 import {
-  FlatList,
   Platform,
   StyleSheet,
   Text,
   View,
   RefreshControl,
   BackHandler,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
 import Doc from '../components/Document'
 import { Colors } from '../colors/Colors'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 
 const Documents = ({ navigation }) => {
   const { client } = useContext(AppContext)
@@ -103,7 +104,11 @@ const Documents = ({ navigation }) => {
         )}
       </View>
       {documents ? (
-        <FlatList
+        <FadeInFlatList
+          initialDelay={0}
+          durationPerItem={500}
+          parallelItems={5}
+          itemsToFadeIn={Dimensions.get('window').height / 50}
           data={documents}
           renderItem={({ item }) => (
             <Doc
@@ -123,7 +128,7 @@ const Documents = ({ navigation }) => {
             paddingHorizontal: 7,
             paddingTop: 3.5
           }}
-        ></FlatList>
+        />
       ) : (
         <ActivityIndicator
           color={Colors.secondary}

@@ -5,7 +5,6 @@ import {
   View,
   Text,
   Platform,
-  FlatList,
   TouchableOpacity,
   RefreshControl,
   BackHandler
@@ -21,6 +20,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
+import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 
 const Courses = ({ navigation }) => {
   const { client, marks, setMarks } = useContext(AppContext)
@@ -136,7 +136,11 @@ const Courses = ({ navigation }) => {
         )}
       </View>
       {marks && (
-        <FlatList
+        <FadeInFlatList
+          initialDelay={0}
+          durationPerItem={500}
+          parallelItems={5}
+          itemsToFadeIn={10}
           data={[...marks.courses.entries()]}
           renderItem={({ item }) => (
             <Course

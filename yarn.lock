@@ -1636,6 +1636,11 @@
   resolved "https://registry.yarnpkg.com/@ide/backoff/-/backoff-1.0.0.tgz#466842c25bd4a4833e0642fab41ccff064010176"
   integrity sha512-F0YfUDjvT+Mtt/R4xdl2X0EYCHMMiJqNLdxHD++jDT5ydEFIyqbCHh51Qx2E211dgZprPKhV7sHmnXKpLuvc5g==
 
+"@ja-ka/react-native-fade-in-flatlist@^1.0.13":
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/@ja-ka/react-native-fade-in-flatlist/-/react-native-fade-in-flatlist-1.0.13.tgz#2f51620deffccb710ec37a1ced772ea60cef1506"
+  integrity sha512-wJJiSlB6FDG2xo/X/2sMi3QbVE03LR8ookt3vpbnJ0SKS2mD2uAgi8d2mIfG+LIIgrlxSYJBcQ/gRtQGgMwdyw==
+
 "@jest/create-cache-key-function@^29.0.3":
   version "29.3.1"
   resolved "https://registry.yarnpkg.com/@jest/create-cache-key-function/-/create-cache-key-function-29.3.1.tgz#3a0970ea595ab3d9507244edbcef14d6b016cdc9"
