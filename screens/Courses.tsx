@@ -20,6 +20,7 @@ import {
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { registerForPushNotificationsAsync } from '../util/Notification'
 
 const Courses = ({ navigation }) => {
   const { client, marks, setMarks } = useContext(AppContext)
@@ -41,6 +42,9 @@ const Courses = ({ navigation }) => {
   }, [value])
 
   useEffect(() => {
+    if (Platform.OS === 'android' || Platform.OS === 'ios')
+      registerForPushNotificationsAsync()
+
     const backAction = () => {
       navigation.goBack()
       return true

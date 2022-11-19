@@ -48,10 +48,6 @@ import { Colors } from './colors/Colors'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
 import { CookiesProvider } from 'react-cookie'
-import { registerForPushNotificationsAsync } from './util/Notification'
-
-if (Platform.OS === 'android' || Platform.OS === 'ios')
-  registerForPushNotificationsAsync()
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
