@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
   View,
   BackHandler,
-  ScrollView
+  Dimensions
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import Assignment from '../components/Assignment'
@@ -31,6 +31,7 @@ import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -188,7 +189,11 @@ const CourseDetails = ({ route }) => {
           flex: 1
         }}
       >
-        <ScrollView
+        <FadeInFlatList
+          initialDelay={0}
+          durationPerItem={500}
+          parallelItems={5}
+          itemsToFadeIn={Dimensions.get('window').height / 75}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -198,17 +203,15 @@ const CourseDetails = ({ route }) => {
             paddingTop: 8.5,
             paddingBottom: 10
           }}
-        >
-          {course.assignments.map((item) => {
-            return (
-              <Assignment
-                name={item.name}
-                courseName={courseName}
-                key={item.name}
-              ></Assignment>
-            )
-          })}
-        </ScrollView>
+          data={course.assignments}
+          renderItem={({ item }) => (
+            <Assignment
+              name={item.name}
+              courseName={courseName}
+              key={item.name}
+            ></Assignment>
+          )}
+        />
       </View>
       <Modal
         isVisible={isModalVisible}
