@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "This app uses your location once to determine nearby school districts"
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to determine nearby school districts"
       }
     },
     "android": {
