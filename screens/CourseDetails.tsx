@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 12,
     width: 300,
     height: 195
   },
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 15,
     paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 3
   },
   course_mark: {

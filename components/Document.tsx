@@ -43,7 +43,7 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.off_white,
-    borderRadius: 10,
+    borderRadius: 8,
     marginVertical: 3.5,
     paddingHorizontal: 10,
     paddingVertical: 7,
