@@ -1,23 +1,74 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import {
   StyleSheet,
   View,
   Text,
   BackHandler,
-  ActivityIndicator
+  Animated,
+  Easing
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AppContext from '../contexts/AppContext'
 import { Agenda, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
 import Item from '../components/Item'
-import { Colors } from '../colors/Colors'
+import { Ionicons } from '@expo/vector-icons'
 
 const CalendarScreen = ({ navigation }) => {
   const { client } = useContext(AppContext)
   const [items, setItems] = useState(undefined as AgendaSchedule)
 
+  const lowestScale = 0.4
+  const fadeAnim = useRef(new Animated.Value(0)).current
+  const fadeAnim2 = useRef(new Animated.Value(1)).current
+  const scaleAnim = useRef(new Animated.Value(lowestScale)).current
+
   useAsyncEffect(async () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(scaleAnim, {
+          toValue: 1,
+          duration: 750,
+          easing: Easing.elastic(1),
+          useNativeDriver: true
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: lowestScale,
+          duration: 750,
+          easing: Easing.back(1),
+          useNativeDriver: true
+        })
+      ])
+    ).start()
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 1500,
+          useNativeDriver: true
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 1500,
+          useNativeDriver: true
+        })
+      ])
+    ).start()
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(fadeAnim2, {
+          toValue: 0,
+          duration: 1500,
+          useNativeDriver: true
+        }),
+        Animated.timing(fadeAnim2, {
+          toValue: 1,
+          duration: 1500,
+          useNativeDriver: true
+        })
+      ])
+    ).start()
+
     const backAction = () => {
       navigation.goBack()
       return true
@@ -101,16 +152,33 @@ const CalendarScreen = ({ navigation }) => {
           removeClippedSubviews
         />
       ) : (
-        <ActivityIndicator
-          color={Colors.secondary}
-          animating={true}
-          size="large"
-          style={{
-            alignSelf: 'center',
-            flex: 1,
-            justifyContent: 'center'
-          }}
-        />
+        <Animated.View
+          style={[
+            styles.scale_container,
+            { transform: [{ scale: scaleAnim }] }
+          ]}
+        >
+          <Animated.View
+            style={[
+              styles.fadingContainer,
+              {
+                opacity: fadeAnim
+              }
+            ]}
+          >
+            <Ionicons name="calendar" size={50} color="black" />
+          </Animated.View>
+          <Animated.View
+            style={[
+              styles.fadingContainer,
+              {
+                opacity: fadeAnim2
+              }
+            ]}
+          >
+            <Ionicons name="calendar-outline" size={50} color="black" />
+          </Animated.View>
+        </Animated.View>
       )}
     </SafeAreaView>
   )
@@ -153,6 +221,14 @@ const styles = StyleSheet.create({
     height: 15,
     flex: 1,
     paddingTop: 30
+  },
+  scale_container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  fadingContainer: {
+    position: 'absolute'
   }
 })
 
