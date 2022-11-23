@@ -3,7 +3,6 @@ import { KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native'
 
 const LoginView = ({ children }) =>
   Platform.select({
-    web: () => <View style={styles.container}>{children}</View>,
     ios: () => (
       <KeyboardAvoidingView style={styles.container} behavior={'padding'}>
         {children}

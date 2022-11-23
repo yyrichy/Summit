@@ -7,7 +7,6 @@ import React, {
   useState
 } from 'react'
 import {
-  Platform,
   RefreshControl,
   StyleSheet,
   Text,
@@ -135,37 +134,17 @@ const CourseDetails = ({ route }) => {
         <Text numberOfLines={1} style={styles.course_name}>
           {parseCourseName(courseName)}
         </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-end'
+        <FontAwesome.Button
+          name="plus-circle"
+          backgroundColor="transparent"
+          iconStyle={{
+            color: Colors.navy
           }}
-        >
-          <FontAwesome.Button
-            name="plus-circle"
-            backgroundColor="transparent"
-            iconStyle={{
-              color: Colors.navy
-            }}
-            size={30}
-            underlayColor="none"
-            activeOpacity={0.2}
-            onPress={() => toggleModal()}
-          ></FontAwesome.Button>
-          {Platform.OS === 'web' && (
-            <FontAwesome.Button
-              name="refresh"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.navy
-              }}
-              underlayColor="none"
-              activeOpacity={0.2}
-              size={30}
-              onPress={onRefresh}
-            ></FontAwesome.Button>
-          )}
-        </View>
+          size={30}
+          underlayColor="none"
+          activeOpacity={0.2}
+          onPress={() => toggleModal()}
+        ></FontAwesome.Button>
       </SafeAreaView>
       <View
         style={[

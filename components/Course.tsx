@@ -82,14 +82,7 @@ const styles = StyleSheet.create({
     marginLeft: 7,
     lineHeight: 18 * 0.75,
     textAlign: 'left',
-    ...Platform.select({
-      web: {
-        paddingBottom: 12 - 12 * 0.75
-      },
-      default: {
-        paddingTop: 18 - 18 * 0.75
-      }
-    })
+    paddingTop: 18 - 18 * 0.75
   },
   teacher: {
     color: Colors.black,
@@ -100,14 +93,7 @@ const styles = StyleSheet.create({
     lineHeight: 12 * 0.75,
     marginTop: 4,
     textAlign: 'left',
-    ...Platform.select({
-      web: {
-        paddingBottom: 2
-      },
-      default: {
-        paddingTop: 12 - 12 * 0.75
-      }
-    })
+    paddingTop: 12 - 12 * 0.75
   },
   mark: {
     fontFamily: 'Montserrat_500Medium',

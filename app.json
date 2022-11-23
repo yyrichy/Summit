@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "platforms": ["android", "ios"],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -29,9 +30,6 @@
       "softwareKeyboardLayoutMode": "pan",
       "googleServicesFile": "./google-services.json",
       "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"]
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [

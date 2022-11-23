@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  Platform,
   Linking,
   ImageBackground,
   BackHandler,
@@ -25,7 +24,6 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons'
-import { useCookies } from 'react-cookie'
 import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
@@ -50,12 +48,6 @@ const Login = () => {
 
   const [isModalVisible, setModalVisible] = useState(false)
   const [isDistrictModalVisible, setDistrictModalVisible] = useState(false)
-
-  const [cookies, setCookie, removeCookie] = useCookies([
-    'username',
-    'password',
-    'district'
-  ] as loginInfo[])
 
   const [selected, setSelected] = useState(null)
   const [districts, setDistricts] = useState(null)
@@ -153,59 +145,30 @@ const Login = () => {
   }
 
   async function openInstagram(username: string): Promise<void> {
-    if (Platform.OS !== 'web') {
-      const appUrl = `instagram://user?username=${username}`
-      try {
-        if (await Linking.canOpenURL(appUrl)) {
-          Linking.openURL(appUrl)
-        } else {
-          try {
-            Linking.openURL(`https://instagram.com/${username}`)
-          } catch (err) {}
-        }
-      } catch (err) {}
-    } else {
-      try {
-        Linking.openURL(`https://instagram.com/${username}`)
-      } catch (err) {}
-    }
-  }
-
-  function nameFontSize(): number {
-    return Platform.OS === 'web' ? 60 : 40
-  }
-
-  function descriptionFontSize(): number {
-    return Platform.OS === 'web' ? 25 : 20
-  }
-
-  function mountainSize(): number {
-    return Platform.OS === 'web' ? 40 : 30
+    const appUrl = `instagram://user?username=${username}`
+    try {
+      if (await Linking.canOpenURL(appUrl)) {
+        Linking.openURL(appUrl)
+      } else {
+        // Instagram app not installed
+        try {
+          Linking.openURL(`https://instagram.com/${username}`)
+        } catch (err) {}
+      }
+    } catch (err) {}
   }
 
   async function save(key: loginInfo, value: string): Promise<void> {
     if (value === null) return
-    if (Platform.OS === 'web') {
-      setCookie(key, value, { path: '/' })
-    } else {
-      await SecureStore.setItemAsync(key, value)
-    }
+    await SecureStore.setItemAsync(key, value)
   }
 
   async function getValueFor(key: loginInfo): Promise<string> {
-    if (Platform.OS === 'web') {
-      return cookies[key]
-    } else {
-      return await SecureStore.getItemAsync(key)
-    }
+    return await SecureStore.getItemAsync(key)
   }
 
   const remove = async (key: loginInfo): Promise<void> => {
-    if (Platform.OS === 'web') {
-      removeCookie(key, { path: '/' })
-    } else {
-      await SecureStore.deleteItemAsync(key)
-    }
+    await SecureStore.deleteItemAsync(key)
   }
 
   const onPress = async () => {
@@ -371,22 +334,12 @@ const Login = () => {
       >
         <SafeAreaView style={{ alignItems: 'center' }}>
           <View style={styles.horizontal_container}>
-            <Text style={[styles.name, { fontSize: nameFontSize() }]}>
-              Summit
-            </Text>
+            <Text style={styles.name}>Summit</Text>
             <View style={styles.mountain}>
-              <FontAwesome5
-                name="mountain"
-                size={mountainSize()}
-                color="black"
-              />
+              <FontAwesome5 name="mountain" size={30} color="black" />
             </View>
           </View>
-          <Text
-            style={[styles.description, { fontSize: descriptionFontSize() }]}
-          >
-            Grade Viewer
-          </Text>
+          <Text style={styles.description}>Grade Viewer</Text>
         </SafeAreaView>
         <LoginView>
           {firstLaunch && (
@@ -605,11 +558,13 @@ const styles = StyleSheet.create({
     marginLeft: 5
   },
   name: {
-    fontFamily: 'Montserrat_900Black'
+    fontFamily: 'Montserrat_900Black',
+    fontSize: 40
   },
   description: {
     fontFamily: 'RussoOne_400Regular',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 20
   },
   login_info_container: {
     justifyContent: 'center',

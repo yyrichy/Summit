@@ -64,30 +64,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 16 * 0.75,
     textAlign: 'left',
-    ...Platform.select({
-      web: {
-        paddingBottom: 12 - 12 * 0.75
-      },
-      default: {
-        paddingTop: 16 - 16 * 0.75
-      }
-    })
+    paddingTop: 16 - 16 * 0.75
   },
   type: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
     lineHeight: 12 * 0.75,
-    ...Platform.select({
-      web: {
-        paddingBottom: 2,
-        marginTop: 5
-      },
-      default: {
-        paddingTop: 12 - 12 * 0.75,
-        marginTop: 4
-      }
-    })
+    paddingTop: 12 - 12 * 0.75,
+    marginTop: 4
   }
 })
 

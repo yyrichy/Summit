@@ -281,14 +281,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     lineHeight: 14 * 0.75,
     textAlign: 'left',
-    ...Platform.select({
-      web: {
-        paddingBottom: 11 - 11 * 0.75
-      },
-      default: {
-        paddingTop: 14 - 14 * 0.75
-      }
-    })
+    paddingTop: 14 - 14 * 0.75
   },
   category: {
     color: Colors.black,
@@ -297,16 +290,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 7,
     marginTop: 4,
     textAlign: 'left',
-    ...Platform.select({
-      web: {
-        lineHeight: 11 * 0.75,
-        paddingVertical: 2
-      },
-      default: {
-        lineHeight: 12 * 0.75,
-        paddingTop: 12 - 12 * 0.75
-      }
-    })
+    lineHeight: 12 * 0.75,
+    paddingTop: 12 - 12 * 0.75
   },
   input_container: {
     flexDirection: 'row',

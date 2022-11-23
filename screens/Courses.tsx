@@ -16,7 +16,6 @@ import {
   dateDiffInDays,
   parseCourseName
 } from '../gradebook/GradeUtil'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
@@ -117,24 +116,6 @@ const Courses = ({ navigation }) => {
           : `Ends in ${daysDiff} days`}{' '}
         on {endDate.toLocaleDateString()}
       </Text>
-      <View style={styles.row_container}>
-        {!isNaN(marks.gpa) && <Text style={styles.gpa}>{marks.gpa} GPA</Text>}
-        {Platform.OS === 'web' && (
-          <View style={styles.refresh_button_container}>
-            <FontAwesome.Button
-              name="refresh"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.secondary
-              }}
-              underlayColor="none"
-              activeOpacity={0.2}
-              size={24}
-              onPress={onRefresh}
-            ></FontAwesome.Button>
-          </View>
-        )}
-      </View>
       {marks && (
         <FadeInFlatList
           initialDelay={0}
@@ -170,8 +151,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  // android status bar not accounted for properly in safeview + dropdownpicker
-  // web needs to be shifted 11 right
   dropdown: {
     borderWidth: 0,
     backgroundColor: 'transparent',
@@ -190,13 +169,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_500Medium',
     fontSize: 18
   },
-  row_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-    marginLeft: 11
-  },
   gpa_container: {
     flex: 1,
     flexDirection: 'row',
@@ -204,13 +176,9 @@ const styles = StyleSheet.create({
   },
   gpa: {
     fontFamily: 'Montserrat_700Bold',
-    fontSize: 25
-  },
-  refresh_button_container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
+    fontSize: 25,
+    marginTop: 10,
+    marginLeft: 11
   }
 })
 
