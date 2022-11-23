@@ -77,7 +77,7 @@ const Courses = ({ navigation }) => {
         maxHeight={null}
         style={styles.dropdown}
         labelProps={{ numberOfLines: 1 }}
-        textStyle={[styles.dropdown_text, { fontSize: 50 }]}
+        textStyle={[styles.dropdown_text, { fontSize: 50, lineHeight: 60 }]}
         translation={{
           PLACEHOLDER: 'Select Marking Period'
         }}
