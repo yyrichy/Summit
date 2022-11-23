@@ -28,7 +28,6 @@
       },
       "package": "com.vaporrrr.Summit",
       "softwareKeyboardLayoutMode": "pan",
-      "googleServicesFile": "./google-services.json",
       "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"]
     },
     "plugins": [

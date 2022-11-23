@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Platform,
   TouchableOpacity
 } from 'react-native'
 import { Colors } from '../colors/Colors'

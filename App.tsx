@@ -41,13 +41,11 @@ import {
 } from '@expo-google-fonts/montserrat'
 import { RussoOne_400Regular } from '@expo-google-fonts/russo-one'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import FlashMessage from 'react-native-flash-message'
 import { User } from './interfaces/User'
-import { ActivityIndicator, Platform, Text, View } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import { Colors } from './colors/Colors'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
-import { CookiesProvider } from 'react-cookie'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -118,31 +116,28 @@ const App = () => {
   }
 
   return (
-    <CookiesProvider>
-      <SafeAreaProvider>
-        <AppContext.Provider value={user}>
-          <NavigationContainer theme={LightTheme}>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="Login"
-                component={Login}
-                options={{
-                  headerShown: false
-                }}
-              />
-              <Stack.Screen
-                name="Menu"
-                component={BottomNavigation}
-                options={{
-                  headerShown: false
-                }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </AppContext.Provider>
-      </SafeAreaProvider>
-      <FlashMessage position="top" />
-    </CookiesProvider>
+    <SafeAreaProvider>
+      <AppContext.Provider value={user}>
+        <NavigationContainer theme={LightTheme}>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                headerShown: false
+              }}
+            />
+            <Stack.Screen
+              name="Menu"
+              component={BottomNavigation}
+              options={{
+                headerShown: false
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AppContext.Provider>
+    </SafeAreaProvider>
   )
 }
 

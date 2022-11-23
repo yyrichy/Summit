@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Platform,
   TouchableOpacity,
   StyleProp,
   ViewStyle

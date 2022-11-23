@@ -4,7 +4,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Platform,
   TouchableOpacity,
   RefreshControl,
   BackHandler
@@ -41,8 +40,7 @@ const Courses = ({ navigation }) => {
   }, [value])
 
   useEffect(() => {
-    if (Platform.OS === 'android' || Platform.OS === 'ios')
-      registerForPushNotificationsAsync()
+    registerForPushNotificationsAsync()
 
     const backAction = () => {
       navigation.goBack()
