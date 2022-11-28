@@ -14,10 +14,14 @@ const App = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarShowLabel: false,
         tabBarStyle: {
-          borderTopWidth: 1,
           overflow: 'hidden'
+        },
+        tabBarLabelStyle: {
+          fontFamily: 'Inter_400Regular'
+        },
+        tabBarItemStyle: {
+          marginVertical: 4
         }
       }}
     >
@@ -27,17 +31,13 @@ const App = () => {
         options={{
           headerShown: false,
           tabBarIcon: (tabInfo) => {
-            return tabInfo.focused ? (
+            return (
               <MaterialIcons
-                name="insert-chart"
-                size={30}
+                name={
+                  tabInfo.focused ? 'insert-chart' : 'insert-chart-outlined'
+                }
+                size={tabInfo.size}
                 color={Colors.navy}
-              />
-            ) : (
-              <MaterialIcons
-                name="insert-chart-outlined"
-                size={30}
-                color={Colors.secondary}
               />
             )
           }
@@ -49,13 +49,11 @@ const App = () => {
         options={{
           headerShown: false,
           tabBarIcon: (tabInfo) => {
-            return tabInfo.focused ? (
-              <Ionicons name="folder" size={30} color={Colors.navy} />
-            ) : (
+            return (
               <Ionicons
-                name="folder-outline"
-                size={30}
-                color={Colors.secondary}
+                name={tabInfo.focused ? 'folder' : 'folder-outline'}
+                size={tabInfo.size}
+                color={Colors.navy}
               />
             )
           }
@@ -67,13 +65,11 @@ const App = () => {
         options={{
           headerShown: false,
           tabBarIcon: (tabInfo) => {
-            return tabInfo.focused ? (
-              <Ionicons name="calendar" size={30} color={Colors.navy} />
-            ) : (
+            return (
               <Ionicons
-                name="calendar-outline"
-                size={30}
-                color={Colors.secondary}
+                name={tabInfo.focused ? 'calendar' : 'calendar-outline'}
+                size={tabInfo.size}
+                color={Colors.navy}
               />
             )
           }
@@ -84,14 +80,13 @@ const App = () => {
         component={Profile}
         options={{
           headerShown: false,
+          tabBarLabel: 'Profile',
           tabBarIcon: (tabInfo) => {
-            return tabInfo.focused ? (
-              <Ionicons name="person" size={30} color={Colors.navy} />
-            ) : (
+            return (
               <Ionicons
-                name="person-outline"
-                size={30}
-                color={Colors.secondary}
+                name={tabInfo.focused ? 'person' : 'person-outline'}
+                size={tabInfo.size}
+                color={Colors.navy}
               />
             )
           }
