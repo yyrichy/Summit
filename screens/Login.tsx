@@ -31,6 +31,8 @@ import * as Location from 'expo-location'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import districtsFile from '../assets/districts.json'
 import DropDownPicker from 'react-native-dropdown-picker'
+import MaskedView from '@react-native-masked-view/masked-view'
+import { LinearGradient } from 'expo-linear-gradient'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -257,9 +259,10 @@ const Login = () => {
         onBackdropPress={() => setDistrictModalVisible(!isDistrictModalVisible)}
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}
+        style={{ flex: 1 }}
       >
         <View style={[styles.modal, { marginTop: insets.top }]}>
-          <View style={[styles.modal_view, {}]}>
+          <View style={[styles.modal_view]}>
             {errorMsg ? (
               <>
                 <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
@@ -303,52 +306,69 @@ const Login = () => {
                 </Text>
               )
             )}
-            <FadeInFlatList
-              initialDelay={0}
-              durationPerItem={500}
-              parallelItems={5}
-              itemsToFadeIn={15}
-              data={districts}
-              keyExtractor={(item) => item.name}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSelected(item)
-                      setValue(
-                        allDistricts.findIndex((d) => d.label === item.name)
-                      )
-                      setDistrictModalVisible(!isDistrictModalVisible)
-                    }}
-                    style={{
-                      backgroundColor:
-                        selected &&
-                        selected.name === item.name &&
-                        Colors.light_gray,
-                      borderRadius: 5
-                    }}
-                  >
-                    <Text
-                      style={{ fontFamily: 'Inter_500Medium', fontSize: 16 }}
-                    >
-                      {item.name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter_400Regular',
-                        fontSize: 16,
-                        color: Colors.onyx_gray,
-                        marginTop: 2
-                      }}
-                    >
-                      {item.distance.toFixed(2)} mi
-                    </Text>
-                  </TouchableOpacity>
-                )
-              }}
-              style={{ flexGrow: 0 }}
-              ItemSeparatorComponent={Seperator}
-            />
+            {districts && (
+              <MaskedView
+                style={{ flex: 1 }}
+                maskElement={
+                  <LinearGradient
+                    style={{ flex: 1 }}
+                    colors={[Colors.white, Colors.transparent]}
+                    locations={[0.8, 1]}
+                  />
+                }
+              >
+                <FadeInFlatList
+                  initialDelay={0}
+                  durationPerItem={500}
+                  parallelItems={5}
+                  itemsToFadeIn={15}
+                  data={districts}
+                  keyExtractor={(item) => item.name}
+                  renderItem={({ item }) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          setSelected(item)
+                          setValue(
+                            allDistricts.findIndex((d) => d.label === item.name)
+                          )
+                          setDistrictModalVisible(!isDistrictModalVisible)
+                        }}
+                        style={{
+                          backgroundColor:
+                            selected &&
+                            selected.name === item.name &&
+                            Colors.light_gray,
+                          borderRadius: 5
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontFamily: 'Inter_500Medium',
+                            fontSize: 16
+                          }}
+                        >
+                          {item.name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontFamily: 'Inter_400Regular',
+                            fontSize: 16,
+                            color: Colors.onyx_gray,
+                            marginTop: 2
+                          }}
+                        >
+                          {item.distance.toFixed(2)} mi
+                        </Text>
+                      </TouchableOpacity>
+                    )
+                  }}
+                  style={{ flexGrow: 1 }}
+                  ItemSeparatorComponent={Seperator}
+                />
+              </MaskedView>
+            )}
+
             <Text
               style={{
                 fontFamily: 'Inter_700Bold',
