@@ -1,7 +1,6 @@
 import React, { useContext, useRef, useState } from 'react'
 import {
   TextInput,
-  View,
   Text,
   StyleSheet,
   ActivityIndicator,
@@ -10,7 +9,8 @@ import {
   BackHandler,
   Alert,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
+  View
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -28,8 +28,9 @@ import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
 import * as Location from 'expo-location'
-import allDistricts from '../assets/districts.json'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
+import districtsFile from '../assets/districts.json'
+import DropDownPicker from 'react-native-dropdown-picker'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -52,6 +53,14 @@ const Login = () => {
   const [selected, setSelected] = useState(null)
   const [districts, setDistricts] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
+
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState(0)
+  const [allDistricts, setAllDistricts] = useState(
+    districtsFile.map((d, index) => {
+      return { label: d.name, value: index }
+    })
+  )
 
   useAsyncEffect(async () => {
     savedCredentials()
@@ -82,7 +91,7 @@ const Login = () => {
 
     setUsername(username)
     setPassword(password)
-    setSelected(allDistricts.find((d) => d.parentVueUrl === value))
+    setSelected(districtsFile.find((d) => d.parentVueUrl === value))
     setIsLoading(true)
     setToggleCheckBox(true)
     try {
@@ -183,20 +192,22 @@ const Login = () => {
       setErrorMsg(null)
     }
 
-    let { coords } = await Location.getCurrentPositionAsync()
+    const { coords } = await Location.getCurrentPositionAsync()
     const { latitude, longitude } = coords
-    let reverse = await Location.reverseGeocodeAsync({ latitude, longitude })
+    const reverse = await Location.reverseGeocodeAsync({ latitude, longitude })
     const districtsFound = await StudentVue.findDistricts(reverse[0].postalCode)
-    const newDistricts = allDistricts.filter((d) =>
-      districtsFound.some((e) => e.name === d.name)
+    const d = await Promise.all(
+      districtsFound.map(async (d) => {
+        const reverse = await Location.geocodeAsync(d.address)
+        return {
+          ...d,
+          distance: distance(
+            { lat: latitude, long: longitude },
+            { lat: reverse[0].latitude, long: reverse[0].longitude }
+          )
+        }
+      })
     )
-    let d = newDistricts.map((d) => ({
-      ...d,
-      distance: distance(
-        { lat: latitude, long: longitude },
-        { lat: d.latitude, long: d.longitude }
-      )
-    }))
     d.sort((a, b) => {
       if (a.distance > b.distance) {
         return 1
@@ -296,33 +307,96 @@ const Login = () => {
               initialDelay={0}
               durationPerItem={500}
               parallelItems={5}
-              itemsToFadeIn={10}
+              itemsToFadeIn={15}
               data={districts}
               keyExtractor={(item) => item.name}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelected(item)
-                    setDistrictModalVisible(!isDistrictModalVisible)
-                  }}
-                >
-                  <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 16 }}>
-                    {item.name}
-                  </Text>
-                  <Text
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelected(item)
+                      setValue(
+                        allDistricts.findIndex((d) => d.label === item.name)
+                      )
+                      setDistrictModalVisible(!isDistrictModalVisible)
+                    }}
                     style={{
-                      fontFamily: 'Inter_400Regular',
-                      fontSize: 16,
-                      color: Colors.onyx_gray,
-                      marginTop: 2
+                      backgroundColor:
+                        selected &&
+                        selected.name === item.name &&
+                        Colors.light_gray,
+                      borderRadius: 5
                     }}
                   >
-                    {item.distance.toFixed(2)} mi
-                  </Text>
-                </TouchableOpacity>
-              )}
+                    <Text
+                      style={{ fontFamily: 'Inter_500Medium', fontSize: 16 }}
+                    >
+                      {item.name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter_400Regular',
+                        fontSize: 16,
+                        color: Colors.onyx_gray,
+                        marginTop: 2
+                      }}
+                    >
+                      {item.distance.toFixed(2)} mi
+                    </Text>
+                  </TouchableOpacity>
+                )
+              }}
               style={{ flexGrow: 0 }}
               ItemSeparatorComponent={Seperator}
+            />
+            <Text
+              style={{
+                fontFamily: 'Inter_700Bold',
+                fontSize: 20,
+                marginTop: 15
+              }}
+            >
+              Manually Select School District
+            </Text>
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={allDistricts}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setAllDistricts}
+              style={{ marginTop: 10 }}
+              labelProps={{ numberOfLines: 1 }}
+              translation={{
+                SEARCH_PLACEHOLDER: 'Enter Your School District Name'
+              }}
+              textStyle={styles.dropdown_text_style}
+              listMode="MODAL"
+              renderListItem={(props) => {
+                return (
+                  <TouchableOpacity
+                    style={{
+                      paddingHorizontal: 8,
+                      paddingVertical: 5,
+                      backgroundColor: props.isSelected && Colors.light_gray
+                    }}
+                    onPress={() => {
+                      setSelected(
+                        districtsFile.find((d) => d.name === props.label)
+                      )
+                      setValue(props.value)
+                      setOpen(false)
+                      setDistrictModalVisible(false)
+                    }}
+                    activeOpacity={0.2}
+                  >
+                    <Text style={styles.dropdown_text_style}>
+                      {props.label}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              }}
+              searchable={true}
             />
           </View>
         </View>
@@ -669,5 +743,9 @@ const styles = StyleSheet.create({
   insta_text: {
     fontFamily: 'Inter_300Light',
     fontSize: 10
+  },
+  dropdown_text_style: {
+    fontFamily: 'Inter_500Medium',
+    fontSize: 16
   }
 })
