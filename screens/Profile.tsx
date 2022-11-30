@@ -36,6 +36,7 @@ import {
   setReminderDate,
   setReminderIsDisabled
 } from '../util/Notification'
+import * as SecureStore from 'expo-secure-store'
 
 const Profile = ({ navigation }) => {
   const { client } = useContext(AppContext)
@@ -232,7 +233,7 @@ const Profile = ({ navigation }) => {
           <Entypo name="chevron-right" size={24} color={Colors.onyx_gray} />
         </Setting>
         <Seperator />
-        <Setting title="Disable Reminder" position="bottom">
+        <Setting title="Disable Reminder" position="middle">
           <Switch
             trackColor={{ false: Colors.medium_gray, true: Colors.baby_blue }}
             thumbColor={switchOn ? Colors.primary : Colors.white}
@@ -250,6 +251,13 @@ const Profile = ({ navigation }) => {
             }
           ></Switch>
         </Setting>
+        <Seperator />
+        <Setting
+          title="Clear Login Info"
+          description="Deletes saved username, password, and district from your phone"
+          onPress={() => deleteLoginInfo()}
+          position="bottom"
+        ></Setting>
       </ScrollView>
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -337,6 +345,18 @@ const Seperator = () => {
       }}
     ></View>
   )
+}
+
+const deleteLoginInfo = async () => {
+  try {
+    await SecureStore.deleteItemAsync('username')
+    await SecureStore.deleteItemAsync('password')
+    await SecureStore.deleteItemAsync('district')
+  } catch (e) {
+    Alert.alert(e)
+    return
+  }
+  Alert.alert('Login info successfully deleted')
 }
 
 const Stack = createStackNavigator()

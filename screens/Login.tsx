@@ -146,10 +146,6 @@ const Login = () => {
       save('username', username)
       save('password', password)
       save('district', selected.parentVueUrl)
-    } else {
-      remove('username')
-      remove('password')
-      remove('username')
     }
     setIsLoading(false)
     navigation.navigate('Menu')
@@ -176,10 +172,6 @@ const Login = () => {
 
   async function getValueFor(key: loginInfo): Promise<string> {
     return await SecureStore.getItemAsync(key)
-  }
-
-  const remove = async (key: loginInfo): Promise<void> => {
-    await SecureStore.deleteItemAsync(key)
   }
 
   const onPress = async () => {
@@ -369,7 +361,6 @@ const Login = () => {
               />
             </MaskedView>
           )}
-
           <Text
             style={{
               fontFamily: 'Inter_700Bold',
