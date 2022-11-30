@@ -31,6 +31,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
+import { LightTheme } from '../theme/LightTheme'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -158,13 +159,9 @@ const CourseDetails = ({ route }) => {
       </View>
       <View
         style={{
-          backgroundColor: Colors.white,
+          backgroundColor: LightTheme.colors.background,
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
-          borderColor: Colors.secondary,
-          borderTopWidth: 1,
-          borderEndWidth: 1,
-          borderStartWidth: 1,
           flex: 1
         }}
       >

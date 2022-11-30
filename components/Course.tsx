@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity
-} from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { Colors } from '../colors/Colors'
 import {
   calculateLetterGrade,
@@ -51,16 +46,14 @@ function Course(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.off_white,
+    backgroundColor: Colors.white,
     borderRadius: 15,
     height: 55,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 5,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: Colors.secondary
+    padding: 10
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',

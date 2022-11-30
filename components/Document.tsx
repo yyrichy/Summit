@@ -41,13 +41,11 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.off_white,
+    backgroundColor: Colors.white,
     borderRadius: 8,
     marginVertical: 3.5,
     paddingHorizontal: 10,
     paddingVertical: 7,
-    borderWidth: 1,
-    borderColor: Colors.secondary,
     flexDirection: 'column',
     justifyContent: 'center',
     flex: 1

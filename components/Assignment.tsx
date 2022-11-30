@@ -251,14 +251,9 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.off_white,
+    backgroundColor: Colors.white,
     borderRadius: 12,
     marginVertical: 3.5,
-    borderWidth: 1,
-    borderTopColor: Colors.secondary,
-    borderRightColor: Colors.secondary,
-    borderBottomColor: Colors.secondary,
-    borderLeftColor: Colors.secondary,
     overflow: 'hidden'
   },
   horizontal_container: {

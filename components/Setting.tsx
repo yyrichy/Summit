@@ -35,11 +35,7 @@ const Setting: React.FC<Props> = ({
 const styles = StyleSheet.create({
   container_middle: {
     marginHorizontal: 25,
-    borderWidth: 1,
-    borderBottomWidth: 0.5,
-    borderTopWidth: 0.5,
-    borderColor: Colors.secondary,
-    backgroundColor: Colors.off_white,
+    backgroundColor: Colors.white,
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: 18,
@@ -48,12 +44,9 @@ const styles = StyleSheet.create({
   },
   container_top: {
     marginHorizontal: 25,
-    borderWidth: 1,
-    borderBottomWidth: 0.5,
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
-    borderColor: Colors.secondary,
-    backgroundColor: Colors.off_white,
+    backgroundColor: Colors.white,
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: 18,
@@ -62,10 +55,7 @@ const styles = StyleSheet.create({
   },
   container_bottom: {
     marginHorizontal: 25,
-    borderWidth: 1,
-    borderTopWidth: 0.5,
-    borderColor: Colors.secondary,
-    backgroundColor: Colors.off_white,
+    backgroundColor: Colors.white,
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
     justifyContent: 'space-between',

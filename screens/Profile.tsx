@@ -231,6 +231,7 @@ const Profile = ({ navigation }) => {
         >
           <Entypo name="chevron-right" size={24} color={Colors.onyx_gray} />
         </Setting>
+        <Seperator />
         <Setting title="Disable Reminder" position="bottom">
           <Switch
             trackColor={{ false: Colors.medium_gray, true: Colors.baby_blue }}
@@ -306,9 +307,7 @@ const styles = StyleSheet.create({
   property_view: {
     padding: 10,
     borderRadius: 15,
-    borderWidth: 1,
-    borderColor: Colors.secondary,
-    backgroundColor: Colors.off_white,
+    backgroundColor: Colors.white,
     marginHorizontal: 25
   },
   property_container: {
@@ -329,6 +328,16 @@ const styles = StyleSheet.create({
     marginBottom: 10
   }
 })
+
+const Seperator = () => {
+  return (
+    <View
+      style={{
+        height: 4
+      }}
+    ></View>
+  )
+}
 
 const Stack = createStackNavigator()
 
