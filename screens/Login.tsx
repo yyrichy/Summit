@@ -259,166 +259,164 @@ const Login = () => {
         onBackdropPress={() => setDistrictModalVisible(!isDistrictModalVisible)}
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}
-        style={{ flex: 1 }}
       >
-        <View style={[styles.modal, { marginTop: insets.top }]}>
-          <View style={[styles.modal_view]}>
-            {errorMsg ? (
-              <>
-                <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
-                  {errorMsg}
-                </Text>
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      borderRadius: 5,
-                      borderWidth: 1,
-                      padding: 10,
-                      alignItems: 'center',
-                      marginTop: 10,
-                      alignSelf: 'center',
-                      backgroundColor: Colors.off_white
-                    }}
-                    onPress={async () => {
-                      setDistrictModalVisible(false)
-                      Linking.openSettings()
-                    }}
-                  >
-                    <Text
-                      style={{ fontFamily: 'Inter_500Medium', fontSize: 18 }}
-                    >
-                      Settings
-                    </Text>
-                    <Ionicons
-                      name="settings-outline"
-                      size={24}
-                      color="black"
-                      style={{ padding: 0, marginLeft: 4 }}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </>
-            ) : (
-              !districts && (
-                <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 14 }}>
-                  Waiting...
-                </Text>
-              )
-            )}
-            {districts && (
-              <MaskedView
-                style={{ flex: 1 }}
-                maskElement={
-                  <LinearGradient
-                    style={{ flex: 1 }}
-                    colors={[Colors.white, Colors.transparent]}
-                    locations={[0.8, 1]}
+        <View
+          style={[
+            styles.modal,
+            { marginTop: insets.top, maxHeight: 500, padding: 15 }
+          ]}
+        >
+          {errorMsg ? (
+            <>
+              <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
+                {errorMsg}
+              </Text>
+              <View>
+                <TouchableOpacity
+                  style={{
+                    flexDirection: 'row',
+                    borderRadius: 5,
+                    borderWidth: 1,
+                    padding: 10,
+                    alignItems: 'center',
+                    marginTop: 10,
+                    alignSelf: 'center',
+                    backgroundColor: Colors.off_white
+                  }}
+                  onPress={async () => {
+                    setDistrictModalVisible(false)
+                    Linking.openSettings()
+                  }}
+                >
+                  <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 18 }}>
+                    Settings
+                  </Text>
+                  <Ionicons
+                    name="settings-outline"
+                    size={24}
+                    color="black"
+                    style={{ padding: 0, marginLeft: 4 }}
                   />
-                }
-              >
-                <FadeInFlatList
-                  initialDelay={0}
-                  durationPerItem={500}
-                  parallelItems={5}
-                  itemsToFadeIn={15}
-                  data={districts}
-                  keyExtractor={(item) => item.name}
-                  renderItem={({ item }) => {
-                    return (
-                      <TouchableOpacity
-                        onPress={() => {
-                          setSelected(item)
-                          setValue(
-                            allDistricts.findIndex((d) => d.label === item.name)
-                          )
-                          setDistrictModalVisible(!isDistrictModalVisible)
-                        }}
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            !districts && (
+              <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 14 }}>
+                Waiting...
+              </Text>
+            )
+          )}
+          {districts && (
+            <MaskedView
+              style={{ flex: 1 }}
+              maskElement={
+                <LinearGradient
+                  style={{ flex: 1 }}
+                  colors={[Colors.white, Colors.transparent]}
+                  locations={[0.8, 1]}
+                />
+              }
+            >
+              <FadeInFlatList
+                initialDelay={0}
+                durationPerItem={500}
+                parallelItems={5}
+                itemsToFadeIn={15}
+                data={districts}
+                keyExtractor={(item) => item.name}
+                renderItem={({ item }) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelected(item)
+                        setValue(
+                          allDistricts.findIndex((d) => d.label === item.name)
+                        )
+                        setDistrictModalVisible(!isDistrictModalVisible)
+                      }}
+                      style={{
+                        backgroundColor:
+                          selected &&
+                          selected.name === item.name &&
+                          Colors.light_gray,
+                        borderRadius: 5
+                      }}
+                    >
+                      <Text
                         style={{
-                          backgroundColor:
-                            selected &&
-                            selected.name === item.name &&
-                            Colors.light_gray,
-                          borderRadius: 5
+                          fontFamily: 'Inter_500Medium',
+                          fontSize: 16
                         }}
                       >
-                        <Text
-                          style={{
-                            fontFamily: 'Inter_500Medium',
-                            fontSize: 16
-                          }}
-                        >
-                          {item.name}
-                        </Text>
-                        <Text
-                          style={{
-                            fontFamily: 'Inter_400Regular',
-                            fontSize: 16,
-                            color: Colors.onyx_gray,
-                            marginTop: 2
-                          }}
-                        >
-                          {item.distance.toFixed(2)} mi
-                        </Text>
-                      </TouchableOpacity>
-                    )
-                  }}
-                  style={{ flexGrow: 1 }}
-                  ItemSeparatorComponent={Seperator}
-                />
-              </MaskedView>
-            )}
+                        {item.name}
+                      </Text>
+                      <Text
+                        style={{
+                          fontFamily: 'Inter_400Regular',
+                          fontSize: 16,
+                          color: Colors.onyx_gray,
+                          marginTop: 2
+                        }}
+                      >
+                        {item.distance.toFixed(2)} mi
+                      </Text>
+                    </TouchableOpacity>
+                  )
+                }}
+                style={{ flexGrow: 1 }}
+                ItemSeparatorComponent={Seperator}
+              />
+            </MaskedView>
+          )}
 
-            <Text
-              style={{
-                fontFamily: 'Inter_700Bold',
-                fontSize: 20,
-                marginTop: 15
-              }}
-            >
-              Manually Select School District
-            </Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={allDistricts}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setAllDistricts}
-              style={{ marginTop: 10 }}
-              labelProps={{ numberOfLines: 1 }}
-              translation={{
-                SEARCH_PLACEHOLDER: 'Enter Your School District Name'
-              }}
-              textStyle={styles.dropdown_text_style}
-              listMode="MODAL"
-              renderListItem={(props) => {
-                return (
-                  <TouchableOpacity
-                    style={{
-                      paddingHorizontal: 8,
-                      paddingVertical: 5,
-                      backgroundColor: props.isSelected && Colors.light_gray
-                    }}
-                    onPress={() => {
-                      setSelected(
-                        districtsFile.find((d) => d.name === props.label)
-                      )
-                      setValue(props.value)
-                      setOpen(false)
-                      setDistrictModalVisible(false)
-                    }}
-                    activeOpacity={0.2}
-                  >
-                    <Text style={styles.dropdown_text_style}>
-                      {props.label}
-                    </Text>
-                  </TouchableOpacity>
-                )
-              }}
-              searchable={true}
-            />
-          </View>
+          <Text
+            style={{
+              fontFamily: 'Inter_700Bold',
+              fontSize: 20,
+              marginTop: 15
+            }}
+          >
+            Manually Select School District
+          </Text>
+          <DropDownPicker
+            open={open}
+            value={value}
+            items={allDistricts}
+            setOpen={setOpen}
+            setValue={setValue}
+            setItems={setAllDistricts}
+            style={{ marginTop: 10 }}
+            labelProps={{ numberOfLines: 1 }}
+            translation={{
+              SEARCH_PLACEHOLDER: 'Enter Your School District Name'
+            }}
+            textStyle={styles.dropdown_text_style}
+            listMode="MODAL"
+            renderListItem={(props) => {
+              return (
+                <TouchableOpacity
+                  style={{
+                    paddingHorizontal: 8,
+                    paddingVertical: 5,
+                    backgroundColor: props.isSelected && Colors.light_gray
+                  }}
+                  onPress={() => {
+                    setSelected(
+                      districtsFile.find((d) => d.name === props.label)
+                    )
+                    setValue(props.value)
+                    setOpen(false)
+                    setDistrictModalVisible(false)
+                  }}
+                  activeOpacity={0.2}
+                >
+                  <Text style={styles.dropdown_text_style}>{props.label}</Text>
+                </TouchableOpacity>
+              )
+            }}
+            searchable={true}
+          />
         </View>
       </Modal>
       <ImageBackground
@@ -634,8 +632,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   modal: {
-    flexDirection: 'column',
-    alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: 'white',
     borderRadius: 10
