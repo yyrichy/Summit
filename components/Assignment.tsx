@@ -85,6 +85,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style, onPress }) => {
   const ref = useRef<TouchableOpacity>()
   const setOpacityTo = useCallback((value) => {
     // Redacted: animation related code
+    if (!ref.current) return
     ref.current.setNativeProps({
       opacity: value
     })
