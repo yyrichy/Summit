@@ -108,6 +108,7 @@ const Courses = ({ navigation }) => {
           )
         }}
       ></DropDownPicker>
+      {!isNaN(marks.gpa) && <Text style={styles.gpa}>GPA - {marks.gpa}</Text>}
       <Text style={styles.date}>
         {daysDiff < 0
           ? `Ended ${Math.abs(daysDiff)} days ago`
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
   gpa: {
     fontFamily: 'Montserrat_700Bold',
     fontSize: 25,
-    marginTop: 10,
+
     marginLeft: 11
   }
 })
