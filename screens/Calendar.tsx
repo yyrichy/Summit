@@ -6,6 +6,7 @@ import { Agenda, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
 import Item from '../components/Item'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Colors } from '../colors/Colors'
 
 const CalendarScreen = () => {
   const { client } = useContext(AppContext)
@@ -118,58 +119,60 @@ const CalendarScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
-      <View style={styles.row_container}>
-        <View style={styles.title_container}>
-          <Text style={styles.title}>Calendar</Text>
+    <View style={{ flex: 1, backgroundColor: Colors.white }}>
+      <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
+        <View style={styles.row_container}>
+          <View style={styles.title_container}>
+            <Text style={styles.title}>Calendar</Text>
+          </View>
         </View>
-      </View>
-      {items ? (
-        <Agenda
-          items={items}
-          renderItem={(item) => renderItem(item)}
-          minDate={Object.keys(items)[0]}
-          maxDate={Object.keys(items)[Object.keys(items).length - 1]}
-          removeClippedSubviews
-        />
-      ) : (
-        <Animated.View
-          style={[
-            styles.scale_container,
-            { transform: [{ scale: scaleAnim }] }
-          ]}
-        >
+        {items ? (
+          <Agenda
+            items={items}
+            renderItem={(item) => renderItem(item)}
+            minDate={Object.keys(items)[0]}
+            maxDate={Object.keys(items)[Object.keys(items).length - 1]}
+            removeClippedSubviews
+          />
+        ) : (
           <Animated.View
             style={[
-              styles.fadingContainer,
-              {
-                opacity: fadeAnim
-              }
+              styles.scale_container,
+              { transform: [{ scale: scaleAnim }] }
             ]}
           >
-            <MaterialCommunityIcons
-              name="calendar-blank"
-              size={50}
-              color="black"
-            />
+            <Animated.View
+              style={[
+                styles.fadingContainer,
+                {
+                  opacity: fadeAnim
+                }
+              ]}
+            >
+              <MaterialCommunityIcons
+                name="calendar-blank"
+                size={50}
+                color="black"
+              />
+            </Animated.View>
+            <Animated.View
+              style={[
+                styles.fadingContainer,
+                {
+                  opacity: fadeAnim2
+                }
+              ]}
+            >
+              <MaterialCommunityIcons
+                name="calendar-blank-outline"
+                size={50}
+                color="black"
+              />
+            </Animated.View>
           </Animated.View>
-          <Animated.View
-            style={[
-              styles.fadingContainer,
-              {
-                opacity: fadeAnim2
-              }
-            ]}
-          >
-            <MaterialCommunityIcons
-              name="calendar-blank-outline"
-              size={50}
-              color="black"
-            />
-          </Animated.View>
-        </Animated.View>
-      )}
-    </SafeAreaView>
+        )}
+      </SafeAreaView>
+    </View>
   )
 }
 

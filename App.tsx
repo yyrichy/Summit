@@ -50,6 +50,7 @@ import {
   Provider as PaperProvider
 } from 'react-native-paper'
 import BottomNavigation from './navigation/BottomNavigation'
+import { CalendarProvider } from 'react-native-calendars'
 
 const theme = {
   ...DefaultTheme,
@@ -131,26 +132,28 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <AppContext.Provider value={user}>
-        <PaperProvider theme={theme}>
-          <NavigationContainer theme={LightTheme}>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="Login"
-                component={Login}
-                options={{
-                  headerShown: false
-                }}
-              />
-              <Stack.Screen
-                name="Menu"
-                component={BottomNavigation}
-                options={{
-                  headerShown: false
-                }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </PaperProvider>
+        <CalendarProvider date="">
+          <PaperProvider theme={theme}>
+            <NavigationContainer theme={LightTheme}>
+              <Stack.Navigator>
+                <Stack.Screen
+                  name="Login"
+                  component={Login}
+                  options={{
+                    headerShown: false
+                  }}
+                />
+                <Stack.Screen
+                  name="Menu"
+                  component={BottomNavigation}
+                  options={{
+                    headerShown: false
+                  }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </PaperProvider>
+        </CalendarProvider>
       </AppContext.Provider>
     </SafeAreaProvider>
   )
