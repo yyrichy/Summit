@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   TextInput,
   Text,
@@ -57,12 +57,17 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState(null)
 
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(0)
+  const [value, setValue] = useState(null)
   const [allDistricts, setAllDistricts] = useState(
     districtsFile.map((d, index) => {
       return { label: d.name, value: index }
     })
   )
+
+  useEffect(() => {
+    setSelected(districtsFile[value])
+    setDistrictModalVisible(false)
+  }, [value])
 
   useAsyncEffect(async () => {
     savedCredentials()
@@ -384,28 +389,11 @@ const Login = () => {
             }}
             textStyle={styles.dropdown_text_style}
             listMode="MODAL"
-            renderListItem={(props) => {
-              return (
-                <TouchableOpacity
-                  style={{
-                    paddingHorizontal: 8,
-                    paddingVertical: 5,
-                    backgroundColor: props.isSelected && Colors.light_gray
-                  }}
-                  onPress={() => {
-                    setSelected(
-                      districtsFile.find((d) => d.name === props.label)
-                    )
-                    setValue(props.value)
-                    setOpen(false)
-                    setDistrictModalVisible(false)
-                  }}
-                  activeOpacity={0.2}
-                >
-                  <Text style={styles.dropdown_text_style}>{props.label}</Text>
-                </TouchableOpacity>
-              )
+            listItemContainerStyle={{
+              paddingHorizontal: 8,
+              paddingVertical: 5
             }}
+            listItemLabelStyle={styles.dropdown_text_style}
             searchable={true}
           />
         </View>
