@@ -1,98 +1,81 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import Grades from '../screens/Grades'
-import Profile from '../screens/Profile'
-import React from 'react'
-import { Ionicons } from '@expo/vector-icons'
-import { MaterialIcons } from '@expo/vector-icons'
-import Documents from '../screens/Documents'
-import { Colors } from '../colors/Colors'
+import * as React from 'react'
+import { BottomNavigation } from 'react-native-paper'
 import CalendarScreen from '../screens/Calendar'
-
-const Tab = createBottomTabNavigator()
+import Documents from '../screens/Documents'
+import Profile from '../screens/Profile'
+import Grades from '../screens/Grades'
+import { Colors } from '../colors/Colors'
+import { Text, View } from 'react-native'
 
 const App = () => {
+  const [index, setIndex] = React.useState(0)
+  const [routes] = React.useState([
+    {
+      key: 'grades',
+      title: 'Grades',
+      focusedIcon: 'chart-box',
+      unfocusedIcon: 'chart-box-outline'
+    },
+    {
+      key: 'documents',
+      title: 'Documents',
+      focusedIcon: 'folder',
+      unfocusedIcon: 'folder-outline'
+    },
+    {
+      key: 'calendar',
+      title: 'Calendar',
+      focusedIcon: 'calendar-blank',
+      unfocusedIcon: 'calendar-blank-outline'
+    },
+    {
+      key: 'profile',
+      title: 'Profile',
+      focusedIcon: 'account',
+      unfocusedIcon: 'account-outline'
+    }
+  ])
+
+  const renderScene = BottomNavigation.SceneMap({
+    grades: Grades,
+    documents: Documents,
+    calendar: CalendarScreen,
+    profile: Profile
+  })
+
+  const renderLabel = ({ route, focused }) => {
+    return (
+      <View
+        style={{
+          alignItems: 'center'
+        }}
+      >
+        <Text
+          style={{
+            color: Colors.navy,
+            fontFamily: 'Inter_400Regular',
+            fontSize: 12
+          }}
+        >
+          {route.title}
+        </Text>
+      </View>
+    )
+  }
+
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarStyle: {
-          overflow: 'hidden'
-        },
-        tabBarLabelStyle: {
-          fontFamily: 'Inter_400Regular'
-        },
-        tabBarItemStyle: {
-          marginVertical: 4
-        }
+    <BottomNavigation
+      shifting={true}
+      navigationState={{ index, routes }}
+      onIndexChange={setIndex}
+      renderScene={renderScene}
+      renderLabel={renderLabel}
+      activeColor={Colors.navy}
+      inactiveColor={Colors.medium_gray}
+      barStyle={{
+        backgroundColor: Colors.primary
       }}
-    >
-      <Tab.Screen
-        name="Grades"
-        component={Grades}
-        options={{
-          headerShown: false,
-          tabBarIcon: (tabInfo) => {
-            return (
-              <MaterialIcons
-                name={
-                  tabInfo.focused ? 'insert-chart' : 'insert-chart-outlined'
-                }
-                size={tabInfo.size}
-                color={Colors.navy}
-              />
-            )
-          }
-        }}
-      />
-      <Tab.Screen
-        name="Documents"
-        component={Documents}
-        options={{
-          headerShown: false,
-          tabBarIcon: (tabInfo) => {
-            return (
-              <Ionicons
-                name={tabInfo.focused ? 'folder' : 'folder-outline'}
-                size={tabInfo.size}
-                color={Colors.navy}
-              />
-            )
-          }
-        }}
-      />
-      <Tab.Screen
-        name="Calendar"
-        component={CalendarScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: (tabInfo) => {
-            return (
-              <Ionicons
-                name={tabInfo.focused ? 'calendar' : 'calendar-outline'}
-                size={tabInfo.size}
-                color={Colors.navy}
-              />
-            )
-          }
-        }}
-      />
-      <Tab.Screen
-        name="ProfileNav"
-        component={Profile}
-        options={{
-          headerShown: false,
-          tabBarLabel: 'Profile',
-          tabBarIcon: (tabInfo) => {
-            return (
-              <Ionicons
-                name={tabInfo.focused ? 'person' : 'person-outline'}
-                size={tabInfo.size}
-                color={Colors.navy}
-              />
-            )
-          }
-        }}
-      />
-    </Tab.Navigator>
+    />
   )
 }
 

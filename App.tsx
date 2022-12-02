@@ -1,7 +1,6 @@
 import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
 import React, { useState } from 'react'
-import BottomNavigation from './navigation/BottomNavigation'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootStackParamList } from './types/RootStackParams'
@@ -46,6 +45,20 @@ import { ActivityIndicator, Text, View } from 'react-native'
 import { Colors } from './colors/Colors'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
+import {
+  MD3LightTheme as DefaultTheme,
+  Provider as PaperProvider
+} from 'react-native-paper'
+import BottomNavigation from './navigation/BottomNavigation'
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: Colors.blue_off_white,
+    secondaryContainer: Colors.accent
+  }
+}
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -118,24 +131,26 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <AppContext.Provider value={user}>
-        <NavigationContainer theme={LightTheme}>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{
-                headerShown: false
-              }}
-            />
-            <Stack.Screen
-              name="Menu"
-              component={BottomNavigation}
-              options={{
-                headerShown: false
-              }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+        <PaperProvider theme={theme}>
+          <NavigationContainer theme={LightTheme}>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{
+                  headerShown: false
+                }}
+              />
+              <Stack.Screen
+                name="Menu"
+                component={BottomNavigation}
+                options={{
+                  headerShown: false
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PaperProvider>
       </AppContext.Provider>
     </SafeAreaProvider>
   )

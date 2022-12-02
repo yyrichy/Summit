@@ -1,20 +1,13 @@
 import React, { useContext, useRef, useState } from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  BackHandler,
-  Animated,
-  Easing
-} from 'react-native'
+import { StyleSheet, View, Text, Animated, Easing } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AppContext from '../contexts/AppContext'
 import { Agenda, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
 import Item from '../components/Item'
-import { Ionicons } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-const CalendarScreen = ({ navigation }) => {
+const CalendarScreen = () => {
   const { client } = useContext(AppContext)
   const [items, setItems] = useState(undefined as AgendaSchedule)
 
@@ -69,16 +62,6 @@ const CalendarScreen = ({ navigation }) => {
       ])
     ).start()
 
-    const backAction = () => {
-      navigation.goBack()
-      return true
-    }
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
-
     try {
       const calendar = await client.calendar()
       const start =
@@ -114,8 +97,6 @@ const CalendarScreen = ({ navigation }) => {
       })
       setItems(newItems)
     } catch (err) {}
-
-    return () => backHandler.remove()
   }, [])
 
   const getDatesFromDateRange = (from: Date, to: Date): Date[] => {
@@ -166,7 +147,11 @@ const CalendarScreen = ({ navigation }) => {
               }
             ]}
           >
-            <Ionicons name="calendar" size={50} color="black" />
+            <MaterialCommunityIcons
+              name="calendar-blank"
+              size={50}
+              color="black"
+            />
           </Animated.View>
           <Animated.View
             style={[
@@ -176,7 +161,11 @@ const CalendarScreen = ({ navigation }) => {
               }
             ]}
           >
-            <Ionicons name="calendar-outline" size={50} color="black" />
+            <MaterialCommunityIcons
+              name="calendar-blank-outline"
+              size={50}
+              color="black"
+            />
           </Animated.View>
         </Animated.View>
       )}

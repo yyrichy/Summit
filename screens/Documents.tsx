@@ -17,24 +17,12 @@ import Doc from '../components/Document'
 import { Colors } from '../colors/Colors'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 
-const Documents = ({ navigation }) => {
+const Documents = () => {
   const { client } = useContext(AppContext)
   const [documents, setDocuments] = useState(undefined as Document[])
 
   useEffect(() => {
     onRefresh()
-
-    const backAction = () => {
-      navigation.goBack()
-      return true
-    }
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
-
-    return () => backHandler.remove()
   }, [])
 
   const downloadDocument = async (document: Document): Promise<void> => {

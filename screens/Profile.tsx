@@ -5,7 +5,6 @@ import {
   StyleSheet,
   View,
   Text,
-  BackHandler,
   RefreshControl,
   Switch,
   Platform,
@@ -25,7 +24,6 @@ import {
 import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { createStackNavigator } from '@react-navigation/stack'
 import Setting from '../components/Setting'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import {
@@ -37,8 +35,14 @@ import {
   setReminderIsDisabled
 } from '../util/Notification'
 import * as SecureStore from 'expo-secure-store'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../types/RootStackParams'
 
-const Profile = ({ navigation }) => {
+const Profile = () => {
+  type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
+
+  const navigation = useNavigation<loginScreenProp>()
   const { client } = useContext(AppContext)
   const [studentInfo, setStudentInfo] = useState(undefined as StudentInfo)
 
@@ -83,18 +87,6 @@ const Profile = ({ navigation }) => {
     onRefresh()
     setDate(await getReminderDate())
     switchEnabled(await getReminderIsDisabled())
-
-    const backAction = () => {
-      navigation.goBack()
-      return true
-    }
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
-
-    return () => backHandler.remove()
   }, [])
 
   const [refreshing, setRefreshing] = useState(false)
@@ -359,18 +351,4 @@ const deleteLoginInfo = async () => {
   Alert.alert('Login info successfully deleted')
 }
 
-const Stack = createStackNavigator()
-
-export default function ProfileNav() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          headerShown: false
-        }}
-      />
-    </Stack.Navigator>
-  )
-}
+export default Profile
