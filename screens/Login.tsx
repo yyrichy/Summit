@@ -33,6 +33,7 @@ import districtsFile from '../assets/districts.json'
 import DropDownPicker from 'react-native-dropdown-picker'
 import MaskedView from '@react-native-masked-view/masked-view'
 import { LinearGradient } from 'expo-linear-gradient'
+import District from '../components/District'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -195,18 +196,16 @@ const Login = () => {
     const { latitude, longitude } = coords
     const reverse = await Location.reverseGeocodeAsync({ latitude, longitude })
     const districtsFound = await StudentVue.findDistricts(reverse[0].postalCode)
-    const d = await Promise.all(
-      districtsFound.map(async (d) => {
-        const reverse = await Location.geocodeAsync(d.address)
-        return {
-          ...d,
-          distance: distance(
-            { lat: latitude, long: longitude },
-            { lat: reverse[0].latitude, long: reverse[0].longitude }
-          )
-        }
-      })
+    const newDistricts = districtsFile.filter((d) =>
+      districtsFound.some((e) => e.name === d.name)
     )
+    const d = newDistricts.map((d) => ({
+      ...d,
+      distance: distance(
+        { lat: latitude, long: longitude },
+        { lat: d.latitude, long: d.longitude }
+      )
+    }))
     d.sort((a, b) => {
       if (a.distance > b.distance) {
         return 1
@@ -226,6 +225,7 @@ const Login = () => {
         onBackdropPress={() => setModalVisible(!isModalVisible)}
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}
+        backdropTransitionOutTiming={0}
       >
         <View style={[styles.modal, { width: 250 }]}>
           <View style={styles.modal_view}>
@@ -256,6 +256,7 @@ const Login = () => {
         onBackdropPress={() => setDistrictModalVisible(!isDistrictModalVisible)}
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}
+        backdropTransitionOutTiming={0}
       >
         <View
           style={[
@@ -385,7 +386,9 @@ const Login = () => {
             style={{ marginTop: 10 }}
             labelProps={{ numberOfLines: 1 }}
             translation={{
-              SEARCH_PLACEHOLDER: 'Enter Your School District Name'
+              SEARCH_PLACEHOLDER: 'Enter Your School District Name',
+              NOTHING_TO_SHOW: 'No School Districts Found',
+              PLACEHOLDER: 'Press to Select'
             }}
             textStyle={styles.dropdown_text_style}
             listMode="MODAL"
@@ -394,6 +397,17 @@ const Login = () => {
               paddingVertical: 5
             }}
             listItemLabelStyle={styles.dropdown_text_style}
+            renderListItem={(props) => {
+              return (
+                <District
+                  {...props}
+                  onPress={() => {
+                    setValue(props.value)
+                    setOpen(false)
+                  }}
+                />
+              )
+            }}
             searchable={true}
           />
         </View>
@@ -482,6 +496,7 @@ const Login = () => {
                 flexWrap: 'wrap',
                 flex: 1
               }}
+              numberOfLines={1}
             >
               {selected ? selected.name : 'Find Your School District'}
             </Text>
