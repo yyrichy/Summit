@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
-  TextInput,
   Text,
   StyleSheet,
   ActivityIndicator,
@@ -10,7 +9,7 @@ import {
   Alert,
   TouchableOpacity,
   Keyboard,
-  View,
+  View
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -23,7 +22,12 @@ import AppContext from '../contexts/AppContext'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
-import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons'
+import {
+  FontAwesome,
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons
+} from '@expo/vector-icons'
 import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
@@ -34,6 +38,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import MaskedView from '@react-native-masked-view/masked-view'
 import { LinearGradient } from 'expo-linear-gradient'
 import District from '../components/District'
+import { TextInput } from 'react-native-paper'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -42,11 +47,12 @@ type loginInfo = 'username' | 'password' | 'district'
 const Login = () => {
   const insets = useSafeAreaInsets()
   const navigation = useNavigation<loginScreenProp>()
-  const refInput = useRef<TextInput | null>(null)
+  const refInput = useRef(null)
   const { username, password, setUsername, setPassword, setClient, setMarks } =
     useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
+  const [isPasswordSecure, setIsPasswordSecure] = useState(true)
 
   const [firstLaunch, setFirstLaunch] = useState(false)
 
@@ -457,12 +463,14 @@ const Login = () => {
             returnKeyType={'next'}
             onSubmitEditing={() => refInput.current.focus()}
             blurOnSubmit={false}
+            activeUnderlineColor={Colors.navy}
+            textColor={Colors.black}
           />
           <TextInput
             defaultValue={password}
             onChangeText={(p) => setPassword(p)}
             placeholder={'Password'}
-            secureTextEntry={true}
+            secureTextEntry={isPasswordSecure}
             style={styles.input}
             returnKeyType={'next'}
             ref={refInput}
@@ -470,6 +478,15 @@ const Login = () => {
               onPress()
             }}
             blurOnSubmit={false}
+            activeUnderlineColor={Colors.navy}
+            right={
+              <TextInput.Icon
+                icon={isPasswordSecure ? 'eye-off-outline' : 'eye-outline'}
+                style={{ marginRight: -2 }}
+                onPress={() => setIsPasswordSecure(!isPasswordSecure)}
+              />
+            }
+            textColor={Colors.black}
           />
           <TouchableOpacity
             style={{
@@ -480,7 +497,8 @@ const Login = () => {
               padding: 10,
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: 10
+              marginBottom: 10,
+              minHeight: 50
             }}
             onPress={async () => onPress()}
           >
@@ -491,13 +509,10 @@ const Login = () => {
                 flexWrap: 'wrap',
                 flex: 1
               }}
-              numberOfLines={1}
             >
               {selected ? selected.name : 'Find Your School District'}
             </Text>
-            {selected ? (
-              <Ionicons name="school-outline" size={24} color="black" />
-            ) : (
+            {!selected && (
               <Ionicons name="location-outline" size={24} color="black" />
             )}
           </TouchableOpacity>
@@ -668,11 +683,14 @@ const styles = StyleSheet.create({
   input: {
     width: 250,
     height: 50,
-    padding: 10,
     borderWidth: 1,
     borderColor: Colors.black,
     borderRadius: 5,
-    marginBottom: 10
+    marginBottom: 10,
+    backgroundColor: 'transparent',
+    fontFamily: 'Inter_500Medium',
+    fontSize: 14,
+    paddingHorizontal: 10
   },
   dropdown: {
     borderWidth: 1,
