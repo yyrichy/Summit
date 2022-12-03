@@ -8,7 +8,6 @@ import {
   Text,
   View,
   RefreshControl,
-  BackHandler,
   ActivityIndicator,
   Dimensions
 } from 'react-native'

@@ -6,7 +6,7 @@ type Props = {
   title: string
   description?: string
   onPress?: any
-  position: 'top' | 'middle' | 'bottom'
+  position: 'top' | 'middle' | 'bottom' | 'single'
   children?: any
 }
 
@@ -58,6 +58,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderBottomRightRadius: 15,
     borderBottomLeftRadius: 15,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: 18,
+    paddingVertical: 14,
+    alignItems: 'center'
+  },
+  container_single: {
+    marginHorizontal: 25,
+    borderRadius: 15,
+    backgroundColor: Colors.white,
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: 18,

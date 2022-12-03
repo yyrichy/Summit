@@ -38,6 +38,8 @@ import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
 import { Avatar } from 'react-native-paper'
+import * as Sharing from 'expo-sharing'
+import * as FileSystem from 'expo-file-system'
 
 const Profile = () => {
   type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
@@ -98,6 +100,21 @@ const Profile = () => {
     } catch (err) {}
     setRefreshing(false)
   }, [])
+
+  const downloadSchoolPicture = async () => {
+    console.log('s')
+    const fileName = `${studentInfo.student.name} School Picture.jpg`.replace(
+      / /g,
+      '_'
+    )
+    const filePath = FileSystem.documentDirectory + fileName
+    try {
+      await FileSystem.writeAsStringAsync(filePath, studentInfo.photo, {
+        encoding: 'base64'
+      })
+      await Sharing.shareAsync(filePath)
+    } catch (e) {}
+  }
 
   if (!studentInfo) {
     return (
@@ -215,6 +232,13 @@ const Profile = () => {
             </View>
           )}
         </View>
+        <Setting
+          title="Download School Picture"
+          onPress={downloadSchoolPicture}
+          position="single"
+        >
+          <Feather name="download" size={24} color={Colors.onyx_gray} />
+        </Setting>
         <Text style={styles.settings_title}>Settings</Text>
         <Setting
           title="Daily Grade Check Reminder"
@@ -301,7 +325,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
     backgroundColor: Colors.white,
-    marginHorizontal: 25
+    marginHorizontal: 25,
+    marginBottom: 15
   },
   property_container: {
     flexDirection: 'row',
