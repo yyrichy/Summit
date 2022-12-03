@@ -1,7 +1,6 @@
 import React, { useCallback, useContext, useState } from 'react'
 import {
   ActivityIndicator,
-  Image,
   StyleSheet,
   View,
   Text,
@@ -38,6 +37,7 @@ import * as SecureStore from 'expo-secure-store'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
+import { Avatar } from 'react-native-paper'
 
 const Profile = () => {
   type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
@@ -145,8 +145,8 @@ const Profile = () => {
         />
       </View>
       <View style={styles.avatar_info_container}>
-        <Image
-          style={styles.avatar}
+        <Avatar.Image
+          size={120}
           source={{
             uri: `data:image/png;base64,${studentInfo.photo}`
           }}
@@ -266,13 +266,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 30,
     fontFamily: 'Montserrat_700Bold'
-  },
-  avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 120 / 2,
-    borderWidth: 1,
-    borderColor: Colors.black
   },
   avatar_info_container: {
     marginHorizontal: 25,
