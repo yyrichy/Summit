@@ -10,7 +10,8 @@ import {
   Alert,
   TouchableOpacity,
   Keyboard,
-  View
+  View,
+  FlatList
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -258,12 +259,7 @@ const Login = () => {
         animationOut={'fadeOut'}
         backdropTransitionOutTiming={0}
       >
-        <View
-          style={[
-            styles.modal,
-            { marginTop: insets.top, maxHeight: 500, padding: 15 }
-          ]}
-        >
+        <View style={[styles.modal, { marginTop: insets.top, padding: 15 }]}>
           {errorMsg ? (
             <>
               <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
@@ -307,10 +303,9 @@ const Login = () => {
           )}
           {districts && (
             <MaskedView
-              style={{ flex: 1 }}
               maskElement={
                 <LinearGradient
-                  style={{ flex: 1 }}
+                  style={{ flexGrow: 1 }}
                   colors={[Colors.white, Colors.transparent]}
                   locations={[0.8, 1]}
                 />
@@ -320,7 +315,7 @@ const Login = () => {
                 initialDelay={0}
                 durationPerItem={500}
                 parallelItems={5}
-                itemsToFadeIn={15}
+                itemsToFadeIn={20}
                 data={districts}
                 keyExtractor={(item) => item.name}
                 renderItem={({ item }) => {
@@ -362,7 +357,8 @@ const Login = () => {
                     </TouchableOpacity>
                   )
                 }}
-                style={{ flexGrow: 1 }}
+                style={{ flexGrow: 0 }}
+                contentContainerStyle={{ flexGrow: 0 }}
                 ItemSeparatorComponent={Seperator}
               />
             </MaskedView>
