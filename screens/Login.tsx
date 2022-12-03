@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   Keyboard,
   View,
-  FlatList
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'

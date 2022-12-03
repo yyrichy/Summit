@@ -32,6 +32,7 @@ import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { LightTheme } from '../theme/LightTheme'
+import { AnimatedFAB } from 'react-native-paper'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -58,6 +59,14 @@ const CourseDetails = ({ route }) => {
   const [total, setTotal] = useState('')
 
   const [refreshing, setRefreshing] = useState(false)
+
+  const [isExtended, setIsExtended] = React.useState(true)
+
+  const onScroll = ({ nativeEvent }) => {
+    const currentScrollPosition = Math.floor(nativeEvent?.contentOffset?.y) ?? 0
+
+    setIsExtended(currentScrollPosition <= 0)
+  }
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
@@ -114,38 +123,20 @@ const CourseDetails = ({ route }) => {
   return (
     <View style={{ flex: 1, backgroundColor: Colors.primary }}>
       <SafeAreaView style={styles.course_name_container}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'flex-start'
-          }}
-        >
-          <FontAwesome.Button
-            name="chevron-left"
-            backgroundColor="transparent"
-            iconStyle={{
-              color: Colors.navy
-            }}
-            underlayColor="none"
-            activeOpacity={0.2}
-            size={30}
-            onPress={() => navigation.goBack()}
-          ></FontAwesome.Button>
-        </View>
-        <Text numberOfLines={1} style={styles.course_name}>
-          {parseCourseName(courseName)}
-        </Text>
         <FontAwesome.Button
-          name="plus-circle"
+          name="chevron-left"
           backgroundColor="transparent"
           iconStyle={{
             color: Colors.navy
           }}
-          size={30}
           underlayColor="none"
           activeOpacity={0.2}
-          onPress={() => toggleModal()}
+          size={30}
+          onPress={() => navigation.goBack()}
         ></FontAwesome.Button>
+        <Text numberOfLines={1} style={styles.course_name}>
+          {parseCourseName(courseName)}
+        </Text>
       </SafeAreaView>
       <View
         style={[
@@ -166,6 +157,7 @@ const CourseDetails = ({ route }) => {
         }}
       >
         <FadeInFlatList
+          onScroll={onScroll}
           initialDelay={0}
           durationPerItem={500}
           parallelItems={5}
@@ -187,6 +179,20 @@ const CourseDetails = ({ route }) => {
               key={item.name}
             ></Assignment>
           )}
+        />
+        <AnimatedFAB
+          icon={'plus'}
+          label={'Add Assignment'}
+          extended={isExtended}
+          onPress={toggleModal}
+          animateFrom={'right'}
+          iconMode={'dynamic'}
+          variant={'primary'}
+          style={{
+            bottom: 12,
+            right: 12,
+            position: 'absolute'
+          }}
         />
       </View>
       <Modal
@@ -341,12 +347,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     flex: 1,
     flexWrap: 'wrap',
-    fontFamily: 'Inter_800ExtraBold',
-    textAlign: 'center'
+    fontFamily: 'Inter_800ExtraBold'
   },
   course_name_container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center'
   },
   dropdown: {

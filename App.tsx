@@ -56,6 +56,7 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
+    primaryContainer: Colors.primary,
     background: Colors.blue_off_white,
     secondaryContainer: Colors.accent
   }
