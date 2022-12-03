@@ -102,7 +102,6 @@ const Profile = () => {
   }, [])
 
   const downloadSchoolPicture = async () => {
-    console.log('s')
     const fileName = `${studentInfo.student.name} School Picture.jpg`.replace(
       / /g,
       '_'
