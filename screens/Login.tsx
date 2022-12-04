@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -65,11 +65,6 @@ const Login = () => {
       return { label: d.name, value: index }
     })
   )
-
-  useEffect(() => {
-    setSelected(districtsFile[value])
-    setDistrictModalVisible(false)
-  }, [value])
 
   useAsyncEffect(async () => {
     savedCredentials()
@@ -349,11 +344,11 @@ const Login = () => {
                   return (
                     <TouchableOpacity
                       onPress={() => {
+                        setDistrictModalVisible(false)
                         setSelected(item)
                         setValue(
                           allDistricts.findIndex((d) => d.label === item.name)
                         )
-                        setDistrictModalVisible(!isDistrictModalVisible)
                       }}
                       style={{
                         backgroundColor:
@@ -426,6 +421,7 @@ const Login = () => {
                   {...props}
                   onPress={() => {
                     setValue(props.value)
+                    setDistrictModalVisible(false)
                     setOpen(false)
                   }}
                 />
