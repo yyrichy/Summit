@@ -22,12 +22,7 @@ import AppContext from '../contexts/AppContext'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
-import {
-  FontAwesome,
-  FontAwesome5,
-  Ionicons,
-  MaterialCommunityIcons
-} from '@expo/vector-icons'
+import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons'
 import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
@@ -201,7 +196,23 @@ const Login = () => {
     const { coords } = await Location.getCurrentPositionAsync()
     const { latitude, longitude } = coords
     const reverse = await Location.reverseGeocodeAsync({ latitude, longitude })
-    const districtsFound = await StudentVue.findDistricts(reverse[0].postalCode)
+    try {
+      var districtsFound = await StudentVue.findDistricts(reverse[0].postalCode)
+    } catch (e) {
+      let message = e.message
+      switch (message) {
+        case 'Please enter zip code. Missing zip code as expected parameters.':
+          message = 'Zipcode not found'
+          break
+        case 'Please enter zip code with atleast 3 characters and not more than 5 characters.':
+          message = 'Not in an US zipcode'
+          break
+      }
+      console.log(message)
+
+      setErrorMsg(message)
+      return
+    }
     const newDistricts = districtsFile.filter((d) =>
       districtsFound.some((e) => e.name === d.name)
     )
@@ -264,40 +275,50 @@ const Login = () => {
         animationOut={'fadeOut'}
         backdropTransitionOutTiming={0}
       >
-        <View style={[styles.modal, { marginTop: insets.top, padding: 15 }]}>
+        <View
+          style={[
+            styles.modal,
+            { padding: 15, marginTop: insets.top, marginBottom: insets.bottom }
+          ]}
+        >
           {errorMsg ? (
             <>
               <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
+                Could not find school districts based on your location:{' '}
                 {errorMsg}
               </Text>
-              <View>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    borderRadius: 5,
-                    borderWidth: 1,
-                    padding: 10,
-                    alignItems: 'center',
-                    marginTop: 10,
-                    alignSelf: 'center',
-                    backgroundColor: Colors.off_white
-                  }}
-                  onPress={async () => {
-                    setDistrictModalVisible(false)
-                    Linking.openSettings()
-                  }}
-                >
-                  <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 18 }}>
-                    Settings
-                  </Text>
-                  <Ionicons
-                    name="settings-outline"
-                    size={24}
-                    color="black"
-                    style={{ padding: 0, marginLeft: 4 }}
-                  />
-                </TouchableOpacity>
-              </View>
+              {errorMsg === 'Permission to access location was denied' && (
+                <View>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      borderRadius: 5,
+                      borderWidth: 1,
+                      padding: 10,
+                      alignItems: 'center',
+                      marginTop: 10,
+                      alignSelf: 'center',
+                      backgroundColor: Colors.off_white
+                    }}
+                    onPress={async () => {
+                      setDistrictModalVisible(false)
+                      Linking.openSettings()
+                    }}
+                  >
+                    <Text
+                      style={{ fontFamily: 'Inter_500Medium', fontSize: 18 }}
+                    >
+                      Settings
+                    </Text>
+                    <Ionicons
+                      name="settings-outline"
+                      size={24}
+                      color="black"
+                      style={{ padding: 0, marginLeft: 4 }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              )}
             </>
           ) : (
             !districts && (
@@ -308,6 +329,7 @@ const Login = () => {
           )}
           {districts && (
             <MaskedView
+              style={{ flexShrink: 1 }}
               maskElement={
                 <LinearGradient
                   style={{ flexGrow: 1 }}
