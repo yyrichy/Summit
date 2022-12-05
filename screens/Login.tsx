@@ -22,7 +22,12 @@ import AppContext from '../contexts/AppContext'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
-import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons'
+import {
+  FontAwesome,
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons
+} from '@expo/vector-icons'
 import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
@@ -34,6 +39,7 @@ import MaskedView from '@react-native-masked-view/masked-view'
 import { LinearGradient } from 'expo-linear-gradient'
 import District from '../components/District'
 import { TextInput } from 'react-native-paper'
+import AppIntroSlider from 'react-native-app-intro-slider'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -229,6 +235,85 @@ const Login = () => {
     setDistricts(d)
   }
 
+  const [showRealApp, setShowRealApp] = useState(false)
+
+  const onDone = () => {
+    setShowRealApp(true)
+  }
+
+  const onSkip = () => {
+    setShowRealApp(true)
+  }
+
+  const renderItem = ({ item }) => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: item.backgroundColor
+        }}
+      >
+        <SafeAreaView>
+          <Text style={styles.intro_title_style}>{item.title}</Text>
+        </SafeAreaView>
+        <SafeAreaView
+          style={{
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            flex: 1
+          }}
+        >
+          <MaterialCommunityIcons name={item.icon} size={120} />
+          <View style={{ alignItems: 'center' }}>
+            <Text style={styles.intro_text_style}>{item.text}</Text>
+            {item.github && (
+              <FontAwesome.Button
+                name="github"
+                backgroundColor="transparent"
+                iconStyle={{
+                  color: Colors.black
+                }}
+                underlayColor="none"
+                activeOpacity={0.2}
+                size={36}
+                onPress={() =>
+                  Linking.openURL('https://github.com/vaporrrr/Summit')
+                }
+                style={{ padding: 0, marginTop: 8 }}
+              ></FontAwesome.Button>
+            )}
+          </View>
+        </SafeAreaView>
+      </View>
+    )
+  }
+
+  const renderNextButton = () => {
+    return <Ionicons name="arrow-forward-circle-outline" size={48} />
+  }
+  const renderDoneButton = () => {
+    return <Ionicons name="checkmark-circle-outline" size={48} />
+  }
+
+  const renderSkipButton = () => {
+    return <Ionicons name="play-skip-forward-circle" size={48} />
+  }
+
+  if (!showRealApp && firstLaunch) {
+    return (
+      <AppIntroSlider
+        data={slides}
+        renderItem={renderItem}
+        onDone={onDone}
+        showSkipButton={true}
+        onSkip={onSkip}
+        renderDoneButton={renderDoneButton}
+        renderNextButton={renderNextButton}
+        renderSkipButton={renderSkipButton}
+      />
+    )
+  }
+
   return (
     <>
       <Modal
@@ -295,7 +380,7 @@ const Login = () => {
                       alignSelf: 'center',
                       backgroundColor: Colors.off_white
                     }}
-                    onPress={async () => {
+                    onPress={() => {
                       setDistrictModalVisible(false)
                       Linking.openSettings()
                     }}
@@ -446,33 +531,6 @@ const Login = () => {
           <Text style={styles.description}>Grade Viewer</Text>
         </SafeAreaView>
         <LoginView>
-          {firstLaunch && (
-            <View style={styles.login_info_container}>
-              <View style={styles.horizontal_container}>
-                <Text style={styles.security}>
-                  This app is safe to use and open source
-                </Text>
-                <FontAwesome.Button
-                  name="info-circle"
-                  backgroundColor="transparent"
-                  iconStyle={{
-                    color: Colors.black
-                  }}
-                  underlayColor="none"
-                  activeOpacity={0.2}
-                  size={20}
-                  onPress={() => setModalVisible(true)}
-                  style={{
-                    padding: 0,
-                    paddingLeft: 6
-                  }}
-                ></FontAwesome.Button>
-              </View>
-              <Text style={styles.login_info}>
-                Login info is the same as StudentVue
-              </Text>
-            </View>
-          )}
           <TextInput
             defaultValue={username}
             onChangeText={(u) => setUsername(u)}
@@ -642,6 +700,24 @@ const distance = ({ lat: x1, long: y1 }, { lat: x2, long: y2 }) => {
   )
 }
 
+const slides = [
+  {
+    key: '1',
+    title: 'Username and Password',
+    text: "Students from any school that uses StudentVue can use this app. Username and password are the same as your school's website",
+    icon: 'form-textbox-password',
+    backgroundColor: Colors.primary
+  },
+  {
+    key: '2',
+    title: 'Safe and Open Source',
+    text: "Your login info is sent directly to your schools website. Saving your username and password saves directly to your phone's storage. Code is open source on Github",
+    github: 'https://github.com/vaporrrr/Summit',
+    icon: 'lock',
+    backgroundColor: Colors.dark_yellow
+  }
+]
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -788,5 +864,22 @@ const styles = StyleSheet.create({
   dropdown_text_style: {
     fontFamily: 'Inter_500Medium',
     fontSize: 16
+  },
+  intro_image_style: {
+    width: 200,
+    height: 200
+  },
+  intro_text_style: {
+    fontSize: 18,
+    textAlign: 'center',
+    paddingHorizontal: 16,
+    fontFamily: 'Inter_400Regular'
+  },
+  intro_title_style: {
+    fontSize: 25,
+    textAlign: 'center',
+    marginBottom: 16,
+    fontFamily: 'Montserrat_700Bold',
+    marginTop: 16
   }
 })
