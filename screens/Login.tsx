@@ -506,6 +506,9 @@ const Login = () => {
                   {...props}
                   onPress={() => {
                     setValue(props.value)
+                    setSelected(
+                      districtsFile.find((d) => d.name === props.label)
+                    )
                     setDistrictModalVisible(false)
                     setOpen(false)
                   }}
