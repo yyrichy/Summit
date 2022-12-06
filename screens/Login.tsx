@@ -62,7 +62,7 @@ const Login = () => {
 
   const [selected, setSelected] = useState(null)
   const [districts, setDistricts] = useState(null)
-  const [errorMsg, setErrorMsg] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState(null)
@@ -187,11 +187,11 @@ const Login = () => {
     setDistrictModalVisible(true)
     const { status } = await Location.requestForegroundPermissionsAsync()
     if (status !== 'granted') {
-      setErrorMsg('Permission to access location was denied')
+      setErrorMessage('Permission to access location was denied')
       setDistricts(null)
       return
     } else {
-      setErrorMsg(null)
+      setErrorMessage(null)
     }
 
     const { coords } = await Location.getCurrentPositionAsync()
@@ -209,9 +209,7 @@ const Login = () => {
           message = 'Not in an US zipcode'
           break
       }
-      console.log(message)
-
-      setErrorMsg(message)
+      setErrorMessage(message)
       return
     }
     const newDistricts = districtsFile.filter((d) =>
@@ -232,6 +230,10 @@ const Login = () => {
       }
       return 0
     })
+    if (d.length === 0) {
+      setErrorMessage('No school districts found in your area')
+      return
+    }
     setDistricts(d)
   }
 
@@ -361,13 +363,27 @@ const Login = () => {
             { padding: 15, marginTop: insets.top, marginBottom: insets.bottom }
           ]}
         >
-          {errorMsg ? (
+          {errorMessage ? (
             <>
-              <Text style={{ fontFamily: 'Inter_400Regular', fontSize: 14 }}>
-                Could not find school districts based on your location:{' '}
-                {errorMsg}
+              <Text
+                style={{
+                  fontFamily: 'Montserrat_600SemiBold',
+                  fontSize: 14,
+                  marginBottom: 4
+                }}
+              >
+                Error occured while automatically searching:
               </Text>
-              {errorMsg === 'Permission to access location was denied' && (
+              <Text
+                style={{
+                  fontFamily: 'Inter_400Regular',
+                  fontSize: 12,
+                  marginBottom: 16
+                }}
+              >
+                {errorMessage}
+              </Text>
+              {errorMessage === 'Permission to access location was denied' && (
                 <View>
                   <TouchableOpacity
                     style={{
@@ -402,14 +418,20 @@ const Login = () => {
             </>
           ) : (
             !districts && (
-              <Text style={{ fontFamily: 'Inter_500Medium', fontSize: 14 }}>
+              <Text
+                style={{
+                  fontFamily: 'Inter_500Medium',
+                  fontSize: 14,
+                  marginBottom: 15
+                }}
+              >
                 Waiting...
               </Text>
             )
           )}
           {districts && (
             <MaskedView
-              style={{ flexShrink: 1 }}
+              style={{ flexShrink: 1, marginBottom: 15 }}
               maskElement={
                 <LinearGradient
                   style={{ flexGrow: 1 }}
@@ -473,8 +495,7 @@ const Login = () => {
           <Text
             style={{
               fontFamily: 'Inter_700Bold',
-              fontSize: 20,
-              marginTop: 15
+              fontSize: 20
             }}
           >
             Manually Select School District
