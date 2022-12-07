@@ -134,8 +134,8 @@ const CourseDetails = ({ route }) => {
           size={30}
           onPress={() => navigation.goBack()}
         ></FontAwesome.Button>
-        <Text numberOfLines={1} style={styles.course_name}>
-          {parseCourseName(courseName)}
+        <Text numberOfLines={2} style={styles.course_name}>
+          {courseName}
         </Text>
       </SafeAreaView>
       <View

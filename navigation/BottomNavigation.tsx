@@ -6,6 +6,7 @@ import Profile from '../screens/Profile'
 import Grades from '../screens/Grades'
 import { Colors } from '../colors/Colors'
 import { Text, View } from 'react-native'
+import ScheduleScreen from '../screens/Schedule'
 
 const App = () => {
   const [index, setIndex] = React.useState(0)
@@ -21,6 +22,12 @@ const App = () => {
       title: 'Documents',
       focusedIcon: 'folder',
       unfocusedIcon: 'folder-outline'
+    },
+    {
+      key: 'schedule',
+      title: 'Schedule',
+      focusedIcon: 'view-list',
+      unfocusedIcon: 'view-list-outline'
     },
     {
       key: 'calendar',
@@ -39,6 +46,7 @@ const App = () => {
   const renderScene = BottomNavigation.SceneMap({
     grades: Grades,
     documents: Documents,
+    schedule: ScheduleScreen,
     calendar: CalendarScreen,
     profile: Profile
   })

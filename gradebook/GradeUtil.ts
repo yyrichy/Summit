@@ -21,7 +21,7 @@ const parseCourseName = (name: string): string => {
   return name.substring(0, name.lastIndexOf('(')).trim()
 }
 
-const convertGradebook = (gradebook: Gradebook): Promise<Marks> => {
+const convertGradebook = (gradebook: Gradebook) => {
   let marks: Marks = {
     gpa: 0,
     courses: new Map<string, Course>(),
@@ -73,10 +73,7 @@ const convertGradebook = (gradebook: Gradebook): Promise<Marks> => {
       }
     }
   }
-  marks = calculatePoints(marks)
-  return new Promise((resolve) => {
-    resolve(marks)
-  })
+  return calculatePoints(marks)
 }
 
 const calculatePoints = (marks: Marks): Marks => {
@@ -266,9 +263,23 @@ const dateDiffInDays = (a: Date, b: Date): number => {
 
   return Math.floor((utc2 - utc1) / _MS_PER_DAY)
 }
+
 const prependZero = (number): string => {
   if (number < 9) return '0' + number
   else return number
+}
+
+const formatAMPM = (date: Date): string => {
+  let hours = date.getHours()
+  let minutes: string | number = date.getMinutes()
+  const ampm = hours >= 12 ? 'PM' : 'AM'
+
+  hours %= 12
+  hours = hours || 12
+  minutes = minutes < 10 ? `0${minutes}` : minutes
+
+  const strTime = `${hours}:${minutes} ${ampm}`
+  return strTime
 }
 
 export {
@@ -286,5 +297,6 @@ export {
   suffix,
   normalize,
   dateDiffInDays,
-  prependZero
+  prependZero,
+  formatAMPM
 }

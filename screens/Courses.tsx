@@ -60,7 +60,7 @@ const Courses = ({ navigation }) => {
   const onRefresh = async () => {
     setRefreshing(true)
     try {
-      setMarks(await convertGradebook(await client.gradebook(value)))
+      setMarks(convertGradebook(await client.gradebook(value)))
     } catch (err) {}
     setRefreshing(false)
   }
@@ -124,7 +124,7 @@ const Courses = ({ navigation }) => {
           data={[...marks.courses.entries()]}
           renderItem={({ item }) => (
             <Course
-              name={parseCourseName(item[0])}
+              name={item[0]}
               mark={item[1].value}
               period={item[1].period}
               teacher={item[1].teacher}
