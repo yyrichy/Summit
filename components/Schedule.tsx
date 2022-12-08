@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
   period_number: {
     fontFamily: 'Montserrat_700Bold',
     fontSize: 32,
-    lineHeight: 36,
     marginHorizontal: 8,
     width: 45
   },

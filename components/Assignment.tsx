@@ -265,20 +265,14 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontFamily: 'Inter_700Bold',
     fontSize: 14,
-    marginHorizontal: 7,
-    lineHeight: 14 * 0.75,
-    textAlign: 'left',
-    paddingTop: 14 - 14 * 0.75
+    marginHorizontal: 7
   },
   category: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
     marginHorizontal: 7,
-    marginTop: 4,
-    textAlign: 'left',
-    lineHeight: 12 * 0.75,
-    paddingTop: 12 - 12 * 0.75
+    marginTop: 4
   },
   input_container: {
     flexDirection: 'row',

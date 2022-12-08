@@ -10,11 +10,7 @@ import {
 } from 'react-native'
 import Course from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
-import {
-  convertGradebook,
-  dateDiffInDays,
-  parseCourseName
-} from '../gradebook/GradeUtil'
+import { convertGradebook, dateDiffInDays } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
@@ -77,7 +73,7 @@ const Courses = ({ navigation }) => {
         maxHeight={null}
         style={styles.dropdown}
         labelProps={{ numberOfLines: 1 }}
-        textStyle={[styles.dropdown_text, { fontSize: 50, lineHeight: 60 }]}
+        textStyle={[styles.dropdown_text, { fontSize: 50 }]}
         translation={{
           PLACEHOLDER: 'Select Marking Period'
         }}

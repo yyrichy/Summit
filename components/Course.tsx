@@ -57,8 +57,7 @@ const styles = StyleSheet.create({
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 32,
-    lineHeight: 36
+    fontSize: 32
   },
   course_info_container: {
     flexDirection: 'column',
@@ -71,10 +70,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_700Bold',
     fontSize: 16,
     marginRight: 14,
-    marginLeft: 7,
-    lineHeight: 18 * 0.75,
-    textAlign: 'left',
-    paddingTop: 18 - 18 * 0.75
+    marginLeft: 7
   },
   teacher: {
     color: Colors.black,
@@ -82,21 +78,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginRight: 14,
     marginLeft: 7,
-    lineHeight: 12 * 0.75,
-    marginTop: 4,
-    textAlign: 'left',
-    paddingTop: 12 - 12 * 0.75
+    marginTop: 4
   },
   mark: {
     fontFamily: 'Montserrat_500Medium',
-    fontSize: 30,
-    lineHeight: 36
+    fontSize: 30
   },
   letter_grade: {
     marginLeft: 7,
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 30,
-    lineHeight: 36
+    fontSize: 30
   }
 })
 

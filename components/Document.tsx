@@ -58,17 +58,12 @@ const styles = StyleSheet.create({
   name: {
     color: Colors.black,
     fontFamily: 'Montserrat_600SemiBold',
-    fontSize: 16,
-    lineHeight: 16 * 0.75,
-    textAlign: 'left',
-    paddingTop: 16 - 16 * 0.75
+    fontSize: 16
   },
   type: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
-    lineHeight: 12 * 0.75,
-    paddingTop: 12 - 12 * 0.75,
     marginTop: 4
   }
 })

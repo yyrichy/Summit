@@ -21,7 +21,6 @@ import Assignment from '../components/Assignment'
 import {
   addAssignment,
   convertGradebook,
-  parseCourseName,
   isNumber,
   calculateMarkColor
 } from '../gradebook/GradeUtil'
