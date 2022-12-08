@@ -1,5 +1,12 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ViewStyle,
+  StyleProp
+} from 'react-native'
 import { Colors } from '../colors/Colors'
 import {
   calculateLetterGrade,
@@ -7,37 +14,43 @@ import {
   prependZero
 } from '../gradebook/GradeUtil'
 
-function Course(props) {
-  const mark: number = parseFloat(props.mark)
+type Props = {
+  mark: string
+  onPress: any
+  period: number
+  name: string
+  teacher: string
+}
+
+const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
+  const markAsNumber: number = parseFloat(mark)
 
   return (
     <TouchableOpacity
-      style={[styles.container, props.style]}
-      onPress={props.onPress}
+      style={styles.container}
+      onPress={onPress}
       activeOpacity={0.2}
     >
-      <Text style={styles.period_number}>{prependZero(props.period)}</Text>
+      <Text style={styles.period_number}>{prependZero(period)}</Text>
       <View style={styles.course_info_container}>
         <Text numberOfLines={1} style={styles.name}>
-          {props.name}
+          {name}
         </Text>
         <Text numberOfLines={1} style={styles.teacher}>
-          {props.teacher}
+          {teacher}
         </Text>
       </View>
-      <Text style={[styles.mark]}>
-        {isNaN(parseFloat(props.mark)) ? 'N/A' : props.mark}
-      </Text>
-      {!isNaN(parseFloat(props.mark)) && (
+      <Text style={styles.mark}>{isNaN(markAsNumber) ? 'N/A' : mark}</Text>
+      {!isNaN(markAsNumber) && (
         <Text
           style={[
             styles.letter_grade,
             {
-              color: calculateMarkColor(mark)
+              color: calculateMarkColor(markAsNumber)
             }
           ]}
         >
-          {calculateLetterGrade(mark)}
+          {calculateLetterGrade(markAsNumber)}
         </Text>
       )}
     </TouchableOpacity>
