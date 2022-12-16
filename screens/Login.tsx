@@ -26,7 +26,8 @@ import {
   FontAwesome,
   FontAwesome5,
   Ionicons,
-  MaterialCommunityIcons
+  MaterialCommunityIcons,
+  Feather
 } from '@expo/vector-icons'
 import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
@@ -40,10 +41,19 @@ import { LinearGradient } from 'expo-linear-gradient'
 import District from '../components/District'
 import { TextInput } from 'react-native-paper'
 import AppIntroSlider from 'react-native-app-intro-slider'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
 type loginInfo = 'username' | 'password' | 'district'
+
+type District = {
+  address: string
+  name: string
+  parentVueUrl: string
+  latitude?: number
+  longitude?: number
+}
 
 const Login = () => {
   const insets = useSafeAreaInsets()
@@ -54,8 +64,6 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
-
-  const [firstLaunch, setFirstLaunch] = useState(false)
 
   const [isModalVisible, setModalVisible] = useState(false)
   const [isDistrictModalVisible, setDistrictModalVisible] = useState(false)
@@ -73,6 +81,15 @@ const Login = () => {
   )
 
   useAsyncEffect(async () => {
+    try {
+      const alreadyLaunched = await AsyncStorage.getItem('alreadyLaunched')
+      if (alreadyLaunched === null) {
+        setShowRealApp(false)
+        await AsyncStorage.setItem('alreadyLaunched', 'true')
+        return
+      }
+    } catch (e) {}
+
     savedCredentials()
 
     const backAction = () => {
@@ -93,9 +110,7 @@ const Login = () => {
     const password: string = await getValueFor('password')
     const value: string = await getValueFor('district')
 
-    // Auto login
     if (!username || !password || !value) {
-      setFirstLaunch(true)
       return
     }
 
@@ -198,7 +213,9 @@ const Login = () => {
     const { latitude, longitude } = coords
     const reverse = await Location.reverseGeocodeAsync({ latitude, longitude })
     try {
-      var districtsFound = await StudentVue.findDistricts(reverse[0].postalCode)
+      var districtsFound: District[] = await StudentVue.findDistricts(
+        reverse[0].postalCode
+      )
     } catch (e) {
       let message = e.message
       switch (message) {
@@ -212,10 +229,16 @@ const Login = () => {
       setErrorMessage(message)
       return
     }
-    const newDistricts = districtsFile.filter((d) =>
-      districtsFound.some((e) => e.name === d.name)
-    )
-    const d = newDistricts.map((d) => ({
+    districtsFound.forEach((d) => {
+      const districtWithCoords = districtsFile.find(
+        (i) => i.name === d.name || i.parentVueUrl === d.parentVueUrl
+      )
+      if (districtWithCoords) {
+        d.latitude = districtWithCoords.latitude
+        d.longitude = districtWithCoords.longitude
+      }
+    })
+    const d = districtsFound.map((d) => ({
       ...d,
       distance: distance(
         { lat: latitude, long: longitude },
@@ -237,7 +260,7 @@ const Login = () => {
     setDistricts(d)
   }
 
-  const [showRealApp, setShowRealApp] = useState(false)
+  const [showRealApp, setShowRealApp] = useState(true)
 
   const onDone = () => {
     setShowRealApp(true)
@@ -301,7 +324,7 @@ const Login = () => {
     return <Ionicons name="play-skip-forward-circle" size={48} />
   }
 
-  if (!showRealApp && firstLaunch) {
+  if (!showRealApp) {
     return (
       <AppIntroSlider
         data={slides}
@@ -555,6 +578,34 @@ const Login = () => {
           <Text style={styles.description}>Grade Viewer</Text>
         </SafeAreaView>
         <LoginView>
+          <TouchableOpacity
+            style={styles.horizontal_container}
+            onPress={() => setShowRealApp(false)}
+          >
+            <Text
+              style={{
+                textDecorationLine: 'underline',
+                fontFamily: 'Inter_400Regular',
+                fontSize: 14
+              }}
+            >
+              Questions/Concerns?
+            </Text>
+            <Feather
+              name="info"
+              backgroundColor="transparent"
+              iconStyle={{
+                color: Colors.black
+              }}
+              underlayColor="none"
+              activeOpacity={0.2}
+              size={18}
+              style={{
+                padding: 0,
+                marginLeft: 2
+              }}
+            ></Feather>
+          </TouchableOpacity>
           <TextInput
             defaultValue={username}
             onChangeText={(u) => setUsername(u)}
@@ -700,6 +751,7 @@ const Seperator = () => {
 }
 
 const distance = ({ lat: x1, long: y1 }, { lat: x2, long: y2 }) => {
+  if (!x1 || !x2 || !y1 || !y2) return NaN
   function toRadians(value) {
     return (value * Math.PI) / 180
   }
@@ -751,7 +803,9 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   horizontal_container: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 4
   },
   modal: {
     alignSelf: 'center',
@@ -777,20 +831,6 @@ const styles = StyleSheet.create({
     fontFamily: 'RussoOne_400Regular',
     textAlign: 'center',
     fontSize: 20
-  },
-  login_info_container: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  login_info: {
-    fontFamily: 'Montserrat_300Light_Italic',
-    fontSize: 12,
-    marginBottom: 10,
-    marginTop: 5
-  },
-  security: {
-    fontFamily: 'Inter_600SemiBold',
-    fontSize: 14
   },
   checkbox_container: {
     flexDirection: 'row',
