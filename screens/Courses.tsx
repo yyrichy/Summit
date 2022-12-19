@@ -15,6 +15,22 @@ import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
+import { formatRelative } from 'date-fns'
+import enUS from 'date-fns/locale/en-US'
+
+const formatRelativeLocale = {
+  lastWeek: "'Last' eeee",
+  yesterday: "'Yesterday'",
+  today: "'Today'",
+  tomorrow: "'Tomorrow'",
+  nextWeek: "'Next' eeee",
+  other: 'MM/dd/yyyy'
+}
+
+const locale = {
+  ...enUS,
+  formatRelative: (token) => formatRelativeLocale[token]
+}
 
 const Courses = ({ navigation }) => {
   const { client, marks, setMarks } = useContext(AppContext)
@@ -106,10 +122,8 @@ const Courses = ({ navigation }) => {
       ></DropDownPicker>
       {!isNaN(marks.gpa) && <Text style={styles.gpa}>GPA - {marks.gpa}</Text>}
       <Text style={styles.date}>
-        {daysDiff < 0
-          ? `Ended ${Math.abs(daysDiff)} days ago`
-          : `Ends in ${daysDiff} days`}{' '}
-        on {endDate.toLocaleDateString()}
+        {endDate < new Date() ? 'Ended' : 'Ends'}{' '}
+        {formatRelative(endDate, new Date(), { locale })}
       </Text>
       {marks && (
         <FadeInFlatList
