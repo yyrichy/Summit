@@ -10,7 +10,7 @@ import {
 } from 'react-native'
 import Course from '../components/Course'
 import DropDownPicker from 'react-native-dropdown-picker'
-import { convertGradebook, dateDiffInDays } from '../gradebook/GradeUtil'
+import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
@@ -42,11 +42,6 @@ const Courses = ({ navigation }) => {
     })
   )
   const endDate = marks.reportingPeriods[value].date.end
-  const daysDiff = dateDiffInDays(
-    new Date(),
-    marks.reportingPeriods[value].date.end
-  )
-
   useEffect(() => {
     onRefresh()
   }, [value])
