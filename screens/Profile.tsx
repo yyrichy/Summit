@@ -51,14 +51,18 @@ const Profile = () => {
   const [switchOn, switchEnabled] = useState(false)
   const toggleSwitch = async () => {
     const newState = !switchOn
-    if (newState) await cancelReminder()
+    try {
+      if (newState) await cancelReminder()
+    } catch (e) {
+      Alert.alert('Error saving cancelling reminder')
+    }
     try {
       await setReminderIsDisabled(newState)
       if (!newState) {
         await scheduleGradeCheck()
       }
     } catch (e) {
-      Alert.alert('Error saving')
+      Alert.alert('Error saving reminder preference')
     }
     switchEnabled(newState)
   }
@@ -362,7 +366,7 @@ const deleteLoginInfo = async () => {
     await SecureStore.deleteItemAsync('password')
     await SecureStore.deleteItemAsync('district')
   } catch (e) {
-    Alert.alert(e)
+    Alert.alert('Error deleting login info')
     return
   }
   Alert.alert('Login info successfully deleted')

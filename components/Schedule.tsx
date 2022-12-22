@@ -7,8 +7,8 @@ type Props = {
   name: string
   period: number
   teacher: string
-  start: Date
-  end: Date
+  start?: Date
+  end?: Date
 }
 
 const ScheduleComponent: React.FC<Props> = ({
@@ -29,9 +29,11 @@ const ScheduleComponent: React.FC<Props> = ({
           <Text numberOfLines={1} style={[styles.type, { flex: 1 }]}>
             {teacher}
           </Text>
-          <Text numberOfLines={1} style={styles.type}>
-            {formatAMPM(start)} - {formatAMPM(end)}
-          </Text>
+          {start && end && (
+            <Text numberOfLines={1} style={styles.type}>
+              {formatAMPM(start)} - {formatAMPM(end)}
+            </Text>
+          )}
         </View>
       </View>
     </View>

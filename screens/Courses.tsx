@@ -115,15 +115,17 @@ const Courses = ({ navigation }) => {
           )
         }}
       ></DropDownPicker>
-      {!isNaN(marks.gpa) && <Text style={styles.gpa}>GPA - {marks.gpa}</Text>}
-      <Text style={styles.date}>
-        {endDate < new Date() ? 'Ended' : 'Ends'}{' '}
-        {formatRelative(endDate, new Date(), { locale })}
-      </Text>
+      <View style={styles.marking_period_info_container}>
+        {!isNaN(marks.gpa) && <Text style={styles.gpa}>GPA - {marks.gpa}</Text>}
+        <Text style={styles.date}>
+          {endDate < new Date() ? 'Ended' : 'Ends'}{' '}
+          {formatRelative(endDate, new Date(), { locale })}
+        </Text>
+      </View>
       {marks && (
         <FadeInFlatList
           initialDelay={0}
-          durationPerItem={500}
+          durationPerItem={350}
           parallelItems={5}
           itemsToFadeIn={10}
           data={[...marks.courses.entries()]}
@@ -169,20 +171,18 @@ const styles = StyleSheet.create({
     marginLeft: 11
   },
   date: {
-    marginLeft: 11,
     fontFamily: 'Montserrat_500Medium',
     fontSize: 18
   },
-  gpa_container: {
-    flex: 1,
+  marking_period_info_container: {
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    marginHorizontal: 11,
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   gpa: {
     fontFamily: 'Montserrat_700Bold',
-    fontSize: 25,
-
-    marginLeft: 11
+    fontSize: 25
   }
 })
 

@@ -158,7 +158,7 @@ const CourseDetails = ({ route }) => {
         <FadeInFlatList
           onScroll={onScroll}
           initialDelay={0}
-          durationPerItem={500}
+          durationPerItem={350}
           parallelItems={5}
           itemsToFadeIn={Dimensions.get('window').height / 75}
           refreshControl={

@@ -56,7 +56,7 @@ const Documents = () => {
       {documents ? (
         <FadeInFlatList
           initialDelay={0}
-          durationPerItem={500}
+          durationPerItem={350}
           parallelItems={5}
           itemsToFadeIn={Dimensions.get('window').height / 50}
           data={documents}

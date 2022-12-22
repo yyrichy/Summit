@@ -125,7 +125,7 @@ const Login = () => {
         password: password
       })
       const gradebook = await client.gradebook()
-      const marks = await convertGradebook(gradebook)
+      const marks = convertGradebook(gradebook)
       setClient(client)
       setMarks(marks)
     } catch (err) {
@@ -157,12 +157,12 @@ const Login = () => {
         password: password
       })
       const gradebook = await client.gradebook()
-      const marks = await convertGradebook(gradebook)
+      const marks = convertGradebook(gradebook)
       setClient(client)
       setMarks(marks)
     } catch (err) {
       setIsLoading(false)
-      Alert.alert('Error logging in', err.message)
+      Alert.alert(err.message)
       return
     }
     if (isChecked) {
@@ -465,7 +465,7 @@ const Login = () => {
             >
               <FadeInFlatList
                 initialDelay={0}
-                durationPerItem={500}
+                durationPerItem={350}
                 parallelItems={5}
                 itemsToFadeIn={20}
                 data={districts}
