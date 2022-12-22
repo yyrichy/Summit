@@ -52,6 +52,47 @@ const ScheduleScreen = () => {
     setRefreshing(false)
   }
 
+  const TermButtons = () => {
+    return (
+      <View style={{ height: 50 }}>
+        <MaskedView
+          style={{ flexShrink: 1 }}
+          maskElement={
+            <LinearGradient
+              style={{ flexGrow: 1 }}
+              colors={[
+                Colors.transparent,
+                Colors.white,
+                Colors.white,
+                Colors.transparent
+              ]}
+              locations={[0.0, 0.2, 0.8, 1]}
+              start={{ x: 0, y: 1 }}
+              end={{ x: 1, y: 1 }}
+            />
+          }
+        >
+          <ScrollView
+            horizontal
+            contentContainerStyle={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexGrow: 1
+            }}
+            showsHorizontalScrollIndicator={false}
+          >
+            <SegmentedButtons
+              value={value}
+              onValueChange={setValue}
+              style={{ marginBottom: 8 }}
+              buttons={buttons}
+            />
+          </ScrollView>
+        </MaskedView>
+      </View>
+    )
+  }
+
   if (!schedule)
     return (
       <View>
@@ -80,42 +121,7 @@ const ScheduleScreen = () => {
             {schedule.today[0] ? schedule.today[0].bellScheduleName : 'Today'}
           </Text>
         </View>
-        <View style={{ height: 50 }}>
-          <MaskedView
-            style={{ flexShrink: 1 }}
-            maskElement={
-              <LinearGradient
-                style={{ flexGrow: 1 }}
-                colors={[
-                  Colors.transparent,
-                  Colors.white,
-                  Colors.white,
-                  Colors.transparent
-                ]}
-                locations={[0.0, 0.2, 0.8, 1]}
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 1 }}
-              />
-            }
-          >
-            <ScrollView
-              horizontal
-              contentContainerStyle={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexGrow: 1
-              }}
-              showsHorizontalScrollIndicator={false}
-            >
-              <SegmentedButtons
-                value={value}
-                onValueChange={setValue}
-                style={{ marginBottom: 8 }}
-                buttons={buttons}
-              />
-            </ScrollView>
-          </MaskedView>
-        </View>
+        <TermButtons />
         {schedule.today[0] ? (
           <FadeInFlatList
             initialDelay={0}
@@ -144,11 +150,9 @@ const ScheduleScreen = () => {
             ItemSeparatorComponent={Seperator}
           />
         ) : (
-          <View
-            style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-          >
-            <Text style={{ fontFamily: 'Inter_400Regular' }}>
-              No schedule available
+          <View style={styles.schedule_error_container}>
+            <Text style={styles.schedule_error_text}>
+              No schedule available for today
             </Text>
           </View>
         )}
@@ -164,12 +168,7 @@ const ScheduleScreen = () => {
         </Text>
         <Text>{schedule.term.name}</Text>
       </View>
-      <SegmentedButtons
-        value={value}
-        onValueChange={setValue}
-        style={{ marginBottom: 8, alignSelf: 'center' }}
-        buttons={buttons}
-      />
+      <TermButtons />
       {schedule.classes.length > 0 ? (
         <FadeInFlatList
           initialDelay={0}
@@ -194,12 +193,8 @@ const ScheduleScreen = () => {
           ItemSeparatorComponent={Seperator}
         />
       ) : (
-        <View
-          style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}
-        >
-          <Text style={{ fontFamily: 'Inter_400Regular' }}>
-            No schedule available
-          </Text>
+        <View style={styles.schedule_error_container}>
+          <Text style={styles.schedule_error_text}>{schedule.error}</Text>
         </View>
       )}
     </SafeAreaView>
@@ -238,6 +233,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center'
+  },
+  schedule_error_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1
+  },
+  schedule_error_text: {
+    fontFamily: 'Inter_400Regular'
   }
 })
 
