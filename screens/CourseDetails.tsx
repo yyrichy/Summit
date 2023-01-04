@@ -121,7 +121,10 @@ const CourseDetails = ({ route }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.primary }}>
-      <SafeAreaView style={styles.course_name_container}>
+      <SafeAreaView
+        style={styles.course_name_container}
+        edges={['top', 'left', 'right']}
+      >
         <FontAwesome.Button
           name="chevron-left"
           backgroundColor="transparent"
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
   },
   course_mark_container: {
     backgroundColor: Colors.white,
-    marginBottom: 30,
+    marginBottom: 20,
     margin: 10,
     alignSelf: 'center',
     alignItems: 'center',
