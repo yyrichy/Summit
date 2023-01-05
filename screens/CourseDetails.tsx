@@ -184,7 +184,7 @@ const CourseDetails = ({ route }) => {
         />
         <AnimatedFAB
           icon={'plus'}
-          label={'Add Assignment'}
+          label={'New Assignment'}
           extended={isExtended}
           onPress={toggleModal}
           animateFrom={'right'}
