@@ -73,7 +73,7 @@ const App = () => {
 
   return (
     <BottomNavigation
-      shifting={true}
+      shifting={false}
       navigationState={{ index, routes }}
       onIndexChange={setIndex}
       renderScene={renderScene}
