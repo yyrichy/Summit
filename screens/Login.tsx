@@ -86,11 +86,10 @@ const Login = () => {
       if (alreadyLaunched === null) {
         setShowRealApp(false)
         await AsyncStorage.setItem('alreadyLaunched', 'true')
-        return
+      } else {
+        savedCredentials()
       }
     } catch (e) {}
-
-    savedCredentials()
 
     const backAction = () => {
       BackHandler.exitApp()
