@@ -15,8 +15,6 @@ import { Schedule } from 'studentvue'
 import ScheduleComponent from '../components/Schedule'
 import { SegmentedButtons } from 'react-native-paper'
 import useAsyncEffect from 'use-async-effect'
-import MaskedView from '@react-native-masked-view/masked-view'
-import { LinearGradient } from 'expo-linear-gradient'
 
 const ScheduleScreen = () => {
   const { client } = useContext(AppContext)
@@ -54,41 +52,23 @@ const ScheduleScreen = () => {
 
   const TermButtons = () => {
     return (
-      <View style={{ height: 50 }}>
-        <MaskedView
-          style={{ flexShrink: 1 }}
-          maskElement={
-            <LinearGradient
-              style={{ flexGrow: 1 }}
-              colors={[
-                Colors.transparent,
-                Colors.white,
-                Colors.white,
-                Colors.transparent
-              ]}
-              locations={[0.0, 0.2, 0.8, 1]}
-              start={{ x: 0, y: 1 }}
-              end={{ x: 1, y: 1 }}
-            />
-          }
+      <View style={{ height: 50, marginBottom: 8 }}>
+        <ScrollView
+          horizontal
+          contentContainerStyle={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexGrow: 1,
+            paddingHorizontal: 11
+          }}
+          showsHorizontalScrollIndicator={false}
         >
-          <ScrollView
-            horizontal
-            contentContainerStyle={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexGrow: 1
-            }}
-            showsHorizontalScrollIndicator={false}
-          >
-            <SegmentedButtons
-              value={value}
-              onValueChange={setValue}
-              style={{ marginBottom: 8 }}
-              buttons={buttons}
-            />
-          </ScrollView>
-        </MaskedView>
+          <SegmentedButtons
+            value={value}
+            onValueChange={setValue}
+            buttons={buttons}
+          />
+        </ScrollView>
       </View>
     )
   }
