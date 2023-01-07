@@ -67,15 +67,10 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 const App = () => {
   const [client, setClient] = useState(undefined as Client)
   const [marks, setMarks] = useState(undefined as Marks)
-  const [username, setUsername] = useState(undefined as string)
-  const [password, setPassword] = useState(undefined as string)
+
   const user: User = {
-    username: username,
-    password: password,
     client: client,
     marks: marks,
-    setUsername,
-    setPassword,
     setClient,
     setMarks
   }

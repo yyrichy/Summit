@@ -59,8 +59,9 @@ const Login = () => {
   const insets = useSafeAreaInsets()
   const navigation = useNavigation<loginScreenProp>()
   const refInput = useRef(null)
-  const { username, password, setUsername, setPassword, setClient, setMarks } =
-    useContext(AppContext)
+  const [username, setUsername] = useState(null)
+  const [password, setPassword] = useState(null)
+  const { setClient, setMarks } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(false)
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
