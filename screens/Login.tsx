@@ -39,7 +39,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import MaskedView from '@react-native-masked-view/masked-view'
 import { LinearGradient } from 'expo-linear-gradient'
 import District from '../components/District'
-import { TextInput } from 'react-native-paper'
+import { Button, TextInput } from 'react-native-paper'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -199,19 +199,32 @@ const Login = () => {
 
   const onPress = async () => {
     Keyboard.dismiss()
+    setErrorMessage(null)
+    setDistricts(null)
     setDistrictModalVisible(true)
     const { status } = await Location.requestForegroundPermissionsAsync()
     if (status !== 'granted') {
       setErrorMessage('Permission to access location was denied')
-      setDistricts(null)
       return
-    } else {
-      setErrorMessage(null)
     }
 
-    const { coords } = await Location.getCurrentPositionAsync()
-    const { latitude, longitude } = coords
+    try {
+      const { coords } = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Low
+      })
+      var { latitude, longitude } = coords
+    } catch (e) {
+      setErrorMessage(
+        'Cannot retrieve your current location, check your connection'
+      )
+      return
+    }
+
     const reverse = await Location.reverseGeocodeAsync({ latitude, longitude })
+    if (!reverse[0]) {
+      setErrorMessage('Cannot determine zip code, check your connection')
+      return
+    }
     try {
       var districtsFound: District[] = await StudentVue.findDistricts(
         reverse[0].postalCode
@@ -224,6 +237,9 @@ const Login = () => {
           break
         case 'Please enter zip code with atleast 3 characters and not more than 5 characters.':
           message = 'Not in an US zipcode'
+          break
+        case 'Network Error':
+          message = 'Network error, check your connection'
           break
       }
       setErrorMessage(message)
@@ -383,11 +399,16 @@ const Login = () => {
         <View
           style={[
             styles.modal,
-            { padding: 15, marginTop: insets.top, marginBottom: insets.bottom }
+            {
+              padding: 15,
+              marginTop: insets.top,
+              marginBottom: insets.bottom,
+              maxWidth: 350
+            }
           ]}
         >
           {errorMessage ? (
-            <>
+            <View>
               <Text
                 style={{
                   fontFamily: 'Montserrat_600SemiBold',
@@ -395,50 +416,39 @@ const Login = () => {
                   marginBottom: 4
                 }}
               >
-                Error occured while automatically searching:
+                Cannot find your nearest school districts
               </Text>
               <Text
                 style={{
                   fontFamily: 'Inter_400Regular',
-                  fontSize: 12,
-                  marginBottom: 16
+                  fontSize: 12
                 }}
               >
                 {errorMessage}
               </Text>
               {errorMessage === 'Permission to access location was denied' && (
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      borderRadius: 5,
-                      borderWidth: 1,
-                      padding: 10,
-                      alignItems: 'center',
-                      marginTop: 10,
-                      alignSelf: 'center',
-                      backgroundColor: Colors.off_white
-                    }}
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'flex-start',
+                    marginVertical: 10
+                  }}
+                >
+                  <Button
+                    icon="cog"
+                    mode="contained"
+                    buttonColor={Colors.navy}
                     onPress={() => {
                       setDistrictModalVisible(false)
                       Linking.openSettings()
                     }}
                   >
-                    <Text
-                      style={{ fontFamily: 'Inter_500Medium', fontSize: 18 }}
-                    >
-                      Settings
-                    </Text>
-                    <Ionicons
-                      name="settings-outline"
-                      size={24}
-                      color="black"
-                      style={{ padding: 0, marginLeft: 4 }}
-                    />
-                  </TouchableOpacity>
+                    Settings
+                  </Button>
                 </View>
               )}
-            </>
+            </View>
           ) : (
             !districts && (
               <Text
@@ -454,12 +464,12 @@ const Login = () => {
           )}
           {districts && (
             <MaskedView
-              style={{ flexShrink: 1, marginBottom: 15 }}
+              style={{ flexShrink: 1, marginBottom: 10 }}
               maskElement={
                 <LinearGradient
                   style={{ flexGrow: 1 }}
                   colors={[Colors.white, Colors.transparent]}
-                  locations={[0.8, 1]}
+                  locations={[0.85, 1]}
                 />
               }
             >
@@ -521,7 +531,7 @@ const Login = () => {
               fontSize: 20
             }}
           >
-            Manually Select School District
+            Manually Select District
           </Text>
           <DropDownPicker
             open={open}
@@ -602,6 +612,7 @@ const Login = () => {
               size={18}
               style={{
                 padding: 0,
+                margin: 0,
                 marginLeft: 2
               }}
             ></Feather>
@@ -795,17 +806,11 @@ const slides = [
 ]
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    marginTop: 10
-  },
   horizontal_container: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 4
+    marginBottom: 4,
+    alignItems: 'center'
   },
   modal: {
     alignSelf: 'center',
