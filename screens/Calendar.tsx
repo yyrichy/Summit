@@ -13,8 +13,6 @@ const CalendarScreen = () => {
   const [items, setItems] = useState(undefined as AgendaSchedule)
 
   const lowestScale = 0.4
-  const fadeAnim = useRef(new Animated.Value(0)).current
-  const fadeAnim2 = useRef(new Animated.Value(1)).current
   const scaleAnim = useRef(new Animated.Value(lowestScale)).current
 
   useAsyncEffect(async () => {
@@ -30,34 +28,6 @@ const CalendarScreen = () => {
           toValue: lowestScale,
           duration: 750,
           easing: Easing.back(1),
-          useNativeDriver: true
-        })
-      ])
-    ).start()
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1500,
-          useNativeDriver: true
-        }),
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 1500,
-          useNativeDriver: true
-        })
-      ])
-    ).start()
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(fadeAnim2, {
-          toValue: 0,
-          duration: 1500,
-          useNativeDriver: true
-        }),
-        Animated.timing(fadeAnim2, {
-          toValue: 1,
-          duration: 1500,
           useNativeDriver: true
         })
       ])
@@ -141,30 +111,9 @@ const CalendarScreen = () => {
               { transform: [{ scale: scaleAnim }] }
             ]}
           >
-            <Animated.View
-              style={[
-                styles.fadingContainer,
-                {
-                  opacity: fadeAnim
-                }
-              ]}
-            >
+            <Animated.View style={[styles.fadingContainer]}>
               <MaterialCommunityIcons
                 name="calendar-blank"
-                size={50}
-                color="black"
-              />
-            </Animated.View>
-            <Animated.View
-              style={[
-                styles.fadingContainer,
-                {
-                  opacity: fadeAnim2
-                }
-              ]}
-            >
-              <MaterialCommunityIcons
-                name="calendar-blank-outline"
                 size={50}
                 color="black"
               />

@@ -5,7 +5,7 @@ import Courses from './Courses'
 
 const Stack = createNativeStackNavigator()
 
-const StackNavigator = () => {
+const Grades = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -26,4 +26,4 @@ const StackNavigator = () => {
   )
 }
 
-export default StackNavigator
+export default Grades

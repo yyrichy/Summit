@@ -254,7 +254,7 @@ const Profile = () => {
         <Seperator />
         <Setting title="Disable Reminder" position="middle">
           <Switch
-            trackColor={{ false: Colors.medium_gray, true: Colors.baby_blue }}
+            trackColor={{ false: Colors.medium_gray, true: Colors.navy }}
             thumbColor={switchOn ? Colors.primary : Colors.white}
             ios_backgroundColor={Colors.medium_gray}
             onValueChange={toggleSwitch}

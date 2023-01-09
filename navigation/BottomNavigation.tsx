@@ -1,90 +1,92 @@
 import * as React from 'react'
-import { BottomNavigation } from 'react-native-paper'
-import CalendarScreen from '../screens/Calendar'
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
+import Grades from '../screens/Grades'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Documents from '../screens/Documents'
 import Profile from '../screens/Profile'
-import Grades from '../screens/Grades'
-import { Colors } from '../colors/Colors'
-import { Text, View } from 'react-native'
+import CalendarScreen from '../screens/Calendar'
 import ScheduleScreen from '../screens/Schedule'
+import { Colors } from '../colors/Colors'
 
-const App = () => {
-  const [index, setIndex] = React.useState(0)
-  const [routes] = React.useState([
-    {
-      key: 'grades',
-      title: 'Grades',
-      focusedIcon: 'chart-box',
-      unfocusedIcon: 'chart-box-outline'
-    },
-    {
-      key: 'documents',
-      title: 'Documents',
-      focusedIcon: 'folder',
-      unfocusedIcon: 'folder-outline'
-    },
-    {
-      key: 'schedule',
-      title: 'Schedule',
-      focusedIcon: 'view-list',
-      unfocusedIcon: 'view-list-outline'
-    },
-    {
-      key: 'calendar',
-      title: 'Calendar',
-      focusedIcon: 'calendar-blank',
-      unfocusedIcon: 'calendar-blank-outline'
-    },
-    {
-      key: 'profile',
-      title: 'Profile',
-      focusedIcon: 'account',
-      unfocusedIcon: 'account-outline'
-    }
-  ])
+const Tab = createMaterialBottomTabNavigator()
 
-  const renderScene = BottomNavigation.SceneMap({
-    grades: Grades,
-    documents: Documents,
-    schedule: ScheduleScreen,
-    calendar: CalendarScreen,
-    profile: Profile
-  })
-
-  const renderLabel = ({ route, focused }) => {
-    return (
-      <View
-        style={{
-          alignItems: 'center'
-        }}
-      >
-        <Text
-          style={{
-            color: Colors.navy,
-            fontFamily: 'Inter_400Regular',
-            fontSize: 12
-          }}
-        >
-          {route.title}
-        </Text>
-      </View>
-    )
-  }
-
+const BottomNavigation = () => {
   return (
-    <BottomNavigation
-      shifting={false}
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-      renderLabel={renderLabel}
+    <Tab.Navigator
+      barStyle={{ backgroundColor: Colors.primary }}
       activeColor={Colors.navy}
       inactiveColor={Colors.medium_gray}
-      barStyle={{
-        backgroundColor: Colors.primary
-      }}
-    />
+      backBehavior={'history'}
+    >
+      <Tab.Screen
+        name="Grades"
+        component={Grades}
+        options={{
+          tabBarLabel: 'Grades',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'chart-box' : 'chart-box-outline'}
+              color={color}
+              size={26}
+            />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Documents"
+        component={Documents}
+        options={{
+          tabBarLabel: 'Documents',
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'folder' : 'folder-outline'}
+              color={color}
+              size={26}
+            />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Schedule"
+        component={ScheduleScreen}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'view-list' : 'view-list-outline'}
+              color={color}
+              size={26}
+            />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Calendar"
+        component={CalendarScreen}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'calendar-blank' : 'calendar-blank-outline'}
+              color={color}
+              size={26}
+            />
+          )
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'account' : 'account-outline'}
+              color={color}
+              size={26}
+            />
+          )
+        }}
+      />
+    </Tab.Navigator>
   )
 }
 
-export default App
+export default BottomNavigation
