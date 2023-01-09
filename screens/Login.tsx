@@ -23,11 +23,9 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import {
-  FontAwesome,
   FontAwesome5,
-  Ionicons,
   MaterialCommunityIcons,
-  Feather
+  MaterialIcons
 } from '@expo/vector-icons'
 import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
@@ -308,7 +306,7 @@ const Login = () => {
           <View style={{ alignItems: 'center' }}>
             <Text style={styles.intro_text_style}>{item.text}</Text>
             {item.github && (
-              <FontAwesome.Button
+              <MaterialCommunityIcons.Button
                 name="github"
                 backgroundColor="transparent"
                 iconStyle={{
@@ -316,12 +314,12 @@ const Login = () => {
                 }}
                 underlayColor="none"
                 activeOpacity={0.2}
-                size={36}
+                size={40}
                 onPress={() =>
                   Linking.openURL('https://github.com/vaporrrr/Summit')
                 }
                 style={{ padding: 0, marginTop: 8 }}
-              ></FontAwesome.Button>
+              />
             )}
           </View>
         </SafeAreaView>
@@ -330,14 +328,16 @@ const Login = () => {
   }
 
   const renderNextButton = () => {
-    return <Ionicons name="arrow-forward-circle-outline" size={48} />
+    return (
+      <MaterialCommunityIcons name="arrow-right-circle-outline" size={40} />
+    )
   }
   const renderDoneButton = () => {
-    return <Ionicons name="checkmark-circle-outline" size={48} />
+    return <MaterialIcons name="check-circle-outline" size={40} />
   }
 
   const renderSkipButton = () => {
-    return <Ionicons name="play-skip-forward-circle" size={48} />
+    return <MaterialIcons name="skip-next" size={40} />
   }
 
   if (!showRealApp) {
@@ -357,37 +357,6 @@ const Login = () => {
 
   return (
     <>
-      <Modal
-        isVisible={isModalVisible}
-        coverScreen={false}
-        onBackdropPress={() => setModalVisible(!isModalVisible)}
-        animationIn={'fadeIn'}
-        animationOut={'fadeOut'}
-        backdropTransitionOutTiming={0}
-      >
-        <View style={[styles.modal, { width: 250 }]}>
-          <View style={styles.modal_view}>
-            <Text style={styles.security_modal}>
-              We do not collect/save your login information. Info entered is
-              sent directly to your school district's StudentVue website.
-            </Text>
-            <FontAwesome.Button
-              name="github"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.black
-              }}
-              underlayColor="none"
-              activeOpacity={0.2}
-              size={28}
-              onPress={() =>
-                Linking.openURL('https://github.com/vaporrrr/Summit')
-              }
-              style={{ padding: 0, alignSelf: 'flex-end' }}
-            ></FontAwesome.Button>
-          </View>
-        </View>
-      </Modal>
       <Modal
         isVisible={isDistrictModalVisible}
         coverScreen={false}
@@ -601,21 +570,21 @@ const Login = () => {
             >
               Questions/Concerns?
             </Text>
-            <Feather
-              name="info"
+            <MaterialCommunityIcons
+              name="information-outline"
               backgroundColor="transparent"
               iconStyle={{
                 color: Colors.black
               }}
               underlayColor="none"
               activeOpacity={0.2}
-              size={18}
+              size={20}
               style={{
                 padding: 0,
                 margin: 0,
                 marginLeft: 2
               }}
-            ></Feather>
+            />
           </TouchableOpacity>
           <TextInput
             defaultValue={username}
@@ -675,7 +644,7 @@ const Login = () => {
               {selected ? selected.name : 'Find Your School District'}
             </Text>
             {!selected && (
-              <Ionicons name="location-outline" size={24} color="black" />
+              <MaterialIcons name="location-pin" size={24} color="black" />
             )}
           </TouchableOpacity>
           <View style={styles.checkbox_container}>
@@ -718,27 +687,27 @@ const Login = () => {
         </LoginView>
         <View style={styles.row_container}>
           <View style={styles.insta_button_container}>
-            <FontAwesome.Button
+            <MaterialCommunityIcons.Button
               name="instagram"
               backgroundColor="transparent"
               iconStyle={styles.insta_button}
               underlayColor="none"
               activeOpacity={0.2}
-              size={28}
+              size={24}
               onPress={() => openInstagram('richardyin99')}
-            ></FontAwesome.Button>
+            />
             <Text style={styles.insta_text}>Richard Y</Text>
           </View>
           <View style={styles.insta_button_container}>
-            <FontAwesome.Button
+            <MaterialCommunityIcons.Button
               name="instagram"
               backgroundColor="transparent"
               iconStyle={styles.insta_button}
               underlayColor="none"
               activeOpacity={0.2}
-              size={28}
+              size={24}
               onPress={() => openInstagram('karthik.whynot')}
-            ></FontAwesome.Button>
+            />
             <Text style={styles.insta_text}>Karthik M</Text>
           </View>
         </View>

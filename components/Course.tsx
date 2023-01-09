@@ -68,23 +68,20 @@ const styles = StyleSheet.create({
   course_info_container: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginHorizontal: 7,
+    marginHorizontal: 10,
     flex: 1
   },
   name: {
     color: Colors.navy,
     fontFamily: 'Montserrat_700Bold',
     fontSize: 16,
-    marginRight: 14,
-    marginLeft: 7
+    marginRight: 14
   },
   teacher: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
-    fontSize: 12,
-    marginRight: 14,
-    marginLeft: 7,
-    marginTop: 4
+    fontSize: 14,
+    marginTop: 3
   },
   mark: {
     fontFamily: 'Montserrat_500Medium',

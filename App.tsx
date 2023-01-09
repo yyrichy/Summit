@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootStackParamList } from './types/RootStackParams'
 import AppContext from './contexts/AppContext'
-import { LightTheme } from './theme/LightTheme'
 import {
   useFonts,
   Inter_100Thin,
@@ -46,11 +45,14 @@ import { Colors } from './colors/Colors'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
 import {
+  adaptNavigationTheme,
   MD3LightTheme as DefaultTheme,
   Provider as PaperProvider
 } from 'react-native-paper'
 import BottomNavigation from './navigation/BottomNavigation'
 import { CalendarProvider } from 'react-native-calendars'
+import { MD3LightTheme } from './theme/Theme'
+import { LightTheme } from './theme/LightTheme'
 
 const theme = {
   ...DefaultTheme,
@@ -129,7 +131,7 @@ const App = () => {
     <SafeAreaProvider>
       <AppContext.Provider value={user}>
         <CalendarProvider date="">
-          <PaperProvider theme={theme}>
+          <PaperProvider theme={MD3LightTheme}>
             <NavigationContainer theme={LightTheme}>
               <Stack.Navigator>
                 <Stack.Screen

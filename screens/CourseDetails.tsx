@@ -24,18 +24,19 @@ import {
   isNumber,
   calculateMarkColor
 } from '../gradebook/GradeUtil'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { LightTheme } from '../theme/LightTheme'
-import { AnimatedFAB } from 'react-native-paper'
+import { AnimatedFAB, useTheme } from 'react-native-paper'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
   const navigation = useNavigation()
+  const theme = useTheme()
 
   const { marks, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(courseName)
@@ -120,22 +121,23 @@ const CourseDetails = ({ route }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.primary }}>
+    <View style={{ flex: 1, backgroundColor: 'rgba(103, 96, 0, 0.08)' }}>
       <SafeAreaView
         style={styles.course_name_container}
         edges={['top', 'left', 'right']}
       >
-        <FontAwesome.Button
+        <MaterialCommunityIcons.Button
           name="chevron-left"
           backgroundColor="transparent"
           iconStyle={{
             color: Colors.navy
           }}
+          style={{ padding: 2 }}
           underlayColor="none"
           activeOpacity={0.2}
-          size={30}
+          size={40}
           onPress={() => navigation.goBack()}
-        ></FontAwesome.Button>
+        />
         <Text numberOfLines={2} style={styles.course_name}>
           {courseName}
         </Text>
@@ -170,7 +172,7 @@ const CourseDetails = ({ route }) => {
           contentContainerStyle={{
             flexGrow: 1,
             paddingHorizontal: 12,
-            paddingTop: 8.5,
+            paddingTop: 8,
             paddingBottom: 10
           }}
           data={course.assignments}
@@ -296,21 +298,17 @@ const CourseDetails = ({ route }) => {
                   )
                 }}
               ></DropDownPicker>
-              <FontAwesome.Button
+              <MaterialCommunityIcons.Button
                 name="plus-circle"
                 backgroundColor="transparent"
                 iconStyle={{
                   color: Colors.navy
                 }}
-                style={{
-                  margin: 0,
-                  padding: 0
-                }}
-                size={52}
+                size={40}
                 underlayColor="none"
                 activeOpacity={0.2}
                 onPress={add}
-              ></FontAwesome.Button>
+              />
             </View>
           </View>
         </View>
@@ -347,7 +345,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     flex: 1,
     flexWrap: 'wrap',
-    fontFamily: 'Inter_800ExtraBold'
+    fontFamily: 'Inter_800ExtraBold',
+    marginRight: 4
   },
   course_name_container: {
     flexDirection: 'row',

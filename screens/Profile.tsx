@@ -13,13 +13,7 @@ import {
 import { StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import AppContext from '../contexts/AppContext'
-import {
-  FontAwesome,
-  Feather,
-  AntDesign,
-  Ionicons,
-  Entypo
-} from '@expo/vector-icons'
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -145,8 +139,8 @@ const Profile = () => {
           alignItems: 'center'
         }}
       >
-        <Ionicons.Button
-          name="exit-outline"
+        <MaterialIcons.Button
+          name="logout"
           size={38}
           underlayColor="none"
           activeOpacity={0.2}
@@ -198,25 +192,41 @@ const Profile = () => {
         <View style={styles.property_view}>
           {studentInfo.id && (
             <View style={styles.property_container}>
-              <AntDesign name="idcard" size={22} color={Colors.black} />
+              <MaterialCommunityIcons
+                name="badge-account-horizontal-outline"
+                size={24}
+                color={Colors.black}
+              />
               <Text style={styles.property_text}>{studentInfo.id}</Text>
             </View>
           )}
           {studentInfo.phone && (
             <View style={styles.property_container}>
-              <Feather name="phone" size={22} color={Colors.black} />
+              <MaterialCommunityIcons
+                name="phone"
+                size={24}
+                color={Colors.black}
+              />
               <Text style={styles.property_text}>{studentInfo.phone}</Text>
             </View>
           )}
           {studentInfo.email && (
             <View style={styles.property_container}>
-              <Feather name="mail" size={22} color={Colors.black} />
+              <MaterialCommunityIcons
+                name="email-outline"
+                size={24}
+                color={Colors.black}
+              />
               <Text style={styles.property_text}>{studentInfo.email}</Text>
             </View>
           )}
           {studentInfo.currentSchool && (
             <View style={styles.property_container}>
-              <FontAwesome name="building-o" size={22} color={Colors.black} />
+              <MaterialIcons
+                name="location-pin"
+                size={24}
+                color={Colors.black}
+              />
               <Text style={styles.property_text}>
                 {studentInfo.currentSchool}
               </Text>
@@ -224,9 +234,9 @@ const Profile = () => {
           )}
           {studentInfo.homeRoom && (
             <View style={styles.property_container}>
-              <FontAwesome
-                name="pencil-square-o"
-                size={22}
+              <MaterialCommunityIcons
+                name="account-box-outline"
+                size={24}
                 color={Colors.black}
               />
               <Text style={styles.property_text}>
@@ -240,7 +250,11 @@ const Profile = () => {
           onPress={downloadSchoolPicture}
           position="single"
         >
-          <Feather name="download" size={24} color={Colors.onyx_gray} />
+          <MaterialCommunityIcons
+            name="download"
+            size={24}
+            color={Colors.black}
+          />
         </Setting>
         <Text style={styles.settings_title}>Settings</Text>
         <Setting
@@ -249,7 +263,11 @@ const Profile = () => {
           onPress={showDatePicker}
           position="top"
         >
-          <Entypo name="chevron-right" size={24} color={Colors.onyx_gray} />
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={24}
+            color={Colors.black}
+          />
         </Setting>
         <Seperator />
         <Setting title="Disable Reminder" position="middle">
@@ -336,7 +354,7 @@ const styles = StyleSheet.create({
     padding: 12
   },
   property_text: {
-    marginHorizontal: 8,
+    marginLeft: 12,
     fontFamily: 'Inter_400Regular',
     fontSize: 16,
     color: Colors.onyx_gray
