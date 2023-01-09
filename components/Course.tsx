@@ -53,7 +53,7 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
-    borderRadius: 15,
+    borderRadius: 12,
     height: 55,
     flexDirection: 'row',
     justifyContent: 'center',

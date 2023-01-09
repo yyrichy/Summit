@@ -191,29 +191,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginHorizontal: 11
   },
-  refresh_button_container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
-  },
-  item: {
-    backgroundColor: 'white',
-    flex: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17
-  },
-  item_text: {
-    fontFamily: 'Inter_400Regular',
-    fontSize: 14
-  },
-  emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30
-  },
   scale_container: {
     flex: 1,
     alignItems: 'center',

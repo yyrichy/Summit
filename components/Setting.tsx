@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
   },
   container_top: {
     marginHorizontal: 25,
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
+    borderTopRightRadius: 12,
+    borderTopLeftRadius: 12,
     backgroundColor: Colors.white,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
   container_bottom: {
     marginHorizontal: 25,
     backgroundColor: Colors.white,
-    borderBottomRightRadius: 15,
-    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 12,
+    borderBottomLeftRadius: 12,
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: 18,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   container_single: {
     marginHorizontal: 25,
-    borderRadius: 15,
+    borderRadius: 12,
     backgroundColor: Colors.white,
     justifyContent: 'space-between',
     flexDirection: 'row',

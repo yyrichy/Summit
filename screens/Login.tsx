@@ -495,7 +495,7 @@ const Login = () => {
                           selected &&
                           selected.name === item.name &&
                           Colors.light_gray,
-                        borderRadius: 5
+                        borderRadius: 4
                       }}
                     >
                       <Text
@@ -655,7 +655,7 @@ const Login = () => {
               width: 250,
               flexDirection: 'row',
               borderWidth: 1,
-              borderRadius: 5,
+              borderRadius: 4,
               padding: 10,
               justifyContent: 'space-between',
               alignItems: 'center',
@@ -815,7 +815,7 @@ const styles = StyleSheet.create({
   modal: {
     alignSelf: 'center',
     backgroundColor: 'white',
-    borderRadius: 10
+    borderRadius: 28
   },
   modal_view: {
     padding: 15
@@ -848,7 +848,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderWidth: 1,
     borderColor: Colors.black,
-    borderRadius: 5,
+    borderRadius: 4,
     marginBottom: 10,
     backgroundColor: 'transparent',
     fontFamily: 'Inter_500Medium',
@@ -862,7 +862,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'transparent',
     padding: 10,
-    borderRadius: 5
+    borderRadius: 4
   },
   dropdown_text: {
     fontFamily: 'Inter_700Bold',
@@ -906,7 +906,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 50,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 25,
     borderWidth: 0,
     marginBottom: 10
   },

@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
   },
   property_view: {
     padding: 10,
-    borderRadius: 15,
+    borderRadius: 12,
     backgroundColor: Colors.white,
     marginHorizontal: 25,
     marginBottom: 15

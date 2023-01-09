@@ -42,7 +42,6 @@ const ScheduleComponent: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 15,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 8,
     justifyContent: 'center'
   },
   name: {

@@ -153,8 +153,8 @@ const CourseDetails = ({ route }) => {
       <View
         style={{
           backgroundColor: LightTheme.colors.background,
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
+          borderTopLeftRadius: 12,
+          borderTopRightRadius: 12,
           flex: 1
         }}
       >
@@ -216,7 +216,7 @@ const CourseDetails = ({ route }) => {
               onChangeText={(t) => {
                 setAssignmentName(t)
               }}
-              style={[styles.input, { marginTop: 10 }]}
+              style={styles.input}
               blurOnSubmit={false}
               onSubmitEditing={() => refInput.current.focus()}
             />
@@ -249,10 +249,9 @@ const CourseDetails = ({ route }) => {
             />
             <View
               style={{
-                marginHorizontal: 10,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginVertical: 5
+                marginLeft: 10
               }}
             >
               <DropDownPicker
@@ -307,7 +306,7 @@ const CourseDetails = ({ route }) => {
                   margin: 0,
                   padding: 0
                 }}
-                size={55}
+                size={52}
                 underlayColor="none"
                 activeOpacity={0.2}
                 onPress={add}
@@ -323,27 +322,26 @@ const CourseDetails = ({ route }) => {
 const styles = StyleSheet.create({
   input: {
     marginHorizontal: 10,
-    marginVertical: 5,
+    marginBottom: 10,
     padding: 5,
     borderWidth: 1,
     height: 30,
     borderColor: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
-    borderRadius: 5
+    borderRadius: 4
   },
   modal: {
     flexDirection: 'column',
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: 'white',
-    borderRadius: 12,
-    width: 300,
-    height: 195
+    borderRadius: 16,
+    width: 320,
+    padding: 16
   },
   modal_view: {
-    width: 300,
-    height: 195
+    width: 320
   },
   course_name: {
     fontSize: 24,
@@ -359,9 +357,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.black,
     backgroundColor: 'transparent',
-    padding: 5,
-    marginHorizontal: 10,
-    width: 210,
     alignSelf: 'center'
   },
   dropdown_text: {
@@ -369,7 +364,7 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   dropdown_container: {
-    width: 210,
+    width: 240,
     alignSelf: 'center'
   },
   category_name_container: {
@@ -386,7 +381,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 15,
     paddingHorizontal: 20,
-    borderRadius: 12,
+    borderRadius: 28,
     borderWidth: 3
   },
   course_mark: {
