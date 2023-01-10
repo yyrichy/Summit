@@ -1,6 +1,5 @@
 import React, { useContext, useRef, useState } from 'react'
 import { StyleSheet, View, Text, Animated, Easing } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import AppContext from '../contexts/AppContext'
 import { Agenda, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
@@ -90,37 +89,31 @@ const CalendarScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.white }}>
-      <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
-        <View style={styles.row_container}>
-          <View style={styles.title_container}>
-            <Text style={styles.title}>Calendar</Text>
-          </View>
+      <View style={styles.row_container}>
+        <View style={styles.title_container}>
+          <Text style={styles.title}>Calendar</Text>
         </View>
-        {items ? (
-          <Agenda
-            items={items}
-            renderItem={(item) => renderItem(item)}
-            minDate={Object.keys(items)[0]}
-            maxDate={Object.keys(items)[Object.keys(items).length - 1]}
-            removeClippedSubviews
-          />
-        ) : (
-          <Animated.View
-            style={[
-              styles.scale_container,
-              { transform: [{ scale: scaleAnim }] }
-            ]}
-          >
-            <Animated.View style={[styles.fadingContainer]}>
-              <MaterialCommunityIcons
-                name="calendar-blank"
-                size={50}
-                color="black"
-              />
-            </Animated.View>
+      </View>
+      {items ? (
+        <Agenda
+          items={items}
+          renderItem={(item) => renderItem(item)}
+          minDate={Object.keys(items)[0]}
+          maxDate={Object.keys(items)[Object.keys(items).length - 1]}
+          removeClippedSubviews
+        />
+      ) : (
+        <Animated.View
+          style={[
+            styles.scale_container,
+            { transform: [{ scale: scaleAnim }] }
+          ]}
+        >
+          <Animated.View style={[styles.fadingContainer]}>
+            <MaterialCommunityIcons name="calendar" size={50} color="black" />
           </Animated.View>
-        )}
-      </SafeAreaView>
+        </Animated.View>
+      )}
     </View>
   )
 }
@@ -138,6 +131,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Inter_800ExtraBold',
     fontSize: 30,
+    marginTop: 11,
     marginHorizontal: 11
   },
   scale_container: {

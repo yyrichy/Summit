@@ -4,8 +4,7 @@ import Grades from '../screens/Grades'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Documents from '../screens/Documents'
 import Profile from '../screens/Profile'
-import CalendarScreen from '../screens/Calendar'
-import ScheduleScreen from '../screens/Schedule'
+import Schedule from '../screens/Schedule'
 
 const Tab = createMaterialBottomTabNavigator()
 
@@ -42,24 +41,11 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="Schedule"
-        component={ScheduleScreen}
+        component={Schedule}
         options={{
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
-              name={focused ? 'view-list' : 'view-list-outline'}
-              color={color}
-              size={26}
-            />
-          )
-        }}
-      />
-      <Tab.Screen
-        name="Calendar"
-        component={CalendarScreen}
-        options={{
-          tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons
-              name={focused ? 'calendar-blank' : 'calendar-blank-outline'}
+              name={focused ? 'calendar' : 'calendar-outline'}
               color={color}
               size={26}
             />
