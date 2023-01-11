@@ -5,7 +5,10 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "platforms": ["android", "ios"],
+    "platforms": [
+      "android",
+      "ios"
+    ],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -14,12 +17,15 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app uses your location to determine nearby school districts"
-      }
+      },
+      "bundleIdentifier": "com.vaporrrr.Summit"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +34,9 @@
       },
       "package": "com.vaporrrr.Summit",
       "softwareKeyboardLayoutMode": "pan",
-      "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"]
+      "blockedPermissions": [
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "plugins": [
       [
@@ -38,6 +46,15 @@
         }
       ]
     ],
-    "userInterfaceStyle": "light"
+    "userInterfaceStyle": "light",
+    "extra": {
+      "eas": {
+        "projectId": "d59960c3-3bf2-4243-b9d3-22051792b8bc"
+      }
+    }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-3940256099942544/6300978111",
+    "ios_app_id": "ca-app-pub-7084446430900509~8532181858"
   }
 }
