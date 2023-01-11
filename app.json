@@ -5,10 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "platforms": [
-      "android",
-      "ios"
-    ],
+    "platforms": ["android", "ios"],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -17,9 +14,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -34,9 +29,7 @@
       },
       "package": "com.vaporrrr.Summit",
       "softwareKeyboardLayoutMode": "pan",
-      "blockedPermissions": [
-        "android.permission.ACCESS_FINE_LOCATION"
-      ]
+      "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"]
     },
     "plugins": [
       [
