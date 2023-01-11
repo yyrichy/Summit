@@ -1,7 +1,8 @@
 {
-  "gradeCheck": [
-    "Surely they're good right..?",
+  "gradeCheckMessages": [
+    "Surely they're good... right?",
     "It's easier for your grades to fall than rise",
-    "Make sure you don't have late work"
+    "You may have missing assignments",
+    "Check for newly inputted grades"
   ]
 }

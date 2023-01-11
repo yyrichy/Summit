@@ -12,8 +12,8 @@ const registerForPushNotificationsAsync = async () => {
   })
 
   if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
+    Notifications.setNotificationChannelAsync('reminders', {
+      name: 'Reminders',
       importance: Notifications.AndroidImportance.DEFAULT
     })
   }
@@ -32,7 +32,7 @@ const registerForPushNotificationsAsync = async () => {
 const scheduleGradeCheck = async () => {
   if (await getReminderIsDisabled()) return
   const date = await getReminderDate()
-  const strings: string[] = require('../assets/config.json').gradeCheck
+  const strings: string[] = require('../assets/config.json').gradeCheckMessages
   try {
     await cancelReminder()
     await Notifications.scheduleNotificationAsync({
@@ -43,7 +43,8 @@ const scheduleGradeCheck = async () => {
       trigger: {
         repeats: true,
         hour: date.getHours(),
-        minute: date.getMinutes()
+        minute: date.getMinutes(),
+        channelId: 'reminders'
       },
       identifier: 'GradeCheck'
     })
