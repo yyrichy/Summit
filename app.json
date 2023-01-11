@@ -31,13 +31,17 @@
       "softwareKeyboardLayoutMode": "pan",
       "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"]
     },
+    "androidStatusBar": {
+      "barStyle": "dark-content"
+    },
     "plugins": [
       [
         "expo-notifications",
         {
-          "color": "#ffffff"
+          "icon": "./assets/notification-icon.png"
         }
-      ]
+      ],
+      ["./withAndroidSplashScreen.js"]
     ],
     "userInterfaceStyle": "light",
     "extra": {
