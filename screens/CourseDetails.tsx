@@ -10,7 +10,6 @@ import {
   RefreshControl,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   BackHandler,
@@ -30,8 +29,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
-import { LightTheme } from '../theme/LightTheme'
-import { AnimatedFAB, useTheme } from 'react-native-paper'
+import { AnimatedFAB, TextInput, useTheme } from 'react-native-paper'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -41,8 +39,7 @@ const CourseDetails = ({ route }) => {
   const { marks, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(courseName)
 
-  const refInput = useRef<TextInput | null>(null)
-  const refInput2 = useRef<TextInput | null>(null)
+  const refInput = useRef(null)
 
   const [isModalVisible, setModalVisible] = useState(false)
   const [open, setOpen] = useState(false)
@@ -54,7 +51,6 @@ const CourseDetails = ({ route }) => {
       return { label: c.name, value: c.name }
     })
   )
-  const [assignmentName, setAssignmentName] = useState('')
   const [points, setPoints] = useState('')
   const [total, setTotal] = useState('')
 
@@ -82,7 +78,6 @@ const CourseDetails = ({ route }) => {
 
   useEffect(() => {
     if (isModalVisible) {
-      setAssignmentName('')
       setPoints('')
       setTotal('')
     }
@@ -111,7 +106,6 @@ const CourseDetails = ({ route }) => {
       addAssignment(
         marks,
         course,
-        assignmentName,
         category,
         parseFloat(points),
         parseFloat(total)
@@ -121,7 +115,7 @@ const CourseDetails = ({ route }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'rgba(103, 96, 0, 0.08)' }}>
+    <View style={{ flex: 1, backgroundColor: Colors.light_gray }}>
       <SafeAreaView
         style={styles.course_name_container}
         edges={['top', 'left', 'right']}
@@ -130,7 +124,7 @@ const CourseDetails = ({ route }) => {
           name="chevron-left"
           backgroundColor="transparent"
           iconStyle={{
-            color: Colors.navy
+            color: theme.colors.primary
           }}
           style={{ padding: 2 }}
           underlayColor="none"
@@ -138,14 +132,20 @@ const CourseDetails = ({ route }) => {
           size={40}
           onPress={() => navigation.goBack()}
         />
-        <Text numberOfLines={2} style={styles.course_name}>
+        <Text
+          numberOfLines={2}
+          style={[styles.course_name, { color: theme.colors.onBackground }]}
+        >
           {courseName}
         </Text>
       </SafeAreaView>
       <View
         style={[
           styles.course_mark_container,
-          { borderColor: calculateMarkColor(course.value) }
+          {
+            borderColor: calculateMarkColor(course.value),
+            backgroundColor: Colors.white
+          }
         ]}
       >
         <Text numberOfLines={1} style={styles.course_mark}>
@@ -154,7 +154,7 @@ const CourseDetails = ({ route }) => {
       </View>
       <View
         style={{
-          backgroundColor: LightTheme.colors.background,
+          backgroundColor: theme.colors.background,
           borderTopLeftRadius: 12,
           borderTopRightRadius: 12,
           flex: 1
@@ -213,17 +213,6 @@ const CourseDetails = ({ route }) => {
           <View style={styles.modal_view}>
             <TextInput
               returnKeyType={'next'}
-              value={assignmentName}
-              placeholder="Name (Optional)"
-              onChangeText={(t) => {
-                setAssignmentName(t)
-              }}
-              style={styles.input}
-              blurOnSubmit={false}
-              onSubmitEditing={() => refInput.current.focus()}
-            />
-            <TextInput
-              returnKeyType={'next'}
               value={points}
               keyboardType="decimal-pad"
               autoComplete="off"
@@ -232,9 +221,10 @@ const CourseDetails = ({ route }) => {
                 if (isNumber(t) || t === '') setPoints(t)
               }}
               style={styles.input}
+              textColor={Colors.black}
+              placeholderTextColor={Colors.secondary}
               blurOnSubmit={false}
-              ref={refInput}
-              onSubmitEditing={() => refInput2.current.focus()}
+              onSubmitEditing={() => refInput.current.focus()}
             />
             <TextInput
               returnKeyType={'next'}
@@ -246,14 +236,17 @@ const CourseDetails = ({ route }) => {
                 if (isNumber(t) || t === '') setTotal(t)
               }}
               style={styles.input}
-              ref={refInput2}
+              textColor={Colors.black}
+              placeholderTextColor={Colors.secondary}
+              ref={refInput}
               onSubmitEditing={() => setOpen(true)}
             />
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginLeft: 10
+                alignItems: 'center',
+                marginHorizontal: 10
               }}
             >
               <DropDownPicker
@@ -304,7 +297,8 @@ const CourseDetails = ({ route }) => {
                 iconStyle={{
                   color: Colors.navy
                 }}
-                size={40}
+                style={{ padding: 0, margin: 0, marginRight: -8 }}
+                size={50}
                 underlayColor="none"
                 activeOpacity={0.2}
                 onPress={add}
@@ -321,10 +315,10 @@ const styles = StyleSheet.create({
   input: {
     marginHorizontal: 10,
     marginBottom: 10,
-    padding: 5,
+    paddingHorizontal: 5,
     borderWidth: 1,
-    height: 30,
-    borderColor: Colors.black,
+    height: 36,
+    backgroundColor: 'transparent',
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
     borderRadius: 4
@@ -333,7 +327,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: 'white',
+    backgroundColor: Colors.white,
     borderRadius: 16,
     width: 320,
     padding: 16
@@ -372,7 +366,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   course_mark_container: {
-    backgroundColor: Colors.white,
     marginBottom: 20,
     margin: 10,
     alignSelf: 'center',

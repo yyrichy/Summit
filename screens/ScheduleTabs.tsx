@@ -74,7 +74,7 @@ const ScheduleScreen = () => {
 
   if (!schedule)
     return (
-      <View>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <ActivityIndicator
           color={Colors.secondary}
           animating={true}

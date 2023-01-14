@@ -64,7 +64,6 @@ const Login = () => {
   const [isChecked, setToggleCheckBox] = useState(false)
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
 
-  const [isModalVisible, setModalVisible] = useState(false)
   const [isDistrictModalVisible, setDistrictModalVisible] = useState(false)
 
   const [selected, setSelected] = useState(null)
@@ -369,7 +368,7 @@ const Login = () => {
           style={[
             styles.modal,
             {
-              padding: 15,
+              padding: 20,
               marginTop: insets.top,
               marginBottom: insets.bottom,
               maxWidth: 350
@@ -406,8 +405,7 @@ const Login = () => {
                 >
                   <Button
                     icon="cog"
-                    mode="contained"
-                    buttonColor={Colors.navy}
+                    mode="contained-tonal"
                     onPress={() => {
                       setDistrictModalVisible(false)
                       Linking.openSettings()
@@ -509,7 +507,10 @@ const Login = () => {
             setOpen={setOpen}
             setValue={setValue}
             setItems={setAllDistricts}
-            style={{ marginTop: 10 }}
+            style={{
+              marginTop: 10,
+              backgroundColor: 'transparent'
+            }}
             labelProps={{ numberOfLines: 1 }}
             translation={{
               SEARCH_PLACEHOLDER: 'Enter Your School District Name',
@@ -545,7 +546,7 @@ const Login = () => {
       <ImageBackground
         source={require('../assets/mountainbackground.png')}
         resizeMode="cover"
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: Colors.white }}
       >
         <SafeAreaView style={{ alignItems: 'center' }}>
           <View style={styles.horizontal_container}>
@@ -591,11 +592,11 @@ const Login = () => {
             onChangeText={(u) => setUsername(u)}
             placeholder={'Username'}
             style={styles.input}
+            textColor={Colors.black}
+            placeholderTextColor={Colors.secondary}
             returnKeyType={'next'}
             onSubmitEditing={() => refInput.current.focus()}
             blurOnSubmit={false}
-            activeUnderlineColor={Colors.navy}
-            textColor={Colors.black}
           />
           <TextInput
             defaultValue={password}
@@ -603,21 +604,22 @@ const Login = () => {
             placeholder={'Password'}
             secureTextEntry={isPasswordSecure}
             style={styles.input}
+            textColor={Colors.black}
+            placeholderTextColor={Colors.secondary}
             returnKeyType={'next'}
             ref={refInput}
             onSubmitEditing={() => {
               onPress()
             }}
             blurOnSubmit={false}
-            activeUnderlineColor={Colors.navy}
             right={
               <TextInput.Icon
                 icon={isPasswordSecure ? 'eye-off-outline' : 'eye-outline'}
                 style={{ marginRight: -2 }}
                 onPress={() => setIsPasswordSecure(!isPasswordSecure)}
+                iconColor={Colors.black}
               />
             }
-            textColor={Colors.black}
           />
           <TouchableOpacity
             style={{
@@ -816,7 +818,6 @@ const styles = StyleSheet.create({
     width: 250,
     height: 50,
     borderWidth: 1,
-    borderColor: Colors.black,
     borderRadius: 4,
     marginBottom: 10,
     backgroundColor: 'transparent',

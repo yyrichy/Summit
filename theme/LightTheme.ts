@@ -1,7 +1,7 @@
 import { Colors } from '../colors/Colors'
-import { MD3LightTheme } from './Theme'
+import { MD3LightTheme } from './MD3LightTheme'
 
-export const LightTheme = {
+export const NavLightTheme = {
   dark: false,
   colors: {
     primary: Colors.primary,

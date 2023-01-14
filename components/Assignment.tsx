@@ -21,13 +21,28 @@ import {
   calculateMarkColor,
   updatePoints,
   deleteAssignment,
-  isNumber,
-  roundTo,
-  calculateLetterGrade
+  isNumber
 } from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import { useTheme } from 'react-native-paper'
+import { enUS } from 'date-fns/locale'
+import { formatRelative } from 'date-fns'
+
+const formatRelativeLocale = {
+  lastWeek: "'Last' eeee",
+  yesterday: "'Yesterday'",
+  today: "'Today'",
+  tomorrow: "'Tomorrow'",
+  nextWeek: "'Next' eeee",
+  other: 'MM/dd/yyyy'
+}
+
+const locale = {
+  ...enUS,
+  formatRelative: (token) => formatRelativeLocale[token]
+}
 
 type Props = {
   courseName: string
@@ -44,6 +59,7 @@ if (
 }
 
 const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
+  const theme = useTheme()
   const { marks, setMarks } = useContext(AppContext)
   const [isDropdown, setIsDropdown] = useState(false)
   const course = marks.courses.get(courseName)
@@ -98,6 +114,14 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
     setIsDropdown(!isDropdown)
   }
 
+  const getModifiedColor = (modified: boolean) => {
+    if (modified) {
+      return Colors.dark_middle_blue_green
+    } else {
+      return Colors.black
+    }
+  }
+
   return (
     <TouchableOpacity
       ref={ref}
@@ -113,22 +137,15 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
       ]}
       onPress={transition}
     >
-      <View style={[styles.horizontal_container, { height: 52 }]}>
+      <View style={[styles.horizontal_container]}>
         <View style={styles.assignment_info_container}>
-          <Text
-            numberOfLines={1}
-            style={[
-              styles.name,
-              {
-                color: assignment.modified
-                  ? Colors.dark_middle_blue_green
-                  : Colors.navy
-              }
-            ]}
-          >
+          <Text numberOfLines={1} style={[styles.name]}>
             {name}
           </Text>
-          <Text numberOfLines={1} style={styles.category}>
+          <Text
+            numberOfLines={1}
+            style={[styles.category, { color: theme.colors.onSurface }]}
+          >
             {assignment.category} - {assignment.date.due.toLocaleDateString()}
           </Text>
         </View>
@@ -139,12 +156,11 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
             keyboardType={'decimal-pad'}
             returnKeyType={'done'}
             autoComplete={'off'}
+            placeholderTextColor={Colors.secondary}
             style={[
               styles.mark,
               {
-                color: assignment.modified
-                  ? Colors.dark_middle_blue_green
-                  : Colors.black,
+                color: getModifiedColor(assignment.modified),
                 width: getWidth(assignment.points)
               }
             ]}
@@ -152,19 +168,25 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
               if (isNumber(input) || input === '') update(input, 'earned')
             }}
           />
-          <Text style={styles.dash}> / </Text>
+          <Text
+            style={[
+              styles.dash,
+              { color: getModifiedColor(assignment.modified) }
+            ]}
+          >
+            /
+          </Text>
           <TextInput
             value={total.current}
             placeholder={'__'}
             keyboardType={'decimal-pad'}
             returnKeyType={'done'}
             autoComplete={'off'}
+            placeholderTextColor={Colors.secondary}
             style={[
               styles.mark,
               {
-                color: assignment.modified
-                  ? Colors.dark_middle_blue_green
-                  : Colors.black,
+                color: getModifiedColor(assignment.modified),
                 width: getWidth(assignment.total)
               }
             ]}
@@ -177,68 +199,52 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
       {isDropdown && (
         <View style={styles.dropdown_container}>
           <View style={{ flex: 1 }}>
-            <View style={styles.horizontal_container}>
-              <Text style={styles.dropdown_text_name}>Full Name:</Text>
-              <Text style={styles.dropdown_text_value}>{name}</Text>
-            </View>
-            {course.categories.size > 0 && (
-              <View style={styles.horizontal_container}>
-                <Text style={styles.dropdown_text_name}>Effective Weight:</Text>
+            {assignment.date.start && (
+              <View style={styles.detail_container}>
+                <MaterialIcons name={'not-started'} size={30} />
                 <Text style={styles.dropdown_text_value}>
-                  {roundTo(
-                    (course.categories.get(assignment.category).weight /
-                      totalWeight) *
-                      100,
-                    2
-                  )}
-                  %
+                  {formatRelative(assignment.date.start, new Date(), {
+                    locale: locale
+                  })}
                 </Text>
               </View>
             )}
-            <View style={styles.horizontal_container}>
-              <Text style={styles.dropdown_text_name}>Grade:</Text>
-              <Text style={styles.dropdown_text_value}>
-                {hasScore
-                  ? `${roundTo(score, 2)}% (${calculateLetterGrade(score)})`
-                  : 'N/A'}
-              </Text>
-            </View>
-            <View style={styles.horizontal_container}>
-              <Text style={styles.dropdown_text_name}>Status:</Text>
+            {assignment.date.due && (
+              <View style={styles.detail_container}>
+                <MaterialCommunityIcons name={'timer-outline'} size={30} />
+                <Text style={styles.dropdown_text_value}>
+                  {formatRelative(assignment.date.due, new Date(), {
+                    locale: locale
+                  })}
+                </Text>
+              </View>
+            )}
+            <View style={styles.detail_container}>
+              <MaterialIcons name={'edit'} size={30} />
               <Text style={styles.dropdown_text_value}>
                 {assignment.status}
               </Text>
             </View>
-            <View style={styles.horizontal_container}>
-              <Text style={styles.dropdown_text_name}>Due Date:</Text>
-              <Text style={styles.dropdown_text_value}>
-                {assignment.date.due.toLocaleDateString()}
-              </Text>
-            </View>
-            <View style={styles.horizontal_container}>
-              <Text style={styles.dropdown_text_name}>Start Date:</Text>
-              <Text style={styles.dropdown_text_value}>
-                {assignment.date.start.toLocaleDateString()}
-              </Text>
-            </View>
-            <View style={styles.horizontal_container}>
-              <Text style={styles.dropdown_text_name}>Notes:</Text>
-              <Text style={styles.dropdown_text_value}>
-                {assignment.notes.length === 0 ? 'None' : assignment.notes}
-              </Text>
-            </View>
+            {assignment.notes.length !== 0 && (
+              <View style={styles.detail_container}>
+                <MaterialIcons name={'notes'} size={30} />
+                <Text style={styles.dropdown_text_value}>
+                  {assignment.notes}
+                </Text>
+              </View>
+            )}
           </View>
           <View style={{ flexDirection: 'column-reverse' }}>
             <MaterialCommunityIcons.Button
               name="delete-forever"
               backgroundColor="transparent"
               iconStyle={{
-                color: Colors.red
+                color: theme.colors.error
               }}
               style={{ paddingRight: 0, margin: 0 }}
               underlayColor="none"
               activeOpacity={0.2}
-              size={40}
+              size={36}
               onPress={() =>
                 setMarks(deleteAssignment(marks, courseName, name))
               }
@@ -252,24 +258,26 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
     borderRadius: 12,
     marginVertical: 4,
     overflow: 'hidden',
-    paddingHorizontal: 10
+    padding: 10,
+    backgroundColor: Colors.white
   },
   horizontal_container: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   dropdown_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 10
+    marginTop: 10
   },
   assignment_info_container: {
     flexDirection: 'column',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
+    marginRight: 4
   },
   name: {
     color: Colors.black,
@@ -288,7 +296,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   mark: {
-    height: 60,
     fontSize: 24,
     fontFamily: 'Inter_600SemiBold',
     alignSelf: 'center',
@@ -298,17 +305,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignSelf: 'center',
     textAlignVertical: 'center',
-    marginRight: 3
-  },
-  dropdown_text_name: {
-    fontFamily: 'Montserrat_600SemiBold',
-    fontSize: 14
+    marginRight: 6
   },
   dropdown_text_value: {
     fontFamily: 'Inter_400Regular',
     flex: 1,
-    fontSize: 14,
-    marginLeft: 7
+    fontSize: 16,
+    marginLeft: 10
+  },
+  detail_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4
   }
 })
 

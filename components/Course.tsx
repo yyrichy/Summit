@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import {
   calculateLetterGrade,
@@ -17,10 +18,11 @@ type Props = {
 
 const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
   const markAsNumber: number = parseFloat(mark)
+  const theme = useTheme()
 
   return (
     <TouchableOpacity
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.colors.surface }]}
       onPress={onPress}
       activeOpacity={0.2}
     >
@@ -29,7 +31,10 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
         <Text numberOfLines={1} style={styles.name}>
           {name}
         </Text>
-        <Text numberOfLines={1} style={styles.teacher}>
+        <Text
+          numberOfLines={1}
+          style={[styles.teacher, { color: theme.colors.onSurface }]}
+        >
           {teacher}
         </Text>
       </View>
@@ -52,14 +57,12 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
     borderRadius: 12,
-    height: 55,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 5,
-    padding: 10
+    padding: 12
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',
@@ -74,18 +77,16 @@ const styles = StyleSheet.create({
   name: {
     color: Colors.navy,
     fontFamily: 'Montserrat_700Bold',
-    fontSize: 16,
-    marginRight: 14
+    fontSize: 16
   },
   teacher: {
-    color: Colors.black,
     fontFamily: 'Inter_400Regular',
     fontSize: 14,
     marginTop: 3
   },
   mark: {
     fontFamily: 'Montserrat_500Medium',
-    fontSize: 30
+    fontSize: 26
   },
   letter_grade: {
     marginLeft: 7,

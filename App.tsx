@@ -44,25 +44,11 @@ import { ActivityIndicator, Text, View } from 'react-native'
 import { Colors } from './colors/Colors'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
-import {
-  adaptNavigationTheme,
-  MD3LightTheme as DefaultTheme,
-  Provider as PaperProvider
-} from 'react-native-paper'
+import { Provider as PaperProvider } from 'react-native-paper'
 import BottomNavigation from './navigation/BottomNavigation'
 import { CalendarProvider } from 'react-native-calendars'
-import { MD3LightTheme } from './theme/Theme'
-import { LightTheme } from './theme/LightTheme'
-
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primaryContainer: Colors.primary,
-    background: Colors.blue_off_white,
-    secondaryContainer: Colors.accent
-  }
-}
+import { NavLightTheme as LightTheme } from './theme/LightTheme'
+import { MD3LightTheme } from './theme/MD3LightTheme'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 

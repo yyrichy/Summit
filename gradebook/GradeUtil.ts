@@ -168,12 +168,11 @@ const updatePoints = (
 const addAssignment = (
   marks: Marks,
   course: Course,
-  assignment: string,
   category: string,
   points: number,
   total: number
 ): Marks => {
-  let name = assignment.length === 0 ? 'Assignment' : assignment
+  let name = 'Assignment'
   if (course.assignments.some((a) => a.name === name)) {
     let indentifier = 2
     while (course.assignments.some((a) => a.name === name + indentifier)) {
