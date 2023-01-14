@@ -53,7 +53,7 @@ export const palette = {
   tertiary100: '#ffffff',
   /* neutral */
   neutral0: '#000000',
-  neutral10: '#001b3d',
+  neutral10: '#060606',
   neutral20: '#003062',
   neutral25: '#003b76',
   neutral30: '#00468a',

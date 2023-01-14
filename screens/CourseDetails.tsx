@@ -13,7 +13,8 @@ import {
   TouchableOpacity,
   View,
   BackHandler,
-  Dimensions
+  Dimensions,
+  FlatList
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import Assignment from '../components/Assignment'
@@ -21,7 +22,8 @@ import {
   addAssignment,
   convertGradebook,
   isNumber,
-  calculateMarkColor
+  calculateMarkColor,
+  roundTo
 } from '../gradebook/GradeUtil'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
@@ -29,7 +31,8 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
-import { AnimatedFAB, TextInput, useTheme } from 'react-native-paper'
+import { AnimatedFAB, Chip, TextInput, useTheme } from 'react-native-paper'
+import { Category } from '../interfaces/Gradebook'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -38,6 +41,13 @@ const CourseDetails = ({ route }) => {
 
   const { marks, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(courseName)
+
+  const [chips, setChips] = useState(
+    new Map(JSON.parse(JSON.stringify(Array.from(course.categories)))) as Map<
+      String,
+      Category
+    >
+  )
 
   const refInput = useRef(null)
 
@@ -114,6 +124,16 @@ const CourseDetails = ({ route }) => {
     toggleModal()
   }
 
+  let coursePoints = 0
+  let courseTotal = 0
+  for (const category of chips.values()) {
+    if (!isNaN(category.value)) {
+      coursePoints += category.value * category.weight
+      courseTotal += category.weight
+    }
+  }
+  const courseValue = roundTo((coursePoints / courseTotal) * 100, 2)
+
   return (
     <View style={{ flex: 1, backgroundColor: Colors.light_gray }}>
       <SafeAreaView
@@ -143,14 +163,49 @@ const CourseDetails = ({ route }) => {
         style={[
           styles.course_mark_container,
           {
-            borderColor: calculateMarkColor(course.value),
+            borderColor: calculateMarkColor(courseValue),
             backgroundColor: Colors.white
           }
         ]}
       >
         <Text numberOfLines={1} style={styles.course_mark}>
-          {isNaN(course.value) ? 'N/A' : course.value}
+          {isNaN(courseValue) ? 'N/A' : courseValue}
         </Text>
+      </View>
+      <View style={{ height: 44 }}>
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          data={[...course.categories.entries()]}
+          renderItem={({ item }) => {
+            const selected = chips.has(item[1].name)
+            return (
+              <Chip
+                selected={selected}
+                mode={selected ? 'flat' : 'outlined'}
+                style={{ marginHorizontal: 8 }}
+                onPress={() => {
+                  if (!selected) {
+                    const newChips = chips
+                    newChips.set(item[0], item[1])
+                    setChips(
+                      new Map(JSON.parse(JSON.stringify(Array.from(newChips))))
+                    )
+                  } else {
+                    const newChips = chips
+                    newChips.delete(item[0])
+                    setChips(
+                      new Map(JSON.parse(JSON.stringify(Array.from(newChips))))
+                    )
+                  }
+                }}
+              >
+                {item[1].name}
+              </Chip>
+            )
+          }}
+          keyExtractor={(item) => item[1].name}
+        />
       </View>
       <View
         style={{
@@ -175,7 +230,7 @@ const CourseDetails = ({ route }) => {
             paddingTop: 8,
             paddingBottom: 10
           }}
-          data={course.assignments}
+          data={course.assignments.filter((a) => chips.has(a.category))}
           renderItem={({ item }) => (
             <Assignment
               name={item.name}
@@ -311,6 +366,29 @@ const CourseDetails = ({ route }) => {
   )
 }
 
+const getTotalGrade = (c, categories) => {
+  const course = Object.assign({}, c)
+  ;(course.points = 0), (course.total = 0), (course.value = NaN)
+  for (const category of categories.values()) {
+    ;(category.points = 0), (category.total = 0), (category.value = NaN)
+  }
+  for (const assignment of course.assignments) {
+    const category = categories.get(assignment.category)
+    if (category && !isNaN(assignment.points) && !isNaN(assignment.total)) {
+      category.points += assignment.points
+      category.total += assignment.total
+      category.value = category.points / category.total
+    }
+  }
+  for (const category of categories.values()) {
+    if (!isNaN(category.value)) {
+      course.points += category.value * category.weight
+      course.total += category.weight
+    }
+  }
+  return roundTo((course.points / course.total) * 100, 2)
+}
+
 const styles = StyleSheet.create({
   input: {
     marginHorizontal: 10,
@@ -366,7 +444,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   course_mark_container: {
-    marginBottom: 20,
     margin: 10,
     alignSelf: 'center',
     alignItems: 'center',
