@@ -48,7 +48,8 @@ const convertGradebook = (gradebook: Gradebook) => {
             points: 0,
             total: 0,
             value: NaN,
-            weight: parseFloat(category.weight.standard)
+            weight: parseFloat(category.weight.standard),
+            show: true
           })
         }
       }
@@ -93,7 +94,7 @@ const calculatePoints = (marks: Marks): Marks => {
       }
     }
     for (const category of course.categories.values()) {
-      if (!isNaN(category.value)) {
+      if (!isNaN(category.value) && category.show) {
         course.points += category.value * category.weight
         course.total += category.weight
       }
@@ -271,6 +272,13 @@ const formatAMPM = (date: Date): string => {
   return strTime
 }
 
+const toggleCategory = (marks: Marks, course: Course, category: Category) => {
+  category.show = !category.show
+  course.categories.set(category.name, category)
+  marks.courses.set(course.name, course)
+  return calculatePoints(Object.assign({}, marks))
+}
+
 export {
   parseCourseName,
   convertGradebook,
@@ -286,5 +294,6 @@ export {
   suffix,
   normalize,
   prependZero,
-  formatAMPM
+  formatAMPM,
+  toggleCategory
 }

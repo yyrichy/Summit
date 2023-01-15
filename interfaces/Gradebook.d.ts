@@ -31,6 +31,7 @@ export interface Category {
   total: number
   value: number
   weight: number
+  show: boolean
 }
 
 export interface Assignment {

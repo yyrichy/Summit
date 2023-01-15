@@ -23,7 +23,8 @@ import {
   convertGradebook,
   isNumber,
   calculateMarkColor,
-  roundTo
+  roundTo,
+  toggleCategory
 } from '../gradebook/GradeUtil'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
@@ -32,7 +33,6 @@ import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { AnimatedFAB, Chip, TextInput, useTheme } from 'react-native-paper'
-import { Category } from '../interfaces/Gradebook'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -41,13 +41,6 @@ const CourseDetails = ({ route }) => {
 
   const { marks, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(courseName)
-
-  const [chips, setChips] = useState(
-    new Map(JSON.parse(JSON.stringify(Array.from(course.categories)))) as Map<
-      String,
-      Category
-    >
-  )
 
   const refInput = useRef(null)
 
@@ -124,16 +117,6 @@ const CourseDetails = ({ route }) => {
     toggleModal()
   }
 
-  let coursePoints = 0
-  let courseTotal = 0
-  for (const category of chips.values()) {
-    if (!isNaN(category.value)) {
-      coursePoints += category.value * category.weight
-      courseTotal += category.weight
-    }
-  }
-  const courseValue = roundTo((coursePoints / courseTotal) * 100, 2)
-
   return (
     <View style={{ flex: 1, backgroundColor: Colors.light_gray }}>
       <SafeAreaView
@@ -163,41 +146,35 @@ const CourseDetails = ({ route }) => {
         style={[
           styles.course_mark_container,
           {
-            borderColor: calculateMarkColor(courseValue),
+            borderColor: calculateMarkColor(course.value),
             backgroundColor: Colors.white
           }
         ]}
       >
         <Text numberOfLines={1} style={styles.course_mark}>
-          {isNaN(courseValue) ? 'N/A' : courseValue}
+          {isNaN(course.value) ? 'N/A' : course.value}
         </Text>
       </View>
-      <View style={{ height: 44 }}>
+      <View style={{ height: 32, marginBottom: 10, paddingLeft: 4 }}>
         <FlatList
           showsHorizontalScrollIndicator={false}
           horizontal
           data={[...course.categories.entries()]}
           renderItem={({ item }) => {
-            const selected = chips.has(item[1].name)
+            const selected = item[1].show
             return (
               <Chip
                 selected={selected}
-                mode={selected ? 'flat' : 'outlined'}
-                style={{ marginHorizontal: 8 }}
+                mode={'flat'}
+                style={{
+                  marginHorizontal: 8,
+                  height: 32,
+                  backgroundColor: selected
+                    ? theme.colors.secondaryContainer
+                    : theme.colors.surface
+                }}
                 onPress={() => {
-                  if (!selected) {
-                    const newChips = chips
-                    newChips.set(item[0], item[1])
-                    setChips(
-                      new Map(JSON.parse(JSON.stringify(Array.from(newChips))))
-                    )
-                  } else {
-                    const newChips = chips
-                    newChips.delete(item[0])
-                    setChips(
-                      new Map(JSON.parse(JSON.stringify(Array.from(newChips))))
-                    )
-                  }
+                  setMarks(toggleCategory(marks, course, item[1]))
                 }}
               >
                 {item[1].name}
@@ -230,7 +207,9 @@ const CourseDetails = ({ route }) => {
             paddingTop: 8,
             paddingBottom: 10
           }}
-          data={course.assignments.filter((a) => chips.has(a.category))}
+          data={course.assignments.filter(
+            (a) => course.categories.get(a.category).show
+          )}
           renderItem={({ item }) => (
             <Assignment
               name={item.name}
