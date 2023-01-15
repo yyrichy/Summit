@@ -37,7 +37,7 @@ const scheduleGradeCheck = async () => {
     await cancelReminder()
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: '📚 Check Your Grades!',
+        title: 'Check Your Grades',
         body: strings[Math.floor(Math.random() * strings.length)]
       },
       trigger: {
