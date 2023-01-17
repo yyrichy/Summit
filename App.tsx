@@ -49,6 +49,7 @@ import BottomNavigation from './navigation/BottomNavigation'
 import { CalendarProvider } from 'react-native-calendars'
 import { NavLightTheme as LightTheme } from './theme/LightTheme'
 import { MD3LightTheme } from './theme/MD3LightTheme'
+import { RootSiblingParent } from 'react-native-root-siblings'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -114,32 +115,34 @@ const App = () => {
   }
 
   return (
-    <SafeAreaProvider>
-      <AppContext.Provider value={user}>
-        <CalendarProvider date="">
-          <PaperProvider theme={MD3LightTheme}>
-            <NavigationContainer theme={LightTheme}>
-              <Stack.Navigator>
-                <Stack.Screen
-                  name="Login"
-                  component={Login}
-                  options={{
-                    headerShown: false
-                  }}
-                />
-                <Stack.Screen
-                  name="Menu"
-                  component={BottomNavigation}
-                  options={{
-                    headerShown: false
-                  }}
-                />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </PaperProvider>
-        </CalendarProvider>
-      </AppContext.Provider>
-    </SafeAreaProvider>
+    <RootSiblingParent>
+      <SafeAreaProvider>
+        <AppContext.Provider value={user}>
+          <CalendarProvider date="">
+            <PaperProvider theme={MD3LightTheme}>
+              <NavigationContainer theme={LightTheme}>
+                <Stack.Navigator>
+                  <Stack.Screen
+                    name="Login"
+                    component={Login}
+                    options={{
+                      headerShown: false
+                    }}
+                  />
+                  <Stack.Screen
+                    name="Menu"
+                    component={BottomNavigation}
+                    options={{
+                      headerShown: false
+                    }}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
+            </PaperProvider>
+          </CalendarProvider>
+        </AppContext.Provider>
+      </SafeAreaProvider>
+    </RootSiblingParent>
   )
 }
 

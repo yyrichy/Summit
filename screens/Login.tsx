@@ -40,6 +40,7 @@ import District from '../components/District'
 import { Button, TextInput } from 'react-native-paper'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { toast } from '../util/Util'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -136,15 +137,15 @@ const Login = () => {
 
   async function onLogin(): Promise<void> {
     if (!username) {
-      Alert.alert('Enter your username')
+      toast('Enter your username')
       return
     }
     if (!password) {
-      Alert.alert('Enter your password')
+      toast('Enter your password')
       return
     }
     if (!selected) {
-      Alert.alert('Select your school district')
+      toast('Select your school district')
       return
     }
     setIsLoading(true)

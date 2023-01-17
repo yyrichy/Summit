@@ -34,6 +34,7 @@ import { RootStackParamList } from '../types/RootStackParams'
 import { Avatar } from 'react-native-paper'
 import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
+import { toast } from '../util/Util'
 
 const Profile = () => {
   type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
@@ -387,7 +388,7 @@ const deleteLoginInfo = async () => {
     Alert.alert('Error deleting login info')
     return
   }
-  Alert.alert('Login info successfully deleted')
+  toast('Login info successfully deleted')
 }
 
 export default Profile
