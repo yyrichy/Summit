@@ -125,7 +125,7 @@ const Courses = ({ navigation }) => {
       {marks && (
         <FadeInFlatList
           initialDelay={0}
-          durationPerItem={350}
+          durationPerItem={300}
           parallelItems={5}
           itemsToFadeIn={10}
           data={[...marks.courses.entries()]}

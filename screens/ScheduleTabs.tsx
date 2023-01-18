@@ -104,7 +104,7 @@ const ScheduleScreen = () => {
         {schedule.today[0] ? (
           <FadeInFlatList
             initialDelay={0}
-            durationPerItem={350}
+            durationPerItem={300}
             parallelItems={5}
             itemsToFadeIn={schedule.today[0].classes.length}
             data={schedule.today[0].classes}
@@ -151,7 +151,7 @@ const ScheduleScreen = () => {
       {schedule.classes.length > 0 ? (
         <FadeInFlatList
           initialDelay={0}
-          durationPerItem={350}
+          durationPerItem={300}
           parallelItems={5}
           itemsToFadeIn={schedule.classes.length}
           data={schedule.classes}

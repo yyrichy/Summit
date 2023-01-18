@@ -4,8 +4,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Switch,
-  Platform,
   Alert,
   ScrollView
 } from 'react-native'
@@ -34,6 +32,7 @@ import { Avatar } from 'react-native-paper'
 import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
 import { toast } from '../util/Util'
+import { Switch } from '../components/switch/switch'
 
 const Profile = () => {
   type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
@@ -43,6 +42,7 @@ const Profile = () => {
   const [studentInfo, setStudentInfo] = useState(undefined as StudentInfo)
 
   const [switchOn, switchEnabled] = useState(false)
+  const [defaultSwitchOn, setDefaultSwitchEnabled] = useState(null as boolean)
   const toggleSwitch = async () => {
     const newState = !switchOn
     try {
@@ -85,10 +85,10 @@ const Profile = () => {
 
   useAsyncEffect(async () => {
     try {
+      setDefaultSwitchEnabled(await getReminderIsDisabled())
+      setDate(await getReminderDate())
       setStudentInfo(await client.studentInfo())
     } catch (err) {}
-    setDate(await getReminderDate())
-    switchEnabled(await getReminderIsDisabled())
   }, [])
 
   const downloadSchoolPicture = async () => {
@@ -259,20 +259,8 @@ const Profile = () => {
         <Seperator />
         <Setting title="Disable Reminder" position="middle">
           <Switch
-            trackColor={{ false: Colors.medium_gray, true: Colors.navy }}
-            thumbColor={switchOn ? Colors.primary : Colors.white}
-            ios_backgroundColor={Colors.medium_gray}
-            onValueChange={toggleSwitch}
-            value={switchOn}
-            style={
-              Platform.OS === 'android'
-                ? {
-                    transform: [{ scale: 1.25 }]
-                  }
-                : {
-                    transform: [{ scale: 0.75 }]
-                  }
-            }
+            onChange={toggleSwitch}
+            defaultChecked={defaultSwitchOn}
           ></Switch>
         </Setting>
         <Seperator />

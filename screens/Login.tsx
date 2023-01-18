@@ -443,7 +443,7 @@ const Login = () => {
             >
               <FadeInFlatList
                 initialDelay={0}
-                durationPerItem={350}
+                durationPerItem={300}
                 parallelItems={5}
                 itemsToFadeIn={20}
                 data={districts}
