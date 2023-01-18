@@ -32,7 +32,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
-import { AnimatedFAB, Chip, TextInput, useTheme } from 'react-native-paper'
+import { Chip, FAB, TextInput, useTheme } from 'react-native-paper'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -218,13 +218,9 @@ const CourseDetails = ({ route }) => {
             ></Assignment>
           )}
         />
-        <AnimatedFAB
+        <FAB
           icon={'plus'}
-          label={'New Assignment'}
-          extended={isExtended}
           onPress={toggleModal}
-          animateFrom={'right'}
-          iconMode={'dynamic'}
           variant={'primary'}
           style={{
             bottom: 12,
