@@ -59,14 +59,6 @@ const CourseDetails = ({ route }) => {
 
   const [refreshing, setRefreshing] = useState(false)
 
-  const [isExtended, setIsExtended] = React.useState(true)
-
-  const onScroll = ({ nativeEvent }) => {
-    const currentScrollPosition = Math.floor(nativeEvent?.contentOffset?.y) ?? 0
-
-    setIsExtended(currentScrollPosition <= 0)
-  }
-
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
     try {
@@ -193,7 +185,6 @@ const CourseDetails = ({ route }) => {
         }}
       >
         <FadeInFlatList
-          onScroll={onScroll}
           initialDelay={0}
           durationPerItem={350}
           parallelItems={5}
