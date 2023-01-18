@@ -1,10 +1,9 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   ActivityIndicator,
   StyleSheet,
   View,
   Text,
-  RefreshControl,
   Switch,
   Platform,
   Alert,
@@ -85,19 +84,11 @@ const Profile = () => {
   }
 
   useAsyncEffect(async () => {
-    onRefresh()
-    setDate(await getReminderDate())
-    switchEnabled(await getReminderIsDisabled())
-  }, [])
-
-  const [refreshing, setRefreshing] = useState(false)
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true)
     try {
       setStudentInfo(await client.studentInfo())
     } catch (err) {}
-    setRefreshing(false)
+    setDate(await getReminderDate())
+    switchEnabled(await getReminderIsDisabled())
   }, [])
 
   const downloadSchoolPicture = async () => {
@@ -184,12 +175,7 @@ const Profile = () => {
           </View>
         </View>
       </View>
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        contentContainerStyle={styles.content_container}
-      >
+      <ScrollView contentContainerStyle={styles.content_container}>
         <View style={styles.property_view}>
           {studentInfo.id && (
             <View style={styles.property_container}>
