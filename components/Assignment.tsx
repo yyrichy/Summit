@@ -25,10 +25,11 @@ import {
 } from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useTheme } from 'react-native-paper'
 import { enUS } from 'date-fns/locale'
 import { formatRelative } from 'date-fns'
+import AssignmentChip from './AssignmentChip'
 
 const formatRelativeLocale = {
   lastWeek: "'Last' eeee",
@@ -198,40 +199,28 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
       </View>
       {isDropdown && (
         <View style={styles.dropdown_container}>
-          <View style={{ flex: 1 }}>
+          <View>
             {assignment.date.start && (
-              <View style={styles.detail_container}>
-                <MaterialIcons name={'not-started'} size={30} />
-                <Text style={styles.dropdown_text_value}>
-                  {formatRelative(assignment.date.start, new Date(), {
-                    locale: locale
-                  })}
-                </Text>
-              </View>
+              <AssignmentChip
+                icon="calendar-arrow-right"
+                text={formatRelative(assignment.date.start, new Date(), {
+                  locale: locale
+                })}
+              />
             )}
             {assignment.date.due && (
-              <View style={styles.detail_container}>
-                <MaterialCommunityIcons name={'timer-outline'} size={30} />
-                <Text style={styles.dropdown_text_value}>
-                  {formatRelative(assignment.date.due, new Date(), {
-                    locale: locale
-                  })}
-                </Text>
-              </View>
+              <AssignmentChip
+                icon="calendar-clock"
+                text={formatRelative(assignment.date.due, new Date(), {
+                  locale: locale
+                })}
+              />
             )}
-            <View style={styles.detail_container}>
-              <MaterialIcons name={'edit'} size={30} />
-              <Text style={styles.dropdown_text_value}>
-                {assignment.status}
-              </Text>
-            </View>
+            {assignment.status.length !== 0 && (
+              <AssignmentChip icon="pencil-outline" text={assignment.status} />
+            )}
             {assignment.notes.length !== 0 && (
-              <View style={styles.detail_container}>
-                <MaterialIcons name={'notes'} size={30} />
-                <Text style={styles.dropdown_text_value}>
-                  {assignment.notes}
-                </Text>
-              </View>
+              <AssignmentChip icon="note-outline" text={assignment.notes} />
             )}
           </View>
           <View style={{ flexDirection: 'column-reverse' }}>
@@ -271,7 +260,7 @@ const styles = StyleSheet.create({
   dropdown_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10
+    marginTop: 4
   },
   assignment_info_container: {
     flexDirection: 'column',
@@ -282,12 +271,12 @@ const styles = StyleSheet.create({
   name: {
     color: Colors.black,
     fontFamily: 'Inter_700Bold',
-    fontSize: 14
+    fontSize: 12
   },
   category: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
-    fontSize: 14,
+    fontSize: 12,
     marginTop: 4
   },
   input_container: {

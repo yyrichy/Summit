@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 5,
-    padding: 12
+    padding: 10
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',
@@ -77,11 +77,11 @@ const styles = StyleSheet.create({
   name: {
     color: Colors.navy,
     fontFamily: 'Montserrat_700Bold',
-    fontSize: 16
+    fontSize: 14
   },
   teacher: {
     fontFamily: 'Inter_400Regular',
-    fontSize: 14,
+    fontSize: 12,
     marginTop: 3
   },
   mark: {

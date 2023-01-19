@@ -380,11 +380,11 @@ const styles = StyleSheet.create({
     width: 320
   },
   course_name: {
-    fontSize: 24,
+    fontSize: 20,
     flex: 1,
     flexWrap: 'wrap',
     fontFamily: 'Inter_800ExtraBold',
-    marginRight: 4
+    marginRight: 8
   },
   course_name_container: {
     flexDirection: 'row',
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   course_mark_container: {
-    margin: 10,
+    marginVertical: 15,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',

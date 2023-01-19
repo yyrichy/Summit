@@ -44,8 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: 12,
     marginVertical: 3.5,
-    paddingHorizontal: 10,
-    paddingVertical: 7,
+    padding: 10,
     flexDirection: 'column',
     justifyContent: 'center',
     flex: 1
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
   name: {
     color: Colors.black,
     fontFamily: 'Montserrat_600SemiBold',
-    fontSize: 16
+    fontSize: 14
   },
   type: {
     color: Colors.black,
