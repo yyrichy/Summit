@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { Chip } from 'react-native-paper'
+import { Badge, Chip } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
@@ -8,9 +8,15 @@ type Props = {
   icon: string | any
   text: string
   style?: any
+  showBadge?: boolean
 }
 
-const AssignmentChip: React.FC<Props> = ({ icon, text, style }: Props) => {
+const AssignmentChip: React.FC<Props> = ({
+  icon,
+  text,
+  style,
+  showBadge
+}: Props) => {
   return (
     <View
       style={[
@@ -27,7 +33,15 @@ const AssignmentChip: React.FC<Props> = ({ icon, text, style }: Props) => {
         style
       ]}
     >
-      <MaterialCommunityIcons name={icon} size={20} />
+      <View>
+        <MaterialCommunityIcons name={icon} size={20} />
+        {showBadge && (
+          <Badge
+            style={{ position: 'absolute', top: 0, right: 0 }}
+            size={8}
+          ></Badge>
+        )}
+      </View>
       <Text style={{ fontSize: 12, marginLeft: 6 }}>{text}</Text>
     </View>
   )

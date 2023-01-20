@@ -21,7 +21,7 @@ import {
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { useTheme } from 'react-native-paper'
+import { Badge, useTheme } from 'react-native-paper'
 import AssignmentChip from './AssignmentChip'
 import { Swipeable } from 'react-native-gesture-handler'
 import { dateRelativeToToday } from '../util/Util'
@@ -191,7 +191,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           </View>
         </View>
         {isDropdown && (
-          <View style={{ marginTop: 4, padding: 4 }}>
+          <View style={{ marginTop: 4, padding: 4, paddingBottom: 0 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -220,11 +220,17 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
               }}
             >
               {assignment.date.due && (
-                <AssignmentChip
-                  icon="calendar-clock"
-                  text={dateRelativeToToday(assignment.date.due)}
-                  style={{ marginRight: 4 }}
-                />
+                <View>
+                  <AssignmentChip
+                    icon="calendar-clock"
+                    text={dateRelativeToToday(assignment.date.due)}
+                    style={{ marginRight: 4 }}
+                    showBadge={
+                      assignment.date.due < new Date() &&
+                      (!hasScore || score <= 50)
+                    }
+                  />
+                </View>
               )}
               {assignment.notes.length !== 0 && (
                 <AssignmentChip
