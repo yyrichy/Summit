@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler'
 import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
 import React, { useState } from 'react'

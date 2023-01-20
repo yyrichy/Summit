@@ -23,7 +23,6 @@ import {
   convertGradebook,
   isNumber,
   calculateMarkColor,
-  roundTo,
   toggleCategory
 } from '../gradebook/GradeUtil'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -33,6 +32,7 @@ import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { Chip, FAB, TextInput, useTheme } from 'react-native-paper'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -184,31 +184,30 @@ const CourseDetails = ({ route }) => {
           flex: 1
         }}
       >
-        <FadeInFlatList
-          initialDelay={0}
-          durationPerItem={300}
-          parallelItems={5}
-          itemsToFadeIn={Dimensions.get('window').height / 75}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingHorizontal: 12,
-            paddingTop: 8,
-            paddingBottom: 10
-          }}
-          data={course.assignments.filter(
-            (a) => course.categories.get(a.category).show
-          )}
-          renderItem={({ item }) => (
-            <Assignment
-              name={item.name}
-              courseName={courseName}
-              key={item.name}
-            ></Assignment>
-          )}
-        />
+        <GestureHandlerRootView>
+          <FadeInFlatList
+            initialDelay={0}
+            durationPerItem={300}
+            parallelItems={5}
+            itemsToFadeIn={Dimensions.get('window').height / 75}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            contentContainerStyle={{
+              flexGrow: 1,
+              paddingHorizontal: 12,
+              paddingTop: 8,
+              paddingBottom: 10
+            }}
+            data={course.assignments.filter(
+              (a) => course.categories.get(a.category).show
+            )}
+            renderItem={({ item }) => (
+              <Assignment name={item.name} courseName={courseName}></Assignment>
+            )}
+            keyExtractor={(item) => item.name}
+          />
+        </GestureHandlerRootView>
         <FAB
           icon={'plus'}
           onPress={toggleModal}
@@ -330,29 +329,6 @@ const CourseDetails = ({ route }) => {
       </Modal>
     </View>
   )
-}
-
-const getTotalGrade = (c, categories) => {
-  const course = Object.assign({}, c)
-  ;(course.points = 0), (course.total = 0), (course.value = NaN)
-  for (const category of categories.values()) {
-    ;(category.points = 0), (category.total = 0), (category.value = NaN)
-  }
-  for (const assignment of course.assignments) {
-    const category = categories.get(assignment.category)
-    if (category && !isNaN(assignment.points) && !isNaN(assignment.total)) {
-      category.points += assignment.points
-      category.total += assignment.total
-      category.value = category.points / category.total
-    }
-  }
-  for (const category of categories.values()) {
-    if (!isNaN(category.value)) {
-      course.points += category.value * category.weight
-      course.total += category.weight
-    }
-  }
-  return roundTo((course.points / course.total) * 100, 2)
 }
 
 const styles = StyleSheet.create({

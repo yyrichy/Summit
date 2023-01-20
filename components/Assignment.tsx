@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -15,7 +9,8 @@ import {
   StyleProp,
   ViewStyle,
   LayoutAnimation,
-  UIManager
+  UIManager,
+  Animated
 } from 'react-native'
 import {
   calculateMarkColor,
@@ -30,6 +25,7 @@ import { useTheme } from 'react-native-paper'
 import { enUS } from 'date-fns/locale'
 import { formatRelative } from 'date-fns'
 import AssignmentChip from './AssignmentChip'
+import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler'
 
 const formatRelativeLocale = {
   lastWeek: "'Last' eeee",
@@ -99,19 +95,8 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
     total.current = totalString
   }, [marks])
 
-  const ref = useRef<TouchableOpacity>()
-  const setOpacityTo = useCallback((value) => {
-    // Redacted: animation related code
-    if (!ref.current) return
-    ref.current.setNativeProps({
-      opacity: value
-    })
-  }, [])
   const transition = () => {
-    setOpacityTo(0.2)
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut, () => {
-      setOpacityTo(1)
-    })
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     setIsDropdown(!isDropdown)
   }
 
@@ -123,125 +108,161 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
     }
   }
 
+  const renderLeftActions = (progress, dragX) => {
+    const trans = dragX.interpolate({
+      inputRange: [0, 50, 100, 101],
+      outputRange: [-20, 0, 0, 1]
+    })
+    return (
+      <Animated.View style={{ transform: [{ translateX: trans }] }}>
+        <MaterialCommunityIcons.Button
+          name="delete-forever"
+          backgroundColor="transparent"
+          iconStyle={{
+            color: theme.colors.error
+          }}
+          style={{
+            paddingRight: 0,
+            margin: 0
+          }}
+          underlayColor="none"
+          activeOpacity={0.2}
+          size={36}
+          onPress={() => {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            setMarks(deleteAssignment(marks, courseName, name))
+          }}
+        />
+      </Animated.View>
+    )
+  }
+
   return (
-    <TouchableOpacity
-      ref={ref}
-      style={[
-        styles.container,
-        style,
-        hasScore
-          ? {
-              borderLeftColor: calculateMarkColor(score),
-              borderLeftWidth: 4
-            }
-          : {}
-      ]}
-      onPress={transition}
-    >
-      <View style={[styles.horizontal_container]}>
-        <View style={styles.assignment_info_container}>
-          <Text numberOfLines={1} style={[styles.name]}>
-            {name}
-          </Text>
-          <Text
-            numberOfLines={1}
-            style={[styles.category, { color: theme.colors.onSurface }]}
-          >
-            {assignment.category} - {assignment.date.due.toLocaleDateString()}
-          </Text>
-        </View>
-        <View style={styles.input_container}>
-          <TextInput
-            value={points.current}
-            placeholder={'__'}
-            keyboardType={'decimal-pad'}
-            returnKeyType={'done'}
-            autoComplete={'off'}
-            placeholderTextColor={Colors.secondary}
-            style={[
-              styles.mark,
-              {
-                color: getModifiedColor(assignment.modified),
-                width: getWidth(assignment.points)
+    <Swipeable renderLeftActions={renderLeftActions}>
+      <TouchableOpacity
+        style={[
+          styles.container,
+          style,
+          hasScore
+            ? {
+                borderLeftColor: calculateMarkColor(score),
+                borderLeftWidth: 4
               }
-            ]}
-            onChangeText={(input) => {
-              if (isNumber(input) || input === '') update(input, 'earned')
-            }}
-          />
-          <Text
-            style={[
-              styles.dash,
-              { color: getModifiedColor(assignment.modified) }
-            ]}
-          >
-            /
-          </Text>
-          <TextInput
-            value={total.current}
-            placeholder={'__'}
-            keyboardType={'decimal-pad'}
-            returnKeyType={'done'}
-            autoComplete={'off'}
-            placeholderTextColor={Colors.secondary}
-            style={[
-              styles.mark,
-              {
-                color: getModifiedColor(assignment.modified),
-                width: getWidth(assignment.total)
-              }
-            ]}
-            onChangeText={(input) => {
-              if (isNumber(input) || input === '') update(input, 'total')
-            }}
-          />
-        </View>
-      </View>
-      {isDropdown && (
-        <View style={styles.dropdown_container}>
-          <View>
-            {assignment.date.start && (
-              <AssignmentChip
-                icon="calendar-arrow-right"
-                text={formatRelative(assignment.date.start, new Date(), {
-                  locale: locale
-                })}
-              />
-            )}
-            {assignment.date.due && (
-              <AssignmentChip
-                icon="calendar-clock"
-                text={formatRelative(assignment.date.due, new Date(), {
-                  locale: locale
-                })}
-              />
-            )}
-            {assignment.status.length !== 0 && (
-              <AssignmentChip icon="pencil-outline" text={assignment.status} />
-            )}
-            {assignment.notes.length !== 0 && (
-              <AssignmentChip icon="note-outline" text={assignment.notes} />
-            )}
+            : {}
+        ]}
+        onPress={transition}
+      >
+        <View style={[styles.horizontal_container]}>
+          <View style={styles.assignment_info_container}>
+            <Text numberOfLines={1} style={[styles.name]}>
+              {name}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={[styles.category, { color: theme.colors.onSurface }]}
+            >
+              {assignment.category} - {assignment.date.due.toLocaleDateString()}
+            </Text>
           </View>
-          <View style={{ flexDirection: 'column-reverse' }}>
-            <MaterialCommunityIcons.Button
-              name="delete-forever"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: theme.colors.error
+          <View style={styles.input_container}>
+            <TextInput
+              value={points.current}
+              placeholder={'__'}
+              keyboardType={'decimal-pad'}
+              returnKeyType={'done'}
+              autoComplete={'off'}
+              placeholderTextColor={Colors.secondary}
+              style={[
+                styles.mark,
+                {
+                  color: getModifiedColor(assignment.modified),
+                  width: getWidth(assignment.points)
+                }
+              ]}
+              onChangeText={(input) => {
+                if (isNumber(input) || input === '') update(input, 'earned')
               }}
-              style={{ paddingRight: 0, margin: 0 }}
-              underlayColor="none"
-              activeOpacity={0.2}
-              size={36}
-              onPress={() =>
-                setMarks(deleteAssignment(marks, courseName, name))
-              }
+            />
+            <Text
+              style={[
+                styles.dash,
+                { color: getModifiedColor(assignment.modified) }
+              ]}
+            >
+              /
+            </Text>
+            <TextInput
+              value={total.current}
+              placeholder={'__'}
+              keyboardType={'decimal-pad'}
+              returnKeyType={'done'}
+              autoComplete={'off'}
+              placeholderTextColor={Colors.secondary}
+              style={[
+                styles.mark,
+                {
+                  color: getModifiedColor(assignment.modified),
+                  width: getWidth(assignment.total)
+                }
+              ]}
+              onChangeText={(input) => {
+                if (isNumber(input) || input === '') update(input, 'total')
+              }}
             />
           </View>
         </View>
-      )}
-    </TouchableOpacity>
+        {isDropdown && (
+          <View style={{ marginTop: 4 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              {assignment.date.start && (
+                <AssignmentChip
+                  icon="calendar-arrow-right"
+                  text={formatRelative(assignment.date.start, new Date(), {
+                    locale: locale
+                  })}
+                  style={{ marginRight: 4 }}
+                />
+              )}
+              {assignment.status.length !== 0 && (
+                <AssignmentChip
+                  icon="pencil-outline"
+                  text={assignment.status}
+                  style={{ marginLeft: 4 }}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between'
+              }}
+            >
+              {assignment.date.due && (
+                <AssignmentChip
+                  icon="calendar-clock"
+                  text={formatRelative(assignment.date.due, new Date(), {
+                    locale: locale
+                  })}
+                  style={{ marginRight: 4 }}
+                />
+              )}
+              {assignment.notes.length !== 0 && (
+                <AssignmentChip
+                  icon="note-outline"
+                  text={assignment.notes}
+                  style={{ marginLeft: 4 }}
+                />
+              )}
+            </View>
+          </View>
+        )}
+      </TouchableOpacity>
+    </Swipeable>
   )
 }
 
@@ -256,11 +277,6 @@ const styles = StyleSheet.create({
   horizontal_container: {
     flexDirection: 'row',
     alignItems: 'center'
-  },
-  dropdown_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 4
   },
   assignment_info_container: {
     flexDirection: 'column',
