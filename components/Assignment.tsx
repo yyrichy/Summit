@@ -25,7 +25,7 @@ import { useTheme } from 'react-native-paper'
 import { enUS } from 'date-fns/locale'
 import { formatRelative } from 'date-fns'
 import AssignmentChip from './AssignmentChip'
-import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler'
+import { Swipeable } from 'react-native-gesture-handler'
 
 const formatRelativeLocale = {
   lastWeek: "'Last' eeee",
@@ -65,12 +65,8 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
     ? ''
     : assignment.points.toString()
   const totalString = isNaN(assignment.total) ? '' : assignment.total.toString()
-  const totalWeight: number = Array.from(course.categories.values()).reduce(
-    (p, c) => (isNaN(c.value) ? p : p + c.weight),
-    0
-  )
   const score: number = (assignment.points / assignment.total) * 100
-  const hasScore: boolean = !isNaN((assignment.points / assignment.total) * 100)
+  const hasScore: boolean = !isNaN(score)
 
   const update = (input: string, type: 'total' | 'earned') => {
     if (type === 'total') {
@@ -143,12 +139,9 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
         style={[
           styles.container,
           style,
-          hasScore
-            ? {
-                borderLeftColor: calculateMarkColor(score),
-                borderLeftWidth: 4
-              }
-            : {}
+          {
+            borderLeftColor: hasScore ? calculateMarkColor(score) : Colors.white
+          }
         ]}
         onPress={transition}
       >
@@ -272,7 +265,8 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     overflow: 'hidden',
     padding: 10,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
+    borderLeftWidth: 4
   },
   horizontal_container: {
     flexDirection: 'row',
@@ -302,7 +296,7 @@ const styles = StyleSheet.create({
   },
   mark: {
     fontSize: 24,
-    fontFamily: 'Inter_600SemiBold',
+    fontFamily: 'Inter_500Medium',
     alignSelf: 'center',
     outlineStyle: 'none'
   },
