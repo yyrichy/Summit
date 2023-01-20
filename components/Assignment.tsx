@@ -22,24 +22,9 @@ import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { useTheme } from 'react-native-paper'
-import { enUS } from 'date-fns/locale'
-import { formatRelative } from 'date-fns'
 import AssignmentChip from './AssignmentChip'
 import { Swipeable } from 'react-native-gesture-handler'
-
-const formatRelativeLocale = {
-  lastWeek: "'Last' eeee",
-  yesterday: "'Yesterday'",
-  today: "'Today'",
-  tomorrow: "'Tomorrow'",
-  nextWeek: "'Next' eeee",
-  other: 'MM/dd/yyyy'
-}
-
-const locale = {
-  ...enUS,
-  formatRelative: (token) => formatRelativeLocale[token]
-}
+import { dateRelativeToToday } from '../util/Util'
 
 type Props = {
   courseName: string
@@ -119,7 +104,8 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           }}
           style={{
             paddingRight: 0,
-            margin: 0
+            margin: 0,
+            marginTop: 4
           }}
           underlayColor="none"
           activeOpacity={0.2}
@@ -205,7 +191,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           </View>
         </View>
         {isDropdown && (
-          <View style={{ marginTop: 4 }}>
+          <View style={{ marginTop: 4, padding: 4 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -215,9 +201,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
               {assignment.date.start && (
                 <AssignmentChip
                   icon="calendar-arrow-right"
-                  text={formatRelative(assignment.date.start, new Date(), {
-                    locale: locale
-                  })}
+                  text={dateRelativeToToday(assignment.date.start)}
                   style={{ marginRight: 4 }}
                 />
               )}
@@ -238,9 +222,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
               {assignment.date.due && (
                 <AssignmentChip
                   icon="calendar-clock"
-                  text={formatRelative(assignment.date.due, new Date(), {
-                    locale: locale
-                  })}
+                  text={dateRelativeToToday(assignment.date.due)}
                   style={{ marginRight: 4 }}
                 />
               )}
@@ -281,7 +263,7 @@ const styles = StyleSheet.create({
   name: {
     color: Colors.black,
     fontFamily: 'Inter_700Bold',
-    fontSize: 12
+    fontSize: 14
   },
   category: {
     color: Colors.black,
@@ -295,7 +277,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   mark: {
-    fontSize: 24,
+    fontSize: 23,
     fontFamily: 'Inter_500Medium',
     alignSelf: 'center',
     outlineStyle: 'none'

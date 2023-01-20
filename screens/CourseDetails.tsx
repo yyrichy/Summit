@@ -127,10 +127,7 @@ const CourseDetails = ({ route }) => {
           size={40}
           onPress={() => navigation.goBack()}
         />
-        <Text
-          numberOfLines={2}
-          style={[styles.course_name, { color: theme.colors.onBackground }]}
-        >
+        <Text numberOfLines={2} style={styles.course_name}>
           {courseName}
         </Text>
       </SafeAreaView>

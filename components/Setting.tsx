@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 18,
     paddingVertical: 14,
-    alignItems: 'center'
+    alignItems: 'center',
+    minHeight: 60
   },
   container_top: {
     marginHorizontal: 25,
@@ -51,7 +52,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 18,
     paddingVertical: 14,
-    alignItems: 'center'
+    alignItems: 'center',
+    minHeight: 60
   },
   container_bottom: {
     marginHorizontal: 25,
@@ -62,7 +64,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 18,
     paddingVertical: 14,
-    alignItems: 'center'
+    alignItems: 'center',
+    minHeight: 60
   },
   container_single: {
     marginHorizontal: 25,
@@ -72,7 +75,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 18,
     paddingVertical: 14,
-    alignItems: 'center'
+    alignItems: 'center',
+    minHeight: 60
   },
   title: {
     fontFamily: 'Inter_400Regular',

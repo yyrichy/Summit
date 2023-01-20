@@ -899,7 +899,7 @@ const styles = StyleSheet.create({
   },
   insta_text: {
     fontFamily: 'Inter_300Light',
-    fontSize: 10
+    fontSize: 12
   },
   dropdown_text_style: {
     fontFamily: 'Inter_500Medium',

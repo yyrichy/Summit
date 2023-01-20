@@ -11,7 +11,6 @@ import { StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import AppContext from '../contexts/AppContext'
 import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { suffix } from '../gradebook/GradeUtil'
 import useAsyncEffect from 'use-async-effect'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Setting from '../components/Setting'
@@ -31,7 +30,7 @@ import { RootStackParamList } from '../types/RootStackParams'
 import { Avatar } from 'react-native-paper'
 import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
-import { toast } from '../util/Util'
+import { getOrdinal, toast } from '../util/Util'
 import { Switch } from '../components/switch/switch'
 
 const Profile = () => {
@@ -162,7 +161,7 @@ const Profile = () => {
           <View style={styles.details_container}>
             <View style={styles.detaiL_container}>
               <Text style={styles.detail_value}>
-                {studentInfo.grade + suffix(parseInt(studentInfo.grade))}
+                {studentInfo.grade + getOrdinal(parseInt(studentInfo.grade))}
               </Text>
               <Text style={styles.detail_name}>Grade</Text>
             </View>
@@ -265,11 +264,16 @@ const Profile = () => {
         </Setting>
         <Seperator />
         <Setting
-          title="Clear Login Info"
-          description="Deletes saved username, password, and district from your phone"
+          title="Delete Login Info"
           onPress={() => deleteLoginInfo()}
           position="bottom"
-        ></Setting>
+        >
+          <MaterialCommunityIcons
+            name="delete-outline"
+            size={24}
+            color={Colors.black}
+          />
+        </Setting>
       </ScrollView>
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
