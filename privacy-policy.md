@@ -10,7 +10,7 @@ The terms used in this Privacy Policy have the same meanings as in our Terms and
 
 **Are my login credentials/location collected?**
 
-Username, password, and school district are saved locally to your device. We DO NOT have the ability to retrieve or access the data. Your location is used only when you click the find districts button, so that the app can find your nearest school districts.
+Username, password, and school district are saved locally to your device. We DO NOT have the ability to retrieve or access the data remotely. Your login credentials are sent to your school district to retrieve your grades/other information to display in the app.Your location is used only when you click the find districts button, so that the app can find your nearest school districts.
 
 **Information Collection and Use**
 
