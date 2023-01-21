@@ -62,12 +62,6 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
     setMarks(updatePoints(marks, courseName, name, parseFloat(input), type))
   }
 
-  const getWidth = (n: number) => {
-    const min = 34
-    if (isNaN(n)) return min
-    return Math.max(n.toString().length * 15, min)
-  }
-
   const points = useRef(pointsString)
   const total = useRef(totalString)
 
@@ -264,7 +258,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     flex: 1,
-    marginRight: 4
+    marginRight: 6
   },
   name: {
     color: Colors.black,

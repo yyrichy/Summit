@@ -63,7 +63,7 @@ const CourseDetails = ({ route }) => {
     setRefreshing(true)
     try {
       setMarks(
-        await convertGradebook(
+        convertGradebook(
           await client.gradebook(marks.reportingPeriod.index)
         )
       )
