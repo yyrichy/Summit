@@ -9,7 +9,7 @@ import { Colors } from '../colors/Colors'
 
 const CalendarScreen = () => {
   const { client } = useContext(AppContext)
-  const [items, setItems] = useState(undefined as AgendaSchedule)
+  const [items, setItems] = useState(null as AgendaSchedule)
 
   const lowestScale = 0.4
   const scaleAnim = useRef(new Animated.Value(lowestScale)).current

@@ -38,7 +38,7 @@ const Profile = () => {
 
   const navigation = useNavigation<loginScreenProp>()
   const { client } = useContext(AppContext)
-  const [studentInfo, setStudentInfo] = useState(undefined as StudentInfo)
+  const [studentInfo, setStudentInfo] = useState(null as StudentInfo)
 
   const [switchOn, switchEnabled] = useState(false)
   const [defaultSwitchOn, setDefaultSwitchEnabled] = useState(null as boolean)

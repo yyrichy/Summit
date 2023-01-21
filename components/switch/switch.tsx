@@ -277,13 +277,12 @@ export const Switch = React.forwardRef<RNView, SwitchProps>((inProps, ref) => {
               }
             ]}
           >
-            {prevChecked
-              ? checkedIcon &&
-                React.cloneElement(checkedIcon, {
-                  height: 16,
-                  width: 16
-                })
-              : undefined}
+            {prevChecked &&
+              checkedIcon &&
+              React.cloneElement(checkedIcon, {
+                height: 16,
+                width: 16
+              })}
           </SwitchThumb>
         </SwitchSwitchBase>
       </Animated.View>

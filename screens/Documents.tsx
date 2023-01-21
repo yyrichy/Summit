@@ -18,7 +18,7 @@ import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 
 const Documents = () => {
   const { client } = useContext(AppContext)
-  const [documents, setDocuments] = useState(undefined as Document[])
+  const [documents, setDocuments] = useState(null as Document[])
 
   useEffect(() => {
     onRefresh()

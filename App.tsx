@@ -55,8 +55,8 @@ import { RootSiblingParent } from 'react-native-root-siblings'
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 const App = () => {
-  const [client, setClient] = useState(undefined as Client)
-  const [marks, setMarks] = useState(undefined as Marks)
+  const [client, setClient] = useState(null as Client)
+  const [marks, setMarks] = useState(null as Marks)
 
   const user: User = {
     client: client,
