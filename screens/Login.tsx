@@ -329,15 +329,15 @@ const Login = () => {
 
   const renderNextButton = () => {
     return (
-      <MaterialCommunityIcons name="arrow-right-circle-outline" size={40} />
+      <MaterialCommunityIcons name="arrow-right-circle-outline" size={48} />
     )
   }
   const renderDoneButton = () => {
-    return <MaterialIcons name="check-circle-outline" size={40} />
+    return <MaterialIcons name="check-circle-outline" size={48} />
   }
 
   const renderSkipButton = () => {
-    return <MaterialIcons name="skip-next" size={40} />
+    return <MaterialIcons name="skip-next" size={48} />
   }
 
   if (!showRealApp) {
@@ -594,7 +594,7 @@ const Login = () => {
             placeholder={'Username'}
             style={styles.input}
             textColor={Colors.black}
-            placeholderTextColor={Colors.secondary}
+            placeholderTextColor={Colors.medium_gray}
             returnKeyType={'next'}
             onSubmitEditing={() => refInput.current.focus()}
             blurOnSubmit={false}
@@ -606,7 +606,7 @@ const Login = () => {
             secureTextEntry={isPasswordSecure}
             style={styles.input}
             textColor={Colors.black}
-            placeholderTextColor={Colors.secondary}
+            placeholderTextColor={Colors.medium_gray}
             returnKeyType={'next'}
             ref={refInput}
             onSubmitEditing={() => {
@@ -696,7 +696,7 @@ const Login = () => {
               iconStyle={styles.insta_button}
               underlayColor="none"
               activeOpacity={0.2}
-              size={24}
+              size={28}
               onPress={() => openInstagram('richardyin99')}
             />
             <Text style={styles.insta_text}>Richard Y</Text>
@@ -708,7 +708,7 @@ const Login = () => {
               iconStyle={styles.insta_button}
               underlayColor="none"
               activeOpacity={0.2}
-              size={24}
+              size={28}
               onPress={() => openInstagram('karthik.whynot')}
             />
             <Text style={styles.insta_text}>Karthik M</Text>

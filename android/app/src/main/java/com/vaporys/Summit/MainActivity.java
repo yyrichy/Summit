@@ -1,4 +1,4 @@
-package com.vaporrrr.Summit;
+package com.vaporys.Summit;
 
 import android.os.Build;
 import android.os.Bundle;

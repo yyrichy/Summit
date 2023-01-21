@@ -1,4 +1,4 @@
-package com.vaporrrr.Summit.newarchitecture;
+package com.vaporys.Summit.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -20,9 +20,9 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.vaporrrr.Summit.BuildConfig;
-import com.vaporrrr.Summit.newarchitecture.components.MainComponentsRegistry;
-import com.vaporrrr.Summit.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.vaporys.Summit.BuildConfig;
+import com.vaporys.Summit.newarchitecture.components.MainComponentsRegistry;
+import com.vaporys.Summit.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

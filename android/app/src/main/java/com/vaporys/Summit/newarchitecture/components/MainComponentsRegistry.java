@@ -1,4 +1,4 @@
-package com.vaporrrr.Summit.newarchitecture.components;
+package com.vaporys.Summit.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

@@ -19,7 +19,10 @@ const toast = (message: string) => {
     hideOnPress: true,
     opacity: 0.9,
     textColor: Colors.black,
-    backgroundColor: Colors.white
+    backgroundColor: Colors.white,
+    containerStyle: {
+      height: 48
+    }
   })
 }
 

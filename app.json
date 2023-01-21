@@ -27,9 +27,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FEF156"
       },
-      "package": "com.vaporrrr.Summit",
+      "package": "com.vaporys.Summit",
       "softwareKeyboardLayoutMode": "pan",
-      "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"]
+      "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"],
+      "versionCode": 2
     },
     "androidStatusBar": {
       "barStyle": "dark-content"
