@@ -21,7 +21,7 @@ import {
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { Badge, useTheme } from 'react-native-paper'
+import { useTheme } from 'react-native-paper'
 import AssignmentChip from './AssignmentChip'
 import { Swipeable } from 'react-native-gesture-handler'
 import { dateRelativeToToday } from '../util/Util'
@@ -155,7 +155,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 styles.mark,
                 {
                   color: getModifiedColor(assignment.modified),
-                  width: getWidth(assignment.points)
+                  marginRight: 6
                 }
               ]}
               onChangeText={(input) => {
@@ -181,7 +181,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 styles.mark,
                 {
                   color: getModifiedColor(assignment.modified),
-                  width: getWidth(assignment.total)
+                  marginLeft: 6
                 }
               ]}
               onChangeText={(input) => {
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   mark: {
-    fontSize: 23,
+    fontSize: 24,
     fontFamily: 'Inter_500Medium',
     alignSelf: 'center',
     outlineStyle: 'none'
@@ -291,8 +291,7 @@ const styles = StyleSheet.create({
   dash: {
     fontSize: 20,
     alignSelf: 'center',
-    textAlignVertical: 'center',
-    marginRight: 6
+    textAlignVertical: 'center'
   },
   dropdown_text_value: {
     fontFamily: 'Inter_400Regular',

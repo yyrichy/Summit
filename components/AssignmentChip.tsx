@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { Badge, Chip } from 'react-native-paper'
+import { Badge } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
@@ -23,7 +23,7 @@ const AssignmentChip: React.FC<Props> = ({
         {
           backgroundColor: Colors.off_white,
           marginVertical: 4,
-          borderRadius: 16,
+          borderRadius: 12,
           paddingHorizontal: 8,
           paddingVertical: 6,
           flexDirection: 'row',
