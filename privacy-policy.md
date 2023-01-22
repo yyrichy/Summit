@@ -23,7 +23,7 @@ For the purposes of this Privacy Policy:
 
 - **Company** (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to Grade Helper - Summit.
 
-- **Country** refers to: Maryland, United States
+- **Country** refers to: United States
 
 - **Device** means any device that can access the Service such as a computer, a cellphone or a digital tablet.
 
