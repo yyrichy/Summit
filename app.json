@@ -20,7 +20,7 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app uses your location to determine nearby school districts"
       },
-      "bundleIdentifier": "com.vaporrrr.Summit"
+      "bundleIdentifier": "com.vaporys.Summit"
     },
     "android": {
       "adaptiveIcon": {

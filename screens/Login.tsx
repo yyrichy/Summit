@@ -350,6 +350,10 @@ const Login = () => {
         renderDoneButton={renderDoneButton}
         renderNextButton={renderNextButton}
         renderSkipButton={renderSkipButton}
+        activeDotStyle={{
+          backgroundColor: Colors.white,
+          width: 30
+        }}
       />
     )
   }
@@ -550,12 +554,14 @@ const Login = () => {
       >
         <SafeAreaView style={{ alignItems: 'center' }}>
           <View style={styles.horizontal_container}>
-            <Text style={styles.name}>Summit</Text>
+            <Text style={styles.name}>Grade Helper</Text>
+          </View>
+          <View style={styles.horizontal_container}>
+            <Text style={styles.description}>Summit</Text>
             <View style={styles.mountain}>
-              <FontAwesome5 name="mountain" size={30} color="black" />
+              <FontAwesome5 name="mountain" size={16} color="black" />
             </View>
           </View>
-          <Text style={styles.description}>Grade Viewer</Text>
         </SafeAreaView>
         <LoginView>
           <TouchableOpacity
@@ -564,15 +570,14 @@ const Login = () => {
           >
             <Text
               style={{
-                textDecorationLine: 'underline',
                 fontFamily: 'Inter_400Regular',
                 fontSize: 14
               }}
             >
-              Questions/Concerns?
+              Questions/Concerns
             </Text>
-            <MaterialCommunityIcons
-              name="information-outline"
+            <MaterialIcons
+              name="help-outline"
               backgroundColor="transparent"
               iconStyle={{
                 color: Colors.black
@@ -583,6 +588,7 @@ const Login = () => {
               style={{
                 padding: 0,
                 margin: 0,
+                marginTop: 2,
                 marginLeft: 2
               }}
             />
@@ -788,7 +794,8 @@ const styles = StyleSheet.create({
   mountain: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 5
+    marginLeft: 5,
+    marginBottom: 3
   },
   name: {
     fontFamily: 'Montserrat_900Black',
