@@ -21,7 +21,8 @@ const toast = (message: string) => {
     textColor: Colors.black,
     backgroundColor: Colors.white,
     containerStyle: {
-      height: 48
+      height: 48,
+      justifyContent: 'center'
     }
   })
 }

@@ -37,7 +37,7 @@ import DropDownPicker from 'react-native-dropdown-picker'
 import MaskedView from '@react-native-masked-view/masked-view'
 import { LinearGradient } from 'expo-linear-gradient'
 import District from '../components/District'
-import { Button, TextInput } from 'react-native-paper'
+import { Button, Checkbox, TextInput } from 'react-native-paper'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { toast } from '../util/Util'
@@ -560,7 +560,7 @@ const Login = () => {
         </SafeAreaView>
         <LoginView>
           <TouchableOpacity
-            style={styles.horizontal_container}
+            style={[styles.horizontal_container, { height: 48 }]}
             onPress={() => setShowRealApp(false)}
           >
             <Text
@@ -651,18 +651,9 @@ const Login = () => {
             )}
           </TouchableOpacity>
           <View style={styles.checkbox_container}>
-            <BouncyCheckbox
-              size={24}
-              fillColor={Colors.navy}
-              unfillColor="transparent"
-              disableText
-              innerIconStyle={{
-                borderWidth: 1,
-                borderColor: Colors.black
-              }}
-              isChecked={isChecked}
-              disableBuiltInState
-              onPress={async () => {
+            <Checkbox.Android
+              status={isChecked ? 'checked' : 'unchecked'}
+              onPress={() => {
                 setToggleCheckBox(!isChecked)
               }}
             />
@@ -696,7 +687,7 @@ const Login = () => {
               iconStyle={styles.insta_button}
               underlayColor="none"
               activeOpacity={0.2}
-              size={28}
+              size={24}
               onPress={() => openInstagram('richardyin99')}
             />
             <Text style={styles.insta_text}>Richard Y</Text>
@@ -708,7 +699,7 @@ const Login = () => {
               iconStyle={styles.insta_button}
               underlayColor="none"
               activeOpacity={0.2}
-              size={28}
+              size={24}
               onPress={() => openInstagram('karthik.whynot')}
             />
             <Text style={styles.insta_text}>Karthik M</Text>
@@ -882,7 +873,6 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   save_text: {
-    marginLeft: 8,
     fontFamily: 'Inter_400Regular'
   },
   row_container: {
@@ -892,10 +882,12 @@ const styles = StyleSheet.create({
     marginBottom: 25
   },
   insta_button_container: {
-    marginHorizontal: 10
+    marginHorizontal: 10,
+    alignItems: 'center'
   },
   insta_button: {
-    color: Colors.black
+    color: Colors.black,
+    padding: 12
   },
   insta_text: {
     fontFamily: 'Inter_300Light',
