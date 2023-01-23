@@ -39,9 +39,9 @@ const dateRelativeToToday = (date: Date) => {
 
   if (isBefore(date, today)) {
     if (isSameWeek(today, date, { weekStartsOn: 1 }))
-      return `Past ${format(date, `EEEE`)} the ${format(date, 'Do')}`
+      return `Past ${format(date, `EEEE`)} ${format(date, 'Mo')}`
 
-    return `Last ${format(date, `EEEE`)} the ${format(date, 'Do')}`
+    return `Last ${format(date, `EEEE`)} ${format(date, 'Mo')}`
   } else {
     return `${format(date, `EEEE`)}`
   }
