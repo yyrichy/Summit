@@ -30,7 +30,7 @@
       "package": "com.vaporys.Summit",
       "softwareKeyboardLayoutMode": "pan",
       "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"],
-      "versionCode": 2
+      "versionCode": 3
     },
     "androidStatusBar": {
       "barStyle": "dark-content"
