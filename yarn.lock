@@ -6593,11 +6593,6 @@ react-native-app-intro-slider@^4.0.4:
   resolved "https://registry.yarnpkg.com/react-native-app-intro-slider/-/react-native-app-intro-slider-4.0.4.tgz#fa5cda7057db62c448ac975ffd2ba0cff94cc8d8"
   integrity sha512-Zkjaol6X3BbZkHUpVDj2LjdidpS6rCgKi0fx80xgGKa0pHxBRd4swWTv2bHnnvu5k1/HXwYk0mY2TbK+2jHl5w==
 
-react-native-bouncy-checkbox@^3.0.5:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-bouncy-checkbox/-/react-native-bouncy-checkbox-3.0.5.tgz#8f9960247e4651c33db043f45a7793aa7e58e26b"
-  integrity sha512-lEUBgqZjJa7ru4SA9pPd3dYhsdPW8a+CIgRv6Gp9J/WxAvgbrzcYdODRngE5xbQboQPjQzPePpp5/w9janWHYg==
-
 react-native-calendars@^1.1291.1:
   version "1.1291.1"
   resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.1291.1.tgz#3cf86ba88d9efe05b0ac450a7099af48415c2a28"

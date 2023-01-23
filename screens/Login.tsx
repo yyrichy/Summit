@@ -19,7 +19,6 @@ import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
 import LoginView from '../components/Login'
 import AppContext from '../contexts/AppContext'
-import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import {
