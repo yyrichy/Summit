@@ -13,8 +13,8 @@ import {
   TouchableOpacity,
   View,
   BackHandler,
-  Dimensions,
-  FlatList
+  FlatList,
+  ScrollView
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import Assignment from '../components/Assignment'
@@ -30,9 +30,9 @@ import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { Chip, FAB, TextInput, useTheme } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import Animated, { Layout } from 'react-native-reanimated'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -63,9 +63,7 @@ const CourseDetails = ({ route }) => {
     setRefreshing(true)
     try {
       setMarks(
-        convertGradebook(
-          await client.gradebook(marks.reportingPeriod.index)
-        )
+        convertGradebook(await client.gradebook(marks.reportingPeriod.index))
       )
     } catch (err) {}
     setRefreshing(false)
@@ -182,11 +180,7 @@ const CourseDetails = ({ route }) => {
         }}
       >
         <GestureHandlerRootView>
-          <FadeInFlatList
-            initialDelay={0}
-            durationPerItem={300}
-            parallelItems={5}
-            itemsToFadeIn={Dimensions.get('window').height / 75}
+          <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -196,14 +190,17 @@ const CourseDetails = ({ route }) => {
               paddingTop: 8,
               paddingBottom: 10
             }}
-            data={course.assignments.filter(
-              (a) => course.categories.get(a.category).show
-            )}
-            renderItem={({ item }) => (
-              <Assignment name={item.name} courseName={courseName}></Assignment>
-            )}
-            keyExtractor={(item) => item.name}
-          />
+          >
+            {course.assignments
+              .filter((a) => course.categories.get(a.category).show)
+              .map((item) => (
+                <Assignment
+                  name={item.name}
+                  courseName={courseName}
+                  key={item.name}
+                ></Assignment>
+              ))}
+          </ScrollView>
         </GestureHandlerRootView>
         <FAB
           icon={'plus'}

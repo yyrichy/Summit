@@ -10,7 +10,7 @@ import {
   ViewStyle,
   LayoutAnimation,
   UIManager,
-  Animated
+  Animated as ReactNativeAnimated
 } from 'react-native'
 import {
   calculateMarkColor,
@@ -25,6 +25,11 @@ import { useTheme } from 'react-native-paper'
 import AssignmentChip from './AssignmentChip'
 import { Swipeable } from 'react-native-gesture-handler'
 import { dateRelativeToToday } from '../util/Util'
+import Animated, {
+  Layout,
+  LightSpeedInLeft,
+  LightSpeedOutRight
+} from 'react-native-reanimated'
 
 type Props = {
   courseName: string
@@ -89,7 +94,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
       outputRange: [-20, 0, 0, 1]
     })
     return (
-      <Animated.View style={{ transform: [{ translateX: trans }] }}>
+      <ReactNativeAnimated.View style={{ transform: [{ translateX: trans }] }}>
         <MaterialCommunityIcons.Button
           name="delete-forever"
           backgroundColor="transparent"
@@ -105,139 +110,150 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           activeOpacity={0.2}
           size={36}
           onPress={() => {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
             setMarks(deleteAssignment(marks, courseName, name))
           }}
         />
-      </Animated.View>
+      </ReactNativeAnimated.View>
     )
   }
 
   return (
-    <Swipeable renderLeftActions={renderLeftActions}>
-      <TouchableOpacity
-        style={[
-          styles.container,
-          style,
-          {
-            borderLeftColor: hasScore ? calculateMarkColor(score) : Colors.white
-          }
-        ]}
-        onPress={transition}
-      >
-        <View style={[styles.horizontal_container]}>
-          <View style={styles.assignment_info_container}>
-            <Text numberOfLines={1} style={[styles.name]}>
-              {name}
-            </Text>
-            <Text
-              numberOfLines={1}
-              style={[styles.category, { color: theme.colors.onSurface }]}
-            >
-              {assignment.category} - {assignment.date.due.toLocaleDateString()}
-            </Text>
-          </View>
-          <View style={styles.input_container}>
-            <TextInput
-              value={points.current}
-              placeholder={'__'}
-              keyboardType={'decimal-pad'}
-              returnKeyType={'done'}
-              autoComplete={'off'}
-              placeholderTextColor={Colors.secondary}
-              style={[
-                styles.mark,
-                {
-                  color: getModifiedColor(assignment.modified),
-                  marginRight: 6
-                }
-              ]}
-              onChangeText={(input) => {
-                if (isNumber(input) || input === '') update(input, 'earned')
-              }}
-            />
-            <Text
-              style={[
-                styles.dash,
-                { color: getModifiedColor(assignment.modified) }
-              ]}
-            >
-              /
-            </Text>
-            <TextInput
-              value={total.current}
-              placeholder={'__'}
-              keyboardType={'decimal-pad'}
-              returnKeyType={'done'}
-              autoComplete={'off'}
-              placeholderTextColor={Colors.secondary}
-              style={[
-                styles.mark,
-                {
-                  color: getModifiedColor(assignment.modified),
-                  marginLeft: 6
-                }
-              ]}
-              onChangeText={(input) => {
-                if (isNumber(input) || input === '') update(input, 'total')
-              }}
-            />
-          </View>
-        </View>
-        {isDropdown && (
-          <View style={{ marginTop: 4, padding: 4, paddingBottom: 0 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between'
-              }}
-            >
-              {assignment.date.start && (
-                <AssignmentChip
-                  icon="calendar-arrow-right"
-                  text={dateRelativeToToday(assignment.date.start)}
-                  style={{ marginRight: 4 }}
-                />
-              )}
-              {assignment.status.length !== 0 && (
-                <AssignmentChip
-                  icon="pencil-outline"
-                  text={assignment.status}
-                  style={{ marginLeft: 4 }}
-                />
-              )}
+    <Animated.View
+      entering={LightSpeedInLeft}
+      exiting={LightSpeedOutRight}
+      layout={Layout.springify()}
+    >
+      <Swipeable renderLeftActions={renderLeftActions}>
+        <TouchableOpacity
+          style={[
+            styles.container,
+            style,
+            {
+              borderLeftColor: hasScore
+                ? calculateMarkColor(score)
+                : Colors.white
+            }
+          ]}
+          onPress={transition}
+        >
+          <View style={[styles.horizontal_container]}>
+            <View style={styles.assignment_info_container}>
+              <Text
+                numberOfLines={isDropdown ? undefined : 1}
+                style={[styles.name]}
+              >
+                {name}
+              </Text>
+              <Text
+                numberOfLines={1}
+                style={[styles.category, { color: theme.colors.onSurface }]}
+              >
+                {assignment.category} -{' '}
+                {assignment.date.due.toLocaleDateString()}
+              </Text>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between'
-              }}
-            >
-              {assignment.date.due && (
-                <View>
+            <View style={styles.input_container}>
+              <TextInput
+                value={points.current}
+                placeholder={'__'}
+                keyboardType={'decimal-pad'}
+                returnKeyType={'done'}
+                autoComplete={'off'}
+                placeholderTextColor={Colors.secondary}
+                style={[
+                  styles.mark,
+                  {
+                    color: getModifiedColor(assignment.modified),
+                    marginRight: 6
+                  }
+                ]}
+                onChangeText={(input) => {
+                  if (isNumber(input) || input === '') update(input, 'earned')
+                }}
+              />
+              <Text
+                style={[
+                  styles.dash,
+                  { color: getModifiedColor(assignment.modified) }
+                ]}
+              >
+                /
+              </Text>
+              <TextInput
+                value={total.current}
+                placeholder={'__'}
+                keyboardType={'decimal-pad'}
+                returnKeyType={'done'}
+                autoComplete={'off'}
+                placeholderTextColor={Colors.secondary}
+                style={[
+                  styles.mark,
+                  {
+                    color: getModifiedColor(assignment.modified),
+                    marginLeft: 6
+                  }
+                ]}
+                onChangeText={(input) => {
+                  if (isNumber(input) || input === '') update(input, 'total')
+                }}
+              />
+            </View>
+          </View>
+          {isDropdown && (
+            <View style={{ marginTop: 4, padding: 4, paddingBottom: 0 }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+                {assignment.date.start && (
                   <AssignmentChip
-                    icon="calendar-clock"
-                    text={dateRelativeToToday(assignment.date.due)}
+                    icon="calendar-arrow-right"
+                    text={dateRelativeToToday(assignment.date.start)}
                     style={{ marginRight: 4 }}
-                    showBadge={
-                      assignment.date.due < new Date() &&
-                      (!hasScore || score <= 50)
-                    }
                   />
-                </View>
-              )}
-              {assignment.notes.length !== 0 && (
-                <AssignmentChip
-                  icon="note-outline"
-                  text={assignment.notes}
-                  style={{ marginLeft: 4 }}
-                />
-              )}
+                )}
+                {assignment.status.length !== 0 && (
+                  <AssignmentChip
+                    icon="pencil-outline"
+                    text={assignment.status}
+                    style={{ marginLeft: 4 }}
+                  />
+                )}
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between'
+                }}
+              >
+                {assignment.date.due && (
+                  <View>
+                    <AssignmentChip
+                      icon="calendar-clock"
+                      text={dateRelativeToToday(assignment.date.due)}
+                      style={{ marginRight: 4 }}
+                      showBadge={
+                        assignment.date.due < new Date() &&
+                        (!hasScore || score <= 50)
+                      }
+                    />
+                  </View>
+                )}
+                {assignment.notes.length !== 0 && (
+                  <AssignmentChip
+                    icon="note-outline"
+                    text={assignment.notes}
+                    style={{ marginLeft: 4 }}
+                  />
+                )}
+              </View>
             </View>
-          </View>
-        )}
-      </TouchableOpacity>
-    </Swipeable>
+          )}
+        </TouchableOpacity>
+      </Swipeable>
+    </Animated.View>
   )
 }
 

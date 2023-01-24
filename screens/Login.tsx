@@ -9,7 +9,9 @@ import {
   Alert,
   TouchableOpacity,
   Keyboard,
-  View
+  View,
+  Platform,
+  KeyboardAvoidingView
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -17,7 +19,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
-import LoginView from '../components/Login'
 import AppContext from '../contexts/AppContext'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
@@ -563,7 +564,10 @@ const Login = () => {
             </View>
           </View>
         </SafeAreaView>
-        <LoginView>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
           <TouchableOpacity
             style={[styles.horizontal_container, { height: 48 }]}
             onPress={() => setShowRealApp(false)}
@@ -683,7 +687,7 @@ const Login = () => {
             style={{ marginBottom: 50 }}
             size="large"
           />
-        </LoginView>
+        </KeyboardAvoidingView>
         <View style={styles.row_container}>
           <View style={styles.insta_button_container}>
             <MaterialCommunityIcons.Button
@@ -774,6 +778,13 @@ const slides = [
 ]
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginTop: 10
+  },
   horizontal_container: {
     flexDirection: 'row',
     justifyContent: 'center',
