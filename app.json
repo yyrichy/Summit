@@ -2,7 +2,7 @@
   "expo": {
     "name": "Summit",
     "slug": "Summit",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "platforms": ["android", "ios"],
@@ -30,7 +30,7 @@
       "package": "com.vaporys.Summit",
       "softwareKeyboardLayoutMode": "pan",
       "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"],
-      "versionCode": 5
+      "versionCode": 6
     },
     "androidStatusBar": {
       "barStyle": "dark-content"
