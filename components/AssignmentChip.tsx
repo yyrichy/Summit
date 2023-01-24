@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { Badge } from 'react-native-paper'
-import { Colors } from '../colors/Colors'
+import { View, Text } from 'react-native'
+import { Badge, useTheme } from 'react-native-paper'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 type Props = {
@@ -17,24 +16,30 @@ const AssignmentChip: React.FC<Props> = ({
   style,
   showBadge
 }: Props) => {
+  const theme = useTheme()
+
   return (
     <View
       style={[
         {
-          backgroundColor: Colors.off_white,
           marginVertical: 4,
-          borderRadius: 12,
-          paddingHorizontal: 8,
-          paddingVertical: 6,
+          borderRadius: 8,
+          paddingLeft: 8,
+          paddingRight: 16,
           flexDirection: 'row',
           alignItems: 'center',
-          borderWidth: StyleSheet.hairlineWidth
+          borderWidth: 1,
+          height: 32
         },
         style
       ]}
     >
       <View>
-        <MaterialCommunityIcons name={icon} size={20} />
+        <MaterialCommunityIcons
+          name={icon}
+          size={18}
+          color={theme.colors.primary}
+        />
         {showBadge && (
           <Badge
             style={{ position: 'absolute', top: 0, right: 0 }}
@@ -42,7 +47,7 @@ const AssignmentChip: React.FC<Props> = ({
           ></Badge>
         )}
       </View>
-      <Text style={{ fontSize: 12, marginLeft: 6 }}>{text}</Text>
+      <Text style={[theme.fonts.labelLarge, { marginLeft: 8 }]}>{text}</Text>
     </View>
   )
 }

@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   StyleProp,
   ViewStyle,
-  LayoutAnimation,
   UIManager,
   Animated as ReactNativeAnimated
 } from 'react-native'
@@ -26,6 +25,8 @@ import AssignmentChip from './AssignmentChip'
 import { Swipeable } from 'react-native-gesture-handler'
 import { dateRelativeToToday } from '../util/Util'
 import Animated, {
+  FadeIn,
+  FadeOut,
   Layout,
   LightSpeedInLeft,
   LightSpeedOutRight
@@ -76,7 +77,6 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
   }, [marks])
 
   const transition = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     setIsDropdown(!isDropdown)
   }
 
@@ -200,7 +200,15 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
             </View>
           </View>
           {isDropdown && (
-            <View style={{ marginTop: 4, padding: 4, paddingBottom: 0 }}>
+            <Animated.View
+              style={{
+                marginTop: 4,
+                padding: 4,
+                paddingBottom: 0
+              }}
+              entering={FadeIn.duration(500)}
+              exiting={FadeOut.duration(500)}
+            >
               <View
                 style={{
                   flexDirection: 'row',
@@ -249,7 +257,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                   />
                 )}
               </View>
-            </View>
+            </Animated.View>
           )}
         </TouchableOpacity>
       </Swipeable>
