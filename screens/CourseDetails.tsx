@@ -32,7 +32,6 @@ import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Chip, FAB, TextInput, useTheme } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Animated, { Layout } from 'react-native-reanimated'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title

@@ -9,26 +9,27 @@ import {
   BackHandler
 } from 'react-native'
 import Course from '../components/Course'
-import DropDownPicker from 'react-native-dropdown-picker'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { MD3LightTheme } from '../theme/MD3LightTheme'
+import { Picker, onOpen } from 'react-native-actions-sheet-picker'
+import { ReportingPeriod } from 'studentvue'
+import { useTheme } from 'react-native-paper'
 
 const Courses = ({ navigation }) => {
+  const theme = useTheme()
   const { client, marks, setMarks } = useContext(AppContext)
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(marks.reportingPeriod.index)
-  const [periods, setPeriods] = useState(
-    marks.reportingPeriods.map((p) => {
-      return { label: p.name, value: p.index }
-    })
+  const [selected, setSelected] = useState(
+    marks.reportingPeriod as ReportingPeriod
   )
-  const endDate = marks.reportingPeriods[value].date.end
+  const endDate = selected.date.end
   useEffect(() => {
     onRefresh()
-  }, [value])
+  }, [selected])
 
   useEffect(() => {
     registerForPushNotificationsAsync()
@@ -51,59 +52,69 @@ const Courses = ({ navigation }) => {
   const onRefresh = async () => {
     setRefreshing(true)
     try {
-      setMarks(convertGradebook(await client.gradebook(value)))
+      setMarks(convertGradebook(await client.gradebook(selected.index)))
     } catch (err) {}
     setRefreshing(false)
   }
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <DropDownPicker
-        open={open}
-        value={value}
-        items={periods}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setPeriods}
-        maxHeight={null}
-        style={styles.dropdown}
-        labelProps={{ numberOfLines: 1 }}
-        textStyle={[styles.dropdown_text, { fontSize: 50 }]}
-        translation={{
-          PLACEHOLDER: 'Select Marking Period'
-        }}
-        renderListItem={(props) => {
-          return (
-            <TouchableOpacity
-              {...props}
-              style={[
-                {
-                  backgroundColor: props.isSelected && Colors.light_gray
-                }
-              ]}
-              onPress={() => {
-                setValue(props.value)
-                setOpen(false)
-              }}
-              activeOpacity={0.2}
-            >
-              <View style={styles.marking_period_container}>
-                <Text
-                  numberOfLines={1}
-                  style={[styles.dropdown_text, { fontSize: 25 }]}
-                >
-                  {props.label}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          )
-        }}
-      ></DropDownPicker>
-      <View style={styles.marking_period_info_container}>
-        {!isNaN(marks.gpa) && <Text style={styles.gpa}>GPA - {marks.gpa}</Text>}
+      <Picker
+        id="mp"
+        data={marks.reportingPeriods}
+        searchable={false}
+        label="Select Marking Period"
+        setSelected={setSelected}
+      />
+
+      <View style={[styles.marking_period_info_container]}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: theme.colors.surfaceVariant,
+            borderRadius: 30,
+            paddingLeft: 20,
+            paddingRight: 15,
+            paddingVertical: 10,
+            flexDirection: 'row',
+            alignSelf: 'flex-start',
+            alignItems: 'center',
+            marginBottom: 10
+          }}
+          onPress={() => onOpen('mp')}
+        >
+          <Text
+            style={{
+              fontFamily: 'Inter_800ExtraBold',
+              fontSize: 35,
+              marginRight: 5
+            }}
+          >
+            {selected.name}
+          </Text>
+          <MaterialCommunityIcons
+            name="chevron-down"
+            size={24}
+            color={theme.colors.onSurfaceVariant}
+          />
+        </TouchableOpacity>
+        {!isNaN(marks.gpa) && (
+          <View
+            style={{
+              paddingVertical: 5,
+              paddingHorizontal: 10,
+              borderRadius: 20,
+              backgroundColor: Colors.light_gray,
+              marginBottom: 10
+            }}
+          >
+            <Text style={styles.gpa}>{marks.gpa.toFixed(2)}</Text>
+          </View>
+        )}
+      </View>
+      <View style={styles.date_info_container}>
+        <MaterialCommunityIcons name="calendar-clock-outline" size={18} />
         <Text style={styles.date}>
-          {endDate < new Date() ? 'Ended' : 'Ends'}{' '}
-          {endDate.toLocaleDateString()}
+          {' \u2022'} {endDate.toLocaleDateString()}
         </Text>
       </View>
       {marks && (
@@ -155,18 +166,45 @@ const styles = StyleSheet.create({
     marginLeft: 11
   },
   date: {
-    fontFamily: 'Montserrat_500Medium',
-    fontSize: 18
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 16
   },
   marking_period_info_container: {
     flexDirection: 'row',
-    marginHorizontal: 11,
+    marginHorizontal: 10,
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'flex-start',
+    flexWrap: 'wrap'
+  },
+  date_info_container: {
+    flexDirection: 'row',
+    marginHorizontal: 20,
+    alignItems: 'center',
+    marginBottom: 5
   },
   gpa: {
     fontFamily: 'Montserrat_700Bold',
     fontSize: 25
+  },
+  dropdown1BtnStyle: {
+    backgroundColor: MD3LightTheme.colors.surfaceVariant,
+    borderRadius: 30,
+    borderWidth: 1,
+    height: 60
+  },
+  dropdown1BtnTxtStyle: {
+    fontSize: 30,
+    fontFamily: 'Inter_800ExtraBold'
+  },
+  dropdown1DropdownStyle: {
+    backgroundColor: MD3LightTheme.colors.surfaceVariant,
+    borderRadius: 30
+  },
+  dropdown1RowStyle: { padding: 10 },
+  dropdown1RowTxtStyle: {
+    textAlign: 'left',
+    fontFamily: 'Inter_500Medium',
+    fontsize: 20
   }
 })
 
