@@ -31,7 +31,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>exp+gradehelper</string>
+          <string>exp+summit</string>
         </array>
       </dict>
     </array>
