@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     flex: 1,
-    borderWidth: 1
+    borderWidth: StyleSheet.hairlineWidth
   },
   info_container: {
     flexDirection: 'row',
