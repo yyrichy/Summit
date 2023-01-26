@@ -22,7 +22,7 @@ export const MD3LightTheme: MD3Theme = {
       .alpha(opacity.level2)
       .rgb()
       .string(),
-    background: Colors.blue_off_white,
+    background: palette.neutral99,
     error: palette.error40,
     errorContainer: palette.error90,
     onPrimary: palette.primary100,

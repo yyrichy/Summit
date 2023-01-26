@@ -5,7 +5,7 @@ export const NavLightTheme = {
   dark: false,
   colors: {
     primary: Colors.primary,
-    background: Colors.blue_off_white,
+    background: MD3LightTheme.colors.background,
     card: MD3LightTheme.colors.surface,
     text: Colors.black,
     border: Colors.secondary,

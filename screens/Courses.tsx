@@ -10,15 +10,14 @@ import {
 } from 'react-native'
 import Course from '../components/Course'
 import { convertGradebook } from '../gradebook/GradeUtil'
-import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { MD3LightTheme } from '../theme/MD3LightTheme'
 import { Picker, onOpen } from 'react-native-actions-sheet-picker'
 import { ReportingPeriod } from 'studentvue'
-import { useTheme } from 'react-native-paper'
+import { IconButton, useTheme } from 'react-native-paper'
+import { Colors } from '../colors/Colors'
 
 const Courses = ({ navigation }) => {
   const theme = useTheme()
@@ -58,7 +57,13 @@ const Courses = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: theme.colors.elevation.level1 }
+      ]}
+      edges={['top', 'left', 'right']}
+    >
       <Picker
         id="mp"
         data={marks.reportingPeriods}
@@ -66,19 +71,17 @@ const Courses = ({ navigation }) => {
         label="Select Marking Period"
         setSelected={setSelected}
       />
-
-      <View style={[styles.marking_period_info_container]}>
+      <View style={styles.marking_period_info_container}>
         <TouchableOpacity
           style={{
             backgroundColor: theme.colors.surfaceVariant,
             borderRadius: 30,
-            paddingLeft: 20,
-            paddingRight: 15,
-            paddingVertical: 10,
+            paddingLeft: 25,
+            paddingRight: 20,
+            paddingVertical: 12,
             flexDirection: 'row',
             alignSelf: 'flex-start',
-            alignItems: 'center',
-            marginBottom: 10
+            alignItems: 'center'
           }}
           onPress={() => onOpen('mp')}
         >
@@ -97,53 +100,78 @@ const Courses = ({ navigation }) => {
             color={theme.colors.onSurfaceVariant}
           />
         </TouchableOpacity>
-        {!isNaN(marks.gpa) && (
-          <View
-            style={{
-              paddingVertical: 5,
-              paddingHorizontal: 10,
-              borderRadius: 20,
-              backgroundColor: Colors.light_gray,
-              marginBottom: 10
-            }}
-          >
-            <Text style={styles.gpa}>{marks.gpa.toFixed(2)}</Text>
-          </View>
-        )}
+        <IconButton
+          icon="refresh"
+          size={40}
+          onPress={onRefresh}
+          mode={'contained'}
+        />
       </View>
       <View style={styles.date_info_container}>
-        <MaterialCommunityIcons name="calendar-clock-outline" size={18} />
-        <Text style={styles.date}>
-          {' \u2022'} {endDate.toLocaleDateString()}
-        </Text>
+        {!isNaN(marks.gpa) && (
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={styles.gpa_text}>GPA</Text>
+            <Text style={styles.gpa}>
+              {' \u2022'} {marks.gpa.toFixed(2)}
+            </Text>
+          </View>
+        )}
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <MaterialCommunityIcons
+            name="calendar-clock-outline"
+            size={18}
+            color={Colors.medium_gray}
+          />
+          <Text style={styles.date}>
+            {' \u2022'} {endDate.toLocaleDateString()}
+          </Text>
+        </View>
       </View>
-      {marks && (
-        <FadeInFlatList
-          initialDelay={0}
-          durationPerItem={300}
-          parallelItems={5}
-          itemsToFadeIn={10}
-          data={[...marks.courses.entries()]}
-          renderItem={({ item }) => (
-            <Course
-              name={item[0]}
-              mark={item[1].value}
-              period={item[1].period}
-              teacher={item[1].teacher}
-              onPress={() => {
-                navigation.navigate('Course Details', { title: item[0] })
-              }}
-            ></Course>
-          )}
-          keyExtractor={(item) => item[0]}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          contentContainerStyle={{
-            paddingHorizontal: 7
-          }}
-        />
-      )}
+      <View
+        style={{
+          flex: 1,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          backgroundColor: theme.colors.surface,
+          shadowColor: theme.colors.shadow,
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 4,
+          elevation: 5
+        }}
+      >
+        {marks && (
+          <FadeInFlatList
+            initialDelay={0}
+            durationPerItem={300}
+            parallelItems={5}
+            itemsToFadeIn={10}
+            data={[...marks.courses.entries()]}
+            renderItem={({ item }) => (
+              <Course
+                name={item[0]}
+                mark={item[1].value}
+                period={item[1].period}
+                teacher={item[1].teacher}
+                onPress={() => {
+                  navigation.navigate('Course Details', { title: item[0] })
+                }}
+              ></Course>
+            )}
+            keyExtractor={(item) => item[0]}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            contentContainerStyle={{
+              paddingHorizontal: 10,
+              paddingTop: 6
+            }}
+          />
+        )}
+      </View>
     </SafeAreaView>
   )
 }
@@ -167,44 +195,30 @@ const styles = StyleSheet.create({
   },
   date: {
     fontFamily: 'Montserrat_400Regular',
-    fontSize: 16
+    fontSize: 18
   },
   marking_period_info_container: {
     flexDirection: 'row',
     marginHorizontal: 10,
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap'
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    marginBottom: 10
   },
   date_info_container: {
     flexDirection: 'row',
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     alignItems: 'center',
-    marginBottom: 5
+    marginBottom: 10,
+    justifyContent: 'space-between'
+  },
+  gpa_text: {
+    fontFamily: 'Montserrat_600SemiBold',
+    fontSize: 18
   },
   gpa: {
-    fontFamily: 'Montserrat_700Bold',
-    fontSize: 25
-  },
-  dropdown1BtnStyle: {
-    backgroundColor: MD3LightTheme.colors.surfaceVariant,
-    borderRadius: 30,
-    borderWidth: 1,
-    height: 60
-  },
-  dropdown1BtnTxtStyle: {
-    fontSize: 30,
-    fontFamily: 'Inter_800ExtraBold'
-  },
-  dropdown1DropdownStyle: {
-    backgroundColor: MD3LightTheme.colors.surfaceVariant,
-    borderRadius: 30
-  },
-  dropdown1RowStyle: { padding: 10 },
-  dropdown1RowTxtStyle: {
-    textAlign: 'left',
-    fontFamily: 'Inter_500Medium',
-    fontsize: 20
+    fontFamily: 'Montserrat_400Regular',
+    fontSize: 18
   }
 })
 

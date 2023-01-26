@@ -1,11 +1,13 @@
 import {
   format,
+  formatDistance,
   intervalToDuration,
   isBefore,
   isSameWeek,
   isToday,
   isTomorrow,
-  isYesterday
+  isYesterday,
+  subDays
 } from 'date-fns'
 import Toast from 'react-native-root-toast'
 import { Colors } from '../colors/Colors'
@@ -39,9 +41,11 @@ const dateRelativeToToday = (date: Date) => {
 
   if (isBefore(date, today)) {
     if (isSameWeek(today, date, { weekStartsOn: 1 }))
-      return `Past ${format(date, `EEEE`)} ${date.getDate()}`
+      return formatDistance(date, today, { addSuffix: true })
 
-    return `Last ${format(date, `EEEE`)} ${date.getDate()}`
+    return `Last ${format(date, `EEEE`)} ${date.getDate()}${getOrdinal(
+      date.getDate()
+    )}`
   } else {
     return `${format(date, `EEEE`)}`
   }

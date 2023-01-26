@@ -12,7 +12,7 @@ import { Colors } from '../colors/Colors'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { Schedule } from 'studentvue'
 import ScheduleComponent from '../components/Schedule'
-import { SegmentedButtons } from 'react-native-paper'
+import { Divider, SegmentedButtons } from 'react-native-paper'
 import useAsyncEffect from 'use-async-effect'
 
 const ScheduleScreen = () => {
@@ -182,14 +182,14 @@ const ScheduleScreen = () => {
 
 const Seperator = () => {
   return (
-    <View
+    <Divider
       style={{
-        borderWidth: 1,
-        borderColor: Colors.secondary,
         marginHorizontal: 12,
         marginVertical: 8
       }}
-    ></View>
+      horizontalInset
+      bold
+    />
   )
 }
 

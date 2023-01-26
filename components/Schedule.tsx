@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import { formatAMPM, prependZero } from '../gradebook/GradeUtil'
 
@@ -18,19 +19,34 @@ const ScheduleComponent: React.FC<Props> = ({
   start,
   end
 }) => {
+  const theme = useTheme()
   return (
     <View style={styles.container}>
       <Text style={styles.period_number}>{prependZero(period)}</Text>
-      <View style={styles.course_info_container}>
+      <View
+        style={[
+          styles.course_info_container,
+          { backgroundColor: theme.colors.surfaceVariant }
+        ]}
+      >
         <Text numberOfLines={2} style={styles.name}>
           {name}
         </Text>
         <View style={styles.info_container}>
-          <Text numberOfLines={1} style={[styles.type, { flex: 1 }]}>
+          <Text
+            numberOfLines={1}
+            style={[
+              styles.type,
+              { flex: 1, color: theme.colors.onSurfaceVariant }
+            ]}
+          >
             {teacher}
           </Text>
           {start && end && (
-            <Text numberOfLines={1} style={styles.type}>
+            <Text
+              numberOfLines={1}
+              style={[styles.type, { color: theme.colors.onSurfaceVariant }]}
+            >
               {formatAMPM(start)} - {formatAMPM(end)}
             </Text>
           )}
@@ -53,7 +69,6 @@ const styles = StyleSheet.create({
     width: 45
   },
   course_info_container: {
-    backgroundColor: 'white',
     flex: 1,
     padding: 10,
     borderRadius: 8,

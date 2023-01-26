@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'column',
     justifyContent: 'center',
-    flex: 1
+    flex: 1,
+    borderWidth: 1
   },
   info_container: {
     flexDirection: 'row',

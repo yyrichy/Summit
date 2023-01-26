@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { Badge, useTheme } from 'react-native-paper'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { Colors } from '../colors/Colors'
 
 type Props = {
   icon: string | any
@@ -28,7 +29,7 @@ const AssignmentChip: React.FC<Props> = ({
           paddingRight: 16,
           flexDirection: 'row',
           alignItems: 'center',
-          borderWidth: 1,
+          borderWidth: StyleSheet.hairlineWidth,
           height: 32
         },
         style

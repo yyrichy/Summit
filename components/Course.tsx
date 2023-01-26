@@ -5,6 +5,7 @@ import { Colors } from '../colors/Colors'
 import {
   calculateLetterGrade,
   calculateMarkColor,
+  parseCourseName,
   prependZero
 } from '../gradebook/GradeUtil'
 
@@ -26,11 +27,9 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
       onPress={onPress}
       activeOpacity={0.2}
     >
-      <Text style={styles.period_number}>{prependZero(period)}</Text>
+      <Text style={styles.period_number}>{period}</Text>
       <View style={styles.course_info_container}>
-        <Text numberOfLines={1} style={styles.name}>
-          {name}
-        </Text>
+        <Text style={styles.name}>{parseCourseName(name)}</Text>
         <Text
           numberOfLines={1}
           style={[styles.teacher, { color: theme.colors.onSurface }]}
@@ -38,18 +37,21 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
           {teacher}
         </Text>
       </View>
-      <Text style={styles.mark}>{isNaN(markAsNumber) ? 'N/A' : mark}</Text>
+
       {!isNaN(markAsNumber) && (
-        <Text
-          style={[
-            styles.letter_grade,
-            {
-              color: calculateMarkColor(markAsNumber)
-            }
-          ]}
-        >
-          {calculateLetterGrade(markAsNumber)}
-        </Text>
+        <>
+          <Text style={styles.mark}>{parseFloat(mark).toFixed(1)}</Text>
+          <Text
+            style={[
+              styles.letter_grade,
+              {
+                color: calculateMarkColor(markAsNumber)
+              }
+            ]}
+          >
+            {calculateLetterGrade(markAsNumber)}
+          </Text>
+        </>
       )}
     </TouchableOpacity>
   )
@@ -57,16 +59,18 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 12,
+    borderRadius: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 5,
-    padding: 10
+    marginVertical: 6,
+    padding: 12,
+    borderWidth: StyleSheet.hairlineWidth
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 32
+    fontSize: 32,
+    marginHorizontal: 4
   },
   course_info_container: {
     flexDirection: 'column',
@@ -76,22 +80,23 @@ const styles = StyleSheet.create({
   },
   name: {
     color: Colors.navy,
-    fontFamily: 'Montserrat_700Bold',
+    fontFamily: 'Inter_700Bold',
     fontSize: 14
   },
   teacher: {
     fontFamily: 'Inter_400Regular',
-    fontSize: 12,
+    fontSize: 13,
     marginTop: 3
   },
   mark: {
     fontFamily: 'Montserrat_500Medium',
-    fontSize: 26
+    fontSize: 24
   },
   letter_grade: {
-    marginLeft: 7,
+    marginLeft: 10,
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 30
+    fontSize: 30,
+    marginRight: 2
   }
 })
 

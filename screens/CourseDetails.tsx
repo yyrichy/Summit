@@ -23,7 +23,8 @@ import {
   convertGradebook,
   isNumber,
   calculateMarkColor,
-  toggleCategory
+  toggleCategory,
+  parseCourseName
 } from '../gradebook/GradeUtil'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
@@ -107,7 +108,7 @@ const CourseDetails = ({ route }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.light_gray }}>
+    <View style={{ flex: 1, backgroundColor: theme.colors.elevation.level3 }}>
       <SafeAreaView
         style={styles.course_name_container}
         edges={['top', 'left', 'right']}
@@ -125,7 +126,7 @@ const CourseDetails = ({ route }) => {
           onPress={() => navigation.goBack()}
         />
         <Text numberOfLines={2} style={styles.course_name}>
-          {courseName}
+          {parseCourseName(courseName)}
         </Text>
       </SafeAreaView>
       <View
@@ -175,7 +176,15 @@ const CourseDetails = ({ route }) => {
           backgroundColor: theme.colors.background,
           borderTopLeftRadius: 12,
           borderTopRightRadius: 12,
-          flex: 1
+          flex: 1,
+          shadowColor: theme.colors.shadow,
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 4,
+          elevation: 5
         }}
       >
         <GestureHandlerRootView>
@@ -191,7 +200,7 @@ const CourseDetails = ({ route }) => {
             }}
           >
             {course.assignments
-              .filter((a) => course.categories.get(a.category).show)
+              .filter((a) => course.categories.get(a.category)?.show)
               .map((item) => (
                 <Assignment
                   name={item.name}
@@ -201,16 +210,18 @@ const CourseDetails = ({ route }) => {
               ))}
           </ScrollView>
         </GestureHandlerRootView>
-        <FAB
-          icon={'plus'}
-          onPress={toggleModal}
-          variant={'primary'}
-          style={{
-            bottom: 12,
-            right: 12,
-            position: 'absolute'
-          }}
-        />
+        {course.categories.size > 0 && (
+          <FAB
+            icon={'plus'}
+            onPress={toggleModal}
+            variant={'primary'}
+            style={{
+              bottom: 12,
+              right: 12,
+              position: 'absolute'
+            }}
+          />
+        )}
       </View>
       <Modal
         isVisible={isModalVisible}
