@@ -38,8 +38,6 @@ import MaskedView from '@react-native-masked-view/masked-view'
 import { LinearGradient } from 'expo-linear-gradient'
 import District from '../components/District'
 import { Button, Checkbox, TextInput } from 'react-native-paper'
-import AppIntroSlider from 'react-native-app-intro-slider'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { toast } from '../util/Util'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
@@ -66,6 +64,7 @@ const Login = () => {
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
 
   const [isDistrictModalVisible, setDistrictModalVisible] = useState(false)
+  const [isQuestionsModalVisible, setQuestionsModalVisible] = useState(false)
 
   const [selected, setSelected] = useState(null)
   const [districts, setDistricts] = useState(null)
@@ -80,16 +79,6 @@ const Login = () => {
   )
 
   useAsyncEffect(async () => {
-    try {
-      const alreadyLaunched = await AsyncStorage.getItem('alreadyLaunched')
-      if (alreadyLaunched === null) {
-        setShowRealApp(false)
-        await AsyncStorage.setItem('alreadyLaunched', 'true')
-      } else {
-        savedCredentials()
-      }
-    } catch (e) {}
-
     const backAction = () => {
       BackHandler.exitApp()
       return true
@@ -274,93 +263,40 @@ const Login = () => {
     setDistricts(d)
   }
 
-  const [showRealApp, setShowRealApp] = useState(true)
-
-  const onDone = () => {
-    setShowRealApp(true)
-  }
-
-  const onSkip = () => {
-    setShowRealApp(true)
-  }
-
-  const renderItem = ({ item }) => {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: item.backgroundColor
-        }}
-      >
-        <SafeAreaView>
-          <Text style={styles.intro_title_style}>{item.title}</Text>
-        </SafeAreaView>
-        <SafeAreaView
-          style={{
-            alignItems: 'center',
-            justifyContent: 'space-around',
-            flex: 1
-          }}
-        >
-          <MaterialCommunityIcons name={item.icon} size={120} />
-          <View style={{ alignItems: 'center' }}>
-            <Text style={styles.intro_text_style}>{item.text}</Text>
-            {item.github && (
-              <MaterialCommunityIcons.Button
-                name="github"
-                backgroundColor="transparent"
-                iconStyle={{
-                  color: Colors.black
-                }}
-                underlayColor="none"
-                activeOpacity={0.2}
-                size={40}
-                onPress={() =>
-                  Linking.openURL('https://github.com/vaporrrr/Summit')
-                }
-                style={{ padding: 0, marginTop: 8 }}
-              />
-            )}
-          </View>
-        </SafeAreaView>
-      </View>
-    )
-  }
-
-  const renderNextButton = () => {
-    return (
-      <MaterialCommunityIcons name="arrow-right-circle-outline" size={48} />
-    )
-  }
-  const renderDoneButton = () => {
-    return <MaterialIcons name="check-circle-outline" size={48} />
-  }
-
-  const renderSkipButton = () => {
-    return <MaterialIcons name="skip-next" size={48} />
-  }
-
-  if (!showRealApp) {
-    return (
-      <AppIntroSlider
-        data={slides}
-        renderItem={renderItem}
-        onDone={onDone}
-        showSkipButton={true}
-        onSkip={onSkip}
-        renderDoneButton={renderDoneButton}
-        renderNextButton={renderNextButton}
-        renderSkipButton={renderSkipButton}
-        activeDotStyle={{
-          backgroundColor: Colors.white,
-          width: 30
-        }}
-      />
-    )
-  }
-
   return (
     <>
+      <Modal
+        isVisible={isQuestionsModalVisible}
+        coverScreen={false}
+        onBackdropPress={() => setQuestionsModalVisible(false)}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+        backdropTransitionOutTiming={0}
+      >
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <View
+            style={{
+              backgroundColor: 'white',
+              padding: 20,
+              marginTop: insets.top,
+              marginBottom: insets.bottom,
+              borderRadius: 20,
+              maxWidth: 350
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: 'Inter_400Regular',
+                fontSize: 14
+              }}
+            >
+              Your username and password are the same as your school's grades
+              website.{'\n\n'}We do not collect any personal information and we
+              cannot access any information remotely.
+            </Text>
+          </View>
+        </View>
+      </Modal>
       <Modal
         isVisible={isDistrictModalVisible}
         coverScreen={false}
@@ -570,7 +506,7 @@ const Login = () => {
         >
           <TouchableOpacity
             style={[styles.horizontal_container, { height: 48 }]}
-            onPress={() => setShowRealApp(false)}
+            onPress={() => setQuestionsModalVisible(true)}
           >
             <Text
               style={{
@@ -794,7 +730,7 @@ const styles = StyleSheet.create({
   modal: {
     alignSelf: 'center',
     backgroundColor: 'white',
-    borderRadius: 28
+    borderRadius: 20
   },
   modal_view: {
     padding: 15
