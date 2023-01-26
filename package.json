@@ -1,7 +1,7 @@
 {
   "homepage": "https://vaporrrr.github.io",
-  "name": "summit",
-  "version": "1.0.3",
+  "name": "gradehelper",
+  "version": "4",
   "license": "MIT",
   "scripts": {
     "start": "expo start --dev-client",

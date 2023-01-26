@@ -5,7 +5,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>Summit</string>
+    <string>GradeHelper</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -17,7 +17,7 @@
     <key>CFBundlePackageType</key>
     <string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.3</string>
+    <string>1.0.4</string>
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleURLTypes</key>
@@ -31,7 +31,7 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>exp+summit</string>
+          <string>exp+gradehelper</string>
         </array>
       </dict>
     </array>
