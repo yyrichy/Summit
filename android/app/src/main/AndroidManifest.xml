@@ -1,7 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.vaporys.Summit" xmlns:tools="http://schemas.android.com/tools">
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:node="remove"/>
-  <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.vaporys.Summit">
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
@@ -30,11 +27,8 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="com.vaporrrr.Summit"/>
-        <data android:scheme="exp+summit"/>
         <data android:scheme="com.vaporys.Summit"/>
-        <data android:scheme="exp+grade-helper"/>
-        <data android:scheme="exp+gradehelper"/>
+        <data android:scheme="exp+summit"/>
       </intent-filter>
     </activity>
     <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false"/>

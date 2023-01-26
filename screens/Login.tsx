@@ -11,7 +11,8 @@ import {
   Keyboard,
   View,
   Platform,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  TextInput as ReactNativeTextInput
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -30,27 +31,14 @@ import {
 import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
-import * as Location from 'expo-location'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
-import districtsFile from '../assets/districts.json'
-import DropDownPicker from 'react-native-dropdown-picker'
-import MaskedView from '@react-native-masked-view/masked-view'
-import { LinearGradient } from 'expo-linear-gradient'
-import District from '../components/District'
-import { Button, Checkbox, TextInput } from 'react-native-paper'
+import { Checkbox, Divider, TextInput } from 'react-native-paper'
 import { toast } from '../util/Util'
+import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
 type loginInfo = 'username' | 'password' | 'district'
-
-type District = {
-  address: string
-  name: string
-  parentVueUrl: string
-  latitude?: number
-  longitude?: number
-}
 
 const Login = () => {
   const insets = useSafeAreaInsets()
@@ -66,19 +54,14 @@ const Login = () => {
   const [isDistrictModalVisible, setDistrictModalVisible] = useState(false)
   const [isQuestionsModalVisible, setQuestionsModalVisible] = useState(false)
 
-  const [selected, setSelected] = useState(null)
-  const [districts, setDistricts] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
-
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState(null)
-  const [allDistricts, setAllDistricts] = useState(
-    districtsFile.map((d, index) => {
-      return { label: d.name, value: index }
-    })
+  const [selectedDistrict, setSelectedDistrict] = useState(
+    null as SchoolDistrict
   )
+  const [districts, setDistricts] = useState(null as SchoolDistrict[])
 
   useAsyncEffect(async () => {
+    savedCredentials()
+
     const backAction = () => {
       BackHandler.exitApp()
       return true
@@ -95,19 +78,19 @@ const Login = () => {
   async function savedCredentials(): Promise<void> {
     const username: string = await getValueFor('username')
     const password: string = await getValueFor('password')
-    const value: string = await getValueFor('district')
+    const district: SchoolDistrict = JSON.parse(await getValueFor('district'))
 
-    if (!username || !password || !value) {
+    if (!username || !password || !district) {
       return
     }
 
     setUsername(username)
     setPassword(password)
-    setSelected(districtsFile.find((d) => d.parentVueUrl === value))
+    setSelectedDistrict(district)
     setIsLoading(true)
     setToggleCheckBox(true)
     try {
-      const client = await StudentVue.login(value, {
+      const client = await StudentVue.login(district.parentVueUrl, {
         username: username,
         password: password
       })
@@ -133,13 +116,13 @@ const Login = () => {
       toast('Enter your password')
       return
     }
-    if (!selected) {
+    if (!selectedDistrict) {
       toast('Select your school district')
       return
     }
     setIsLoading(true)
     try {
-      const client = await StudentVue.login(selected.parentVueUrl, {
+      const client = await StudentVue.login(selectedDistrict.parentVueUrl, {
         username: username,
         password: password
       })
@@ -155,7 +138,7 @@ const Login = () => {
     if (isChecked) {
       save('username', username)
       save('password', password)
-      save('district', selected.parentVueUrl)
+      save('district', JSON.stringify(selectedDistrict))
     }
     setIsLoading(false)
     navigation.navigate('Menu')
@@ -184,83 +167,34 @@ const Login = () => {
     return await SecureStore.getItemAsync(key)
   }
 
-  const onPress = async () => {
+  const onPressOpenDistrictModal = () => {
     Keyboard.dismiss()
-    setErrorMessage(null)
-    setDistricts(null)
     setDistrictModalVisible(true)
-    const { status } = await Location.requestForegroundPermissionsAsync()
-    if (status !== 'granted') {
-      setErrorMessage('Permission to access location was denied')
-      return
-    }
+  }
 
+  const onSearch = async (zipcode: string) => {
+    setDistricts(null)
     try {
-      const { coords } = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Low
-      })
-      var { latitude, longitude } = coords
-    } catch (e) {
-      setErrorMessage(
-        'Cannot retrieve your current location, check your connection'
+      const districtsFound: SchoolDistrict[] = await StudentVue.findDistricts(
+        zipcode
       )
-      return
-    }
-
-    const reverse = await Location.reverseGeocodeAsync({ latitude, longitude })
-    if (!reverse[0]) {
-      setErrorMessage('Cannot determine zip code, check your connection')
-      return
-    }
-    try {
-      var districtsFound: District[] = await StudentVue.findDistricts(
-        reverse[0].postalCode
-      )
+      setDistricts(districtsFound)
     } catch (e) {
       let message = e.message
       switch (message) {
         case 'Please enter zip code. Missing zip code as expected parameters.':
-          message = 'Zipcode not found'
+          message = 'Please enter a zipcode'
           break
         case 'Please enter zip code with atleast 3 characters and not more than 5 characters.':
-          message = 'Not in an US zipcode'
+          message = 'Zipcode must be between 3-5 characters'
           break
         case 'Network Error':
           message = 'Network error, check your connection'
           break
       }
-      setErrorMessage(message)
+      Alert.alert(message)
       return
     }
-    districtsFound.forEach((d) => {
-      const districtWithCoords = districtsFile.find(
-        (i) => i.name === d.name || i.parentVueUrl === d.parentVueUrl
-      )
-      if (districtWithCoords) {
-        d.latitude = districtWithCoords.latitude
-        d.longitude = districtWithCoords.longitude
-      }
-    })
-    const d = districtsFound.map((d) => ({
-      ...d,
-      distance: distance(
-        { lat: latitude, long: longitude },
-        { lat: d.latitude, long: d.longitude }
-      )
-    }))
-    d.sort((a, b) => {
-      if (a.distance > b.distance) {
-        return 1
-      } else if (a.distance < b.distance) {
-        return -1
-      }
-      return 0
-    })
-    if (d.length === 0) {
-      setErrorMessage('No school districts found in your area')
-      return
-    }
-    setDistricts(d)
   }
 
   return (
@@ -300,7 +234,7 @@ const Login = () => {
       <Modal
         isVisible={isDistrictModalVisible}
         coverScreen={false}
-        onBackdropPress={() => setDistrictModalVisible(!isDistrictModalVisible)}
+        onBackdropPress={() => setDistrictModalVisible(false)}
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}
         backdropTransitionOutTiming={0}
@@ -312,176 +246,78 @@ const Login = () => {
               padding: 20,
               marginTop: insets.top,
               marginBottom: insets.bottom,
-              maxWidth: 350
+              width: 350
             }
           ]}
         >
-          {errorMessage ? (
-            <View>
-              <Text
-                style={{
-                  fontFamily: 'Montserrat_600SemiBold',
-                  fontSize: 14,
-                  marginBottom: 4
-                }}
-              >
-                Cannot find your nearest school districts
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'Inter_400Regular',
-                  fontSize: 12
-                }}
-              >
-                {errorMessage}
-              </Text>
-              {errorMessage === 'Permission to access location was denied' && (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    justifyContent: 'flex-start',
-                    marginVertical: 10
-                  }}
-                >
-                  <Button
-                    icon="cog"
-                    mode="contained-tonal"
+          <ReactNativeTextInput
+            style={[styles.input, { marginBottom: 0, width: 300 }]}
+            placeholder="Enter zipcode"
+            keyboardType="number-pad"
+            returnKeyType="done"
+            onSubmitEditing={({ nativeEvent: { text } }) => onSearch(text)}
+            placeholderTextColor={Colors.medium_gray}
+          />
+          {districts && (
+            <FadeInFlatList
+              initialDelay={0}
+              durationPerItem={300}
+              parallelItems={5}
+              itemsToFadeIn={20}
+              data={districts}
+              keyExtractor={(item) => item.name}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
                     onPress={() => {
                       setDistrictModalVisible(false)
-                      Linking.openSettings()
+                      setSelectedDistrict(item)
+                    }}
+                    style={{
+                      backgroundColor:
+                        selectedDistrict &&
+                        selectedDistrict.name === item.name &&
+                        Colors.light_gray,
+                      borderRadius: 4
                     }}
                   >
-                    Settings
-                  </Button>
-                </View>
-              )}
-            </View>
-          ) : (
-            !districts && (
-              <Text
-                style={{
-                  fontFamily: 'Inter_500Medium',
-                  fontSize: 14,
-                  marginBottom: 15
-                }}
-              >
-                Waiting...
-              </Text>
-            )
-          )}
-          {districts && (
-            <MaskedView
-              style={{ flexShrink: 1, marginBottom: 10 }}
-              maskElement={
-                <LinearGradient
-                  style={{ flexGrow: 1 }}
-                  colors={[Colors.white, Colors.transparent]}
-                  locations={[0.85, 1]}
-                />
-              }
-            >
-              <FadeInFlatList
-                initialDelay={0}
-                durationPerItem={300}
-                parallelItems={5}
-                itemsToFadeIn={20}
-                data={districts}
-                keyExtractor={(item) => item.name}
-                renderItem={({ item }) => {
-                  return (
-                    <TouchableOpacity
-                      onPress={() => {
-                        setDistrictModalVisible(false)
-                        setSelected(item)
-                        setValue(
-                          allDistricts.findIndex((d) => d.label === item.name)
-                        )
-                      }}
+                    <Text
                       style={{
-                        backgroundColor:
-                          selected &&
-                          selected.name === item.name &&
-                          Colors.light_gray,
-                        borderRadius: 4
+                        fontFamily: 'Inter_500Medium',
+                        fontSize: 16
                       }}
                     >
-                      <Text
-                        style={{
-                          fontFamily: 'Inter_500Medium',
-                          fontSize: 16
-                        }}
-                      >
-                        {item.name}
-                      </Text>
-                      <Text
-                        style={{
-                          fontFamily: 'Inter_400Regular',
-                          fontSize: 16,
-                          color: Colors.onyx_gray,
-                          marginTop: 2
-                        }}
-                      >
-                        {item.distance.toFixed(2)} mi
-                      </Text>
-                    </TouchableOpacity>
-                  )
-                }}
-                style={{ flexGrow: 0 }}
-                contentContainerStyle={{ flexGrow: 0 }}
-                ItemSeparatorComponent={Seperator}
-              />
-            </MaskedView>
-          )}
-          <Text
-            style={{
-              fontFamily: 'Inter_700Bold',
-              fontSize: 20
-            }}
-          >
-            Manually Select District
-          </Text>
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={allDistricts}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setAllDistricts}
-            style={{
-              marginTop: 10,
-              backgroundColor: 'transparent'
-            }}
-            labelProps={{ numberOfLines: 1 }}
-            translation={{
-              SEARCH_PLACEHOLDER: 'Enter Your School District Name',
-              NOTHING_TO_SHOW: 'No School Districts Found',
-              PLACEHOLDER: 'Press to Select'
-            }}
-            textStyle={styles.dropdown_text_style}
-            listMode="MODAL"
-            listItemContainerStyle={{
-              paddingHorizontal: 8,
-              paddingVertical: 5
-            }}
-            listItemLabelStyle={styles.dropdown_text_style}
-            renderListItem={(props) => {
-              return (
-                <District
-                  {...props}
-                  onPress={() => {
-                    setValue(props.value)
-                    setSelected(
-                      districtsFile.find((d) => d.name === props.label)
-                    )
-                    setDistrictModalVisible(false)
-                    setOpen(false)
+                      {item.name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Inter_400Regular',
+                        fontSize: 14,
+                        color: Colors.onyx_gray,
+                        marginTop: 2
+                      }}
+                    >
+                      {item.address}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              }}
+              style={{ flexGrow: 0 }}
+              contentContainerStyle={{ flexGrow: 0, marginTop: 15 }}
+              ItemSeparatorComponent={Seperator}
+              ListEmptyComponent={
+                <Text
+                  style={{
+                    fontFamily: 'Inter_400Regular',
+                    fontSize: 14
                   }}
-                />
-              )
-            }}
-            searchable={true}
-          />
+                >
+                  No school districts found, did you enter the zipcode of your
+                  school district?
+                </Text>
+              }
+            />
+          )}
         </View>
       </Modal>
       <ImageBackground
@@ -491,7 +327,7 @@ const Login = () => {
       >
         <SafeAreaView style={{ alignItems: 'center' }}>
           <View style={styles.horizontal_container}>
-            <Text style={styles.name}>Grade Helper</Text>
+            <Text style={styles.name}>GradeHelper</Text>
           </View>
           <View style={styles.horizontal_container}>
             <Text style={styles.description}>Summit</Text>
@@ -524,7 +360,7 @@ const Login = () => {
               }}
               underlayColor="none"
               activeOpacity={0.2}
-              size={20}
+              size={18}
               style={{
                 padding: 0,
                 margin: 0,
@@ -555,7 +391,7 @@ const Login = () => {
             returnKeyType={'next'}
             ref={refInput}
             onSubmitEditing={() => {
-              onPress()
+              onPressOpenDistrictModal()
             }}
             blurOnSubmit={false}
             right={
@@ -579,7 +415,7 @@ const Login = () => {
               marginBottom: 10,
               minHeight: 50
             }}
-            onPress={async () => onPress()}
+            onPress={async () => onPressOpenDistrictModal()}
           >
             <Text
               style={{
@@ -589,10 +425,17 @@ const Login = () => {
                 flex: 1
               }}
             >
-              {selected ? selected.name : 'Find Your School District'}
+              {selectedDistrict
+                ? selectedDistrict.name
+                : 'Find Your School District'}
             </Text>
-            {!selected && (
-              <MaterialIcons name="location-pin" size={24} color="black" />
+            {!selectedDistrict && (
+              <MaterialCommunityIcons
+                name="school-outline"
+                size={24}
+                color="black"
+                style={{ marginRight: 2 }}
+              />
             )}
           </TouchableOpacity>
           <View style={styles.checkbox_container}>
@@ -659,59 +502,15 @@ export default Login
 
 const Seperator = () => {
   return (
-    <View
+    <Divider
       style={{
-        borderWidth: 1,
-        borderColor: Colors.secondary,
-        marginVertical: 10
+        marginHorizontal: 12,
+        marginVertical: 8
       }}
-    ></View>
+      bold
+    />
   )
 }
-
-const distance = ({ lat: x1, long: y1 }, { lat: x2, long: y2 }) => {
-  if (!x1 || !x2 || !y1 || !y2) return NaN
-  function toRadians(value) {
-    return (value * Math.PI) / 180
-  }
-
-  var R = 6371.071
-  var rlat1 = toRadians(x1) // Convert degrees to radians
-  var rlat2 = toRadians(x2) // Convert degrees to radians
-  var difflat = rlat2 - rlat1 // Radian difference (latitudes)
-  var difflon = toRadians(y2 - y1) // Radian difference (longitudes)
-  return (
-    2 *
-    R *
-    Math.asin(
-      Math.sqrt(
-        Math.sin(difflat / 2) * Math.sin(difflat / 2) +
-          Math.cos(rlat1) *
-            Math.cos(rlat2) *
-            Math.sin(difflon / 2) *
-            Math.sin(difflon / 2)
-      )
-    )
-  )
-}
-
-const slides = [
-  {
-    key: '1',
-    title: 'Username and Password',
-    text: "Students from any school that uses StudentVue can use this app. Username and password are the same as your school's website",
-    icon: 'form-textbox-password',
-    backgroundColor: Colors.primary
-  },
-  {
-    key: '2',
-    title: 'Safe and Open Source',
-    text: "Your login info is sent directly to your schools website. Saving your username and password saves directly to your phone's storage. Code is open source on Github",
-    github: 'https://github.com/vaporrrr/Summit',
-    icon: 'lock',
-    backgroundColor: Colors.dark_yellow
-  }
-]
 
 const styles = StyleSheet.create({
   container: {

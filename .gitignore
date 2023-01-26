@@ -78,3 +78,6 @@ dist/
 builds/
 
 # @end expo-cli
+
+ios/
+android/

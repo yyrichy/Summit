@@ -17,9 +17,6 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "This app uses your location to determine nearby school districts"
-      },
       "bundleIdentifier": "com.vaporys.Summit"
     },
     "android": {
@@ -29,7 +26,6 @@
       },
       "package": "com.vaporys.Summit",
       "softwareKeyboardLayoutMode": "pan",
-      "blockedPermissions": ["android.permission.ACCESS_FINE_LOCATION"],
       "versionCode": 7
     },
     "androidStatusBar": {

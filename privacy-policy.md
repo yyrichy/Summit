@@ -61,11 +61,9 @@ We may also collect information when you access the Service by or through a mobi
 
 While using Our Application, in order to provide features of our application, We may share, with your prior permission:
 
-- Information regarding your location
 - School username and password
 
-We share location information with StudentVue/Synergy to retrieve a list of school districts near you. We share your username and password to your school district to retrieve your school data for displaying in the app. We DO NOT send this data to anyone else, including us.
-You can enable or disable access to location at any time, through your device settings.
+We share your username and password to your school district to retrieve your school data for displaying in the app. We DO NOT send this data to anyone else, including us.
 
 ## Use of Your Personal Data
 
