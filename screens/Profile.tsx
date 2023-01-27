@@ -208,6 +208,19 @@ const Profile = () => {
             </View>
           )}
           <Divider horizontalInset />
+          {studentInfo.address && (
+            <View style={styles.property_container}>
+              <MaterialCommunityIcons
+                name="home-outline"
+                size={20}
+                color={Colors.secondary}
+              />
+              <Text style={styles.property_text}>
+                {studentInfo.address.replaceAll('&lt;br&gt;', ' ')}
+              </Text>
+            </View>
+          )}
+          <Divider horizontalInset />
           {studentInfo.email && (
             <View style={styles.property_container}>
               <MaterialCommunityIcons
@@ -221,8 +234,8 @@ const Profile = () => {
           <Divider horizontalInset />
           {studentInfo.currentSchool && (
             <View style={styles.property_container}>
-              <MaterialIcons
-                name="location-pin"
+              <MaterialCommunityIcons
+                name="school-outline"
                 size={20}
                 color={Colors.secondary}
               />
@@ -378,7 +391,7 @@ const styles = StyleSheet.create({
   property_text: {
     marginLeft: 20,
     fontFamily: 'Inter_400Regular',
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.onyx_gray
   },
   settings_title: {
