@@ -245,18 +245,6 @@ const Profile = () => {
             </View>
           )}
           <Divider horizontalInset />
-          {studentInfo.homeRoom && (
-            <View style={styles.property_container}>
-              <MaterialCommunityIcons
-                name="account-box-outline"
-                size={20}
-                color={Colors.secondary}
-              />
-              <Text style={styles.property_text}>
-                Homeroom: {studentInfo.homeRoom}
-              </Text>
-            </View>
-          )}
         </View>
         <View
           style={{
