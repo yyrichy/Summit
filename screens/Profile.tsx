@@ -27,7 +27,7 @@ import * as SecureStore from 'expo-secure-store'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
-import { Avatar } from 'react-native-paper'
+import { Avatar, Divider, IconButton, useTheme } from 'react-native-paper'
 import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
 import { getOrdinal, toast } from '../util/Util'
@@ -35,6 +35,7 @@ import { Switch } from '../components/switch/switch'
 
 const Profile = () => {
   type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
+  const theme = useTheme()
 
   const navigation = useNavigation<loginScreenProp>()
   const { client } = useContext(AppContext)
@@ -127,25 +128,19 @@ const Profile = () => {
         style={{
           flexDirection: 'row',
           justifyContent: 'flex-end',
-          alignItems: 'center'
+          alignItems: 'center',
+          marginHorizontal: 10
         }}
       >
-        <MaterialIcons.Button
-          name="logout"
-          size={38}
-          underlayColor="none"
-          activeOpacity={0.2}
-          backgroundColor="transparent"
-          iconStyle={{
-            color: Colors.black,
-            alignSelf: 'flex-end'
-          }}
+        <IconButton
+          icon={({ color }) => (
+            <MaterialIcons name="logout" size={36} color={color} />
+          )}
+          size={40}
+          onPress={() => navigation.navigate('Login')}
+          mode={'contained'}
           style={{
-            padding: 0,
-            marginRight: 20
-          }}
-          onPress={() => {
-            navigation.navigate('Login')
+            padding: 0
           }}
         />
       </View>
@@ -158,72 +153,90 @@ const Profile = () => {
         />
         <View style={styles.info_container}>
           <Text style={styles.name}>{studentInfo.student.name}</Text>
-          <View style={styles.details_container}>
-            <View style={styles.detaiL_container}>
-              <Text style={styles.detail_value}>
-                {studentInfo.grade + getOrdinal(parseInt(studentInfo.grade))}
-              </Text>
-              <Text style={styles.detail_name}>Grade</Text>
-            </View>
-            <View style={styles.detaiL_container}>
-              <Text style={styles.detail_value}>
-                {studentInfo.birthDate.toLocaleDateString()}
-              </Text>
-              <Text style={styles.detail_name}>Birthdate</Text>
-            </View>
-          </View>
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.content_container}>
-        <View style={styles.property_view}>
-          {studentInfo.id && (
-            <View style={styles.property_container}>
+      <ScrollView>
+        <View
+          style={{
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            marginBottom: 10
+          }}
+        >
+          <IconPropertyBox
+            icon={
+              <MaterialCommunityIcons
+                name="school-outline"
+                size={24}
+                color={Colors.black}
+              />
+            }
+            text={studentInfo.grade + getOrdinal(parseInt(studentInfo.grade))}
+          />
+          <IconPropertyBox
+            icon={
+              <MaterialCommunityIcons
+                name="cake-variant-outline"
+                size={24}
+                color={Colors.black}
+              />
+            }
+            text={studentInfo.birthDate.toLocaleDateString()}
+          />
+          <IconPropertyBox
+            icon={
               <MaterialCommunityIcons
                 name="badge-account-horizontal-outline"
                 size={24}
                 color={Colors.black}
               />
-              <Text style={styles.property_text}>{studentInfo.id}</Text>
-            </View>
-          )}
+            }
+            text={studentInfo.id}
+          />
+        </View>
+        <View style={styles.property_view}>
           {studentInfo.phone && (
             <View style={styles.property_container}>
               <MaterialCommunityIcons
                 name="phone"
-                size={24}
-                color={Colors.black}
+                size={20}
+                color={Colors.secondary}
               />
               <Text style={styles.property_text}>{studentInfo.phone}</Text>
             </View>
           )}
+          <Divider horizontalInset />
           {studentInfo.email && (
             <View style={styles.property_container}>
               <MaterialCommunityIcons
                 name="email-outline"
-                size={24}
-                color={Colors.black}
+                size={20}
+                color={Colors.secondary}
               />
               <Text style={styles.property_text}>{studentInfo.email}</Text>
             </View>
           )}
+          <Divider horizontalInset />
           {studentInfo.currentSchool && (
             <View style={styles.property_container}>
               <MaterialIcons
                 name="location-pin"
-                size={24}
-                color={Colors.black}
+                size={20}
+                color={Colors.secondary}
               />
               <Text style={styles.property_text}>
                 {studentInfo.currentSchool}
               </Text>
             </View>
           )}
+          <Divider horizontalInset />
           {studentInfo.homeRoom && (
             <View style={styles.property_container}>
               <MaterialCommunityIcons
                 name="account-box-outline"
-                size={24}
-                color={Colors.black}
+                size={20}
+                color={Colors.secondary}
               />
               <Text style={styles.property_text}>
                 Homeroom: {studentInfo.homeRoom}
@@ -231,49 +244,58 @@ const Profile = () => {
             </View>
           )}
         </View>
-        <Setting
-          title="Download School Picture"
-          onPress={downloadSchoolPicture}
-          position="single"
+        <View
+          style={{
+            backgroundColor: theme.colors.elevation.level1,
+            paddingVertical: 25,
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20
+          }}
         >
-          <MaterialCommunityIcons
-            name="download"
-            size={24}
-            color={Colors.black}
-          />
-        </Setting>
-        <Text style={styles.settings_title}>Settings</Text>
-        <Setting
-          title="Daily Grade Check Reminder"
-          description="Reminds you to check your grades"
-          onPress={showDatePicker}
-          position="top"
-        >
-          <MaterialCommunityIcons
-            name="chevron-right"
-            size={24}
-            color={Colors.black}
-          />
-        </Setting>
-        <Seperator />
-        <Setting title="Disable Reminder" position="middle">
-          <Switch
-            onChange={toggleSwitch}
-            defaultChecked={defaultSwitchOn}
-          ></Switch>
-        </Setting>
-        <Seperator />
-        <Setting
-          title="Delete Login Info"
-          onPress={() => deleteLoginInfo()}
-          position="bottom"
-        >
-          <MaterialCommunityIcons
-            name="delete-outline"
-            size={24}
-            color={Colors.black}
-          />
-        </Setting>
+          <Setting
+            title="Download School Picture"
+            onPress={downloadSchoolPicture}
+            position="single"
+          >
+            <MaterialCommunityIcons
+              name="download"
+              size={24}
+              color={Colors.black}
+            />
+          </Setting>
+          <Text style={styles.settings_title}>Settings</Text>
+          <Setting
+            title="Daily Grade Check Reminder"
+            description="Reminds you to check your grades"
+            onPress={showDatePicker}
+            position="top"
+          >
+            <MaterialCommunityIcons
+              name="chevron-right"
+              size={24}
+              color={Colors.black}
+            />
+          </Setting>
+          <Seperator />
+          <Setting title="Disable Reminder" position="middle">
+            <Switch
+              onChange={toggleSwitch}
+              defaultChecked={defaultSwitchOn}
+            ></Switch>
+          </Setting>
+          <Seperator />
+          <Setting
+            title="Delete Login Info"
+            onPress={() => deleteLoginInfo()}
+            position="bottom"
+          >
+            <MaterialCommunityIcons
+              name="delete-outline"
+              size={24}
+              color={Colors.black}
+            />
+          </Setting>
+        </View>
       </ScrollView>
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
@@ -286,6 +308,30 @@ const Profile = () => {
   )
 }
 
+const IconPropertyBox = ({ icon, text }) => {
+  return (
+    <View
+      style={{
+        backgroundColor: Colors.off_white,
+        borderRadius: 20,
+        height: 80,
+        width: 80,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        padding: 5
+      }}
+    >
+      {icon}
+      <Text
+        numberOfLines={1}
+        style={{ fontFamily: 'Inter_500Medium', fontSize: 12 }}
+      >
+        {text}
+      </Text>
+    </View>
+  )
+}
+
 const styles = StyleSheet.create({
   name: {
     fontSize: 30,
@@ -293,9 +339,10 @@ const styles = StyleSheet.create({
   },
   avatar_info_container: {
     marginHorizontal: 25,
-    marginBottom: 25,
+    marginBottom: 20,
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    marginTop: -30
   },
   info_container: {
     justifyContent: 'center',
@@ -318,22 +365,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_300Light',
     fontSize: 14
   },
-  content_container: {
-    paddingBottom: 20
-  },
+
   property_view: {
-    padding: 10,
-    borderRadius: 12,
-    backgroundColor: Colors.white,
-    marginHorizontal: 25,
-    marginBottom: 15
+    marginHorizontal: 30,
+    marginBottom: 10
   },
   property_container: {
     flexDirection: 'row',
-    padding: 12
+    padding: 15
   },
   property_text: {
-    marginLeft: 12,
+    marginLeft: 20,
     fontFamily: 'Inter_400Regular',
     fontSize: 16,
     color: Colors.onyx_gray
