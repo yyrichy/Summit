@@ -129,7 +129,8 @@ const Profile = () => {
           flexDirection: 'row',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          marginHorizontal: 10
+          marginHorizontal: 10,
+          zIndex: 1
         }}
       >
         <IconButton
@@ -342,7 +343,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginTop: -30
+    marginTop: -25
   },
   info_container: {
     justifyContent: 'center',
