@@ -174,8 +174,8 @@ const CourseDetails = ({ route }) => {
       <View
         style={{
           backgroundColor: theme.colors.background,
-          borderTopLeftRadius: 12,
-          borderTopRightRadius: 12,
+          borderTopLeftRadius: 15,
+          borderTopRightRadius: 15,
           flex: 1,
           shadowColor: theme.colors.shadow,
           shadowOffset: {
@@ -194,8 +194,8 @@ const CourseDetails = ({ route }) => {
             }
             contentContainerStyle={{
               flexGrow: 1,
-              paddingHorizontal: 12,
-              paddingTop: 8,
+              paddingHorizontal: 14,
+              paddingTop: 10,
               paddingBottom: 10
             }}
           >

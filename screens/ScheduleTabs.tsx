@@ -123,7 +123,7 @@ const ScheduleScreen = () => {
             }
             style={{ flexGrow: 0 }}
             contentContainerStyle={{
-              paddingHorizontal: 7,
+              paddingHorizontal: 10,
               flexGrow: 0
             }}
             ItemSeparatorComponent={Seperator}
@@ -167,7 +167,7 @@ const ScheduleScreen = () => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           contentContainerStyle={{
-            paddingHorizontal: 7
+            paddingHorizontal: 10
           }}
           ItemSeparatorComponent={Seperator}
         />

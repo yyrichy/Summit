@@ -76,8 +76,8 @@ const Courses = ({ navigation }) => {
           style={{
             backgroundColor: theme.colors.surfaceVariant,
             borderRadius: 30,
-            paddingLeft: 25,
-            paddingRight: 20,
+            paddingLeft: 30,
+            paddingRight: 25,
             paddingVertical: 12,
             flexDirection: 'row',
             alignSelf: 'flex-start',
@@ -167,7 +167,7 @@ const Courses = ({ navigation }) => {
             }
             contentContainerStyle={{
               paddingHorizontal: 10,
-              paddingTop: 6
+              paddingTop: 10
             }}
           />
         )}

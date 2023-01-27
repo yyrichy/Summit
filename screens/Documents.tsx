@@ -75,7 +75,7 @@ const Documents = () => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           contentContainerStyle={{
-            paddingHorizontal: 7,
+            paddingHorizontal: 10,
             paddingTop: 3.5
           }}
         />
