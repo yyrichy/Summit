@@ -156,7 +156,11 @@ const Profile = () => {
           <Text style={styles.name}>{studentInfo.student.name}</Text>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1
+        }}
+      >
         <View
           style={{
             flexWrap: 'wrap',
@@ -244,14 +248,14 @@ const Profile = () => {
               </Text>
             </View>
           )}
-          <Divider horizontalInset />
         </View>
         <View
           style={{
             backgroundColor: theme.colors.elevation.level1,
             paddingVertical: 25,
             borderTopLeftRadius: 20,
-            borderTopRightRadius: 20
+            borderTopRightRadius: 20,
+            flex: 1
           }}
         >
           <Setting
