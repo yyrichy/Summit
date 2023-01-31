@@ -220,7 +220,7 @@ const Profile = () => {
                 color={Colors.secondary}
               />
               <Text style={styles.property_text}>
-                {studentInfo.address.replaceAll('&lt;br&gt;', ' ')}
+                {studentInfo.address.replace(/&lt;br&gt;/g, ' ')}
               </Text>
             </View>
           )}
@@ -255,7 +255,15 @@ const Profile = () => {
             paddingVertical: 25,
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
-            flex: 1
+            flex: 1,
+            shadowColor: theme.colors.shadow,
+            shadowOffset: {
+              width: 0,
+              height: -4
+            },
+            shadowOpacity: 0.05,
+            shadowRadius: 2,
+            elevation: 5
           }}
         >
           <Setting
