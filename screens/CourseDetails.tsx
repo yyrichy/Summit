@@ -31,7 +31,7 @@ import Modal from 'react-native-modal'
 import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Chip, FAB, TextInput, useTheme } from 'react-native-paper'
+import { Button, Chip, FAB, TextInput, useTheme } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const CourseDetails = ({ route }) => {
@@ -142,13 +142,13 @@ const CourseDetails = ({ route }) => {
           {isNaN(course.value) ? 'N/A' : course.value}
         </Text>
       </View>
-      <View style={{ height: 32, marginBottom: 10, paddingLeft: 4 }}>
+      <View style={{ height: 32, marginBottom: 15, paddingLeft: 4 }}>
         <FlatList
           showsHorizontalScrollIndicator={false}
           horizontal
-          data={[...course.categories.entries()]}
+          data={[...course.categories.values()]}
           renderItem={({ item }) => {
-            const selected = item[1].show
+            const selected = item.show
             return (
               <Chip
                 selected={selected}
@@ -161,14 +161,14 @@ const CourseDetails = ({ route }) => {
                     : theme.colors.surface
                 }}
                 onPress={() => {
-                  setMarks(toggleCategory(marks, course, item[1]))
+                  setMarks(toggleCategory(marks, course, item))
                 }}
               >
-                {item[1].name}
+                {item.name}
               </Chip>
             )
           }}
-          keyExtractor={(item) => item[1].name}
+          keyExtractor={(item) => item.name}
         />
       </View>
       <View
@@ -235,99 +235,85 @@ const CourseDetails = ({ route }) => {
       >
         <View style={styles.modal}>
           <View style={styles.modal_view}>
-            <TextInput
-              returnKeyType={'next'}
-              value={points}
-              keyboardType="decimal-pad"
-              autoComplete="off"
-              placeholder="Points Earned"
-              onChangeText={(t) => {
-                if (isNumber(t) || t === '') setPoints(t)
-              }}
-              style={styles.input}
-              textColor={Colors.black}
-              placeholderTextColor={Colors.secondary}
-              blurOnSubmit={false}
-              onSubmitEditing={() => refInput.current.focus()}
-            />
-            <TextInput
-              returnKeyType={'next'}
-              value={total}
-              keyboardType="decimal-pad"
-              autoComplete="off"
-              placeholder="Total Points"
-              onChangeText={(t) => {
-                if (isNumber(t) || t === '') setTotal(t)
-              }}
-              style={styles.input}
-              textColor={Colors.black}
-              placeholderTextColor={Colors.secondary}
-              ref={refInput}
-              onSubmitEditing={() => setOpen(true)}
-            />
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginHorizontal: 10
+                marginBottom: 16
               }}
             >
-              <DropDownPicker
-                open={open}
-                value={category}
-                items={categories}
-                setOpen={setOpen}
-                setValue={setCategory}
-                setItems={setCategories}
-                maxHeight={null}
-                style={styles.dropdown}
-                textStyle={styles.dropdown_text}
-                containerStyle={styles.dropdown_container}
-                translation={{
-                  PLACEHOLDER: 'Select Category'
+              <TextInput
+                returnKeyType={'next'}
+                value={points}
+                keyboardType="decimal-pad"
+                autoComplete="off"
+                placeholder="Score"
+                onChangeText={(t) => {
+                  if (isNumber(t) || t === '') setPoints(t)
                 }}
-                renderListItem={(props) => {
-                  return (
-                    <TouchableOpacity
-                      {...props}
-                      style={[
-                        props.listItemContainerStyle,
-                        {
-                          backgroundColor: props.isSelected && Colors.light_gray
-                        }
-                      ]}
-                      onPress={() => {
-                        setCategory(props.value)
-                        setOpen(false)
-                      }}
-                      activeOpacity={0.2}
-                    >
-                      <View style={styles.category_name_container}>
-                        <Text
-                          numberOfLines={1}
-                          style={props.listItemLabelStyle}
-                        >
-                          {props.label}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  )
+                style={styles.input}
+                textColor={Colors.black}
+                placeholderTextColor={Colors.secondary}
+                blurOnSubmit={false}
+                onSubmitEditing={() => refInput.current.focus()}
+              />
+              <Text style={{ fontSize: 48 }}>/</Text>
+              <TextInput
+                returnKeyType={'next'}
+                value={total}
+                keyboardType="decimal-pad"
+                autoComplete="off"
+                placeholder="Total"
+                onChangeText={(t) => {
+                  if (isNumber(t) || t === '') setTotal(t)
                 }}
-              ></DropDownPicker>
-              <MaterialCommunityIcons.Button
-                name="plus-circle"
-                backgroundColor="transparent"
-                iconStyle={{
-                  color: Colors.navy
-                }}
-                style={{ padding: 0, margin: 0, marginRight: -8 }}
-                size={50}
-                underlayColor="none"
-                activeOpacity={0.2}
-                onPress={add}
+                style={styles.input}
+                textColor={Colors.black}
+                placeholderTextColor={Colors.secondary}
+                ref={refInput}
+                onSubmitEditing={() => setOpen(true)}
               />
             </View>
+            <View
+              style={{ height: 32, marginBottom: 16, marginHorizontal: 16 }}
+            >
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                data={[...course.categories.values()]}
+                renderItem={({ item }) => {
+                  const selected = category === item.name
+                  return (
+                    <Chip
+                      selected={selected}
+                      mode={'flat'}
+                      style={{
+                        marginRight: 16,
+                        height: 32,
+                        backgroundColor: selected
+                          ? theme.colors.secondaryContainer
+                          : theme.colors.surfaceVariant
+                      }}
+                      onPress={() => {
+                        setCategory(item.name)
+                        setOpen(false)
+                      }}
+                    >
+                      {item.name}
+                    </Chip>
+                  )
+                }}
+                keyExtractor={(item) => item.name}
+              />
+            </View>
+            <Button
+              mode="contained"
+              onPress={add}
+              style={{ marginHorizontal: 16 }}
+            >
+              Add Assignment
+            </Button>
           </View>
         </View>
       </Modal>
@@ -337,24 +323,23 @@ const CourseDetails = ({ route }) => {
 
 const styles = StyleSheet.create({
   input: {
-    marginHorizontal: 10,
-    marginBottom: 10,
-    paddingHorizontal: 5,
-    borderWidth: 1,
-    height: 36,
+    marginHorizontal: 16,
+    borderWidth: 0,
     backgroundColor: 'transparent',
     fontFamily: 'Inter_400Regular',
-    fontSize: 12,
-    borderRadius: 4
+    fontSize: 20,
+    borderRadius: 4,
+    flex: 1,
+    alignItems: 'center'
   },
   modal: {
     flexDirection: 'column',
     alignItems: 'center',
     alignSelf: 'center',
     backgroundColor: Colors.white,
-    borderRadius: 16,
+    borderRadius: 20,
     width: 320,
-    padding: 16
+    padding: 26
   },
   modal_view: {
     width: 320
