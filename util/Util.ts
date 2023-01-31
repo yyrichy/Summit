@@ -6,15 +6,14 @@ import {
   isSameWeek,
   isToday,
   isTomorrow,
-  isYesterday,
-  subDays
+  isYesterday
 } from 'date-fns'
 import Toast from 'react-native-root-toast'
 import { Colors } from '../colors/Colors'
 
 const toast = (message: string) => {
   Toast.show(message, {
-    duration: Toast.durations.LONG,
+    duration: Toast.durations.SHORT,
     position: Toast.positions.BOTTOM - 30,
     shadow: false,
     animation: true,

@@ -9,12 +9,15 @@ import {
   View,
   RefreshControl,
   ActivityIndicator,
-  Dimensions
+  Dimensions,
+  Platform
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
 import Doc from '../components/Document'
 import { Colors } from '../colors/Colors'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
+import RNFetchBlob from 'rn-fetch-blob'
+import { toast } from '../util/Util'
 
 const Documents = () => {
   const { client } = useContext(AppContext)
@@ -29,13 +32,23 @@ const Documents = () => {
     const fileName =
       document.comment.replace(/ /g, '_') +
       file.file.name.substring(file.file.name.lastIndexOf('.'))
-    const filePath = FileSystem.documentDirectory + fileName
-    try {
-      await FileSystem.writeAsStringAsync(filePath, file.base64, {
-        encoding: 'base64'
-      })
-      await Sharing.shareAsync(filePath)
-    } catch (e) {}
+    if (Platform.OS === 'ios') {
+      const filePath = FileSystem.documentDirectory + fileName
+      try {
+        await FileSystem.writeAsStringAsync(filePath, file.base64, {
+          encoding: 'base64'
+        })
+        await Sharing.shareAsync(filePath)
+      } catch (e) {}
+    } else {
+      const fs = RNFetchBlob.fs
+      await fs.writeFile(
+        fs.dirs.DownloadDir + `/${fileName}`,
+        file.base64,
+        'base64'
+      )
+      toast('File downloaded')
+    }
   }
 
   const [refreshing, setRefreshing] = useState(false)
