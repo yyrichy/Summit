@@ -257,6 +257,7 @@ const CourseDetails = ({ route }) => {
                 placeholderTextColor={Colors.secondary}
                 blurOnSubmit={false}
                 onSubmitEditing={() => refInput.current.focus()}
+                autoCorrect={false}
               />
               <Text style={{ fontSize: 48 }}>/</Text>
               <TextInput
@@ -273,6 +274,7 @@ const CourseDetails = ({ route }) => {
                 placeholderTextColor={Colors.secondary}
                 ref={refInput}
                 onSubmitEditing={() => setOpen(true)}
+                autoCorrect={false}
               />
             </View>
             <View
