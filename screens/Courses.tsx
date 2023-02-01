@@ -88,7 +88,7 @@ const Courses = ({ navigation }) => {
           <Text
             style={{
               fontFamily: 'Inter_800ExtraBold',
-              fontSize: 35,
+              fontSize: 32,
               marginRight: 5
             }}
           >
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
-    marginBottom: 10
+    marginVertical: 10
   },
   date_info_container: {
     flexDirection: 'row',

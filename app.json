@@ -17,7 +17,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.vaporys.Summit"
+      "bundleIdentifier": "com.vaporys.Summit",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["instagram"]
+      }
     },
     "android": {
       "adaptiveIcon": {

@@ -153,9 +153,13 @@ const Login = () => {
         // Instagram app not installed
         try {
           Linking.openURL(`https://instagram.com/${username}`)
-        } catch (err) {}
+        } catch (err) {
+          console.log('a')
+        }
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   async function save(key: loginInfo, value: string): Promise<void> {
@@ -468,30 +472,34 @@ const Login = () => {
           />
         </KeyboardAvoidingView>
         <View style={styles.row_container}>
-          <View style={styles.insta_button_container}>
-            <MaterialCommunityIcons.Button
+          <TouchableOpacity
+            style={styles.insta_button_container}
+            onPress={() => openInstagram('richardyin99')}
+          >
+            <MaterialCommunityIcons
               name="instagram"
               backgroundColor="transparent"
               iconStyle={styles.insta_button}
               underlayColor="none"
               activeOpacity={0.2}
-              size={24}
-              onPress={() => openInstagram('richardyin99')}
+              size={20}
             />
             <Text style={styles.insta_text}>Richard Y</Text>
-          </View>
-          <View style={styles.insta_button_container}>
-            <MaterialCommunityIcons.Button
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.insta_button_container}
+            onPress={() => openInstagram('karthik.whynot')}
+          >
+            <MaterialCommunityIcons
               name="instagram"
               backgroundColor="transparent"
               iconStyle={styles.insta_button}
               underlayColor="none"
               activeOpacity={0.2}
-              size={24}
-              onPress={() => openInstagram('karthik.whynot')}
+              size={20}
             />
             <Text style={styles.insta_text}>Karthik M</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </ImageBackground>
     </>
@@ -635,11 +643,13 @@ const styles = StyleSheet.create({
   },
   insta_button_container: {
     marginHorizontal: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 48,
+    minWidth: 48
   },
   insta_button: {
-    color: Colors.black,
-    padding: 12
+    color: Colors.black
   },
   insta_text: {
     fontFamily: 'Inter_300Light',
