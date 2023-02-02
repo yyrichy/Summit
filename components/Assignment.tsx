@@ -20,8 +20,7 @@ import {
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { useTheme } from 'react-native-paper'
-import AssignmentChip from './AssignmentChip'
+import { Divider, useTheme } from 'react-native-paper'
 import { Swipeable } from 'react-native-gesture-handler'
 import { dateRelativeToToday } from '../util/Util'
 import Animated, {
@@ -135,21 +134,47 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           ]}
           onPress={transition}
         >
-          <View style={[styles.horizontal_container]}>
+          <View style={styles.horizontal_container}>
             <View style={styles.assignment_info_container}>
               <Text
                 numberOfLines={isDropdown ? undefined : 1}
-                style={[styles.name]}
+                style={styles.name}
               >
                 {name}
               </Text>
-              <Text
-                numberOfLines={1}
-                style={[styles.category, { color: theme.colors.onSurface }]}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 4,
+                  alignItems: 'center'
+                }}
               >
-                {assignment.category} -{' '}
-                {assignment.date.due.toLocaleDateString()}
-              </Text>
+                <Text
+                  numberOfLines={1}
+                  style={[styles.category, { color: theme.colors.onSurface }]}
+                >
+                  {assignment.category}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={[
+                    styles.category,
+                    {
+                      color: theme.colors.onSurface,
+                      fontSize: 8,
+                      marginHorizontal: 4
+                    }
+                  ]}
+                >
+                  {'\u2022'}
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={[styles.category, { color: theme.colors.onSurface }]}
+                >
+                  {assignment.date.due.toLocaleDateString()}
+                </Text>
+              </View>
             </View>
             <View style={styles.input_container}>
               <TextInput
@@ -203,61 +228,57 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           {isDropdown && (
             <Animated.View
               style={{
-                marginTop: 4,
-                padding: 4,
-                paddingBottom: 0
+                marginBottom: 4,
+                marginTop: 6,
+                padding: 4
               }}
               entering={FadeIn.duration(500)}
               exiting={FadeOut.duration(500)}
             >
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between'
-                }}
-              >
-                {assignment.date.start && (
-                  <AssignmentChip
-                    icon="calendar-arrow-right"
-                    text={dateRelativeToToday(assignment.date.start)}
-                    style={{ marginRight: 4 }}
-                  />
-                )}
-                {assignment.status.length !== 0 && (
-                  <AssignmentChip
-                    icon="pencil-outline"
-                    text={assignment.status}
-                    style={{ marginLeft: 4 }}
-                  />
-                )}
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between'
-                }}
-              >
-                {assignment.date.due && (
+              <View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    justifyContent: 'space-between'
+                  }}
+                >
                   <View>
-                    <AssignmentChip
-                      icon="calendar-clock"
-                      text={dateRelativeToToday(assignment.date.due)}
-                      style={{ marginRight: 4 }}
-                      showBadge={
-                        assignment.date.due < new Date() &&
-                        (!hasScore || score <= 50)
-                      }
-                    />
+                    <Text style={{ color: Colors.secondary, fontSize: 12 }}>
+                      START DATE
+                    </Text>
+                    <Text>{dateRelativeToToday(assignment.date.start)}</Text>
                   </View>
-                )}
-                {assignment.notes.length !== 0 && (
-                  <AssignmentChip
-                    icon="note-outline"
-                    text={assignment.notes}
-                    style={{ marginLeft: 4 }}
-                  />
-                )}
+                  <View>
+                    <Text style={{ color: Colors.secondary, fontSize: 12 }}>
+                      DUE DATE
+                    </Text>
+                    <Text>{dateRelativeToToday(assignment.date.due)}</Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: Colors.secondary, fontSize: 12 }}>
+                      STATUS
+                    </Text>
+                    <Text>{assignment.status}</Text>
+                  </View>
+                </View>
               </View>
+              {assignment.notes.length > 0 && (
+                <>
+                  <Divider style={{ marginVertical: 8 }} />
+                  <View style={{ flexDirection: 'row' }}>
+                    <Text
+                      style={{
+                        color: Colors.secondary,
+                        marginRight: 6
+                      }}
+                    >
+                      NOTES
+                    </Text>
+                    <Text>{assignment.notes}</Text>
+                  </View>
+                </>
+              )}
             </Animated.View>
           )}
         </TouchableOpacity>
@@ -293,8 +314,7 @@ const styles = StyleSheet.create({
   category: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
-    fontSize: 12,
-    marginTop: 4
+    fontSize: 12
   },
   input_container: {
     flexDirection: 'row',

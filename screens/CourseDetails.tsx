@@ -10,7 +10,6 @@ import {
   RefreshControl,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   BackHandler,
   FlatList,
@@ -28,7 +27,6 @@ import {
 } from '../gradebook/GradeUtil'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
-import DropDownPicker from 'react-native-dropdown-picker'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, Chip, FAB, TextInput, useTheme } from 'react-native-paper'
@@ -46,14 +44,8 @@ const CourseDetails = ({ route }) => {
   const refInput = useRef(null)
 
   const [isModalVisible, setModalVisible] = useState(false)
-  const [open, setOpen] = useState(false)
   const [category, setCategory] = useState(
     marks.courses.get(courseName).categories.values().next().value?.name
-  )
-  const [categories, setCategories] = useState(
-    Array.from(marks.courses.get(courseName).categories.values()).map((c) => {
-      return { label: c.name, value: c.name }
-    })
   )
   const [points, setPoints] = useState('')
   const [total, setTotal] = useState('')
@@ -143,35 +135,38 @@ const CourseDetails = ({ route }) => {
           {isNaN(course.value) ? 'N/A' : round(course.value, 2)}
         </Text>
       </View>
-      <View style={{ height: 32, marginBottom: 15, paddingLeft: 4 }}>
-        <FlatList
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          data={[...course.categories.values()]}
-          renderItem={({ item }) => {
-            const selected = item.show
-            return (
-              <Chip
-                selected={selected}
-                mode={'flat'}
-                style={{
-                  marginHorizontal: 8,
-                  height: 32,
-                  backgroundColor: selected
-                    ? theme.colors.secondaryContainer
-                    : theme.colors.surface
-                }}
-                onPress={() => {
-                  setMarks(toggleCategory(marks, course, item))
-                }}
-              >
-                {item.name}
-              </Chip>
-            )
-          }}
-          keyExtractor={(item) => item.name}
-        />
-      </View>
+      {course.categories.size > 0 && (
+        <View style={{ height: 32, marginBottom: 15, paddingLeft: 4 }}>
+          <FlatList
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={[...course.categories.values()]}
+            renderItem={({ item }) => {
+              const selected = item.show
+              return (
+                <Chip
+                  selected={selected}
+                  mode={'flat'}
+                  style={{
+                    marginHorizontal: 8,
+                    height: 32,
+                    backgroundColor: selected
+                      ? theme.colors.secondaryContainer
+                      : theme.colors.surface
+                  }}
+                  onPress={() => {
+                    setMarks(toggleCategory(marks, course, item))
+                  }}
+                >
+                  {item.name}
+                </Chip>
+              )
+            }}
+            keyExtractor={(item) => item.name}
+          />
+        </View>
+      )}
+
       <View
         style={{
           backgroundColor: theme.colors.background,
@@ -274,7 +269,6 @@ const CourseDetails = ({ route }) => {
                 textColor={Colors.black}
                 placeholderTextColor={Colors.secondary}
                 ref={refInput}
-                onSubmitEditing={() => setOpen(true)}
                 autoCorrect={false}
               />
             </View>
@@ -300,7 +294,6 @@ const CourseDetails = ({ route }) => {
                       }}
                       onPress={() => {
                         setCategory(item.name)
-                        setOpen(false)
                       }}
                     >
                       {item.name}
@@ -330,7 +323,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     backgroundColor: 'transparent',
     fontFamily: 'Inter_400Regular',
-    fontSize: 20,
+    fontSize: 30,
     borderRadius: 4,
     flex: 1,
     alignItems: 'center'
