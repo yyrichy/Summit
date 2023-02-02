@@ -37,7 +37,8 @@ const convertGradebook = (gradebook: Gradebook) => {
       total: 0,
       value: NaN,
       assignments: [],
-      categories: new Map<string, Category>()
+      categories: new Map<string, Category>(),
+      room: course.room
     })
     const c = marks.courses.get(course.title)
     if (course.marks.length > 0) {

@@ -5,9 +5,9 @@ import { Colors } from '../colors/Colors'
 import {
   calculateLetterGrade,
   calculateMarkColor,
-  parseCourseName,
-  prependZero
+  parseCourseName
 } from '../gradebook/GradeUtil'
+import { round } from '../util/Util'
 
 type Props = {
   mark: string
@@ -15,9 +15,17 @@ type Props = {
   period: number
   name: string
   teacher: string
+  room: string
 }
 
-const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
+const Course: React.FC<Props> = ({
+  mark,
+  onPress,
+  period,
+  name,
+  teacher,
+  room
+}) => {
   const markAsNumber: number = parseFloat(mark)
   const theme = useTheme()
 
@@ -34,13 +42,13 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher }) => {
           numberOfLines={1}
           style={[styles.teacher, { color: theme.colors.onSurface }]}
         >
-          {teacher}
+          {teacher} {'\u2022'} {room}
         </Text>
       </View>
 
       {!isNaN(markAsNumber) && (
         <>
-          <Text style={styles.mark}>{parseFloat(mark).toFixed(1)}</Text>
+          <Text style={styles.mark}>{round(mark, 2)}</Text>
           <Text
             style={[
               styles.letter_grade,
@@ -69,34 +77,34 @@ const styles = StyleSheet.create({
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 32,
+    fontSize: 30,
     marginHorizontal: 4
   },
   course_info_container: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: 8,
     flex: 1
   },
   name: {
     color: Colors.navy,
     fontFamily: 'Inter_700Bold',
-    fontSize: 14
+    fontSize: 13
   },
   teacher: {
     fontFamily: 'Inter_400Regular',
-    fontSize: 13,
+    fontSize: 12,
     marginTop: 3
   },
   mark: {
     fontFamily: 'Montserrat_500Medium',
-    fontSize: 24
+    fontSize: 18,
+    color: Colors.medium_gray
   },
   letter_grade: {
-    marginLeft: 10,
+    marginLeft: 8,
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 30,
-    marginRight: 2
+    fontSize: 28
   }
 })
 

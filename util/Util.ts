@@ -1,13 +1,4 @@
-import {
-  format,
-  formatDistance,
-  intervalToDuration,
-  isBefore,
-  isSameWeek,
-  isToday,
-  isTomorrow,
-  isYesterday
-} from 'date-fns'
+import { format, isBefore, isToday, isTomorrow, isYesterday } from 'date-fns'
 import Toast from 'react-native-root-toast'
 import { Colors } from '../colors/Colors'
 
@@ -34,19 +25,14 @@ const dateRelativeToToday = (date: Date) => {
   if (isYesterday(date)) return 'Yesterday'
   if (isTomorrow(date)) return 'Tommorow'
 
-  // If more than one week in distance
-  if (Math.abs(intervalToDuration({ start: today, end: date }).days) > 7)
+  // If one week or more in past/future
+  if (Math.abs(date.getTime() - today.getTime()) / (1000 * 3600 * 24) > 6)
     return date.toLocaleDateString()
 
   if (isBefore(date, today)) {
-    if (isSameWeek(today, date, { weekStartsOn: 1 }))
-      return formatDistance(date, today, { addSuffix: true })
-
-    return `Last ${format(date, `EEEE`)} ${date.getDate()}${getOrdinal(
-      date.getDate()
-    )}`
+    return `Past ${format(date, `EEEE`)}`
   } else {
-    return `${format(date, `EEEE`)}`
+    return format(date, `EEEE`)
   }
 }
 
@@ -66,4 +52,8 @@ const getOrdinal = (num: number): 'st' | 'nd' | 'rd' | 'th' | '' => {
   return 'th'
 }
 
-export { toast, dateRelativeToToday, getOrdinal }
+const round = (value: string | number, decimals: string | number): number => {
+  return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals)
+}
+
+export { toast, dateRelativeToToday, getOrdinal, round }

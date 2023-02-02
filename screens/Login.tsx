@@ -58,6 +58,7 @@ const Login = () => {
     null as SchoolDistrict
   )
   const [districts, setDistricts] = useState(null as SchoolDistrict[])
+  const [isLoadingDistricts, setIsLoadingDistricts] = useState(false)
 
   useAsyncEffect(async () => {
     savedCredentials()
@@ -177,13 +178,16 @@ const Login = () => {
   }
 
   const onSearch = async (zipcode: string) => {
+    setIsLoadingDistricts(true)
     setDistricts(null)
     try {
       const districtsFound: SchoolDistrict[] = await StudentVue.findDistricts(
         zipcode
       )
+      setIsLoadingDistricts(false)
       setDistricts(districtsFound)
     } catch (e) {
+      setIsLoadingDistricts(false)
       let message = e.message
       switch (message) {
         case 'Please enter zip code. Missing zip code as expected parameters.':
@@ -320,6 +324,14 @@ const Login = () => {
                   school district?
                 </Text>
               }
+            />
+          )}
+          {isLoadingDistricts && (
+            <ActivityIndicator
+              color={Colors.secondary}
+              animating={true}
+              size="large"
+              style={{ marginTop: 20 }}
             />
           )}
         </View>
@@ -514,7 +526,6 @@ const Seperator = () => {
   return (
     <Divider
       style={{
-        marginHorizontal: 12,
         marginVertical: 8
       }}
       bold

@@ -88,7 +88,7 @@ const Courses = ({ navigation }) => {
           <Text
             style={{
               fontFamily: 'Inter_800ExtraBold',
-              fontSize: 32,
+              fontSize: 30,
               marginRight: 5
             }}
           >
@@ -105,6 +105,7 @@ const Courses = ({ navigation }) => {
           size={40}
           onPress={onRefresh}
           mode={'contained'}
+          style={{ margin: 0 }}
         />
       </View>
       <View style={styles.date_info_container}>
@@ -159,6 +160,7 @@ const Courses = ({ navigation }) => {
                 onPress={() => {
                   navigation.navigate('Course Details', { title: item[0] })
                 }}
+                room={item[1].room}
               ></Course>
             )}
             keyExtractor={(item) => item[0]}
@@ -167,7 +169,7 @@ const Courses = ({ navigation }) => {
             }
             contentContainerStyle={{
               paddingHorizontal: 10,
-              paddingTop: 10
+              paddingTop: 6
             }}
           />
         )}
@@ -195,7 +197,8 @@ const styles = StyleSheet.create({
   },
   date: {
     fontFamily: 'Montserrat_400Regular',
-    fontSize: 18
+    fontSize: 16,
+    color: Colors.medium_gray
   },
   marking_period_info_container: {
     flexDirection: 'row',
@@ -203,7 +206,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
-    marginVertical: 10
+    marginTop: 5,
+    marginBottom: 10
   },
   date_info_container: {
     flexDirection: 'row',
@@ -213,12 +217,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   gpa_text: {
-    fontFamily: 'Montserrat_600SemiBold',
-    fontSize: 18
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 16
   },
   gpa: {
     fontFamily: 'Montserrat_400Regular',
-    fontSize: 18
+    fontSize: 16,
+    color: Colors.medium_gray
   }
 })
 

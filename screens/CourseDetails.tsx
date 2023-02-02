@@ -33,6 +33,7 @@ import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button, Chip, FAB, TextInput, useTheme } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { round } from '../util/Util'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -139,7 +140,7 @@ const CourseDetails = ({ route }) => {
         ]}
       >
         <Text numberOfLines={1} style={styles.course_mark}>
-          {isNaN(course.value) ? 'N/A' : course.value}
+          {isNaN(course.value) ? 'N/A' : round(course.value, 2)}
         </Text>
       </View>
       <View style={{ height: 32, marginBottom: 15, paddingLeft: 4 }}>
@@ -194,8 +195,8 @@ const CourseDetails = ({ route }) => {
             }
             contentContainerStyle={{
               flexGrow: 1,
-              paddingHorizontal: 14,
-              paddingTop: 10,
+              paddingHorizontal: 12,
+              paddingTop: 8,
               paddingBottom: 10
             }}
           >
@@ -377,19 +378,19 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   course_mark_container: {
-    marginVertical: 15,
+    marginBottom: 15,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 15,
+    paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 28,
+    borderRadius: 24,
     borderWidth: 3
   },
   course_mark: {
     textAlignVertical: 'center',
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 50
+    fontSize: 40
   }
 })
 

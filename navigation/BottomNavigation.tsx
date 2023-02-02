@@ -10,7 +10,7 @@ const Tab = createMaterialBottomTabNavigator()
 
 const BottomNavigation = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator initialRouteName="Grades">
       <Tab.Screen
         name="Grades"
         component={Grades}

@@ -23,6 +23,7 @@ export interface Course {
   value: number
   assignments: Assignment[]
   categories: Map<string, Category>
+  room: string
 }
 
 export interface Category {

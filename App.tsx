@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler'
 import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootStackParamList } from './types/RootStackParams'
@@ -51,8 +51,11 @@ import { CalendarProvider } from 'react-native-calendars'
 import { NavLightTheme as LightTheme } from './theme/LightTheme'
 import { MD3LightTheme } from './theme/MD3LightTheme'
 import { RootSiblingParent } from 'react-native-root-siblings'
+import * as SplashScreen from 'expo-splash-screen'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
+
+SplashScreen.preventAutoHideAsync()
 
 const App = () => {
   const [client, setClient] = useState(null as Client)
@@ -95,34 +98,25 @@ const App = () => {
     RussoOne_400Regular
   })
 
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      // Hide the splash screen
+      await SplashScreen.hideAsync()
+    }
+  }, [fontsLoaded])
+
   if (!fontsLoaded) {
-    return (
-      <View
-        style={{
-          backgroundColor: Colors.primary,
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <Text style={{ marginBottom: 10 }}>Loading Schools...</Text>
-        <ActivityIndicator
-          color={Colors.secondary}
-          animating={true}
-          size="large"
-        />
-      </View>
-    )
+    return null
   }
 
   return (
     <RootSiblingParent>
-      <SafeAreaProvider>
+      <SafeAreaProvider onLayout={onLayoutRootView}>
         <AppContext.Provider value={user}>
           <CalendarProvider date="">
             <PaperProvider theme={MD3LightTheme}>
               <NavigationContainer theme={LightTheme}>
-                <Stack.Navigator>
+                <Stack.Navigator initialRouteName="Login">
                   <Stack.Screen
                     name="Login"
                     component={Login}
