@@ -7539,7 +7539,7 @@ structured-headers@^0.4.1:
 
 "studentvue@https://github.com/vaporrrr/studentvue.js.git":
   version "1.1.5"
-  resolved "https://github.com/vaporrrr/studentvue.js.git#da02fa74ae9715ab06b5286deb953b52c76981cd"
+  resolved "https://github.com/vaporrrr/studentvue.js.git#2d90615aa885eccf390ffc1a0e5964666ebf8c6b"
   dependencies:
     axios "^0.26.0"
     date-fns "^2.28.0"
