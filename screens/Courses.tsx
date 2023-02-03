@@ -21,7 +21,7 @@ import { Colors } from '../colors/Colors'
 const Courses = ({ navigation }) => {
   const theme = useTheme()
   const { client, marks, setMarks } = useContext(AppContext)
-  const [selected, setSelected] = useState(marks.reportingPeriods[3])
+  const [selected, setSelected] = useState(marks.reportingPeriod)
   const endDate = selected.date.end
   useEffect(() => {
     onRefresh()
@@ -110,7 +110,8 @@ const Courses = ({ navigation }) => {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={styles.gpa_text}>GPA</Text>
             <Text style={styles.gpa}>
-              {' \u2022 '}{marks.gpa.toFixed(2)}
+              {' \u2022 '}
+              {marks.gpa.toFixed(2)}
             </Text>
           </View>
         )}
@@ -121,7 +122,8 @@ const Courses = ({ navigation }) => {
             color={Colors.medium_gray}
           />
           <Text style={styles.date}>
-            {' \u2022 '}{endDate.toLocaleDateString()}
+            {' \u2022 '}
+            {endDate.toLocaleDateString()}
           </Text>
         </View>
       </View>
