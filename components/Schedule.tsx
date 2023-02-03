@@ -10,6 +10,7 @@ type Props = {
   teacher: string
   start?: Date
   end?: Date
+  room?: string
 }
 
 const ScheduleComponent: React.FC<Props> = ({
@@ -17,7 +18,8 @@ const ScheduleComponent: React.FC<Props> = ({
   period,
   teacher,
   start,
-  end
+  end,
+  room
 }) => {
   const theme = useTheme()
   return (
@@ -41,6 +43,7 @@ const ScheduleComponent: React.FC<Props> = ({
             ]}
           >
             {teacher}
+            {room && ` \u2022 ${room}`}
           </Text>
           {start && end && (
             <Text
