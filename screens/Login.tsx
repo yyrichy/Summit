@@ -35,6 +35,7 @@ import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { Checkbox, Divider, TextInput } from 'react-native-paper'
 import { toast } from '../util/Util'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
+import BouncyCheckbox from 'react-native-bouncy-checkbox'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -206,7 +207,7 @@ const Login = () => {
   }
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <Modal
         isVisible={isQuestionsModalVisible}
         coverScreen={false}
@@ -232,9 +233,9 @@ const Login = () => {
                 fontSize: 14
               }}
             >
-              Your username and password are the same as your school's grades
-              website.{'\n\n'}We do not collect any personal information and we
-              cannot access any information remotely.
+              Your username and password are the same as your school's
+              StudentVue website.{'\n\n'}We do not collect your personal
+              information nor can we access it remotely.
             </Text>
           </View>
         </View>
@@ -357,7 +358,10 @@ const Login = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <TouchableOpacity
-            style={[styles.horizontal_container, { height: 48 }]}
+            style={[
+              styles.horizontal_container,
+              { height: 48, alignItems: 'flex-end', marginBottom: 10 }
+            ]}
             onPress={() => setQuestionsModalVisible(true)}
           >
             <Text
@@ -372,7 +376,7 @@ const Login = () => {
               name="help-outline"
               backgroundColor="transparent"
               iconStyle={{
-                color: Colors.black
+                color: Colors.medium_gray
               }}
               underlayColor="none"
               activeOpacity={0.2}
@@ -457,13 +461,17 @@ const Login = () => {
             )}
           </TouchableOpacity>
           <View style={styles.checkbox_container}>
-            <Checkbox.Android
-              status={isChecked ? 'checked' : 'unchecked'}
+            <BouncyCheckbox
+              disableBuiltInState
+              disableText
+              isChecked={isChecked}
+              size={24}
+              fillColor={Colors.navy}
               onPress={() => {
                 setToggleCheckBox(!isChecked)
               }}
             />
-            <Text style={styles.save_text}>Save Login Information</Text>
+            <Text style={styles.save_text}>Remember Me</Text>
           </View>
           <CustomButton
             onPress={() => {
@@ -516,7 +524,7 @@ const Login = () => {
           </TouchableOpacity>
         </View>
       </ImageBackground>
-    </>
+    </View>
   )
 }
 
@@ -646,7 +654,8 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   save_text: {
-    fontFamily: 'Inter_400Regular'
+    fontFamily: 'Inter_400Regular',
+    marginLeft: 10
   },
   row_container: {
     flexDirection: 'row',
@@ -666,7 +675,7 @@ const styles = StyleSheet.create({
   },
   insta_text: {
     fontFamily: 'Inter_300Light',
-    fontSize: 12
+    fontSize: 11
   },
   dropdown_text_style: {
     fontFamily: 'Inter_500Medium',
