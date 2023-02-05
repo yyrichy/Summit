@@ -279,8 +279,8 @@ const Profile = () => {
           </Setting>
           <Text style={styles.settings_title}>Settings</Text>
           <Setting
-            title="Daily Grade Check Reminder"
-            description="Reminds you to check your grades"
+            title="Daily Reminder"
+            description="Notifies you to check your grades at a certain time everyday"
             onPress={showDatePicker}
             position="top"
           >
@@ -302,6 +302,7 @@ const Profile = () => {
             title="Delete Login Info"
             onPress={() => deleteLoginInfo()}
             position="bottom"
+            description="Deletes saved username and password from your device"
           >
             <MaterialCommunityIcons
               name="delete-outline"

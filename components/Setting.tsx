@@ -23,7 +23,7 @@ const Setting: React.FC<Props> = ({
       activeOpacity={onPress ? 0.2 : 1}
       style={styles['container_' + position]}
     >
-      <View>
+      <View style={{ flex: 1, marginRight: 18 }}>
         <Text style={styles.title}>{title}</Text>
         {description && <Text style={styles.description}>{description}</Text>}
       </View>
