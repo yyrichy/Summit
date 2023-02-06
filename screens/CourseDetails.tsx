@@ -29,9 +29,17 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 import { Colors } from '../colors/Colors'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Button, Chip, FAB, TextInput, useTheme } from 'react-native-paper'
+import {
+  Button,
+  Chip,
+  FAB,
+  ProgressBar,
+  TextInput,
+  useTheme
+} from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { round } from '../util/Util'
+import { Category } from '../interfaces/Gradebook'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -123,17 +131,62 @@ const CourseDetails = ({ route }) => {
         </Text>
       </SafeAreaView>
       <View
-        style={[
-          styles.course_mark_container,
-          {
-            borderColor: calculateMarkColor(course.value),
-            backgroundColor: Colors.white
-          }
-        ]}
+        style={{
+          flexDirection: 'row',
+          paddingHorizontal: 12,
+          marginBottom: 15,
+          justifyContent: 'center'
+        }}
       >
-        <Text numberOfLines={1} style={styles.course_mark}>
-          {isNaN(course.value) ? 'N/A' : round(course.value, 2)}
-        </Text>
+        <View
+          style={[
+            styles.course_mark_container,
+            {
+              borderColor: calculateMarkColor(course.value),
+              backgroundColor: Colors.corn_silk_white
+            }
+          ]}
+        >
+          <Text
+            numberOfLines={1}
+            style={[
+              styles.course_mark,
+              { color: calculateMarkColor(course.value) }
+            ]}
+          >
+            {isNaN(course.value) ? 'N/A' : round(course.value, 2)}
+          </Text>
+        </View>
+        {course.categories.size > 0 && (
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            {[...course.categories.values()].map((item) => {
+              const value = round(item.value, 2)
+              const hasValue = !isNaN(value)
+              return (
+                <View
+                  key={item.name}
+                  style={{
+                    justifyContent: 'space-evenly',
+                    flex: 1
+                  }}
+                >
+                  <View style={styles.category_details}>
+                    <Text style={{ fontSize: 12, flex: 1, marginRight: 2 }}>
+                      {item.name} {`(${item.weight}%)`}
+                    </Text>
+                    <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
+                      {hasValue ? value : 'N/A'}
+                    </Text>
+                  </View>
+                  <ProgressBar
+                    progress={hasValue ? value / 100 : 0}
+                    style={{ backgroundColor: calculateMarkColor(value) }}
+                  />
+                </View>
+              )
+            })}
+          </View>
+        )}
       </View>
       {course.categories.size > 0 && (
         <View style={{ height: 32, marginBottom: 15, paddingLeft: 4 }}>
@@ -371,19 +424,23 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   course_mark_container: {
-    marginBottom: 15,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 24,
-    borderWidth: 3
+    paddingHorizontal: 15,
+    borderRadius: 24
   },
   course_mark: {
     textAlignVertical: 'center',
-    fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 40
+    fontFamily: 'Inter_800ExtraBold',
+    fontSize: 42
+  },
+  category_details: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    alignContent: 'flex-start'
   }
 })
 

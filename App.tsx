@@ -41,8 +41,6 @@ import {
 import { RussoOne_400Regular } from '@expo-google-fonts/russo-one'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { User } from './interfaces/User'
-import { ActivityIndicator, Text, View } from 'react-native'
-import { Colors } from './colors/Colors'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
 import { Provider as PaperProvider } from 'react-native-paper'

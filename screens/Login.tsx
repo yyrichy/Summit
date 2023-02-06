@@ -155,13 +155,9 @@ const Login = () => {
         // Instagram app not installed
         try {
           Linking.openURL(`https://instagram.com/${username}`)
-        } catch (err) {
-          console.log('a')
-        }
+        } catch (err) {}
       }
-    } catch (err) {
-      console.log(err)
-    }
+    } catch (err) {}
   }
 
   async function save(key: loginInfo, value: string): Promise<void> {

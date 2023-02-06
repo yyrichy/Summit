@@ -2,6 +2,7 @@ import { Gradebook } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
 import { Dimensions, Platform, PixelRatio } from 'react-native'
+import { round } from '../util/Util'
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window')
 
@@ -91,16 +92,16 @@ const calculatePoints = (marks: Marks): Marks => {
       if (category && !isNaN(assignment.points) && !isNaN(assignment.total)) {
         category.points += assignment.points
         category.total += assignment.total
-        category.value = category.points / category.total
+        category.value = (category.points / category.total) * 100
       }
     }
     for (const category of course.categories.values()) {
       if (!isNaN(category.value) && category.show) {
-        course.points += category.value * category.weight
+        course.points += (category.value / 100) * category.weight
         course.total += category.weight
       }
     }
-    course.value = roundTo((course.points / course.total) * 100, 2)
+    course.value = (course.points / course.total) * 100
     if (!isNaN(course.value)) {
       if (course.value >= 89.5) {
         marks.gpa += 4
@@ -114,7 +115,7 @@ const calculatePoints = (marks: Marks): Marks => {
       numOfCourses++
     }
   }
-  marks.gpa = roundTo(marks.gpa / numOfCourses, 2)
+  marks.gpa = round(marks.gpa / numOfCourses, 2)
   return marks
 }
 
@@ -126,13 +127,6 @@ const parsePoints = (points: string): number[] => {
   } else {
     return [NaN, parseFloat(points)]
   }
-}
-
-const roundTo = (num: number, places: number): number => {
-  const multiplicator = Math.pow(10, places)
-  num = parseFloat((num * multiplicator).toFixed(11))
-  const test = Math.round(num) / multiplicator
-  return +test.toFixed(places)
 }
 
 const deleteAssignment = (
@@ -203,15 +197,15 @@ const addAssignment = (
 const calculateMarkColor = (mark: number): string => {
   switch (calculateLetterGrade(mark)) {
     case 'A':
-      return '#10C212'
+      return '#378137'
     case 'B':
-      return '#1E2EE6'
+      return '#4C59EB'
     case 'C':
-      return '#F5A327'
+      return '#AD6800'
     case 'D':
-      return '#C72222'
+      return '#CC3E3E'
     case 'E':
-      return '#330505'
+      return '#440808'
     case 'F':
       return Colors.black
   }
@@ -269,7 +263,6 @@ export {
   convertGradebook,
   calculatePoints,
   parsePoints,
-  roundTo,
   deleteAssignment,
   updatePoints,
   addAssignment,
