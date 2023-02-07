@@ -2,7 +2,7 @@
   "expo": {
     "name": "GradeHelper",
     "slug": "Summit",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "platforms": ["android", "ios"],
@@ -29,7 +29,7 @@
       },
       "package": "com.vaporys.Summit",
       "softwareKeyboardLayoutMode": "pan",
-      "versionCode": 15
+      "versionCode": 16
     },
     "androidStatusBar": {
       "barStyle": "dark-content"
