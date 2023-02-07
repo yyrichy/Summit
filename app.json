@@ -41,7 +41,15 @@
           "icon": "./assets/notification-icon.png"
         }
       ],
-      ["./withAndroidSplashScreen.js"]
+      ["./withAndroidSplashScreen.js"],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true
+          }
+        }
+      ]
     ],
     "userInterfaceStyle": "light",
     "extra": {

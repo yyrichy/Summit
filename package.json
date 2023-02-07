@@ -27,6 +27,7 @@
     "date-fns": "^2.29.3",
     "expo": "~47.0.12",
     "expo-app-loading": "~2.1.1",
+    "expo-build-properties": "~0.4.1",
     "expo-constants": "~14.0.2",
     "expo-dev-client": "~2.0.1",
     "expo-font": "~11.0.1",
