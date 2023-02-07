@@ -36,6 +36,7 @@ import { Checkbox, Divider, TextInput } from 'react-native-paper'
 import { toast } from '../util/Util'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
+import BannerAd from '../components/BannerAd'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -489,7 +490,11 @@ const Login = () => {
             size="large"
           />
         </KeyboardAvoidingView>
-        <View style={styles.row_container}>
+        <BannerAd />
+        <SafeAreaView
+          style={styles.row_container}
+          edges={['bottom', 'left', 'right']}
+        >
           <TouchableOpacity
             style={styles.insta_button_container}
             onPress={() => openInstagram('richardyin99')}
@@ -518,7 +523,7 @@ const Login = () => {
             />
             <Text style={styles.insta_text}>Karthik M</Text>
           </TouchableOpacity>
-        </View>
+        </SafeAreaView>
       </ImageBackground>
     </View>
   )
@@ -657,7 +662,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 25
+    marginVertical: 15
   },
   insta_button_container: {
     marginHorizontal: 10,

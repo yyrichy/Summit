@@ -39,7 +39,6 @@ import {
 } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { round } from '../util/Util'
-import { Category } from '../interfaces/Gradebook'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -134,7 +133,8 @@ const CourseDetails = ({ route }) => {
         style={{
           flexDirection: 'row',
           paddingHorizontal: 12,
-          marginBottom: 15,
+          marginBottom: 25,
+          marginTop: 10,
           justifyContent: 'center'
         }}
       >
@@ -143,7 +143,9 @@ const CourseDetails = ({ route }) => {
             styles.course_mark_container,
             {
               borderColor: calculateMarkColor(course.value),
-              backgroundColor: Colors.corn_silk_white
+              backgroundColor: Colors.corn_silk_white,
+              maxWidth: '50%',
+              minWidth: '25%'
             }
           ]}
         >
@@ -171,10 +173,25 @@ const CourseDetails = ({ route }) => {
                   }}
                 >
                   <View style={styles.category_details}>
-                    <Text style={{ fontSize: 12, flex: 1, marginRight: 2 }}>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        flex: 1,
+                        marginRight: 2,
+                        maxWidth: '75%'
+                      }}
+                      numberOfLines={2}
+                    >
                       {item.name} {`(${item.weight}%)`}
                     </Text>
-                    <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        fontWeight: 'bold',
+                        maxWidth: '25%'
+                      }}
+                      numberOfLines={2}
+                    >
                       {hasValue ? value : 'N/A'}
                     </Text>
                   </View>

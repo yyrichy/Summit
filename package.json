@@ -44,6 +44,7 @@
     "react-native-calendars": "^1.1291.1",
     "react-native-dropdown-picker": "^5.4.0",
     "react-native-gesture-handler": "~2.8.0",
+    "react-native-google-mobile-ads": "^9.1.1",
     "react-native-modal": "^13.0.1",
     "react-native-modal-datetime-picker": "^14.0.0",
     "react-native-pager-view": "6.0.1",

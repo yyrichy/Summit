@@ -17,6 +17,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Picker, onOpen } from 'react-native-actions-sheet-picker'
 import { IconButton, useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
+import BannerAd from '../components/BannerAd'
 
 const Courses = ({ navigation }) => {
   const theme = useTheme()
@@ -172,6 +173,7 @@ const Courses = ({ navigation }) => {
             }}
           />
         )}
+        <BannerAd />
       </View>
     </SafeAreaView>
   )
