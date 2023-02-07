@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler'
 import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootStackParamList } from './types/RootStackParams'
@@ -50,6 +50,9 @@ import { NavLightTheme as LightTheme } from './theme/LightTheme'
 import { MD3LightTheme } from './theme/MD3LightTheme'
 import { RootSiblingParent } from 'react-native-root-siblings'
 import * as SplashScreen from 'expo-splash-screen'
+import mobileAds from 'react-native-google-mobile-ads'
+
+mobileAds().initialize()
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
