@@ -396,7 +396,6 @@ const Login = () => {
             returnKeyType={'next'}
             onSubmitEditing={() => refInput.current.focus()}
             blurOnSubmit={false}
-            autoCorrect={false}
           />
           <TextInput
             defaultValue={password}
@@ -420,7 +419,6 @@ const Login = () => {
                 iconColor={Colors.black}
               />
             }
-            autoCorrect={false}
           />
           <TouchableOpacity
             style={{

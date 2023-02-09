@@ -311,7 +311,6 @@ const CourseDetails = ({ route }) => {
             >
               <TextInput
                 returnKeyType={'next'}
-                value={points}
                 keyboardType="decimal-pad"
                 autoComplete="off"
                 placeholder="Score"
@@ -323,12 +322,10 @@ const CourseDetails = ({ route }) => {
                 placeholderTextColor={Colors.secondary}
                 blurOnSubmit={false}
                 onSubmitEditing={() => refInput.current.focus()}
-                autoCorrect={false}
               />
               <Text style={{ fontSize: 48 }}>/</Text>
               <TextInput
                 returnKeyType={'next'}
-                value={total}
                 keyboardType="decimal-pad"
                 autoComplete="off"
                 placeholder="Total"
@@ -339,7 +336,6 @@ const CourseDetails = ({ route }) => {
                 textColor={Colors.black}
                 placeholderTextColor={Colors.secondary}
                 ref={refInput}
-                autoCorrect={false}
               />
             </View>
             <View

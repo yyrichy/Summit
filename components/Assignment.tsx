@@ -194,7 +194,6 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 onChangeText={(input) => {
                   if (isNumber(input) || input === '') update(input, 'earned')
                 }}
-                autoCorrect={false}
               />
               <Text
                 style={[
@@ -221,7 +220,6 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 onChangeText={(input) => {
                   if (isNumber(input) || input === '') update(input, 'total')
                 }}
-                autoCorrect={false}
               />
             </View>
           </View>
