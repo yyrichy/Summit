@@ -273,19 +273,21 @@ const Login = () => {
               data={districts}
               keyExtractor={(item) => item.name}
               renderItem={({ item }) => {
+                const selected =
+                  selectedDistrict && selectedDistrict.name === item.name
                 return (
                   <TouchableOpacity
                     onPress={() => {
                       setDistrictModalVisible(false)
                       setSelectedDistrict(item)
                     }}
-                    style={{
-                      backgroundColor:
-                        selectedDistrict &&
-                        selectedDistrict.name === item.name &&
-                        Colors.light_gray,
-                      borderRadius: 4
-                    }}
+                    style={[
+                      selected && {
+                        backgroundColor: Colors.off_white,
+                        padding: 8,
+                        borderRadius: 5
+                      }
+                    ]}
                   >
                     <Text
                       style={{
@@ -339,8 +341,7 @@ const Login = () => {
         resizeMode="cover"
         style={{
           flex: 1,
-          backgroundColor: Colors.white,
-          justifyContent: 'space-between'
+          backgroundColor: Colors.white
         }}
       >
         <SafeAreaView
@@ -487,7 +488,7 @@ const Login = () => {
             </CustomButton>
           </View>
         </KeyboardAvoidingView>
-        <View>
+        <View style={{ alignSelf: 'flex-end' }}>
           <View style={styles.row_container}>
             <TouchableOpacity
               style={styles.insta_button_container}

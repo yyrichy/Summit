@@ -236,7 +236,6 @@ const CourseDetails = ({ route }) => {
           />
         </View>
       )}
-
       <View
         style={{
           backgroundColor: theme.colors.background,
@@ -300,83 +299,73 @@ const CourseDetails = ({ route }) => {
         backdropTransitionOutTiming={0}
       >
         <View style={styles.modal}>
-          <View style={styles.modal_view}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: 16
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 16
+            }}
+          >
+            <TextInput
+              returnKeyType={'next'}
+              keyboardType="decimal-pad"
+              autoComplete="off"
+              placeholder="Score"
+              onChangeText={(t) => {
+                if (isNumber(t) || t === '') setPoints(t)
               }}
-            >
-              <TextInput
-                returnKeyType={'next'}
-                keyboardType="decimal-pad"
-                autoComplete="off"
-                placeholder="Score"
-                onChangeText={(t) => {
-                  if (isNumber(t) || t === '') setPoints(t)
-                }}
-                style={styles.input}
-                textColor={Colors.black}
-                placeholderTextColor={Colors.secondary}
-                blurOnSubmit={false}
-                onSubmitEditing={() => refInput.current.focus()}
-              />
-              <Text style={{ fontSize: 48 }}>/</Text>
-              <TextInput
-                returnKeyType={'next'}
-                keyboardType="decimal-pad"
-                autoComplete="off"
-                placeholder="Total"
-                onChangeText={(t) => {
-                  if (isNumber(t) || t === '') setTotal(t)
-                }}
-                style={styles.input}
-                textColor={Colors.black}
-                placeholderTextColor={Colors.secondary}
-                ref={refInput}
-              />
-            </View>
-            <View
-              style={{ height: 32, marginBottom: 16, marginHorizontal: 16 }}
-            >
-              <FlatList
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                data={[...course.categories.values()]}
-                renderItem={({ item }) => {
-                  const selected = category === item.name
-                  return (
-                    <Chip
-                      selected={selected}
-                      mode={'flat'}
-                      style={{
-                        marginRight: 16,
-                        height: 32,
-                        backgroundColor: selected
-                          ? theme.colors.secondaryContainer
-                          : theme.colors.surfaceVariant
-                      }}
-                      onPress={() => {
-                        setCategory(item.name)
-                      }}
-                    >
-                      {item.name}
-                    </Chip>
-                  )
-                }}
-                keyExtractor={(item) => item.name}
-              />
-            </View>
-            <Button
-              mode="contained"
-              onPress={add}
-              style={{ marginHorizontal: 16 }}
-            >
-              Add Assignment
-            </Button>
+              style={styles.input}
+              textColor={Colors.black}
+              placeholderTextColor={Colors.secondary}
+              blurOnSubmit={false}
+              onSubmitEditing={() => refInput.current.focus()}
+            />
+            <Text style={{ fontSize: 48 }}>/</Text>
+            <TextInput
+              returnKeyType={'next'}
+              keyboardType="decimal-pad"
+              autoComplete="off"
+              placeholder="Total"
+              onChangeText={(t) => {
+                if (isNumber(t) || t === '') setTotal(t)
+              }}
+              style={styles.input}
+              textColor={Colors.black}
+              placeholderTextColor={Colors.secondary}
+              ref={refInput}
+            />
           </View>
+          <View
+            style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 8 }}
+          >
+            {[...course.categories.values()].map((item) => {
+              const selected = category === item.name
+              return (
+                <Chip
+                  selected={selected}
+                  mode={'flat'}
+                  style={{
+                    marginRight: 16,
+                    height: 32,
+                    backgroundColor: selected
+                      ? theme.colors.secondaryContainer
+                      : theme.colors.surfaceVariant,
+                    marginBottom: 8
+                  }}
+                  onPress={() => {
+                    setCategory(item.name)
+                  }}
+                  key={item.name}
+                >
+                  {item.name}
+                </Chip>
+              )
+            })}
+          </View>
+          <Button mode="contained" onPress={add} style={{ width: '100%' }}>
+            Add Assignment
+          </Button>
         </View>
       </Modal>
     </View>
@@ -385,7 +374,6 @@ const CourseDetails = ({ route }) => {
 
 const styles = StyleSheet.create({
   input: {
-    marginHorizontal: 16,
     borderWidth: 0,
     backgroundColor: 'transparent',
     fontFamily: 'Inter_400Regular',
@@ -401,10 +389,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: 20,
     width: 320,
-    padding: 26
-  },
-  modal_view: {
-    width: 320
+    padding: 20
   },
   course_name: {
     fontSize: 20,
