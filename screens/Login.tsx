@@ -337,191 +337,191 @@ const Login = () => {
       <ImageBackground
         source={require('../assets/mountainbackground.png')}
         resizeMode="cover"
-        style={{ flex: 1, backgroundColor: Colors.white }}
+        style={{
+          flex: 1,
+          backgroundColor: Colors.white,
+          justifyContent: 'space-between'
+        }}
       >
-        <SafeAreaView style={{ alignItems: 'center' }}>
-          <View style={styles.horizontal_container}>
+        <SafeAreaView
+          style={{ alignItems: 'center' }}
+          edges={['top', 'left', 'right']}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
             <Text style={styles.name}>GradeHelper</Text>
-          </View>
-          <View style={styles.horizontal_container}>
-            <Text style={styles.description}>Summit</Text>
-            <View style={styles.mountain}>
-              <FontAwesome5 name="mountain" size={16} color="black" />
-            </View>
           </View>
         </SafeAreaView>
         <KeyboardAvoidingView
           style={styles.container}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <TouchableOpacity
-            style={[
-              styles.horizontal_container,
-              { height: 48, alignItems: 'flex-end', marginBottom: 10 }
-            ]}
-            onPress={() => setQuestionsModalVisible(true)}
-          >
-            <Text
-              style={{
-                fontFamily: 'Inter_400Regular',
-                fontSize: 14
-              }}
+          <View>
+            <TouchableOpacity
+              style={[
+                {
+                  height: 48,
+                  alignItems: 'center',
+                  padding: 10,
+                  justifyContent: 'flex-end',
+                  alignSelf: 'center'
+                }
+              ]}
+              onPress={() => setQuestionsModalVisible(true)}
             >
-              Questions/Concerns
-            </Text>
-            <MaterialIcons
-              name="help-outline"
-              backgroundColor="transparent"
-              iconStyle={{
-                color: Colors.medium_gray
-              }}
-              underlayColor="none"
-              activeOpacity={0.2}
-              size={18}
-              style={{
-                padding: 0,
-                margin: 0,
-                marginTop: 2,
-                marginLeft: 2
-              }}
+              <Text
+                style={{
+                  fontFamily: 'Inter_400Regular'
+                }}
+              >
+                Questions/Concerns
+              </Text>
+            </TouchableOpacity>
+            <TextInput
+              defaultValue={username}
+              onChangeText={(u) => setUsername(u)}
+              placeholder={'Username'}
+              style={styles.input}
+              textColor={Colors.black}
+              placeholderTextColor={Colors.medium_gray}
+              returnKeyType={'next'}
+              onSubmitEditing={() => refInput.current.focus()}
+              blurOnSubmit={false}
             />
-          </TouchableOpacity>
-          <TextInput
-            defaultValue={username}
-            onChangeText={(u) => setUsername(u)}
-            placeholder={'Username'}
-            style={styles.input}
-            textColor={Colors.black}
-            placeholderTextColor={Colors.medium_gray}
-            returnKeyType={'next'}
-            onSubmitEditing={() => refInput.current.focus()}
-            blurOnSubmit={false}
-          />
-          <TextInput
-            defaultValue={password}
-            onChangeText={(p) => setPassword(p)}
-            placeholder={'Password'}
-            secureTextEntry={isPasswordSecure}
-            style={styles.input}
-            textColor={Colors.black}
-            placeholderTextColor={Colors.medium_gray}
-            returnKeyType={'next'}
-            ref={refInput}
-            onSubmitEditing={() => {
-              onPressOpenDistrictModal()
-            }}
-            blurOnSubmit={false}
-            right={
-              <TextInput.Icon
-                icon={isPasswordSecure ? 'eye-off-outline' : 'eye-outline'}
-                style={{ marginRight: -2 }}
-                onPress={() => setIsPasswordSecure(!isPasswordSecure)}
-                iconColor={Colors.black}
-              />
-            }
-          />
-          <TouchableOpacity
-            style={{
-              width: 250,
-              flexDirection: 'row',
-              borderWidth: 1,
-              borderRadius: 4,
-              padding: 10,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 10,
-              minHeight: 50
-            }}
-            onPress={async () => onPressOpenDistrictModal()}
-          >
-            <Text
-              style={{
-                fontFamily: 'Inter_500Medium',
-                fontSize: 14,
-                flexWrap: 'wrap',
-                flex: 1
+            <TextInput
+              defaultValue={password}
+              onChangeText={(p) => setPassword(p)}
+              placeholder={'Password'}
+              secureTextEntry={isPasswordSecure}
+              style={styles.input}
+              textColor={Colors.black}
+              placeholderTextColor={Colors.medium_gray}
+              returnKeyType={'next'}
+              ref={refInput}
+              onSubmitEditing={() => {
+                onPressOpenDistrictModal()
               }}
+              blurOnSubmit={false}
+              right={
+                <TextInput.Icon
+                  icon={isPasswordSecure ? 'eye-off-outline' : 'eye-outline'}
+                  style={{ marginRight: -2 }}
+                  onPress={() => setIsPasswordSecure(!isPasswordSecure)}
+                  iconColor={Colors.black}
+                />
+              }
+            />
+            <TouchableOpacity
+              style={{
+                width: 250,
+                flexDirection: 'row',
+                borderWidth: 1,
+                borderRadius: 4,
+                padding: 10,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 10,
+                minHeight: 50
+              }}
+              onPress={async () => onPressOpenDistrictModal()}
             >
-              {selectedDistrict
-                ? selectedDistrict.name
-                : 'Find Your School District'}
-            </Text>
-            {!selectedDistrict && (
-              <MaterialCommunityIcons
-                name="school-outline"
+              <Text
+                style={{
+                  fontFamily: 'Inter_500Medium',
+                  fontSize: 14,
+                  flexWrap: 'wrap',
+                  flex: 1
+                }}
+              >
+                {selectedDistrict
+                  ? selectedDistrict.name
+                  : 'Find Your School District'}
+              </Text>
+              {!selectedDistrict && (
+                <MaterialCommunityIcons
+                  name="school-outline"
+                  size={24}
+                  color="black"
+                  style={{ marginRight: 2 }}
+                />
+              )}
+            </TouchableOpacity>
+            <View style={styles.checkbox_container}>
+              <BouncyCheckbox
+                disableBuiltInState
+                disableText
+                isChecked={isChecked}
                 size={24}
-                color="black"
-                style={{ marginRight: 2 }}
+                fillColor={Colors.navy}
+                onPress={() => {
+                  setToggleCheckBox(!isChecked)
+                }}
               />
-            )}
-          </TouchableOpacity>
-          <View style={styles.checkbox_container}>
-            <BouncyCheckbox
-              disableBuiltInState
-              disableText
-              isChecked={isChecked}
-              size={24}
-              fillColor={Colors.navy}
+              <Text style={styles.save_text}>Remember Me</Text>
+            </View>
+            <CustomButton
               onPress={() => {
-                setToggleCheckBox(!isChecked)
+                if (!isLoading) onLogin()
               }}
-            />
-            <Text style={styles.save_text}>Remember Me</Text>
+              text={'Login'}
+              backgroundColor={
+                !isLoading ? Colors.navy : 'rgba(100, 100, 100, 0.6)'
+              }
+              textColor={Colors.white}
+              fontFamily="Inter_800ExtraBold"
+              containerStyle={styles.button_container}
+              disabled={isLoading}
+            >
+              {isLoading && (
+                <ActivityIndicator
+                  color={Colors.white}
+                  size="small"
+                  style={{ margin: 0, marginRight: 10 }}
+                />
+              )}
+            </CustomButton>
           </View>
-          <CustomButton
-            onPress={() => {
-              if (!isLoading) onLogin()
-            }}
-            text={'Login'}
-            backgroundColor={
-              !isLoading ? Colors.navy : 'rgba(100, 100, 100, 0.6)'
-            }
-            textColor={Colors.white}
-            fontFamily="Inter_800ExtraBold"
-            containerStyle={styles.button_container}
-            disabled={isLoading}
-          ></CustomButton>
-          <ActivityIndicator
-            color={Colors.secondary}
-            animating={isLoading}
-            style={{ marginBottom: 50 }}
-            size="large"
-          />
         </KeyboardAvoidingView>
-        <BannerAd />
-        <SafeAreaView
-          style={styles.row_container}
-          edges={['bottom', 'left', 'right']}
-        >
-          <TouchableOpacity
-            style={styles.insta_button_container}
-            onPress={() => openInstagram('richardyin99')}
-          >
-            <MaterialCommunityIcons
-              name="instagram"
-              backgroundColor="transparent"
-              iconStyle={styles.insta_button}
-              underlayColor="none"
-              activeOpacity={0.2}
-              size={20}
-            />
-            <Text style={styles.insta_text}>Richard Y</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.insta_button_container}
-            onPress={() => openInstagram('karthik.whynot')}
-          >
-            <MaterialCommunityIcons
-              name="instagram"
-              backgroundColor="transparent"
-              iconStyle={styles.insta_button}
-              underlayColor="none"
-              activeOpacity={0.2}
-              size={20}
-            />
-            <Text style={styles.insta_text}>Karthik M</Text>
-          </TouchableOpacity>
-        </SafeAreaView>
+        <View>
+          <View style={styles.row_container}>
+            <TouchableOpacity
+              style={styles.insta_button_container}
+              onPress={() => openInstagram('richardyin99')}
+            >
+              <MaterialCommunityIcons
+                name="instagram"
+                backgroundColor="transparent"
+                iconStyle={styles.insta_button}
+                underlayColor="none"
+                activeOpacity={0.2}
+                size={20}
+              />
+              <Text style={styles.insta_text}>Richard Y</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.insta_button_container}
+              onPress={() => openInstagram('karthik.whynot')}
+            >
+              <MaterialCommunityIcons
+                name="instagram"
+                backgroundColor="transparent"
+                iconStyle={styles.insta_button}
+                underlayColor="none"
+                activeOpacity={0.2}
+                size={20}
+              />
+              <Text style={styles.insta_text}>Karthik M</Text>
+            </TouchableOpacity>
+          </View>
+          <SafeAreaView edges={['bottom', 'left', 'right']}>
+            <BannerAd />
+          </SafeAreaView>
+        </View>
       </ImageBackground>
     </View>
   )
@@ -542,17 +542,9 @@ const Seperator = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
-    alignSelf: 'center',
     justifyContent: 'center',
-    marginTop: 10
-  },
-  horizontal_container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 4,
-    alignItems: 'center'
+    flex: 1
   },
   modal: {
     alignSelf: 'center',
@@ -583,8 +575,8 @@ const styles = StyleSheet.create({
   checkbox_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 10
+    marginBottom: 10,
+    alignSelf: 'flex-start'
   },
   input: {
     width: 250,
@@ -644,13 +636,10 @@ const styles = StyleSheet.create({
   button_container: {
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative',
-    width: 100,
-    height: 50,
-    padding: 10,
     borderRadius: 25,
     borderWidth: 0,
-    marginBottom: 10
+    width: 250,
+    height: 50
   },
   save_text: {
     fontFamily: 'Inter_400Regular',

@@ -16,6 +16,7 @@ type Props = {
   fontFamily: string
   containerStyle: StyleProp<ViewStyle>
   disabled: boolean
+  children?: any
 }
 
 const CustomButton: React.FC<Props> = ({
@@ -25,16 +26,17 @@ const CustomButton: React.FC<Props> = ({
   textColor,
   fontFamily,
   containerStyle,
-  disabled
+  disabled,
+  children
 }: Props) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[containerStyle, { backgroundColor: backgroundColor }]}
       disabled={disabled}
-      activeOpacity={0.2}
     >
-      <View>
+      <View style={{ flexDirection: 'row' }}>
+        {children}
         <Text
           style={[
             styles.buttonText,
@@ -50,8 +52,7 @@ const CustomButton: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   buttonText: {
-    fontSize: 20,
-    textAlign: 'center'
+    fontSize: 22
   }
 })
 
