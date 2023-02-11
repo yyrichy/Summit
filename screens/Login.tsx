@@ -23,11 +23,7 @@ import CustomButton from '../components/CustomButton'
 import AppContext from '../contexts/AppContext'
 import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
-import {
-  FontAwesome5,
-  MaterialCommunityIcons,
-  MaterialIcons
-} from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
@@ -37,6 +33,7 @@ import { toast } from '../util/Util'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import BannerAd from '../components/BannerAd'
+import Constants from 'expo-constants'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -520,7 +517,10 @@ const Login = () => {
             </TouchableOpacity>
           </View>
           <SafeAreaView edges={['bottom', 'left', 'right']}>
-            <BannerAd />
+            <BannerAd
+              iosId={Constants.expoConfig.extra.LOGIN_BANNER_IOS}
+              androidId={Constants.expoConfig.extra.LOGIN_BANNER_ANDROID}
+            />
           </SafeAreaView>
         </View>
       </ImageBackground>
