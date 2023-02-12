@@ -57,6 +57,8 @@ export default {
       LOGIN_BANNER_ANDROID: process.env.LOGIN_BANNER_ANDROID,
       COURSES_BANNER_IOS: process.env.COURSES_BANNER_IOS,
       COURSES_BANNER_ANDROID: process.env.COURSES_BANNER_ANDROID,
+      DETAILS_BANNER_IOS: process.env.DETAILS_BANNER_IOS,
+      DETAILS_BANNER_ANDROID: process.env.DETAILS_BANNER_ANDROID,
       eas: {
         projectId: 'd59960c3-3bf2-4243-b9d3-22051792b8bc'
       }
