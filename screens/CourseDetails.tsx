@@ -23,7 +23,8 @@ import {
   isNumber,
   calculateMarkColor,
   toggleCategory,
-  parseCourseName
+  parseCourseName,
+  calculateBarColor
 } from '../gradebook/GradeUtil'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
@@ -199,7 +200,7 @@ const CourseDetails = ({ route }) => {
                   </View>
                   <ProgressBar
                     progress={hasValue ? value / 100 : 0}
-                    style={{ backgroundColor: calculateMarkColor(value) }}
+                    style={{ backgroundColor: calculateBarColor(value) }}
                   />
                 </View>
               )
