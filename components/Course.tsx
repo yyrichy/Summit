@@ -45,7 +45,6 @@ const Course: React.FC<Props> = ({
           {teacher} {'\u2022'} {room}
         </Text>
       </View>
-
       {!isNaN(markAsNumber) && (
         <>
           <Text style={styles.mark}>{round(mark, 2)}</Text>
