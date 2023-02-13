@@ -9,21 +9,14 @@ import {
 type Props = {
   size?: string
   style?: ViewStyle
-  iosId: string
-  androidId: string
 }
 
-const BannerAd: React.FC<Props> = ({
-  size,
-  style,
-  iosId,
-  androidId
-}: Props) => {
+const BannerAd: React.FC<Props> = ({ size, style }: Props) => {
   const adUnitId = __DEV__
     ? TestIds.BANNER
     : Platform.OS == 'android'
-    ? androidId
-    : iosId
+    ? 'ca-app-pub-7084446430900509/6692537871'
+    : 'ca-app-pub-7084446430900509/4838214937'
 
   return (
     <View style={style}>

@@ -18,7 +18,6 @@ import { Picker, onOpen } from 'react-native-actions-sheet-picker'
 import { IconButton, useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import BannerAd from '../components/BannerAd'
-import Constants from 'expo-constants'
 
 const Courses = ({ navigation }) => {
   const theme = useTheme()
@@ -174,10 +173,7 @@ const Courses = ({ navigation }) => {
             }}
           />
         )}
-        <BannerAd
-          iosId={Constants.expoConfig.extra.COURSES_BANNER_IOS}
-          androidId={Constants.expoConfig.extra.COURSES_BANNER_ANDROID}
-        />
+        <BannerAd />
       </View>
     </SafeAreaView>
   )

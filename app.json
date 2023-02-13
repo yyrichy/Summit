@@ -1,4 +1,63 @@
 {
+  "expo": {
+    "name": "GradeHelper",
+    "slug": "Summit",
+    "version": "1.1.3",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "platforms": ["android", "ios"],
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FEF156"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vaporys.Summit",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["instagram"]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FEF156"
+      },
+      "package": "com.vaporys.Summit",
+      "softwareKeyboardLayoutMode": "pan",
+      "versionCode": 17
+    },
+    "androidStatusBar": {
+      "barStyle": "dark-content"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png"
+        }
+      ],
+      ["./withAndroidSplashScreen.js"],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true
+          }
+        }
+      ]
+    ],
+    "userInterfaceStyle": "light",
+    "extra": {
+      "eas": {
+        "projectId": "d59960c3-3bf2-4243-b9d3-22051792b8bc"
+      }
+    }
+  },
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-7084446430900509~2295812075",
     "ios_app_id": "ca-app-pub-7084446430900509~1090541614"

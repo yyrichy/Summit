@@ -23,8 +23,7 @@ import {
   isNumber,
   calculateMarkColor,
   toggleCategory,
-  parseCourseName,
-  calculateBarColor
+  parseCourseName
 } from '../gradebook/GradeUtil'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
@@ -40,8 +39,6 @@ import {
 } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { round } from '../util/Util'
-import BannerAd from '../components/BannerAd'
-import Constants from 'expo-constants'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -200,7 +197,7 @@ const CourseDetails = ({ route }) => {
                   </View>
                   <ProgressBar
                     progress={hasValue ? value / 100 : 0}
-                    style={{ backgroundColor: calculateBarColor(value) }}
+                    style={{ backgroundColor: calculateMarkColor(value) }}
                   />
                 </View>
               )
@@ -290,12 +287,6 @@ const CourseDetails = ({ route }) => {
             }}
           />
         )}
-      </View>
-      <View style={{ backgroundColor: theme.colors.background }}>
-        <BannerAd
-          iosId={Constants.expoConfig.extra.DETAILS_BANNER_IOS}
-          androidId={Constants.expoConfig.extra.DETAILS_BANNER_ANDROID}
-        />
       </View>
       <Modal
         isVisible={isModalVisible}

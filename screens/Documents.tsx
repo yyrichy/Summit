@@ -111,7 +111,8 @@ const Documents = () => {
 const styles = StyleSheet.create({
   title_container: {
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    width: '75%'
   },
   title: {
     fontFamily: 'Inter_800ExtraBold',
