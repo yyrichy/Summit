@@ -256,7 +256,7 @@ const Login = () => {
         >
           <ReactNativeTextInput
             style={[styles.input, { marginBottom: 0, width: 300 }]}
-            placeholder="Enter zipcode"
+            placeholder="Enter school district zipcode"
             keyboardType="number-pad"
             returnKeyType="done"
             onSubmitEditing={({ nativeEvent: { text } }) => onSearch(text)}
@@ -318,8 +318,7 @@ const Login = () => {
                     fontSize: 14
                   }}
                 >
-                  No school districts found, did you enter the zipcode of your
-                  school district?
+                  No school districts found
                 </Text>
               }
             />
@@ -486,8 +485,15 @@ const Login = () => {
             </CustomButton>
           </View>
         </KeyboardAvoidingView>
-        <View style={{ alignSelf: 'flex-end' }}>
-          <View style={styles.row_container}>
+        <SafeAreaView
+          edges={['bottom', 'left', 'right']}
+          style={{ alignSelf: 'flex-end' }}
+        >
+          <BannerAd
+            androidId={Constants.expoConfig.extra.LOGIN_BANNER_ANDROID}
+            iosId={Constants.expoConfig.extra.LOGIN_BANNER_IOS}
+          />
+          <View style={styles.insta_container}>
             <TouchableOpacity
               style={styles.insta_button_container}
               onPress={() => openInstagram('richardyin99')}
@@ -517,13 +523,7 @@ const Login = () => {
               <Text style={styles.insta_text}>Karthik M</Text>
             </TouchableOpacity>
           </View>
-          <SafeAreaView edges={['bottom', 'left', 'right']}>
-            <BannerAd
-              androidId={Constants.expoConfig.extra.LOGIN_BANNER_ANDROID}
-              iosId={Constants.expoConfig.extra.LOGIN_BANNER_IOS}
-            />
-          </SafeAreaView>
-        </View>
+        </SafeAreaView>
       </ImageBackground>
     </View>
   )
@@ -647,7 +647,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     marginLeft: 10
   },
-  row_container: {
+  insta_container: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

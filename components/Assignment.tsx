@@ -292,7 +292,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 10,
     backgroundColor: Colors.white,
-    borderWidth: StyleSheet.hairlineWidth
+    borderWidth: 1,
+    borderColor: Colors.light_gray
   },
   horizontal_container: {
     flexDirection: 'row',

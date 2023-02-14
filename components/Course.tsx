@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 6,
     padding: 12,
-    borderWidth: StyleSheet.hairlineWidth
+    borderWidth: 1,
+    borderColor: Colors.light_gray
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',

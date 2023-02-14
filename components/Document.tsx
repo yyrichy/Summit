@@ -7,6 +7,7 @@ import {
   StyleProp,
   ViewStyle
 } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 
 type Props = {
@@ -18,9 +19,14 @@ type Props = {
 }
 
 const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
+  const theme = useTheme()
   return (
     <TouchableOpacity
-      style={[styles.container, style]}
+      style={[
+        styles.container,
+        style,
+        { backgroundColor: theme.colors.surface }
+      ]}
       activeOpacity={0.2}
       onPress={onPress}
     >
@@ -41,14 +47,14 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.white,
     borderRadius: 12,
     marginVertical: 3.5,
     padding: 10,
     flexDirection: 'column',
     justifyContent: 'center',
     flex: 1,
-    borderWidth: StyleSheet.hairlineWidth
+    borderWidth: 1,
+    borderColor: Colors.light_gray
   },
   info_container: {
     flexDirection: 'row',

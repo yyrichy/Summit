@@ -42,6 +42,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { round } from '../util/Util'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
+import { onOpen, Picker } from 'react-native-actions-sheet-picker'
 
 const CourseDetails = ({ route }) => {
   const courseName = route.params.title
@@ -112,6 +113,13 @@ const CourseDetails = ({ route }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.elevation.level3 }}>
+      <Picker
+        id="categoryPicker"
+        data={[...course.categories.values()]}
+        searchable={false}
+        label="Select Marking Period"
+        setSelected={(category) => setCategory(category.name)}
+      />
       <SafeAreaView
         style={styles.course_name_container}
         edges={['top', 'left', 'right']}
@@ -225,7 +233,7 @@ const CourseDetails = ({ route }) => {
                     height: 32,
                     backgroundColor: selected
                       ? theme.colors.secondaryContainer
-                      : theme.colors.surface
+                      : theme.colors.surfaceVariant
                   }}
                   onPress={() => {
                     setMarks(toggleCategory(marks, course, item))
@@ -301,8 +309,8 @@ const CourseDetails = ({ route }) => {
         isVisible={isModalVisible}
         coverScreen={false}
         onBackdropPress={toggleModal}
-        animationIn={'zoomIn'}
-        animationOut={'zoomOut'}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
         animationInTiming={150}
         animationOutTiming={150}
         backdropTransitionOutTiming={0}
@@ -320,7 +328,6 @@ const CourseDetails = ({ route }) => {
               returnKeyType={'next'}
               keyboardType="decimal-pad"
               autoComplete="off"
-              placeholder="Score"
               onChangeText={(t) => {
                 if (isNumber(t) || t === '') setPoints(t)
               }}
@@ -330,12 +337,19 @@ const CourseDetails = ({ route }) => {
               blurOnSubmit={false}
               onSubmitEditing={() => refInput.current.focus()}
             />
-            <Text style={{ fontSize: 48 }}>/</Text>
+            <Text
+              style={{
+                fontSize: 48,
+                marginHorizontal: 20,
+                fontFamily: 'Inter_300Light'
+              }}
+            >
+              /
+            </Text>
             <TextInput
               returnKeyType={'next'}
               keyboardType="decimal-pad"
               autoComplete="off"
-              placeholder="Total"
               onChangeText={(t) => {
                 if (isNumber(t) || t === '') setTotal(t)
               }}
@@ -345,36 +359,24 @@ const CourseDetails = ({ route }) => {
               ref={refInput}
             />
           </View>
-          <View
-            style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 8 }}
+          <Chip
+            mode="outlined"
+            style={{
+              height: 32,
+              alignSelf: 'flex-start',
+              marginBottom: 16,
+              marginRight: 20
+            }}
+            onPress={() => onOpen('categoryPicker')}
+            icon="chevron-down"
           >
-            {[...course.categories.values()].map((item) => {
-              const selected = category === item.name
-              return (
-                <Chip
-                  selected={selected}
-                  mode={'flat'}
-                  style={{
-                    marginRight: 16,
-                    height: 32,
-                    backgroundColor: selected
-                      ? theme.colors.secondaryContainer
-                      : theme.colors.surfaceVariant,
-                    marginBottom: 8
-                  }}
-                  onPress={() => {
-                    setCategory(item.name)
-                  }}
-                  key={item.name}
-                >
-                  {item.name}
-                </Chip>
-              )
-            })}
+            {category}
+          </Chip>
+          <View style={{ width: '100%' }}>
+            <Button mode="contained" onPress={add}>
+              Add Assignment
+            </Button>
           </View>
-          <Button mode="contained" onPress={add} style={{ width: '100%' }}>
-            Add Assignment
-          </Button>
         </View>
       </Modal>
     </View>
@@ -397,7 +399,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: Colors.white,
     borderRadius: 20,
-    width: 320,
+    width: 300,
     padding: 20
   },
   course_name: {
