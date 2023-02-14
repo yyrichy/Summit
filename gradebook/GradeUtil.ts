@@ -229,6 +229,23 @@ const calculateLetterGrade = (
   }
 }
 
+const calculateBarColor = (mark: number): string => {
+  switch (calculateLetterGrade(mark)) {
+    case 'A':
+      return '#4eba4e'
+    case 'B':
+      return '#6f8cf3'
+    case 'C':
+      return '#AD6800'
+    case 'D':
+      return '#CC3E3E'
+    case 'E':
+      return '#440808'
+    case 'F':
+      return Colors.black
+  }
+}
+
 const isNumber = (input: string): boolean => {
   return /^[0-9.]+$/g.test(input)
 }
@@ -272,5 +289,6 @@ export {
   normalize,
   prependZero,
   formatAMPM,
-  toggleCategory
+  toggleCategory,
+  calculateBarColor
 }
