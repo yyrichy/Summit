@@ -127,9 +127,11 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           style={[
             styles.container,
             style,
-            hasScore && {
+            hasScore ? {
               borderLeftColor: calculateMarkColor(score),
               borderLeftWidth: 3
+            } : {
+              borderLeftColor: Colors.light_gray,
             }
           ]}
           onPress={transition}
@@ -293,7 +295,9 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: Colors.white,
     borderWidth: 1,
-    borderColor: Colors.light_gray
+    borderBottomColor: Colors.light_gray,
+    borderTopColor: Colors.light_gray,
+    borderRightColor: Colors.light_gray
   },
   horizontal_container: {
     flexDirection: 'row',

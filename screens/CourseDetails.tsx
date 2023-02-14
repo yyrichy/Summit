@@ -238,6 +238,9 @@ const CourseDetails = ({ route }) => {
                   onPress={() => {
                     setMarks(toggleCategory(marks, course, item))
                   }}
+                  textStyle={{
+                    marginTop: 4
+                  }}
                 >
                   {item.name}
                 </Chip>
@@ -371,6 +374,9 @@ const CourseDetails = ({ route }) => {
             }}
             onPress={() => onOpen('categoryPicker')}
             icon="chevron-down"
+            textStyle={{
+              marginTop: 4
+            }}
           >
             {category}
           </Chip>
