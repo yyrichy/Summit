@@ -299,12 +299,14 @@ const CourseDetails = ({ route }) => {
           />
         )}
       </View>
-      <View style={{ backgroundColor: theme.colors.surface }}>
-        <BannerAd
-          androidId={Constants.expoConfig.extra.DETAILS_BANNER_ANDROID}
-          iosId={Constants.expoConfig.extra.DETAILS_BANNER_IOS}
-        />
-      </View>
+      {false && (
+        <View style={{ backgroundColor: theme.colors.surface }}>
+          <BannerAd
+            androidId={Constants.expoConfig.extra.DETAILS_BANNER_ANDROID}
+            iosId={Constants.expoConfig.extra.DETAILS_BANNER_IOS}
+          />
+        </View>
+      )}
       <Modal
         isVisible={isModalVisible}
         coverScreen={false}

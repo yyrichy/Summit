@@ -174,10 +174,12 @@ const Courses = ({ navigation }) => {
             }}
           />
         )}
-        <BannerAd
-          androidId={Constants.expoConfig.extra.COURSES_BANNER_ANDROID}
-          iosId={Constants.expoConfig.extra.COURSES_BANNER_IOS}
-        />
+        {false && (
+          <BannerAd
+            androidId={Constants.expoConfig.extra.COURSES_BANNER_ANDROID}
+            iosId={Constants.expoConfig.extra.COURSES_BANNER_IOS}
+          />
+        )}
       </View>
     </SafeAreaView>
   )
