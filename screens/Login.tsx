@@ -229,7 +229,8 @@ const Login = () => {
             >
               Your username and password are the same as your school's
               StudentVue website.{'\n\n'}We do not collect your personal
-              information nor can we access it remotely{process.env.secret}
+              information nor can we access it remotely
+              {Constants.expoConfig.extra.secret}
             </Text>
           </View>
         </View>
