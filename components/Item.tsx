@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 10,
     marginRight: 10,
-    marginTop: 17
+    marginTop: 16
   },
   item_text: {
     fontFamily: 'Inter_400Regular',

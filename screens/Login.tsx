@@ -28,18 +28,20 @@ import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
-import { Divider, TextInput } from 'react-native-paper'
+import { Divider, TextInput, useTheme } from 'react-native-paper'
 import { toast } from '../util/Util'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
+import District from '../components/District'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
 type loginInfo = 'username' | 'password' | 'district'
 
 const Login = () => {
+  const theme = useTheme()
   const insets = useSafeAreaInsets()
   const navigation = useNavigation<loginScreenProp>()
   const refInput = useRef(null)
@@ -47,7 +49,7 @@ const Login = () => {
   const [password, setPassword] = useState(null)
   const { setClient, setMarks } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
-  const [isChecked, setToggleCheckBox] = useState(false)
+  const [isChecked, setToggleCheckBox] = useState(true)
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
 
   const [isDistrictModalVisible, setDistrictModalVisible] = useState(false)
@@ -88,7 +90,6 @@ const Login = () => {
     setPassword(password)
     setSelectedDistrict(district)
     setIsLoading(true)
-    setToggleCheckBox(true)
     try {
       const client = await StudentVue.login(district.parentVueUrl, {
         username: username,
@@ -212,21 +213,12 @@ const Login = () => {
       >
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <View
-            style={{
-              backgroundColor: 'white',
-              padding: 20,
-              marginTop: insets.top,
-              marginBottom: insets.bottom,
-              borderRadius: 20,
-              maxWidth: 350
-            }}
+            style={[
+              styles.questions_modal,
+              { marginTop: insets.top, marginBottom: insets.bottom }
+            ]}
           >
-            <Text
-              style={{
-                fontFamily: 'Inter_400Regular',
-                fontSize: 14
-              }}
-            >
+            <Text style={styles.questions_text}>
               Your username and password are the same as your school's
               StudentVue website.{'\n\n'}We do not collect your personal
               information nor can we access it remotely
@@ -247,15 +239,20 @@ const Login = () => {
           style={[
             styles.modal,
             {
-              padding: 20,
               marginTop: insets.top,
-              marginBottom: insets.bottom,
-              width: 350
+              marginBottom: insets.bottom
             }
           ]}
         >
           <ReactNativeTextInput
-            style={[styles.input, { marginBottom: 0, width: 300 }]}
+            style={[
+              styles.input,
+              {
+                marginBottom: 0,
+                width: 310,
+                borderColor: theme.colors.outlineVariant
+              }
+            ]}
             placeholder="Enter school district zipcode"
             keyboardType="number-pad"
             returnKeyType="done"
@@ -271,41 +268,17 @@ const Login = () => {
               data={districts}
               keyExtractor={(item) => item.name}
               renderItem={({ item }) => {
-                const selected =
-                  selectedDistrict && selectedDistrict.name === item.name
                 return (
-                  <TouchableOpacity
+                  <District
                     onPress={() => {
                       setDistrictModalVisible(false)
                       setSelectedDistrict(item)
                     }}
-                    style={[
-                      selected && {
-                        backgroundColor: Colors.off_white,
-                        padding: 8,
-                        borderRadius: 5
-                      }
-                    ]}
-                  >
-                    <Text
-                      style={{
-                        fontFamily: 'Inter_500Medium',
-                        fontSize: 16
-                      }}
-                    >
-                      {item.name}
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: 'Inter_400Regular',
-                        fontSize: 14,
-                        color: Colors.onyx_gray,
-                        marginTop: 2
-                      }}
-                    >
-                      {item.address}
-                    </Text>
-                  </TouchableOpacity>
+                    item={item}
+                    selected={
+                      selectedDistrict && selectedDistrict.name === item.name
+                    }
+                  />
                 )
               }}
               style={{ flexGrow: 0 }}
@@ -345,13 +318,7 @@ const Login = () => {
           style={{ alignItems: 'center' }}
           edges={['top', 'left', 'right']}
         >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
+          <View style={styles.name_container}>
             <Text style={styles.name}>GradeHelper</Text>
           </View>
         </SafeAreaView>
@@ -361,45 +328,31 @@ const Login = () => {
         >
           <View>
             <TouchableOpacity
-              style={[
-                {
-                  height: 48,
-                  alignItems: 'center',
-                  padding: 10,
-                  justifyContent: 'flex-end',
-                  alignSelf: 'center'
-                }
-              ]}
+              style={styles.questions_button}
               onPress={() => setQuestionsModalVisible(true)}
             >
-              <Text
-                style={{
-                  fontFamily: 'Inter_400Regular'
-                }}
-              >
-                Questions/Concerns
-              </Text>
+              <Text style={styles.questions_text}>Questions/Concerns</Text>
             </TouchableOpacity>
             <TextInput
               defaultValue={username}
               onChangeText={(u) => setUsername(u)}
-              placeholder={'Username'}
+              placeholder="Username"
               style={styles.input}
               textColor={Colors.black}
               placeholderTextColor={Colors.medium_gray}
-              returnKeyType={'next'}
+              returnKeyType="next"
               onSubmitEditing={() => refInput.current.focus()}
               blurOnSubmit={false}
             />
             <TextInput
               defaultValue={password}
               onChangeText={(p) => setPassword(p)}
-              placeholder={'Password'}
+              placeholder="Password"
               secureTextEntry={isPasswordSecure}
               style={styles.input}
               textColor={Colors.black}
               placeholderTextColor={Colors.medium_gray}
-              returnKeyType={'next'}
+              returnKeyType="next"
               ref={refInput}
               onSubmitEditing={() => {
                 onPressOpenDistrictModal()
@@ -415,27 +368,10 @@ const Login = () => {
               }
             />
             <TouchableOpacity
-              style={{
-                width: 250,
-                flexDirection: 'row',
-                borderWidth: 1,
-                borderRadius: 4,
-                padding: 10,
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: 10,
-                minHeight: 50
-              }}
+              style={styles.districts_button}
               onPress={async () => onPressOpenDistrictModal()}
             >
-              <Text
-                style={{
-                  fontFamily: 'Inter_500Medium',
-                  fontSize: 14,
-                  flexWrap: 'wrap',
-                  flex: 1
-                }}
-              >
+              <Text style={styles.selected_district_text}>
                 {selectedDistrict
                   ? selectedDistrict.name
                   : 'Find Your School District'}
@@ -459,6 +395,7 @@ const Login = () => {
                 onPress={() => {
                   setToggleCheckBox(!isChecked)
                 }}
+                disabled={isLoading}
               />
               <Text style={styles.save_text}>Remember Me</Text>
             </View>
@@ -466,7 +403,7 @@ const Login = () => {
               onPress={() => {
                 if (!isLoading) onLogin()
               }}
-              text={'Login'}
+              text="Login"
               backgroundColor={
                 !isLoading ? Colors.navy : 'rgba(100, 100, 100, 0.6)'
               }
@@ -551,28 +488,35 @@ const styles = StyleSheet.create({
   modal: {
     alignSelf: 'center',
     backgroundColor: 'white',
-    borderRadius: 20
+    borderRadius: 20,
+    padding: 20,
+    width: 350
   },
-  modal_view: {
-    padding: 15
-  },
-  security_modal: {
-    fontFamily: 'Inter_400Regular'
-  },
-  mountain: {
-    justifyContent: 'center',
+  questions_button: {
+    height: 48,
     alignItems: 'center',
-    marginLeft: 5,
-    marginBottom: 3
+    padding: 10,
+    justifyContent: 'flex-end',
+    alignSelf: 'center'
+  },
+  questions_modal: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 20,
+    maxWidth: 350
+  },
+  questions_text: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 14
+  },
+  name_container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   name: {
     fontFamily: 'Montserrat_900Black',
     fontSize: 40
-  },
-  description: {
-    fontFamily: 'RussoOne_400Regular',
-    textAlign: 'center',
-    fontSize: 20
   },
   checkbox_container: {
     flexDirection: 'row',
@@ -591,49 +535,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingHorizontal: 10
   },
-  dropdown: {
-    borderWidth: 1,
-    borderColor: Colors.black,
+  districts_button: {
     width: 250,
-    marginBottom: 10,
-    backgroundColor: 'transparent',
-    padding: 10,
-    borderRadius: 4
-  },
-  dropdown_text: {
-    fontFamily: 'Inter_700Bold',
-    fontSize: 12
-  },
-  dropdown_container: {
-    width: 250
-  },
-  dropdown_item: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    fontFamily: 'Inter_600SemiBold'
-  },
-  dropdown_tick: {
-    marginLeft: 10
-  },
-  dropdown_search_container: {
-    padding: 10,
-    borderBottomWidth: 0
-  },
-  dropdown_search_text: {
-    fontFamily: 'Inter_400Regular'
-  },
-  dropdown_list_item_container: {
     flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: 4,
+    padding: 10,
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 10,
+    minHeight: 50
   },
-  district_name_container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start'
-  },
-  loading: {
-    margin: 'auto'
+  selected_district_text: {
+    fontFamily: 'Inter_500Medium',
+    fontSize: 14,
+    flexWrap: 'wrap',
+    flex: 1
   },
   button_container: {
     justifyContent: 'center',
@@ -666,26 +583,5 @@ const styles = StyleSheet.create({
   insta_text: {
     fontFamily: 'Inter_300Light',
     fontSize: 11
-  },
-  dropdown_text_style: {
-    fontFamily: 'Inter_500Medium',
-    fontSize: 16
-  },
-  intro_image_style: {
-    width: 200,
-    height: 200
-  },
-  intro_text_style: {
-    fontSize: 18,
-    textAlign: 'center',
-    paddingHorizontal: 16,
-    fontFamily: 'Inter_400Regular'
-  },
-  intro_title_style: {
-    fontSize: 25,
-    textAlign: 'center',
-    marginBottom: 16,
-    fontFamily: 'Montserrat_700Bold',
-    marginTop: 16
   }
 })

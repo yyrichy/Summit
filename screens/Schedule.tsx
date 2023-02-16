@@ -9,14 +9,14 @@ import CalendarScreen from './Calendar'
 const Tab = createMaterialTopTabNavigator()
 
 const Schedule = () => {
-  const safeArea = useSafeAreaInsets()
+  const insets = useSafeAreaInsets()
   const theme = useTheme()
 
   return (
     <View
       style={{
         flex: 1,
-        paddingTop: safeArea.top,
+        paddingTop: insets.top,
         backgroundColor: theme.colors.surface
       }}
     >

@@ -127,21 +127,23 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           style={[
             styles.container,
             style,
-            hasScore ? {
-              borderLeftColor: calculateMarkColor(score),
-              borderLeftWidth: 3
-            } : {
-              borderLeftColor: Colors.light_gray,
-            }
+            hasScore
+              ? {
+                  borderLeftColor: calculateMarkColor(score),
+                  borderLeftWidth: 3,
+                  borderBottomColor: theme.colors.outlineVariant,
+                  borderTopColor: theme.colors.outlineVariant,
+                  borderRightColor: theme.colors.outlineVariant
+                }
+              : {
+                  borderColor: theme.colors.outlineVariant
+                }
           ]}
           onPress={transition}
         >
           <View style={styles.horizontal_container}>
             <View style={styles.assignment_info_container}>
-              <Text
-                numberOfLines={isDropdown ? undefined : 1}
-                style={styles.name}
-              >
+              <Text numberOfLines={!isDropdown && 1} style={styles.name}>
                 {name}
               </Text>
               <View
@@ -172,7 +174,10 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 </Text>
                 <Text
                   numberOfLines={1}
-                  style={[styles.category, { color: theme.colors.onSurface }]}
+                  style={[
+                    styles.category,
+                    { color: theme.colors.onSurface, flexShrink: 1 }
+                  ]}
                 >
                   {assignment.date.due.toLocaleDateString()}
                 </Text>
@@ -228,7 +233,6 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           {isDropdown && (
             <Animated.View
               style={{
-                marginBottom: 4,
                 marginTop: 6,
                 padding: 4
               }}
@@ -244,22 +248,22 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                   }}
                 >
                   <View>
-                    <Text style={{ color: Colors.secondary, fontSize: 12 }}>
-                      START DATE
+                    <Text style={styles.assignment_property_label}>START</Text>
+                    <Text style={styles.assignment_property_value}>
+                      {dateRelativeToToday(assignment.date.start)}
                     </Text>
-                    <Text>{dateRelativeToToday(assignment.date.start)}</Text>
                   </View>
                   <View>
-                    <Text style={{ color: Colors.secondary, fontSize: 12 }}>
-                      DUE DATE
+                    <Text style={styles.assignment_property_label}>DUE</Text>
+                    <Text style={styles.assignment_property_value}>
+                      {dateRelativeToToday(assignment.date.due)}
                     </Text>
-                    <Text>{dateRelativeToToday(assignment.date.due)}</Text>
                   </View>
                   <View>
-                    <Text style={{ color: Colors.secondary, fontSize: 12 }}>
-                      STATUS
+                    <Text style={styles.assignment_property_label}>STATUS</Text>
+                    <Text style={styles.assignment_property_value}>
+                      {assignment.status}
                     </Text>
-                    <Text>{assignment.status}</Text>
                   </View>
                 </View>
               </View>
@@ -270,7 +274,8 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                     <Text
                       style={{
                         color: Colors.secondary,
-                        marginRight: 6
+                        marginRight: 6,
+                        fontFamily: 'Inter_400Regular'
                       }}
                     >
                       NOTES
@@ -294,10 +299,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     padding: 10,
     backgroundColor: Colors.white,
-    borderWidth: 1,
-    borderBottomColor: Colors.light_gray,
-    borderTopColor: Colors.light_gray,
-    borderRightColor: Colors.light_gray
+    borderWidth: 1
   },
   horizontal_container: {
     flexDirection: 'row',
@@ -322,29 +324,30 @@ const styles = StyleSheet.create({
   input_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-end',
+    flexShrink: 1,
+    maxWidth: '50%'
   },
   mark: {
     fontSize: 24,
     fontFamily: 'Inter_500Medium',
     alignSelf: 'center',
-    outlineStyle: 'none'
+    outlineStyle: 'none',
+    flexShrink: 1
   },
   dash: {
     fontSize: 20,
     alignSelf: 'center',
     textAlignVertical: 'center'
   },
-  dropdown_text_value: {
+  assignment_property_label: {
     fontFamily: 'Inter_400Regular',
-    flex: 1,
-    fontSize: 16,
-    marginLeft: 10
+    color: Colors.secondary,
+    fontSize: 12
   },
-  detail_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 4
+  assignment_property_value: {
+    fontFamily: 'Inter_400Regular',
+    fontSize: 14
   }
 })
 

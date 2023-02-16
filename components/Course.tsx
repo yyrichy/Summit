@@ -31,7 +31,13 @@ const Course: React.FC<Props> = ({
 
   return (
     <TouchableOpacity
-      style={[styles.container, { backgroundColor: theme.colors.surface }]}
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.outlineVariant
+        }
+      ]}
       onPress={onPress}
       activeOpacity={0.2}
     >
@@ -45,7 +51,6 @@ const Course: React.FC<Props> = ({
           {teacher} {'\u2022'} {room}
         </Text>
       </View>
-
       {!isNaN(markAsNumber) && (
         <>
           <Text style={styles.mark}>{round(mark, 2)}</Text>
@@ -73,8 +78,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 6,
     padding: 12,
-    borderWidth: 1,
-    borderColor: Colors.light_gray
+    borderWidth: 1
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',

@@ -89,7 +89,7 @@ const Documents = () => {
           }
           contentContainerStyle={{
             paddingHorizontal: 10,
-            paddingTop: 3.5
+            paddingTop: 4
           }}
         />
       ) : (
@@ -112,12 +112,11 @@ const styles = StyleSheet.create({
   title_container: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    width: '75%'
+    marginHorizontal: 10
   },
   title: {
     fontFamily: 'Inter_800ExtraBold',
-    fontSize: 30,
-    marginHorizontal: 11
+    fontSize: 30
   },
   refresh_button_container: {
     flex: 1,

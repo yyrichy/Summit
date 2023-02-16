@@ -129,31 +129,37 @@ const Profile = () => {
           flexDirection: 'row',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          marginHorizontal: 10,
+          marginHorizontal: 8,
+          marginVertical: 4,
           zIndex: 1
         }}
       >
         <IconButton
-          icon={({ color }) => (
-            <MaterialIcons name="logout" size={36} color={color} />
+          icon={({ color, size }) => (
+            <MaterialIcons name="logout" size={size} color={color} />
           )}
-          size={40}
           onPress={() => navigation.navigate('Login')}
-          mode={'contained'}
+          mode="contained"
           style={{
-            padding: 0
+            padding: 0,
+            margin: 0
           }}
         />
       </View>
       <View style={styles.avatar_info_container}>
         <Avatar.Image
-          size={120}
+          size={100}
           source={{
             uri: `data:image/png;base64,${studentInfo.photo}`
           }}
         />
         <View style={styles.info_container}>
-          <Text style={styles.name}>{studentInfo.student.name}</Text>
+          <Text numberOfLines={2} style={styles.name}>
+            {studentInfo.student.name}
+          </Text>
+          {studentInfo.currentSchool && (
+            <Text style={styles.school}>{studentInfo.currentSchool}</Text>
+          )}
         </View>
       </View>
       <ScrollView
@@ -166,7 +172,7 @@ const Profile = () => {
             flexWrap: 'wrap',
             flexDirection: 'row',
             justifyContent: 'space-evenly',
-            marginBottom: 10
+            marginBottom: 5
           }}
         >
           <IconPropertyBox
@@ -178,6 +184,7 @@ const Profile = () => {
               />
             }
             text={studentInfo.grade + getOrdinal(parseInt(studentInfo.grade))}
+            backgroundColor={theme.colors.elevation.level1}
           />
           <IconPropertyBox
             icon={
@@ -188,6 +195,7 @@ const Profile = () => {
               />
             }
             text={studentInfo.birthDate.toLocaleDateString()}
+            backgroundColor={theme.colors.elevation.level1}
           />
           <IconPropertyBox
             icon={
@@ -198,6 +206,7 @@ const Profile = () => {
               />
             }
             text={studentInfo.id}
+            backgroundColor={theme.colors.elevation.level1}
           />
         </View>
         <View style={styles.property_view}>
@@ -235,36 +244,15 @@ const Profile = () => {
               <Text style={styles.property_text}>{studentInfo.email}</Text>
             </View>
           )}
-          <Divider horizontalInset />
-          {studentInfo.currentSchool && (
-            <View style={styles.property_container}>
-              <MaterialCommunityIcons
-                name="school-outline"
-                size={20}
-                color={Colors.secondary}
-              />
-              <Text style={styles.property_text}>
-                {studentInfo.currentSchool}
-              </Text>
-            </View>
-          )}
         </View>
         <View
-          style={{
-            backgroundColor: theme.colors.elevation.level1,
-            paddingVertical: 25,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            flex: 1,
-            shadowColor: theme.colors.shadow,
-            shadowOffset: {
-              width: 0,
-              height: -4
-            },
-            shadowOpacity: 0.05,
-            shadowRadius: 2,
-            elevation: 5
-          }}
+          style={[
+            styles.settings_container,
+            {
+              backgroundColor: theme.colors.elevation.level1,
+              shadowColor: theme.colors.shadow
+            }
+          ]}
         >
           <Setting
             title="Download School Picture"
@@ -300,9 +288,9 @@ const Profile = () => {
           <Seperator />
           <Setting
             title="Delete Login Info"
-            onPress={() => deleteLoginInfo()}
+            onPress={deleteLoginInfo}
             position="bottom"
-            description="Deletes saved username and password from your device"
+            description="Deletes saved username and password from device"
           >
             <MaterialCommunityIcons
               name="delete-outline"
@@ -323,11 +311,11 @@ const Profile = () => {
   )
 }
 
-const IconPropertyBox = ({ icon, text }) => {
+const IconPropertyBox = ({ icon, text, backgroundColor }) => {
   return (
     <View
       style={{
-        backgroundColor: Colors.off_white,
+        backgroundColor: backgroundColor,
         borderRadius: 20,
         height: 80,
         width: 80,
@@ -349,38 +337,26 @@ const IconPropertyBox = ({ icon, text }) => {
 
 const styles = StyleSheet.create({
   name: {
-    fontSize: 30,
+    fontSize: 28,
     fontFamily: 'Montserrat_700Bold'
+  },
+  school: {
+    fontSize: 14,
+    fontFamily: 'Inter_300Light',
+    marginTop: 2
   },
   avatar_info_container: {
     marginHorizontal: 25,
     marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginTop: -25
+    marginTop: -15
   },
   info_container: {
     justifyContent: 'center',
     marginLeft: 20,
     flex: 1
   },
-  details_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 10
-  },
-  detaiL_container: {
-    alignItems: 'center'
-  },
-  detail_value: {
-    fontSize: 20,
-    fontFamily: 'Montserrat_500Medium'
-  },
-  detail_name: {
-    fontFamily: 'Montserrat_300Light',
-    fontSize: 14
-  },
-
   property_view: {
     marginHorizontal: 30,
     marginBottom: 10
@@ -398,9 +374,21 @@ const styles = StyleSheet.create({
   settings_title: {
     fontFamily: 'Montserrat_700Bold',
     fontSize: 24,
-    marginHorizontal: 25,
     marginTop: 15,
     marginBottom: 10
+  },
+  settings_container: {
+    padding: 25,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    flex: 1,
+    shadowOffset: {
+      width: 0,
+      height: -4
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 5
   }
 })
 
@@ -410,7 +398,7 @@ const Seperator = () => {
       style={{
         height: 4
       }}
-    ></View>
+    />
   )
 }
 

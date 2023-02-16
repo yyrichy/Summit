@@ -85,12 +85,10 @@ const CourseDetails = ({ route }) => {
       navigation.goBack()
       return true
     }
-
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       backAction
     )
-
     return () => backHandler.remove()
   }, [])
 
@@ -140,23 +138,12 @@ const CourseDetails = ({ route }) => {
           {parseCourseName(courseName)}
         </Text>
       </SafeAreaView>
-      <View
-        style={{
-          flexDirection: 'row',
-          paddingHorizontal: 12,
-          marginBottom: 25,
-          marginTop: 10,
-          justifyContent: 'center'
-        }}
-      >
+      <View style={styles.course_info_container}>
         <View
           style={[
             styles.course_mark_container,
             {
-              borderColor: calculateMarkColor(course.value),
-              backgroundColor: Colors.corn_silk_white,
-              maxWidth: '50%',
-              minWidth: '25%'
+              borderColor: calculateMarkColor(course.value)
             }
           ]}
         >
@@ -184,25 +171,10 @@ const CourseDetails = ({ route }) => {
                   }}
                 >
                   <View style={styles.category_details}>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        flex: 1,
-                        marginRight: 2,
-                        maxWidth: '75%'
-                      }}
-                      numberOfLines={2}
-                    >
+                    <Text style={styles.category_name_text} numberOfLines={2}>
                       {item.name} {`(${item.weight}%)`}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: 'bold',
-                        maxWidth: '25%'
-                      }}
-                      numberOfLines={2}
-                    >
+                    <Text style={styles.category_mark_text} numberOfLines={2}>
                       {hasValue ? value : 'N/A'}
                     </Text>
                   </View>
@@ -239,7 +211,7 @@ const CourseDetails = ({ route }) => {
                     setMarks(toggleCategory(marks, course, item))
                   }}
                   textStyle={{
-                    marginTop: 4
+                    marginTop: 5
                   }}
                 >
                   {item.name}
@@ -251,32 +223,20 @@ const CourseDetails = ({ route }) => {
         </View>
       )}
       <View
-        style={{
-          backgroundColor: theme.colors.background,
-          borderTopLeftRadius: 15,
-          borderTopRightRadius: 15,
-          flex: 1,
-          shadowColor: theme.colors.shadow,
-          shadowOffset: {
-            width: 0,
-            height: 2
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 4,
-          elevation: 5
-        }}
+        style={[
+          styles.assignment_list_container,
+          {
+            shadowColor: theme.colors.shadow,
+            backgroundColor: theme.colors.background
+          }
+        ]}
       >
         <GestureHandlerRootView>
           <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            contentContainerStyle={{
-              flexGrow: 1,
-              paddingHorizontal: 12,
-              paddingTop: 8,
-              paddingBottom: 10
-            }}
+            contentContainerStyle={styles.assignment_scrollview_container}
           >
             {course.assignments
               .filter((a) => course.categories.get(a.category)?.show)
@@ -321,14 +281,7 @@ const CourseDetails = ({ route }) => {
         backdropTransitionOutTiming={0}
       >
         <View style={styles.modal}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 16
-            }}
-          >
+          <View style={styles.points_input_container}>
             <TextInput
               returnKeyType={'next'}
               keyboardType="decimal-pad"
@@ -342,15 +295,7 @@ const CourseDetails = ({ route }) => {
               blurOnSubmit={false}
               onSubmitEditing={() => refInput.current.focus()}
             />
-            <Text
-              style={{
-                fontSize: 48,
-                marginHorizontal: 20,
-                fontFamily: 'Inter_300Light'
-              }}
-            >
-              /
-            </Text>
+            <Text style={styles.dash}>/</Text>
             <TextInput
               returnKeyType={'next'}
               keyboardType="decimal-pad"
@@ -369,13 +314,13 @@ const CourseDetails = ({ route }) => {
             style={{
               height: 32,
               alignSelf: 'flex-start',
-              marginBottom: 16,
+              marginBottom: 15,
               marginRight: 20
             }}
             onPress={() => onOpen('categoryPicker')}
             icon="chevron-down"
             textStyle={{
-              marginTop: 4
+              marginTop: 5
             }}
           >
             {category}
@@ -417,28 +362,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_800ExtraBold',
     marginRight: 8
   },
+  course_info_container: {
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    marginBottom: 15,
+    marginTop: 10,
+    justifyContent: 'center'
+  },
   course_name_container: {
     flexDirection: 'row',
     alignItems: 'center'
-  },
-  dropdown: {
-    borderWidth: 1,
-    borderColor: Colors.black,
-    backgroundColor: 'transparent',
-    alignSelf: 'center'
-  },
-  dropdown_text: {
-    fontFamily: 'Inter_400Regular',
-    fontSize: 12
-  },
-  dropdown_container: {
-    width: 240,
-    alignSelf: 'center'
-  },
-  category_name_container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start'
   },
   course_mark_container: {
     alignSelf: 'center',
@@ -446,7 +379,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     paddingHorizontal: 15,
-    borderRadius: 24
+    borderRadius: 24,
+    backgroundColor: Colors.corn_silk_white,
+    maxWidth: '50%',
+    minWidth: '25%'
   },
   course_mark: {
     textAlignVertical: 'center',
@@ -458,6 +394,46 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     alignContent: 'flex-start'
+  },
+  category_name_text: {
+    fontSize: 12,
+    flex: 1,
+    marginRight: 2,
+    maxWidth: '75%'
+  },
+  category_mark_text: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    maxWidth: '25%'
+  },
+  assignment_list_container: {
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    flex: 1,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  assignment_scrollview_container: {
+    flexGrow: 1,
+    paddingHorizontal: 12,
+    paddingTop: 8,
+    paddingBottom: 10
+  },
+  points_input_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15
+  },
+  dash: {
+    fontSize: 48,
+    marginHorizontal: 20,
+    fontFamily: 'Inter_300Light'
   }
 })
 

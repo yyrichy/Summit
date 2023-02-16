@@ -72,25 +72,13 @@ const Courses = ({ navigation }) => {
       />
       <View style={styles.marking_period_info_container}>
         <TouchableOpacity
-          style={{
-            backgroundColor: theme.colors.surfaceVariant,
-            borderRadius: 30,
-            paddingLeft: 30,
-            paddingRight: 25,
-            paddingVertical: 12,
-            flexDirection: 'row',
-            alignSelf: 'flex-start',
-            alignItems: 'center'
-          }}
+          style={[
+            styles.marking_period_dropdown_button,
+            { backgroundColor: theme.colors.surfaceVariant }
+          ]}
           onPress={() => onOpen('mp')}
         >
-          <Text
-            style={{
-              fontFamily: 'Inter_800ExtraBold',
-              fontSize: 30,
-              marginRight: 5
-            }}
-          >
+          <Text style={styles.marking_period_dropdown_button_text}>
             {selected.name}
           </Text>
           <MaterialCommunityIcons
@@ -130,20 +118,13 @@ const Courses = ({ navigation }) => {
         </View>
       </View>
       <View
-        style={{
-          flex: 1,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          backgroundColor: theme.colors.surface,
-          shadowColor: theme.colors.shadow,
-          shadowOffset: {
-            width: 0,
-            height: 2
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 4,
-          elevation: 5
-        }}
+        style={[
+          styles.course_list_container,
+          {
+            backgroundColor: theme.colors.surface,
+            shadowColor: theme.colors.shadow
+          }
+        ]}
       >
         {marks && (
           <FadeInFlatList
@@ -189,18 +170,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  dropdown: {
-    borderWidth: 0,
-    backgroundColor: 'transparent',
-    justifyContent: 'center'
-  },
-  dropdown_text: {
-    fontFamily: 'Inter_800ExtraBold'
-  },
-  marking_period_container: {
-    flex: 1,
+  marking_period_dropdown_button: {
+    borderRadius: 30,
+    paddingLeft: 30,
+    paddingRight: 25,
+    paddingVertical: 12,
     flexDirection: 'row',
-    marginLeft: 11
+    alignSelf: 'flex-start',
+    alignItems: 'center'
+  },
+  marking_period_dropdown_button_text: {
+    fontFamily: 'Inter_800ExtraBold',
+    fontSize: 30,
+    marginRight: 5
   },
   date: {
     fontFamily: 'Montserrat_400Regular',
@@ -231,6 +213,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_400Regular',
     fontSize: 16,
     color: Colors.medium_gray
+  },
+  course_list_container: {
+    flex: 1,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   }
 })
 

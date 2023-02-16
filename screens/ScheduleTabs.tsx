@@ -58,7 +58,7 @@ const ScheduleScreen = () => {
             alignItems: 'center',
             justifyContent: 'center',
             flexGrow: 1,
-            paddingHorizontal: 11
+            paddingHorizontal: 10
           }}
           showsHorizontalScrollIndicator={false}
         >
@@ -95,7 +95,7 @@ const ScheduleScreen = () => {
           <Text style={styles.title}>
             {schedule.today[0] ? schedule.today[0].name : 'Schedule'}
           </Text>
-          <Text>
+          <Text style={styles.term_name}>
             {schedule.term.name} -{' '}
             {schedule.today[0] ? schedule.today[0].bellScheduleName : 'Today'}
           </Text>
@@ -122,10 +122,9 @@ const ScheduleScreen = () => {
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
-            style={{ flexGrow: 0 }}
             contentContainerStyle={{
               paddingHorizontal: 10,
-              flexGrow: 0
+              flexGrow: 1
             }}
             ItemSeparatorComponent={Seperator}
           />
@@ -146,7 +145,7 @@ const ScheduleScreen = () => {
         <Text style={styles.title}>
           {schedule.today[0] ? schedule.today[0].name : 'Schedule'}
         </Text>
-        <Text>{schedule.term.name}</Text>
+        <Text style={styles.term_name}>{schedule.term.name}</Text>
       </View>
       <TermButtons />
       {schedule.classes.length > 0 ? (
@@ -169,7 +168,8 @@ const ScheduleScreen = () => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           contentContainerStyle={{
-            paddingHorizontal: 10
+            paddingHorizontal: 10,
+            flexGrow: 1
           }}
           ItemSeparatorComponent={Seperator}
         />
@@ -197,24 +197,16 @@ const Seperator = () => {
 
 const styles = StyleSheet.create({
   title_container: {
-    marginTop: 11,
-    paddingHorizontal: 11,
-    marginBottom: 8
+    marginVertical: 5,
+    paddingHorizontal: 10
   },
   title: {
     fontFamily: 'Inter_800ExtraBold',
-    fontSize: 30
+    fontSize: 24
   },
-  bell_schedule: {
+  term_name: {
     fontFamily: 'Inter_400Regular',
-    fontSize: 24,
-    marginTop: 8
-  },
-  refresh_button_container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center'
+    fontSize: 14
   },
   schedule_error_container: {
     justifyContent: 'center',

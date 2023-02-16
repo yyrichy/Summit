@@ -89,11 +89,6 @@ const CalendarScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: Colors.white }}>
-      <View style={styles.row_container}>
-        <View style={styles.title_container}>
-          <Text style={styles.title}>Calendar</Text>
-        </View>
-      </View>
       {items ? (
         <Agenda
           items={items}
@@ -119,21 +114,6 @@ const CalendarScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  row_container: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  title_container: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    width: '75%'
-  },
-  title: {
-    fontFamily: 'Inter_800ExtraBold',
-    fontSize: 30,
-    marginTop: 11,
-    marginHorizontal: 11
-  },
   scale_container: {
     flex: 1,
     alignItems: 'center',

@@ -1,38 +1,46 @@
 import React, { memo } from 'react'
-import { TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { TouchableOpacity, Text } from 'react-native'
+import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import { Colors } from '../colors/Colors'
 
 type Props = {
-  isSelected: boolean
+  selected: boolean
   onPress: any
-  label: string
+  item: SchoolDistrict
 }
 
-const District: React.FC<Props> = ({ isSelected, onPress, label }) => {
+const District: React.FC<Props> = ({ item, onPress, selected }) => {
   return (
     <TouchableOpacity
-      style={{
-        paddingVertical: 10,
-        marginHorizontal: 10,
-        backgroundColor: isSelected && Colors.light_gray,
-        borderBottomWidth: 1,
-        borderColor: Colors.secondary
-      }}
       onPress={onPress}
-      activeOpacity={0.2}
+      style={
+        selected && {
+          backgroundColor: Colors.off_white,
+          padding: 8,
+          borderRadius: 5
+        }
+      }
     >
-      <Text numberOfLines={1} style={styles.dropdown_text_style}>
-        {label}
+      <Text
+        style={{
+          fontFamily: 'Inter_500Medium',
+          fontSize: 16
+        }}
+      >
+        {item.name}
+      </Text>
+      <Text
+        style={{
+          fontFamily: 'Inter_400Regular',
+          fontSize: 14,
+          color: Colors.onyx_gray,
+          marginTop: 2
+        }}
+      >
+        {item.address}
       </Text>
     </TouchableOpacity>
   )
 }
-
-const styles = StyleSheet.create({
-  dropdown_text_style: {
-    fontFamily: 'Inter_500Medium',
-    fontSize: 16
-  }
-})
 
 export default memo(District)

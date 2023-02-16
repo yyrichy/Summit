@@ -7,7 +7,7 @@ import {
 } from 'react-native-google-mobile-ads'
 
 type Props = {
-  size?: string
+  size?: BannerAdSize
   style?: ViewStyle
   androidId: string
   iosId: string

@@ -34,7 +34,6 @@ const Setting: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container_middle: {
-    marginHorizontal: 25,
     backgroundColor: Colors.white,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -44,7 +43,6 @@ const styles = StyleSheet.create({
     minHeight: 60
   },
   container_top: {
-    marginHorizontal: 25,
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
     backgroundColor: Colors.white,
@@ -56,7 +54,6 @@ const styles = StyleSheet.create({
     minHeight: 60
   },
   container_bottom: {
-    marginHorizontal: 25,
     backgroundColor: Colors.white,
     borderBottomRightRadius: 12,
     borderBottomLeftRadius: 12,
@@ -68,7 +65,6 @@ const styles = StyleSheet.create({
     minHeight: 60
   },
   container_single: {
-    marginHorizontal: 25,
     borderRadius: 12,
     backgroundColor: Colors.white,
     justifyContent: 'space-between',
@@ -80,13 +76,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'Inter_400Regular',
-    fontSize: 17
+    fontSize: 16
   },
   description: {
     fontFamily: 'Inter_300Light',
     fontSize: 12,
-    color: Colors.onyx_gray,
-    marginTop: 3
+    color: Colors.medium_gray,
+    marginTop: 2
   }
 })
 

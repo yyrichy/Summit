@@ -25,7 +25,10 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
       style={[
         styles.container,
         style,
-        { backgroundColor: theme.colors.surface }
+        {
+          backgroundColor: theme.colors.surface,
+          borderColor: theme.colors.outlineVariant
+        }
       ]}
       activeOpacity={0.2}
       onPress={onPress}
@@ -48,13 +51,12 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
-    marginVertical: 3.5,
+    marginVertical: 4,
     padding: 10,
     flexDirection: 'column',
     justifyContent: 'center',
     flex: 1,
-    borderWidth: 1,
-    borderColor: Colors.light_gray
+    borderWidth: 1
   },
   info_container: {
     flexDirection: 'row',
