@@ -3,6 +3,7 @@ import { Colors } from '../colors/Colors'
 import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
 import { Dimensions, Platform, PixelRatio } from 'react-native'
 import { round } from '../util/Util'
+import { subDays } from 'date-fns'
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window')
 
@@ -17,9 +18,9 @@ const normalize = (size: number): number => {
   }
 }
 
-// Some course names have the course ID at the end, ex: AP History A (SOC49351)
+// Some course names have the course ID at the end, ex: AP History A (SOC4935B)
 const parseCourseName = (name: string): string => {
-  return name.substring(0, name.lastIndexOf('(')).trim()
+  return name.replace(/\([A-Z]{3}\d{4}[A-Z]\)/g, '')
 }
 
 const convertGradebook = (gradebook: Gradebook) => {
@@ -275,6 +276,234 @@ const toggleCategory = (marks: Marks, course: Course, category: Category) => {
   return calculatePoints(Object.assign({}, marks))
 }
 
+const testMarks = (): Marks => {
+  const m: Marks = require('../assets/test.json').marks
+  const rp = m.reportingPeriod
+  rp.date.end = new Date(rp.date.end)
+  rp.date.start = new Date(rp.date.start)
+  m.reportingPeriod = rp
+  m.courses = new Map()
+  m.courses.set('Algebra 1', {
+    name: 'Algebra 1',
+    period: 1,
+    teacher: 'Lynda Caldwell',
+    points: 87.2,
+    total: 100,
+    value: 87.2,
+    assignments: [
+      {
+        name: 'Real Numbers and Operations',
+        category: 'Assessments',
+        status: 'Graded',
+        notes: '',
+        points: 9,
+        total: 12,
+        modified: false,
+        date: {
+          due: new Date(),
+          start: new Date()
+        }
+      },
+      {
+        name: 'Pop Quiz',
+        category: 'Assessments',
+        status: 'Graded',
+        notes: '',
+        points: 8,
+        total: 10,
+        modified: false,
+        date: {
+          due: new Date(),
+          start: new Date()
+        }
+      },
+      {
+        name: 'Homework Week 2',
+        category: 'Practice',
+        status: 'Graded',
+        notes: 'Turned in late',
+        points: 9,
+        total: 10,
+        modified: false,
+        date: {
+          due: new Date(),
+          start: new Date()
+        }
+      },
+      {
+        name: 'Factoring Quiz',
+        category: 'Assessments',
+        status: 'Graded',
+        notes: '',
+        points: 19,
+        total: 20,
+        modified: false,
+        date: {
+          due: new Date(),
+          start: new Date()
+        }
+      },
+      {
+        name: 'Linear Equations Graphs',
+        category: 'Assessments',
+        status: 'Graded',
+        notes: '',
+        points: 8,
+        total: 10,
+        modified: false,
+        date: {
+          due: new Date(),
+          start: new Date()
+        }
+      },
+      {
+        name: 'Group Project',
+        category: 'Practice',
+        status: 'Graded',
+        notes: '',
+        points: 17,
+        total: 20,
+        modified: false,
+        date: {
+          due: new Date(),
+          start: new Date()
+        }
+      },
+      {
+        name: 'Homework Week 1',
+        category: 'Practice',
+        status: 'Graded',
+        notes: '',
+        points: 10,
+        total: 10,
+        modified: false,
+        date: {
+          due: new Date(),
+          start: new Date()
+        }
+      },
+      {
+        name: 'Cumalative Exam',
+        category: 'Assessments',
+        status: 'Graded',
+        notes: '',
+        points: 47,
+        total: 50,
+        modified: false,
+        date: {
+          due: new Date(),
+          start: new Date()
+        }
+      },
+      {
+        name: 'Systems of Equations Quiz',
+        category: 'Assessments',
+        status: 'Graded',
+        notes: '',
+        points: 15,
+        total: 20,
+        modified: false,
+        date: {
+          due: new Date(),
+          start: new Date()
+        }
+      }
+    ],
+    categories: new Map([
+      [
+        'Practice',
+        {
+          name: 'Practice',
+          points: 9,
+          total: 10,
+          value: 90,
+          weight: 10,
+          show: true
+        }
+      ],
+      [
+        'Assessments',
+        {
+          name: 'Assessments',
+          points: 86.69,
+          total: 100,
+          value: 86.69,
+          weight: 90,
+          show: true
+        }
+      ]
+    ]),
+    room: '109'
+  })
+  m.courses.set('Hon English', {
+    name: 'Hon English',
+    period: 2,
+    teacher: 'Rochelle Tucker',
+    points: 83.2,
+    total: 100,
+    value: 83.2,
+    assignments: [],
+    categories: new Map(),
+    room: '230'
+  })
+  m.courses.set('AP US History B', {
+    name: 'AP US History B',
+    period: 3,
+    teacher: 'Tami Scott',
+    points: 95,
+    total: 100,
+    value: 95,
+    assignments: [],
+    categories: new Map(),
+    room: '252'
+  })
+  m.courses.set('Physical Education', {
+    name: 'Physical Education',
+    period: 4,
+    teacher: 'Nina Sanchez',
+    points: 98.33,
+    total: 100,
+    value: 98.33,
+    assignments: [],
+    categories: new Map(),
+    room: '23'
+  })
+  m.courses.set('AP Biology B', {
+    name: 'AP Biology B',
+    period: 5,
+    teacher: 'Jim Weber',
+    points: 75.5,
+    total: 100,
+    value: 75.5,
+    assignments: [],
+    categories: new Map(),
+    room: '347'
+  })
+  m.courses.set('French 3 B', {
+    name: 'French 3 B',
+    period: 6,
+    teacher: 'Angel Lee',
+    points: 82.44,
+    total: 100,
+    value: 82.44,
+    assignments: [],
+    categories: new Map(),
+    room: '192'
+  })
+  m.courses.set('Forensic Science', {
+    name: 'Forensic Science',
+    period: 7,
+    teacher: 'Ellis Robbins',
+    points: 93.37,
+    total: 100,
+    value: 92.37,
+    assignments: [],
+    categories: new Map(),
+    room: '289'
+  })
+  return m
+}
+
 export {
   parseCourseName,
   convertGradebook,
@@ -290,5 +519,6 @@ export {
   prependZero,
   formatAMPM,
   toggleCategory,
-  calculateBarColor
+  calculateBarColor,
+  testMarks
 }

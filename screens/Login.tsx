@@ -424,7 +424,11 @@ const Login = () => {
         </KeyboardAvoidingView>
         <SafeAreaView
           edges={['bottom', 'left', 'right']}
-          style={{ alignSelf: 'flex-end' }}
+          style={{
+            alignSelf: 'flex-end',
+            alignItems: 'center',
+            width: '100%'
+          }}
         >
           <BannerAd
             androidId={Constants.expoConfig.extra.LOGIN_BANNER_ANDROID}
@@ -435,28 +439,32 @@ const Login = () => {
               style={styles.insta_button_container}
               onPress={() => openInstagram('richardyin99')}
             >
-              <MaterialCommunityIcons
-                name="instagram"
-                backgroundColor="transparent"
-                iconStyle={styles.insta_button}
-                underlayColor="none"
-                activeOpacity={0.2}
-                size={20}
-              />
+              <View style={styles.insta_icon_container}>
+                <MaterialCommunityIcons
+                  name="instagram"
+                  backgroundColor="transparent"
+                  iconStyle={styles.insta_button}
+                  underlayColor="none"
+                  activeOpacity={0.2}
+                  size={20}
+                />
+              </View>
               <Text style={styles.insta_text}>Richard Y</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.insta_button_container}
               onPress={() => openInstagram('karthik.whynot')}
             >
-              <MaterialCommunityIcons
-                name="instagram"
-                backgroundColor="transparent"
-                iconStyle={styles.insta_button}
-                underlayColor="none"
-                activeOpacity={0.2}
-                size={20}
-              />
+              <View style={styles.insta_icon_container}>
+                <MaterialCommunityIcons
+                  name="instagram"
+                  backgroundColor="transparent"
+                  iconStyle={styles.insta_button}
+                  underlayColor="none"
+                  activeOpacity={0.2}
+                  size={20}
+                />
+              </View>
               <Text style={styles.insta_text}>Karthik M</Text>
             </TouchableOpacity>
           </View>
@@ -568,7 +576,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 15
+    marginVertical: 10
+  },
+  insta_icon_container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   insta_button_container: {
     marginHorizontal: 10,
