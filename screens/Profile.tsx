@@ -129,7 +129,7 @@ const Profile = () => {
           flexDirection: 'row',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          marginHorizontal: 8,
+          marginHorizontal: 10,
           marginVertical: 4,
           zIndex: 1
         }}
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     fontFamily: 'Inter_400Regular',
     fontSize: 15,
-    color: Colors.onyx_gray
+    color: Colors.medium_gray
   },
   settings_title: {
     fontFamily: 'Montserrat_700Bold',

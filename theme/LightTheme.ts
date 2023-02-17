@@ -8,7 +8,7 @@ export const NavLightTheme = {
     background: MD3LightTheme.colors.background,
     card: MD3LightTheme.colors.surface,
     text: Colors.black,
-    border: Colors.secondary,
+    border: Colors.medium_gray,
     notification: Colors.accent
   }
 }

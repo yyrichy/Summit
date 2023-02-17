@@ -28,7 +28,7 @@ import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
-import { Divider, TextInput, useTheme } from 'react-native-paper'
+import { Divider, IconButton, TextInput, useTheme } from 'react-native-paper'
 import { toast } from '../util/Util'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
@@ -244,21 +244,29 @@ const Login = () => {
             }
           ]}
         >
-          <ReactNativeTextInput
-            style={[
-              styles.input,
-              {
-                marginBottom: 0,
-                width: 310,
-                borderColor: theme.colors.outlineVariant
-              }
-            ]}
-            placeholder="Enter school district zipcode"
-            keyboardType="number-pad"
-            returnKeyType="done"
-            onSubmitEditing={({ nativeEvent: { text } }) => onSearch(text)}
-            placeholderTextColor={Colors.medium_gray}
-          />
+          <View style={{ flexDirection: 'row' }}>
+            <ReactNativeTextInput
+              style={[
+                styles.input,
+                {
+                  marginBottom: 0,
+                  borderColor: Colors.medium_gray,
+                  flex: 1
+                }
+              ]}
+              placeholder="Enter school district zipcode"
+              keyboardType="number-pad"
+              returnKeyType="done"
+              onSubmitEditing={({ nativeEvent: { text } }) => onSearch(text)}
+              placeholderTextColor={Colors.medium_gray}
+            />
+            <IconButton
+              icon="close"
+              size={40}
+              onPress={() => setDistrictModalVisible(false)}
+              style={styles.close_button}
+            />
+          </View>
           {districts && (
             <FadeInFlatList
               initialDelay={0}
@@ -337,7 +345,7 @@ const Login = () => {
               defaultValue={username}
               onChangeText={(u) => setUsername(u)}
               placeholder="Username"
-              style={styles.input}
+              style={[styles.input, { width: 250 }]}
               textColor={Colors.black}
               placeholderTextColor={Colors.medium_gray}
               returnKeyType="next"
@@ -349,7 +357,7 @@ const Login = () => {
               onChangeText={(p) => setPassword(p)}
               placeholder="Password"
               secureTextEntry={isPasswordSecure}
-              style={styles.input}
+              style={[styles.input, { width: 250 }]}
               textColor={Colors.black}
               placeholderTextColor={Colors.medium_gray}
               returnKeyType="next"
@@ -500,6 +508,13 @@ const styles = StyleSheet.create({
     padding: 20,
     width: 350
   },
+  close_button: {
+    margin: 0,
+    paddingBottom: 0,
+    marginRight: -10,
+    marginLeft: 10,
+    height: 50
+  },
   questions_button: {
     height: 48,
     alignItems: 'center',
@@ -533,7 +548,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start'
   },
   input: {
-    width: 250,
     height: 50,
     borderWidth: 1,
     borderRadius: 4,

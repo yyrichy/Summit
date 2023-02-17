@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   type: {
-    color: Colors.onyx_gray,
+    color: Colors.medium_gray,
     fontFamily: 'Inter_400Regular',
     fontSize: 12,
     marginTop: 4

@@ -33,7 +33,7 @@ const District: React.FC<Props> = ({ item, onPress, selected }) => {
         style={{
           fontFamily: 'Inter_400Regular',
           fontSize: 14,
-          color: Colors.onyx_gray,
+          color: Colors.medium_gray,
           marginTop: 2
         }}
       >
