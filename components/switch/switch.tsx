@@ -17,7 +17,7 @@ import {
   SwitchBase,
   SwitchBaseProps,
   SwitchChangeEventData
-} from './switch-base'
+} from './SwitchBase'
 
 export interface SwitchProps extends SwitchBaseProps {
   /**

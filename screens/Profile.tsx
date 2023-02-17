@@ -31,7 +31,7 @@ import { Avatar, Divider, IconButton, useTheme } from 'react-native-paper'
 import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
 import { getOrdinal, toast } from '../util/Util'
-import { Switch } from '../components/switch/switch'
+import { Switch } from '../components/switch/Switch'
 
 const Profile = () => {
   type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
