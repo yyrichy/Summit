@@ -15,7 +15,8 @@ import {
   calculateMarkColor,
   updatePoints,
   deleteAssignment,
-  isNumber
+  isNumber,
+  calculateLetterGrade
 } from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
@@ -108,9 +109,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           underlayColor="none"
           activeOpacity={0.2}
           size={36}
-          onPress={() => {
-            setMarks(deleteAssignment(marks, courseName, name))
-          }}
+          onPress={() => setMarks(deleteAssignment(marks, courseName, name))}
         />
       </ReactNativeAnimated.View>
     )

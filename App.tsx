@@ -38,7 +38,6 @@ import {
   Montserrat_800ExtraBold_Italic,
   Montserrat_900Black_Italic
 } from '@expo-google-fonts/montserrat'
-import { RussoOne_400Regular } from '@expo-google-fonts/russo-one'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { User } from './interfaces/User'
 import { Client } from 'studentvue'
@@ -95,8 +94,7 @@ const App = () => {
     Montserrat_600SemiBold_Italic,
     Montserrat_700Bold_Italic,
     Montserrat_800ExtraBold_Italic,
-    Montserrat_900Black_Italic,
-    RussoOne_400Regular
+    Montserrat_900Black_Italic
   })
 
   const onLayoutRootView = useCallback(async () => {

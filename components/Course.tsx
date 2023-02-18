@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   name: {
     color: Colors.navy,
     fontFamily: 'Inter_700Bold',
-    fontSize: 13
+    fontSize: 14
   },
   teacher: {
     fontFamily: 'Inter_400Regular',

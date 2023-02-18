@@ -1,6 +1,6 @@
 import { Gradebook } from 'studentvue'
 import { Colors } from '../colors/Colors'
-import { Assignment, Category, Course, Marks } from '../interfaces/Gradebook'
+import { Category, Course, Marks } from '../interfaces/Gradebook'
 import { Dimensions, Platform, PixelRatio } from 'react-native'
 import { round } from '../util/Util'
 import { subDays } from 'date-fns'
@@ -24,67 +24,72 @@ const parseCourseName = (name: string): string => {
 }
 
 const convertGradebook = (gradebook: Gradebook) => {
-  let marks: Marks = {
+  const marks: Marks = {
     gpa: 0,
-    courses: new Map<string, Course>(),
+    courses: new Map<string, Course>(
+      gradebook.courses.map((course) => {
+        return [
+          course.title,
+          {
+            name: course.title,
+            period: course.period,
+            teacher: {
+              name: course.staff.name,
+              email: course.staff.email
+            },
+            assignments:
+              course.marks.length > 0
+                ? course.marks[0].assignments.map((a) => {
+                    const value = a.score.value
+                    const points = parsePoints(a.points)
+                    return {
+                      name: a.name,
+                      category: a.type,
+                      status:
+                        value != 'Not Graded' && value != 'Not Due'
+                          ? 'Graded'
+                          : value,
+                      notes: a.notes,
+                      points: points[0],
+                      total: points[1],
+                      modified: false,
+                      date: a.date
+                    }
+                  })
+                : [],
+            categories:
+              course.marks.length > 0
+                ? new Map<string, Category>(
+                    course.marks[0].weightedCategories
+                      .filter((c) => c.type.toLowerCase() !== 'total')
+                      .map((c) => [
+                        c.type,
+                        {
+                          name: c.type,
+                          weight: parseFloat(c.weight.standard),
+                          show: true
+                        } as Category
+                      ])
+                  )
+                : null,
+            room: course.room
+          } as Course
+        ]
+      })
+    ),
     reportingPeriod: gradebook.reportingPeriod.current,
     reportingPeriods: gradebook.reportingPeriod.available
-  }
-  for (const course of gradebook.courses) {
-    marks.courses.set(course.title, {
-      name: course.title,
-      period: gradebook.courses.findIndex((c) => c.title === course.title) + 1,
-      teacher: course.staff.name,
-      points: 0,
-      total: 0,
-      value: NaN,
-      assignments: [],
-      categories: new Map<string, Category>(),
-      room: course.room
-    })
-    const c = marks.courses.get(course.title)
-    if (course.marks.length > 0) {
-      for (const category of course.marks[0].weightedCategories) {
-        if (category.type.toUpperCase() !== 'TOTAL') {
-          c.categories.set(category.type, {
-            name: category.type,
-            points: 0,
-            total: 0,
-            value: NaN,
-            weight: parseFloat(category.weight.standard),
-            show: true
-          })
-        }
-      }
-      for (const assignment of course.marks[0].assignments) {
-        const value = assignment.score.value
-        const points = parsePoints(assignment.points)
-        const a: Assignment = {
-          name: assignment.name,
-          category: assignment.type,
-          status:
-            value != 'Not Graded' && value != 'Not Due' ? 'Graded' : value,
-          notes: assignment.notes,
-          points: points[0],
-          total: points[1],
-          modified: false,
-          date: {
-            due: assignment.date.due,
-            start: assignment.date.start
-          }
-        }
-        c.assignments.push(a)
-      }
-    }
   }
   return calculatePoints(marks)
 }
 
 const calculatePoints = (marks: Marks): Marks => {
-  marks.gpa = 0
+  let gpa = 0
   let numOfCourses = 0
   for (const course of marks.courses.values()) {
-    ;(course.points = 0), (course.total = 0), (course.value = NaN)
+    let points = 0
+    let total = 0
+    course.value = NaN
     for (const category of course.categories.values()) {
       ;(category.points = 0), (category.total = 0), (category.value = NaN)
     }
@@ -98,28 +103,40 @@ const calculatePoints = (marks: Marks): Marks => {
     }
     for (const category of course.categories.values()) {
       if (!isNaN(category.value) && category.show) {
-        course.points += (category.value / 100) * category.weight
-        course.total += category.weight
+        points += (category.value / 100) * category.weight
+        total += category.weight
       }
     }
-    course.value = (course.points / course.total) * 100
+    course.value = (points / total) * 100
     if (!isNaN(course.value)) {
-      if (course.value >= 89.5) {
-        marks.gpa += 4
-      } else if (course.value >= 79.5) {
-        marks.gpa += 3
-      } else if (course.value >= 69.5) {
-        marks.gpa += 2
-      } else if (course.value >= 59.5) {
-        marks.gpa += 1
-      }
+      gpa += getClassGPA(course.value)
       numOfCourses++
     }
   }
-  marks.gpa = round(marks.gpa / numOfCourses, 2)
+  marks.gpa = round(gpa / numOfCourses, 2)
   return marks
 }
 
+const getClassGPA = (value: number) => {
+  switch (calculateLetterGrade(value)) {
+    case 'A':
+      return 4
+    case 'B':
+      return 3
+    case 'C':
+      return 2
+    case 'D':
+      return 1
+    default:
+      return 0
+  }
+}
+
+/*
+  Assignment.points has two possible formats
+  15.0000 Points Possible
+  5.00 / 5.0000
+*/
 const parsePoints = (points: string): number[] => {
   const regex = /^(\d+\.?\d*|\.\d+) \/ (\d+\.?\d*|\.\d+)$/
   if (points.match(regex)) {
@@ -195,8 +212,8 @@ const addAssignment = (
   return calculatePoints(m)
 }
 
-const calculateMarkColor = (mark: number): string => {
-  switch (calculateLetterGrade(mark)) {
+const calculateMarkColor = (value: number): string => {
+  switch (calculateLetterGrade(value)) {
     case 'A':
       return '#378137'
     case 'B':
@@ -230,8 +247,8 @@ const calculateLetterGrade = (
   }
 }
 
-const calculateBarColor = (mark: number): string => {
-  switch (calculateLetterGrade(mark)) {
+const calculateBarColor = (value: number): string => {
+  switch (calculateLetterGrade(value)) {
     case 'A':
       return '#4eba4e'
     case 'B':
@@ -286,9 +303,7 @@ const testMarks = (): Marks => {
   m.courses.set('Algebra 1', {
     name: 'Algebra 1',
     period: 1,
-    teacher: 'Lynda Caldwell',
-    points: 87.2,
-    total: 100,
+    teacher: { name: 'Lynda Caldwell', email: 'LyndaCaldwell@school.org' },
     value: 87.2,
     assignments: [
       {
@@ -313,8 +328,8 @@ const testMarks = (): Marks => {
         total: 10,
         modified: false,
         date: {
-          due: new Date(),
-          start: new Date()
+          due: subDays(new Date(), 2),
+          start: subDays(new Date(), 2)
         }
       },
       {
@@ -326,8 +341,8 @@ const testMarks = (): Marks => {
         total: 10,
         modified: false,
         date: {
-          due: new Date(),
-          start: new Date()
+          due: subDays(new Date(), 5),
+          start: subDays(new Date(), 12)
         }
       },
       {
@@ -339,8 +354,8 @@ const testMarks = (): Marks => {
         total: 20,
         modified: false,
         date: {
-          due: new Date(),
-          start: new Date()
+          due: subDays(new Date(), 6),
+          start: subDays(new Date(), 6)
         }
       },
       {
@@ -352,8 +367,8 @@ const testMarks = (): Marks => {
         total: 10,
         modified: false,
         date: {
-          due: new Date(),
-          start: new Date()
+          due: subDays(new Date(), 9),
+          start: subDays(new Date(), 12)
         }
       },
       {
@@ -365,8 +380,8 @@ const testMarks = (): Marks => {
         total: 20,
         modified: false,
         date: {
-          due: new Date(),
-          start: new Date()
+          due: subDays(new Date(), 10),
+          start: subDays(new Date(), 14)
         }
       },
       {
@@ -378,8 +393,8 @@ const testMarks = (): Marks => {
         total: 10,
         modified: false,
         date: {
-          due: new Date(),
-          start: new Date()
+          due: subDays(new Date(), 11),
+          start: subDays(new Date(), 18)
         }
       },
       {
@@ -391,8 +406,8 @@ const testMarks = (): Marks => {
         total: 50,
         modified: false,
         date: {
-          due: new Date(),
-          start: new Date()
+          due: subDays(new Date(), 16),
+          start: subDays(new Date(), 16)
         }
       },
       {
@@ -404,8 +419,8 @@ const testMarks = (): Marks => {
         total: 20,
         modified: false,
         date: {
-          due: new Date(),
-          start: new Date()
+          due: subDays(new Date(), 20),
+          start: subDays(new Date(), 20)
         }
       }
     ],
@@ -438,9 +453,7 @@ const testMarks = (): Marks => {
   m.courses.set('Hon English', {
     name: 'Hon English',
     period: 2,
-    teacher: 'Rochelle Tucker',
-    points: 83.2,
-    total: 100,
+    teacher: { name: 'Rochelle Tucker', email: 'RochelleTucker@school.org' },
     value: 83.2,
     assignments: [],
     categories: new Map(),
@@ -449,9 +462,7 @@ const testMarks = (): Marks => {
   m.courses.set('AP US History B', {
     name: 'AP US History B',
     period: 3,
-    teacher: 'Tami Scott',
-    points: 95,
-    total: 100,
+    teacher: { name: 'Tami Scott', email: 'TamiScott@school.org' },
     value: 95,
     assignments: [],
     categories: new Map(),
@@ -460,9 +471,7 @@ const testMarks = (): Marks => {
   m.courses.set('Physical Education', {
     name: 'Physical Education',
     period: 4,
-    teacher: 'Nina Sanchez',
-    points: 98.33,
-    total: 100,
+    teacher: { name: 'Nina Sanchez', email: 'NinaSanchez@school.org' },
     value: 98.33,
     assignments: [],
     categories: new Map(),
@@ -471,9 +480,7 @@ const testMarks = (): Marks => {
   m.courses.set('AP Biology B', {
     name: 'AP Biology B',
     period: 5,
-    teacher: 'Jim Weber',
-    points: 75.5,
-    total: 100,
+    teacher: { name: 'Jim Weber', email: 'JimWeber@school.org' },
     value: 75.5,
     assignments: [],
     categories: new Map(),
@@ -482,9 +489,7 @@ const testMarks = (): Marks => {
   m.courses.set('French 3 B', {
     name: 'French 3 B',
     period: 6,
-    teacher: 'Angel Lee',
-    points: 82.44,
-    total: 100,
+    teacher: { name: 'Angel Lee', email: 'AngelLee@school.org' },
     value: 82.44,
     assignments: [],
     categories: new Map(),
@@ -493,9 +498,7 @@ const testMarks = (): Marks => {
   m.courses.set('Forensic Science', {
     name: 'Forensic Science',
     period: 7,
-    teacher: 'Ellis Robbins',
-    points: 93.37,
-    total: 100,
+    teacher: { name: 'Ellis Robbins', email: 'EllisRobbins@school.org' },
     value: 92.37,
     assignments: [],
     categories: new Map(),
@@ -520,5 +523,6 @@ export {
   formatAMPM,
   toggleCategory,
   calculateBarColor,
-  testMarks
+  testMarks,
+  getClassGPA
 }

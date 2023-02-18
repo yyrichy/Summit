@@ -135,10 +135,10 @@ const Courses = ({ navigation }) => {
             data={[...marks.courses.entries()]}
             renderItem={({ item }) => (
               <Course
-                name={item[0]}
+                name={item[1].name}
                 mark={item[1].value}
                 period={item[1].period}
-                teacher={item[1].teacher}
+                teacher={item[1].teacher.name}
                 onPress={() => {
                   navigation.navigate('Course Details', { title: item[0] })
                 }}
@@ -155,12 +155,10 @@ const Courses = ({ navigation }) => {
             }}
           />
         )}
-        {false && (
-          <BannerAd
-            androidId={Constants.expoConfig.extra.COURSES_BANNER_ANDROID}
-            iosId={Constants.expoConfig.extra.COURSES_BANNER_IOS}
-          />
-        )}
+        <BannerAd
+          androidId={Constants.expoConfig.extra.COURSES_BANNER_ANDROID}
+          iosId={Constants.expoConfig.extra.COURSES_BANNER_IOS}
+        />
       </View>
     </SafeAreaView>
   )

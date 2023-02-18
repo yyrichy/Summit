@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
-import Grades from '../screens/Grades'
+import Grades from '../screens/GradebookNavigator'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Documents from '../screens/Documents'
 import Profile from '../screens/Profile'
-import Schedule from '../screens/Schedule'
+import Schedule from '../screens/ScheduleNavigator'
 
 const Tab = createMaterialBottomTabNavigator()
 

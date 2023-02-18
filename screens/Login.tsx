@@ -244,7 +244,7 @@ const Login = () => {
             }
           ]}
         >
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <ReactNativeTextInput
               style={[
                 styles.input,
@@ -511,9 +511,8 @@ const styles = StyleSheet.create({
   close_button: {
     margin: 0,
     paddingBottom: 0,
-    marginRight: -10,
-    marginLeft: 10,
-    height: 50
+    marginRight: -15,
+    marginLeft: 5
   },
   questions_button: {
     height: 48,

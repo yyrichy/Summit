@@ -1,6 +1,6 @@
 import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import ScheduleScreen from './ScheduleTabs'
+import ScheduleScreen from './ClassSchedule'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { View } from 'react-native'
 import { useTheme } from 'react-native-paper'

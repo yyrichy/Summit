@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginTop: -15
+    marginTop: -20
   },
   info_container: {
     justifyContent: 'center',
@@ -363,7 +363,8 @@ const styles = StyleSheet.create({
   },
   property_container: {
     flexDirection: 'row',
-    padding: 15
+    padding: 15,
+    alignItems: 'center'
   },
   property_text: {
     marginLeft: 20,

@@ -23,14 +23,13 @@ import {
   isNumber,
   calculateMarkColor,
   toggleCategory,
-  parseCourseName,
-  calculateBarColor
+  calculateBarColor,
+  parseCourseName
 } from '../gradebook/GradeUtil'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Modal from 'react-native-modal'
 import { Colors } from '../colors/Colors'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import {
+  Appbar,
   Button,
   Chip,
   FAB,
@@ -43,20 +42,22 @@ import { round } from '../util/Util'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
 import { onOpen, Picker } from 'react-native-actions-sheet-picker'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const CourseDetails = ({ route }) => {
-  const courseName = route.params.title
   const navigation = useNavigation()
   const theme = useTheme()
 
   const { marks, client, setMarks } = useContext(AppContext)
-  const course = marks.courses.get(courseName)
+  const course = marks.courses.get(route.params.title)
 
   const refInput = useRef(null)
 
-  const [isModalVisible, setModalVisible] = useState(false)
+  const [infoModalVisible, setInfoModal] = useState(false)
+
+  const [assignmentModalVisible, setAssignmentModal] = useState(false)
   const [category, setCategory] = useState(
-    marks.courses.get(courseName).categories.values().next().value?.name
+    marks.courses.get(course.name).categories.values().next().value?.name
   )
   const [points, setPoints] = useState('')
   const [total, setTotal] = useState('')
@@ -74,11 +75,11 @@ const CourseDetails = ({ route }) => {
   }, [])
 
   useEffect(() => {
-    if (isModalVisible) {
+    if (assignmentModalVisible) {
       setPoints('')
       setTotal('')
     }
-  }, [isModalVisible])
+  }, [assignmentModalVisible])
 
   useEffect(() => {
     const backAction = () => {
@@ -93,7 +94,7 @@ const CourseDetails = ({ route }) => {
   }, [])
 
   const toggleModal = (): void => {
-    setModalVisible(!isModalVisible)
+    setAssignmentModal(!assignmentModalVisible)
   }
 
   const add = () => {
@@ -118,26 +119,21 @@ const CourseDetails = ({ route }) => {
         label="Select Marking Period"
         setSelected={(category) => setCategory(category.name)}
       />
-      <SafeAreaView
-        style={styles.course_name_container}
-        edges={['top', 'left', 'right']}
-      >
-        <MaterialCommunityIcons.Button
-          name="chevron-left"
-          backgroundColor="transparent"
-          iconStyle={{
-            color: theme.colors.primary
+      <Appbar.Header style={{ backgroundColor: theme.colors.elevation.level3 }}>
+        <Appbar.BackAction onPress={navigation.goBack} />
+        <Appbar.Content
+          title={parseCourseName(course.name)}
+          titleStyle={{
+            fontFamily: 'Montserrat_500Medium',
+            alignSelf: 'flex-start'
           }}
-          style={{ padding: 2 }}
-          underlayColor="none"
-          activeOpacity={0.2}
-          size={40}
-          onPress={() => navigation.goBack()}
         />
-        <Text numberOfLines={2} style={styles.course_name}>
-          {parseCourseName(courseName)}
-        </Text>
-      </SafeAreaView>
+        <Appbar.Action
+          icon="information-outline"
+          onPress={() => setInfoModal(true)}
+        />
+        <Appbar.Action icon="refresh" onPress={onRefresh} />
+      </Appbar.Header>
       <View style={styles.course_info_container}>
         <View
           style={[
@@ -231,7 +227,7 @@ const CourseDetails = ({ route }) => {
           }
         ]}
       >
-        <GestureHandlerRootView>
+        <GestureHandlerRootView style={{ flex: 1 }}>
           <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -243,7 +239,7 @@ const CourseDetails = ({ route }) => {
               .map((item) => (
                 <Assignment
                   name={item.name}
-                  courseName={courseName}
+                  courseName={course.name}
                   key={item.name}
                 ></Assignment>
               ))}
@@ -262,16 +258,14 @@ const CourseDetails = ({ route }) => {
           />
         )}
       </View>
-      {false && (
-        <View style={{ backgroundColor: theme.colors.surface }}>
-          <BannerAd
-            androidId={Constants.expoConfig.extra.DETAILS_BANNER_ANDROID}
-            iosId={Constants.expoConfig.extra.DETAILS_BANNER_IOS}
-          />
-        </View>
-      )}
+      <View style={{ backgroundColor: theme.colors.surface }}>
+        <BannerAd
+          androidId={Constants.expoConfig.extra.DETAILS_BANNER_ANDROID}
+          iosId={Constants.expoConfig.extra.DETAILS_BANNER_IOS}
+        />
+      </View>
       <Modal
-        isVisible={isModalVisible}
+        isVisible={assignmentModalVisible}
         coverScreen={false}
         onBackdropPress={toggleModal}
         animationIn={'fadeIn'}
@@ -332,6 +326,85 @@ const CourseDetails = ({ route }) => {
           </View>
         </View>
       </Modal>
+      <Modal
+        isVisible={infoModalVisible}
+        coverScreen={false}
+        onBackdropPress={() => setInfoModal(false)}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+        animationInTiming={150}
+        animationOutTiming={150}
+        backdropTransitionOutTiming={0}
+      >
+        <View style={styles.info_modal}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 10
+            }}
+          >
+            <Text style={styles.info_modal_course_title}>{course.name}</Text>
+            <View
+              style={{
+                alignSelf: 'flex-start',
+                marginLeft: 10
+              }}
+            >
+              <MaterialCommunityIcons.Button
+                name="close"
+                backgroundColor="transparent"
+                iconStyle={{
+                  color: theme.colors.onSurfaceVariant,
+                  alignSelf: 'flex-end'
+                }}
+                style={{
+                  padding: 0,
+                  marginRight: -10
+                }}
+                underlayColor="none"
+                size={24}
+                onPress={() => setInfoModal(false)}
+              />
+            </View>
+          </View>
+          <View style={styles.property_container}>
+            <MaterialCommunityIcons
+              name="account-circle-outline"
+              size={20}
+              color={Colors.secondary}
+            />
+            <Text style={styles.property_text}>{course.teacher.name}</Text>
+          </View>
+          <View style={styles.property_container}>
+            <MaterialCommunityIcons
+              name="email-outline"
+              size={20}
+              color={Colors.secondary}
+            />
+            <Text style={styles.property_text}>{course.teacher.email}</Text>
+          </View>
+          <View style={styles.property_container}>
+            <MaterialCommunityIcons
+              name="map-marker-outline"
+              size={20}
+              color={Colors.secondary}
+            />
+            <Text style={styles.property_text}>Room {course.room}</Text>
+          </View>
+          <View style={styles.property_container}>
+            <MaterialCommunityIcons
+              name="calendar-outline"
+              size={20}
+              color={Colors.secondary}
+            />
+            <Text style={styles.property_text}>
+              {marks.reportingPeriod.name}
+            </Text>
+          </View>
+        </View>
+      </Modal>
     </View>
   )
 }
@@ -347,8 +420,14 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   modal: {
-    flexDirection: 'column',
     alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: Colors.white,
+    borderRadius: 20,
+    width: 300,
+    padding: 20
+  },
+  info_modal: {
     alignSelf: 'center',
     backgroundColor: Colors.white,
     borderRadius: 20,
@@ -366,7 +445,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 12,
     marginBottom: 15,
-    marginTop: 10,
     justifyContent: 'center'
   },
   course_name_container: {
@@ -434,6 +512,23 @@ const styles = StyleSheet.create({
     fontSize: 48,
     marginHorizontal: 20,
     fontFamily: 'Inter_300Light'
+  },
+  info_modal_course_title: {
+    fontFamily: 'Montserrat_500Medium',
+    fontSize: 16,
+    flex: 1
+  },
+  property_container: {
+    flexDirection: 'row',
+    marginVertical: 4,
+    alignItems: 'center'
+  },
+  property_text: {
+    marginLeft: 10,
+    fontFamily: 'Inter_400Regular',
+    fontSize: 14,
+    color: Colors.medium_gray,
+    flexShrink: 1
   }
 })
 

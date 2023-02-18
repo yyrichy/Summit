@@ -1,3 +1,5 @@
+import { ReportingPeriod } from 'studentvue/StudentVue/Client/Client.interfaces'
+
 export interface Marks {
   courses: Map<string, Course>
   gpa: number
@@ -5,32 +7,26 @@ export interface Marks {
   reportingPeriods: ReportingPeriod[]
 }
 
-export interface ReportingPeriod {
-  name: string
-  index: number
-  date: {
-    start: Date
-    end: Date
-  }
-}
-
 export interface Course {
   name: string
   period: number
-  teacher: string
-  points: number
-  total: number
-  value: number
+  teacher: Teacher
+  value?: number
   assignments: Assignment[]
   categories: Map<string, Category>
   room: string
 }
 
+export interface Teacher {
+  name: string
+  email: string
+}
+
 export interface Category {
   name: string
-  points: number
-  total: number
-  value: number
+  points?: number
+  total?: number
+  value?: number
   weight: number
   show: boolean
 }
