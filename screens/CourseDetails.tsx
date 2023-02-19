@@ -22,7 +22,6 @@ import {
   convertGradebook,
   isNumber,
   calculateMarkColor,
-  toggleCategory,
   calculateBarColor,
   parseCourseName
 } from '../gradebook/GradeUtil'
@@ -54,13 +53,19 @@ const CourseDetails = ({ route }) => {
   const refInput = useRef(null)
 
   const [infoModalVisible, setInfoModal] = useState(false)
-
   const [assignmentModalVisible, setAssignmentModal] = useState(false)
   const [category, setCategory] = useState(
     marks.courses.get(course.name).categories.values().next().value?.name
   )
   const [points, setPoints] = useState('')
   const [total, setTotal] = useState('')
+
+  const [categories, setCategories] = useState(
+    [...course.categories.values()].map((c) => ({
+      name: c.name,
+      show: true
+    })) as { name: string; show: boolean }[]
+  )
 
   const [refreshing, setRefreshing] = useState(false)
 
@@ -189,7 +194,7 @@ const CourseDetails = ({ route }) => {
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
-            data={[...course.categories.values()]}
+            data={categories}
             renderItem={({ item }) => {
               const selected = item.show
               return (
@@ -204,7 +209,14 @@ const CourseDetails = ({ route }) => {
                       : theme.colors.surfaceVariant
                   }}
                   onPress={() => {
-                    setMarks(toggleCategory(marks, course, item))
+                    const index = categories.findIndex(
+                      (c) => c.name === item.name
+                    )
+                    const c = [...categories]
+                    const newCategory = c[index]
+                    newCategory.show = !item.show
+                    c[index] = newCategory
+                    setCategories(c)
                   }}
                   textStyle={{
                     marginTop: 5
@@ -235,7 +247,7 @@ const CourseDetails = ({ route }) => {
             contentContainerStyle={styles.assignment_scrollview_container}
           >
             {course.assignments
-              .filter((a) => course.categories.get(a.category)?.show)
+              .filter((a) => categories.find((c) => c.name === a.category).show)
               .map((item) => (
                 <Assignment
                   name={item.name}

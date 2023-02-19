@@ -102,7 +102,7 @@ const calculatePoints = (marks: Marks): Marks => {
       }
     }
     for (const category of course.categories.values()) {
-      if (!isNaN(category.value) && category.show) {
+      if (!isNaN(category.value)) {
         points += (category.value / 100) * category.weight
         total += category.weight
       }
@@ -284,13 +284,6 @@ const formatAMPM = (date: Date): string => {
 
   const strTime = `${hours}:${minutes} ${ampm}`
   return strTime
-}
-
-const toggleCategory = (marks: Marks, course: Course, category: Category) => {
-  category.show = !category.show
-  course.categories.set(category.name, category)
-  marks.courses.set(course.name, course)
-  return calculatePoints(Object.assign({}, marks))
 }
 
 const testMarks = (): Marks => {
@@ -521,7 +514,6 @@ export {
   normalize,
   prependZero,
   formatAMPM,
-  toggleCategory,
   calculateBarColor,
   testMarks,
   getClassGPA
