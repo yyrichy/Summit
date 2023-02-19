@@ -5,7 +5,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  RefreshControl,
   BackHandler,
   ActivityIndicator
 } from 'react-native'

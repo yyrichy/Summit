@@ -7,7 +7,6 @@ import React, {
   useState
 } from 'react'
 import {
-  RefreshControl,
   StyleSheet,
   Text,
   View,
