@@ -94,7 +94,9 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
       outputRange: [-20, 0, 0, 1]
     })
     return (
-      <ReactNativeAnimated.View style={{ transform: [{ translateX: trans }] }}>
+      <ReactNativeAnimated.View
+        style={{ transform: [{ translateX: trans }], justifyContent: 'center' }}
+      >
         <MaterialCommunityIcons.Button
           name="delete-forever"
           backgroundColor="transparent"
@@ -102,13 +104,11 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
             color: theme.colors.error
           }}
           style={{
-            paddingRight: 0,
-            margin: 0,
-            marginTop: 4
+            padding: 0,
+            margin: 0
           }}
           underlayColor="none"
-          activeOpacity={0.2}
-          size={36}
+          size={40}
           onPress={() => setMarks(deleteAssignment(marks, courseName, name))}
         />
       </ReactNativeAnimated.View>
@@ -142,7 +142,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
         >
           <View style={styles.horizontal_container}>
             <View style={styles.assignment_info_container}>
-              <Text numberOfLines={!isDropdown && 1} style={styles.name}>
+              <Text numberOfLines={!isDropdown ? 1 : 2} style={styles.name}>
                 {name}
               </Text>
               <View

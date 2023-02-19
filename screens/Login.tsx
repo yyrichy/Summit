@@ -453,7 +453,6 @@ const Login = () => {
                   backgroundColor="transparent"
                   iconStyle={styles.insta_button}
                   underlayColor="none"
-                  activeOpacity={0.2}
                   size={20}
                 />
               </View>
@@ -469,7 +468,6 @@ const Login = () => {
                   backgroundColor="transparent"
                   iconStyle={styles.insta_button}
                   underlayColor="none"
-                  activeOpacity={0.2}
                   size={20}
                 />
               </View>

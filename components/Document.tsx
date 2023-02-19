@@ -30,7 +30,6 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
           borderColor: theme.colors.outlineVariant
         }
       ]}
-      activeOpacity={0.2}
       onPress={onPress}
     >
       <Text numberOfLines={1} style={styles.name}>

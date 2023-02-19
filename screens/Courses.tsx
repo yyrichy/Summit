@@ -6,7 +6,8 @@ import {
   Text,
   TouchableOpacity,
   RefreshControl,
-  BackHandler
+  BackHandler,
+  ActivityIndicator
 } from 'react-native'
 import Course from '../components/Course'
 import { convertGradebook } from '../gradebook/GradeUtil'
@@ -126,7 +127,22 @@ const Courses = ({ navigation }) => {
           }
         ]}
       >
-        {marks && (
+        {refreshing ? (
+          <View
+            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <ActivityIndicator
+              color={Colors.secondary}
+              animating={true}
+              size="large"
+              style={{
+                alignSelf: 'center',
+                flex: 1,
+                justifyContent: 'center'
+              }}
+            />
+          </View>
+        ) : (
           <FadeInFlatList
             initialDelay={0}
             durationPerItem={300}
@@ -146,9 +162,6 @@ const Courses = ({ navigation }) => {
               ></Course>
             )}
             keyExtractor={(item) => item[0]}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
             contentContainerStyle={{
               paddingHorizontal: 10,
               paddingTop: 6

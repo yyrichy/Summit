@@ -39,7 +39,6 @@ const Course: React.FC<Props> = ({
         }
       ]}
       onPress={onPress}
-      activeOpacity={0.2}
     >
       <Text style={styles.period_number}>{period}</Text>
       <View style={styles.course_info_container}>

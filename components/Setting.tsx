@@ -20,7 +20,6 @@ const Setting: React.FC<Props> = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      activeOpacity={onPress ? 0.2 : 1}
       style={styles['container_' + position]}
     >
       <View style={{ flex: 1, marginRight: 18 }}>
