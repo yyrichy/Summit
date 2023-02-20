@@ -27,7 +27,7 @@ import * as SecureStore from 'expo-secure-store'
 import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
-import { Divider, IconButton, TextInput, useTheme } from 'react-native-paper'
+import { Divider, TextInput, useTheme } from 'react-native-paper'
 import { toast } from '../util/Util'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
@@ -221,7 +221,6 @@ const Login = () => {
               Your username and password are the same as your school's
               StudentVue website.{'\n\n'}We do not collect your personal
               information nor can we access it remotely
-              {Constants.expoConfig.extra.secret}
             </Text>
           </View>
         </View>
