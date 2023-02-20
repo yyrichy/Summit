@@ -10,16 +10,14 @@ import type {
 
 const typeface = {
   brandRegular: Platform.select({
-    web: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
-    ios: 'System',
-    default: 'sans-serif'
+    ios: 'Inter_400Regular',
+    default: 'Inter_400Regular'
   }),
   weightRegular: '400' as Font['fontWeight'],
 
   plainMedium: Platform.select({
-    web: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
-    ios: 'System',
-    default: 'sans-serif-medium'
+    ios: 'Inter_500Medium',
+    default: 'Inter_500Medium'
   }),
   weightMedium: '500' as Font['fontWeight']
 }
@@ -135,24 +133,6 @@ export const typescale = {
 }
 
 export const fontConfig = {
-  web: {
-    regular: {
-      fontFamily: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
-      fontWeight: '400' as '400'
-    },
-    medium: {
-      fontFamily: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
-      fontWeight: '500' as '500'
-    },
-    light: {
-      fontFamily: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
-      fontWeight: '300' as '300'
-    },
-    thin: {
-      fontFamily: 'Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif',
-      fontWeight: '100' as '100'
-    }
-  },
   ios: {
     regular: {
       fontFamily: 'System',

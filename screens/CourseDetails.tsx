@@ -13,7 +13,8 @@ import {
   BackHandler,
   FlatList,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  RefreshControl
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import Assignment from '../components/Assignment'
@@ -50,8 +51,9 @@ const CourseDetails = ({ route }) => {
   const { marks, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(route.params.title)
 
-  const refInput = useRef(null)
-
+  const [searchModalVisible, setSearchModal] = useState(false)
+  const [text, setText] = useState(undefined)
+  const [searchText, setSearchText] = useState(undefined)
   const [infoModalVisible, setInfoModal] = useState(false)
   const [assignmentModalVisible, setAssignmentModal] = useState(false)
   const [category, setCategory] = useState(
@@ -71,6 +73,8 @@ const CourseDetails = ({ route }) => {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
+    setSearchText(null)
+    setText(null)
     try {
       setMarks(
         convertGradebook(await client.gradebook(marks.reportingPeriod.index))
@@ -98,10 +102,6 @@ const CourseDetails = ({ route }) => {
     return () => backHandler.remove()
   }, [])
 
-  const toggleModal = (): void => {
-    setAssignmentModal(!assignmentModalVisible)
-  }
-
   const add = () => {
     setMarks(
       addAssignment(
@@ -112,7 +112,7 @@ const CourseDetails = ({ route }) => {
         parseFloat(total)
       )
     )
-    toggleModal()
+    setAssignmentModal(false)
   }
 
   return (
@@ -132,11 +132,11 @@ const CourseDetails = ({ route }) => {
             alignSelf: 'flex-start'
           }}
         />
+        <Appbar.Action icon="magnify" onPress={() => setSearchModal(true)} />
         <Appbar.Action
           icon="information-outline"
           onPress={() => setInfoModal(true)}
         />
-        <Appbar.Action icon="refresh" onPress={onRefresh} />
       </Appbar.Header>
       <View style={styles.course_info_container}>
         <View
@@ -238,44 +238,34 @@ const CourseDetails = ({ route }) => {
           }
         ]}
       >
-        {refreshing ? (
-          <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <ScrollView
+            contentContainerStyle={styles.assignment_scrollview_container}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           >
-            <ActivityIndicator
-              color={Colors.secondary}
-              animating={true}
-              size="large"
-              style={{
-                alignSelf: 'center',
-                flex: 1,
-                justifyContent: 'center'
-              }}
-            />
-          </View>
-        ) : (
-          <GestureHandlerRootView style={{ flex: 1 }}>
-            <ScrollView
-              contentContainerStyle={styles.assignment_scrollview_container}
-            >
-              {course.assignments
-                .filter(
-                  (a) => categories.find((c) => c.name === a.category).show
-                )
-                .map((item) => (
-                  <Assignment
-                    name={item.name}
-                    courseName={course.name}
-                    key={item.name}
-                  ></Assignment>
-                ))}
-            </ScrollView>
-          </GestureHandlerRootView>
-        )}
+            {course.assignments
+              .filter(
+                (a) =>
+                  categories.find((c) => c.name === a.category).show &&
+                  (searchText
+                    ? a.name.toLowerCase().includes(searchText.toLowerCase())
+                    : true)
+              )
+              .map((item) => (
+                <Assignment
+                  name={item.name}
+                  courseName={course.name}
+                  key={item.name}
+                ></Assignment>
+              ))}
+          </ScrollView>
+        </GestureHandlerRootView>
         {course.categories.size > 0 && (
           <FAB
             icon={'plus'}
-            onPress={toggleModal}
+            onPress={() => setAssignmentModal(true)}
             variant={'primary'}
             style={{
               bottom: 16,
@@ -296,7 +286,7 @@ const CourseDetails = ({ route }) => {
       <Modal
         isVisible={assignmentModalVisible}
         coverScreen={false}
-        onBackdropPress={toggleModal}
+        onBackdropPress={() => setAssignmentModal(false)}
         animationIn={'fadeIn'}
         animationOut={'fadeOut'}
         animationInTiming={150}
@@ -306,6 +296,7 @@ const CourseDetails = ({ route }) => {
         <View style={styles.modal}>
           <View style={styles.points_input_container}>
             <TextInput
+              mode="outlined"
               returnKeyType={'next'}
               keyboardType="decimal-pad"
               autoComplete="off"
@@ -316,20 +307,17 @@ const CourseDetails = ({ route }) => {
               textColor={Colors.black}
               placeholderTextColor={Colors.secondary}
               blurOnSubmit={false}
-              onSubmitEditing={() => refInput.current.focus()}
             />
-            <Text style={styles.dash}>/</Text>
             <TextInput
-              returnKeyType={'next'}
+              mode="outlined"
               keyboardType="decimal-pad"
               autoComplete="off"
               onChangeText={(t) => {
                 if (isNumber(t) || t === '') setTotal(t)
               }}
-              style={styles.input}
+              style={[styles.input, { marginLeft: 20 }]}
               textColor={Colors.black}
               placeholderTextColor={Colors.secondary}
-              ref={refInput}
             />
           </View>
           <Chip
@@ -434,19 +422,59 @@ const CourseDetails = ({ route }) => {
           </View>
         </View>
       </Modal>
+      <Modal
+        isVisible={searchModalVisible}
+        coverScreen={false}
+        onBackdropPress={() => setSearchModal(false)}
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
+        animationInTiming={150}
+        animationOutTiming={150}
+        backdropTransitionOutTiming={0}
+      >
+        <View style={styles.info_modal}>
+          <TextInput
+            mode="outlined"
+            autoCapitalize="none"
+            style={{
+              marginBottom: 15
+            }}
+            label="Enter assignment name"
+            onChangeText={(text) => setText(text)}
+            value={text}
+            placeholderTextColor={Colors.medium_gray}
+          />
+          <View style={{ flexDirection: 'row' }}>
+            <Button
+              mode="contained"
+              onPress={() => {
+                setSearchModal(false)
+                setSearchText(text)
+              }}
+            >
+              Search
+            </Button>
+            <Button
+              onPress={() => {
+                setSearchModal(false)
+                setSearchText(null)
+                setText(null)
+              }}
+            >
+              Clear
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   input: {
-    borderWidth: 0,
-    backgroundColor: 'transparent',
-    fontFamily: 'Inter_400Regular',
-    fontSize: 30,
-    borderRadius: 4,
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
+    fontSize: 28
   },
   modal: {
     alignItems: 'center',
@@ -540,7 +568,7 @@ const styles = StyleSheet.create({
   dash: {
     fontSize: 48,
     marginHorizontal: 20,
-    fontFamily: 'Inter_300Light'
+    fontFamily: 'Inter_200ExtraLight'
   },
   info_modal_course_title: {
     fontFamily: 'Montserrat_500Medium',

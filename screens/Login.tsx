@@ -11,8 +11,7 @@ import {
   Keyboard,
   View,
   Platform,
-  KeyboardAvoidingView,
-  TextInput as ReactNativeTextInput
+  KeyboardAvoidingView
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -240,33 +239,19 @@ const Login = () => {
             styles.modal,
             {
               marginTop: insets.top,
-              marginBottom: insets.bottom
+              marginBottom: insets.bottom,
+              paddingTop: 16
             }
           ]}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <ReactNativeTextInput
-              style={[
-                styles.input,
-                {
-                  marginBottom: 0,
-                  borderColor: Colors.medium_gray,
-                  flex: 1
-                }
-              ]}
-              placeholder="Enter school district zipcode"
-              keyboardType="number-pad"
-              returnKeyType="done"
-              onSubmitEditing={({ nativeEvent: { text } }) => onSearch(text)}
-              placeholderTextColor={Colors.medium_gray}
-            />
-            <IconButton
-              icon="close"
-              size={40}
-              onPress={() => setDistrictModalVisible(false)}
-              style={styles.close_button}
-            />
-          </View>
+          <TextInput
+            onLayout={(e) => console.log(e.nativeEvent.layout)}
+            mode="outlined"
+            label="Enter school district zipcode"
+            keyboardType="number-pad"
+            returnKeyType="done"
+            onSubmitEditing={({ nativeEvent: { text } }) => onSearch(text)}
+          />
           {districts && (
             <FadeInFlatList
               initialDelay={0}
@@ -342,17 +327,20 @@ const Login = () => {
               <Text style={styles.questions_text}>Questions/Concerns</Text>
             </TouchableOpacity>
             <TextInput
+              mode="outlined"
               defaultValue={username}
               onChangeText={(u) => setUsername(u)}
               placeholder="Username"
               style={[styles.input, { width: 250 }]}
-              textColor={Colors.black}
               placeholderTextColor={Colors.medium_gray}
               returnKeyType="next"
               onSubmitEditing={() => refInput.current.focus()}
               blurOnSubmit={false}
+              outlineColor={Colors.black}
+              onLayout={(e) => console.log(e.nativeEvent.layout)}
             />
             <TextInput
+              mode="outlined"
               defaultValue={password}
               onChangeText={(p) => setPassword(p)}
               placeholder="Password"
@@ -374,22 +362,25 @@ const Login = () => {
                   iconColor={Colors.black}
                 />
               }
+              outlineColor={Colors.black}
             />
             <TouchableOpacity
-              style={styles.districts_button}
+              style={[styles.districts_button]}
               onPress={async () => onPressOpenDistrictModal()}
             >
-              <Text style={styles.selected_district_text}>
+              <Text style={styles.selected_district_text} numberOfLines={2}>
                 {selectedDistrict
                   ? selectedDistrict.name
-                  : 'Find Your School District'}
+                  : 'Find School District'}
               </Text>
               {!selectedDistrict && (
                 <MaterialCommunityIcons
                   name="school-outline"
                   size={24}
                   color="black"
-                  style={{ marginRight: 2 }}
+                  style={{
+                    marginRight: 12
+                  }}
                 />
               )}
             </TouchableOpacity>
@@ -506,12 +497,6 @@ const styles = StyleSheet.create({
     padding: 20,
     width: 350
   },
-  close_button: {
-    margin: 0,
-    paddingBottom: 0,
-    marginRight: -15,
-    marginLeft: 5
-  },
   questions_button: {
     height: 48,
     alignItems: 'center',
@@ -545,31 +530,26 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start'
   },
   input: {
-    height: 50,
-    borderWidth: 1,
-    borderRadius: 4,
-    marginBottom: 10,
-    backgroundColor: 'transparent',
-    fontFamily: 'Inter_500Medium',
-    fontSize: 14,
-    paddingHorizontal: 10
+    marginBottom: 6,
+    backgroundColor: 'transparent'
   },
   districts_button: {
     width: 250,
     flexDirection: 'row',
     borderWidth: 1,
     borderRadius: 4,
-    padding: 10,
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
-    minHeight: 50
+    minHeight: 56,
+    marginTop: 6
   },
   selected_district_text: {
-    fontFamily: 'Inter_500Medium',
-    fontSize: 14,
-    flexWrap: 'wrap',
-    flex: 1
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 16,
+    color: Colors.black,
+    flex: 1,
+    margin: 16
   },
   button_container: {
     justifyContent: 'center',
