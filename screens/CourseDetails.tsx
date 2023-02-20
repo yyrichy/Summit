@@ -129,7 +129,6 @@ const CourseDetails = ({ route }) => {
         <Appbar.Content
           title={parseCourseName(course.name)}
           titleStyle={{
-            fontFamily: 'Montserrat_500Medium',
             alignSelf: 'flex-start'
           }}
         />
