@@ -18,10 +18,12 @@ import { Colors } from '../colors/Colors'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import RNFetchBlob from 'rn-fetch-blob'
 import { toast } from '../util/Util'
+import { useTheme } from 'react-native-paper'
 
 const Documents = () => {
   const { client } = useContext(AppContext)
   const [documents, setDocuments] = useState(null as Document[])
+  const theme = useTheme()
 
   useEffect(() => {
     onRefresh()
@@ -64,7 +66,9 @@ const Documents = () => {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
       <View style={styles.title_container}>
-        <Text style={styles.title}>Documents</Text>
+        <Text style={[styles.title, { color: theme.colors.onSurface }]}>
+          Documents
+        </Text>
       </View>
       {documents ? (
         <FadeInFlatList

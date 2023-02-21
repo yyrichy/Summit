@@ -1,6 +1,7 @@
 import React from 'react'
 import { memo } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { Event, EventType } from 'studentvue'
 
 type Props = {
@@ -8,29 +9,37 @@ type Props = {
 }
 
 const Item: React.FC<Props> = ({ item: { event } }) => {
+  const theme = useTheme()
+
   switch (event.type.toString()) {
     case EventType.ASSIGNMENT:
       return (
-        <View style={styles.item}>
-          <Text style={styles.item_text}>{event.title}</Text>
+        <View style={[styles.item, { backgroundColor: theme.colors.surface }]}>
+          <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>
+            {event.title}
+          </Text>
         </View>
       )
     case EventType.HOLIDAY:
       return (
-        <View style={styles.item}>
-          <Text style={styles.time_text}>
+        <View style={[styles.item, { backgroundColor: theme.colors.surface }]}>
+          <Text style={[styles.time_text, { color: theme.colors.onSurface }]}>
             HOLIDAY{event.startTime.length !== 0 ? ` - ${event.startTime}` : ''}
           </Text>
-          <Text style={styles.item_text}>{event.title}</Text>
+          <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>
+            {event.title}
+          </Text>
         </View>
       )
     default:
       return (
-        <View style={styles.item}>
-          <Text style={styles.time_text}>
+        <View style={[styles.item, { backgroundColor: theme.colors.surface }]}>
+          <Text style={[styles.time_text, { color: theme.colors.onSurface }]}>
             EVENT{event.startTime.length !== 0 ? ` - ${event.startTime}` : ''}
           </Text>
-          <Text style={styles.item_text}>{event.title}</Text>
+          <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>
+            {event.title}
+          </Text>
         </View>
       )
   }
@@ -38,7 +47,6 @@ const Item: React.FC<Props> = ({ item: { event } }) => {
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: 'white',
     flex: 1,
     borderRadius: 12,
     padding: 10,

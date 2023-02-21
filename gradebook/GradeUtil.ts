@@ -217,7 +217,7 @@ const calculateMarkColor = (value: number): string => {
     case 'A':
       return '#378137'
     case 'B':
-      return '#4C59EB'
+      return '#212a8f'
     case 'C':
       return '#AD6800'
     case 'D':
@@ -252,7 +252,7 @@ const calculateBarColor = (value: number): string => {
     case 'A':
       return '#4eba4e'
     case 'B':
-      return '#6f8cf3'
+      return '#0d2a95'
     case 'C':
       return '#AD6800'
     case 'D':

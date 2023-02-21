@@ -12,10 +12,11 @@ import { Colors } from '../colors/Colors'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { Schedule } from 'studentvue'
 import ScheduleComponent from '../components/Schedule'
-import { Divider, SegmentedButtons } from 'react-native-paper'
+import { Divider, SegmentedButtons, useTheme } from 'react-native-paper'
 import useAsyncEffect from 'use-async-effect'
 
 const ScheduleScreen = () => {
+  const theme = useTheme()
   const { client } = useContext(AppContext)
   const [schedule, setSchedule] = useState(null as Schedule)
   const [refreshing, setRefreshing] = useState(false)
@@ -92,10 +93,10 @@ const ScheduleScreen = () => {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.title_container}>
-          <Text style={styles.title}>
+          <Text style={[styles.title, { color: theme.colors.onSurface }]}>
             {schedule.today[0] ? schedule.today[0].name : 'Schedule'}
           </Text>
-          <Text style={styles.term_name}>
+          <Text style={[styles.term_name, { color: theme.colors.onSurface }]}>
             {schedule.term.name} -{' '}
             {schedule.today[0] ? schedule.today[0].bellScheduleName : 'Today'}
           </Text>
@@ -129,7 +130,12 @@ const ScheduleScreen = () => {
           />
         ) : (
           <View style={styles.schedule_error_container}>
-            <Text style={styles.schedule_error_text}>
+            <Text
+              style={[
+                styles.schedule_error_text,
+                { color: theme.colors.onSurface }
+              ]}
+            >
               No schedule available for today
             </Text>
           </View>
@@ -141,10 +147,12 @@ const ScheduleScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.title_container}>
-        <Text style={styles.title}>
+        <Text style={[styles.title, { color: theme.colors.onSurface }]}>
           {schedule.today[0] ? schedule.today[0].name : 'Schedule'}
         </Text>
-        <Text style={styles.term_name}>{schedule.term.name}</Text>
+        <Text style={[styles.term_name, { color: theme.colors.onSurface }]}>
+          {schedule.term.name}
+        </Text>
       </View>
       <TermButtons />
       {schedule.classes.length > 0 ? (
@@ -174,7 +182,14 @@ const ScheduleScreen = () => {
         />
       ) : (
         <View style={styles.schedule_error_container}>
-          <Text style={styles.schedule_error_text}>{schedule.error}</Text>
+          <Text
+            style={[
+              styles.schedule_error_text,
+              { color: theme.colors.onSurface }
+            ]}
+          >
+            {schedule.error}
+          </Text>
         </View>
       )}
     </View>

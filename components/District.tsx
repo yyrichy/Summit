@@ -1,5 +1,6 @@
 import React, { memo } from 'react'
 import { TouchableOpacity, Text } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import { Colors } from '../colors/Colors'
 
@@ -10,12 +11,14 @@ type Props = {
 }
 
 const District: React.FC<Props> = ({ item, onPress, selected }) => {
+  const theme = useTheme()
+
   return (
     <TouchableOpacity
       onPress={onPress}
       style={
         selected && {
-          backgroundColor: Colors.off_white,
+          backgroundColor: theme.colors.surfaceVariant,
           padding: 8,
           borderRadius: 5
         }
@@ -24,7 +27,8 @@ const District: React.FC<Props> = ({ item, onPress, selected }) => {
       <Text
         style={{
           fontFamily: 'Inter_500Medium',
-          fontSize: 16
+          fontSize: 16,
+          color: theme.colors.onSurface
         }}
       >
         {item.name}
@@ -33,7 +37,7 @@ const District: React.FC<Props> = ({ item, onPress, selected }) => {
         style={{
           fontFamily: 'Inter_400Regular',
           fontSize: 14,
-          color: Colors.medium_gray,
+          color: theme.colors.onSurfaceVariant,
           marginTop: 2
         }}
       >

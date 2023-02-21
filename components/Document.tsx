@@ -26,20 +26,31 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
         styles.container,
         style,
         {
-          backgroundColor: theme.colors.surface,
           borderColor: theme.colors.outlineVariant
         }
       ]}
       onPress={onPress}
     >
-      <Text numberOfLines={1} style={styles.name}>
+      <Text
+        numberOfLines={1}
+        style={[styles.name, { color: theme.colors.onSurface }]}
+      >
         {name}
       </Text>
       <View style={styles.info_container}>
-        <Text numberOfLines={1} style={[styles.type, { flex: 1 }]}>
+        <Text
+          numberOfLines={1}
+          style={[
+            styles.type,
+            { flex: 1, color: theme.colors.onSurface, marginRight: 10 }
+          ]}
+        >
           {type}
         </Text>
-        <Text numberOfLines={1} style={styles.type}>
+        <Text
+          numberOfLines={1}
+          style={[styles.type, { color: theme.colors.onSurface }]}
+        >
           {date}
         </Text>
       </View>

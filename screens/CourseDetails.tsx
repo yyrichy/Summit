@@ -43,6 +43,7 @@ import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
 import { onOpen, Picker } from 'react-native-actions-sheet-picker'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { palette } from '../theme/colors'
 
 const CourseDetails = ({ route }) => {
   const navigation = useNavigation()
@@ -116,7 +117,14 @@ const CourseDetails = ({ route }) => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.elevation.level3 }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.dark
+          ? palette.neutralVariant10
+          : theme.colors.elevation.level1
+      }}
+    >
       <Picker
         id="categoryPicker"
         data={[...course.categories.values()]}
@@ -124,7 +132,13 @@ const CourseDetails = ({ route }) => {
         label="Select Marking Period"
         setSelected={(category) => setCategory(category.name)}
       />
-      <Appbar.Header style={{ backgroundColor: theme.colors.elevation.level3 }}>
+      <Appbar.Header
+        style={{
+          backgroundColor: theme.dark
+            ? palette.neutralVariant10
+            : theme.colors.elevation.level1
+        }}
+      >
         <Appbar.BackAction onPress={navigation.goBack} />
         <Appbar.Content
           title={parseCourseName(course.name)}
@@ -143,7 +157,10 @@ const CourseDetails = ({ route }) => {
           style={[
             styles.course_mark_container,
             {
-              borderColor: calculateMarkColor(course.value)
+              borderColor: calculateMarkColor(course.value),
+              backgroundColor: theme.dark
+                ? palette.neutralVariant20
+                : theme.colors.surfaceVariant
             }
           ]}
         >
@@ -171,10 +188,22 @@ const CourseDetails = ({ route }) => {
                   }}
                 >
                   <View style={styles.category_details}>
-                    <Text style={styles.category_name_text} numberOfLines={2}>
+                    <Text
+                      style={[
+                        styles.category_name_text,
+                        { color: theme.colors.onSurface }
+                      ]}
+                      numberOfLines={2}
+                    >
                       {item.name} {`(${item.weight}%)`}
                     </Text>
-                    <Text style={styles.category_mark_text} numberOfLines={2}>
+                    <Text
+                      style={[
+                        styles.category_mark_text,
+                        { color: theme.colors.onSurface }
+                      ]}
+                      numberOfLines={2}
+                    >
                       {hasValue ? value : 'N/A'}
                     </Text>
                   </View>
@@ -293,7 +322,7 @@ const CourseDetails = ({ route }) => {
         animationOutTiming={150}
         backdropTransitionOutTiming={0}
       >
-        <View style={styles.modal}>
+        <View style={[styles.modal, { backgroundColor: theme.colors.surface }]}>
           <View style={styles.points_input_container}>
             <TextInput
               mode="outlined"
@@ -304,8 +333,6 @@ const CourseDetails = ({ route }) => {
                 if (isNumber(t) || t === '') setPoints(t)
               }}
               style={styles.input}
-              textColor={Colors.black}
-              placeholderTextColor={Colors.secondary}
               blurOnSubmit={false}
             />
             <TextInput
@@ -316,8 +343,6 @@ const CourseDetails = ({ route }) => {
                 if (isNumber(t) || t === '') setTotal(t)
               }}
               style={[styles.input, { marginLeft: 20 }]}
-              textColor={Colors.black}
-              placeholderTextColor={Colors.secondary}
             />
           </View>
           <Chip
@@ -353,7 +378,9 @@ const CourseDetails = ({ route }) => {
         animationOutTiming={150}
         backdropTransitionOutTiming={0}
       >
-        <View style={styles.info_modal}>
+        <View
+          style={[styles.info_modal, { backgroundColor: theme.colors.surface }]}
+        >
           <View
             style={{
               flexDirection: 'row',
@@ -362,7 +389,14 @@ const CourseDetails = ({ route }) => {
               marginBottom: 10
             }}
           >
-            <Text style={styles.info_modal_course_title}>{course.name}</Text>
+            <Text
+              style={[
+                styles.info_modal_course_title,
+                { color: theme.colors.onSurfaceVariant }
+              ]}
+            >
+              {course.name}
+            </Text>
             <View
               style={{
                 alignSelf: 'flex-start',
@@ -432,7 +466,9 @@ const CourseDetails = ({ route }) => {
         animationOutTiming={150}
         backdropTransitionOutTiming={0}
       >
-        <View style={styles.info_modal}>
+        <View
+          style={[styles.info_modal, { backgroundColor: theme.colors.surface }]}
+        >
           <TextInput
             mode="outlined"
             autoCapitalize="none"
@@ -486,7 +522,6 @@ const styles = StyleSheet.create({
   },
   info_modal: {
     alignSelf: 'center',
-    backgroundColor: Colors.white,
     borderRadius: 20,
     width: 300,
     padding: 20

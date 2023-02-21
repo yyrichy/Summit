@@ -19,6 +19,7 @@ import { IconButton, useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
+import { palette } from '../theme/colors'
 
 const Courses = ({ navigation }) => {
   const theme = useTheme()
@@ -59,7 +60,11 @@ const Courses = ({ navigation }) => {
     <SafeAreaView
       style={[
         styles.container,
-        { backgroundColor: theme.colors.elevation.level1 }
+        {
+          backgroundColor: theme.dark
+            ? palette.neutralVariant10
+            : theme.colors.elevation.level1
+        }
       ]}
       edges={['top', 'left', 'right']}
     >
@@ -78,7 +83,12 @@ const Courses = ({ navigation }) => {
           ]}
           onPress={() => onOpen('mp')}
         >
-          <Text style={styles.marking_period_dropdown_button_text}>
+          <Text
+            style={[
+              styles.marking_period_dropdown_button_text,
+              { color: theme.colors.onSurfaceVariant }
+            ]}
+          >
             {selected.name}
           </Text>
           <MaterialCommunityIcons
@@ -98,8 +108,10 @@ const Courses = ({ navigation }) => {
       <View style={styles.date_info_container}>
         {!isNaN(marks.gpa) && (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={styles.gpa_text}>GPA</Text>
-            <Text style={styles.gpa}>
+            <Text style={[styles.gpa_text, { color: theme.colors.onSurface }]}>
+              GPA
+            </Text>
+            <Text style={[styles.gpa, { color: theme.colors.onSurface }]}>
               {' \u2022 '}
               {marks.gpa.toFixed(2)}
             </Text>
@@ -109,9 +121,9 @@ const Courses = ({ navigation }) => {
           <MaterialCommunityIcons
             name="calendar-clock-outline"
             size={18}
-            color={Colors.medium_gray}
+            color={theme.colors.onSurface}
           />
-          <Text style={styles.date}>
+          <Text style={[styles.date, { color: theme.colors.onSurface }]}>
             {' \u2022 '}
             {endDate.toLocaleDateString()}
           </Text>
@@ -221,8 +233,7 @@ const styles = StyleSheet.create({
   },
   gpa: {
     fontFamily: 'Montserrat_400Regular',
-    fontSize: 16,
-    color: Colors.medium_gray
+    fontSize: 16
   },
   course_list_container: {
     flex: 1,

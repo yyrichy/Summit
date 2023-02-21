@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -11,7 +11,9 @@ import {
   Keyboard,
   View,
   Platform,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Appearance,
+  useColorScheme
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -41,12 +43,13 @@ type loginInfo = 'username' | 'password' | 'district'
 
 const Login = () => {
   const theme = useTheme()
+  const scheme = useColorScheme()
   const insets = useSafeAreaInsets()
   const navigation = useNavigation<loginScreenProp>()
   const refInput = useRef(null)
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
-  const { setClient, setMarks } = useContext(AppContext)
+  const { setClient, setMarks, setIsDarkTheme } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(true)
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
@@ -61,6 +64,9 @@ const Login = () => {
   const [isLoadingDistricts, setIsLoadingDistricts] = useState(false)
 
   useAsyncEffect(async () => {
+    Appearance.addChangeListener(({ colorScheme }) => {
+      setIsDarkTheme(colorScheme === 'dark' ? true : false)
+    })
     savedCredentials()
 
     const backAction = () => {
@@ -214,10 +220,16 @@ const Login = () => {
           <View
             style={[
               styles.questions_modal,
-              { marginTop: insets.top, marginBottom: insets.bottom }
+              {
+                marginTop: insets.top,
+                marginBottom: insets.bottom,
+                backgroundColor: theme.colors.surface
+              }
             ]}
           >
-            <Text style={styles.questions_text}>
+            <Text
+              style={[styles.questions_text, { color: theme.colors.onSurface }]}
+            >
               Your username and password are the same as your school's
               StudentVue website.{'\n\n'}We do not collect your personal
               information nor can we access it remotely
@@ -239,12 +251,12 @@ const Login = () => {
             {
               marginTop: insets.top,
               marginBottom: insets.bottom,
-              paddingTop: 16
+              paddingTop: 16,
+              backgroundColor: theme.colors.surface
             }
           ]}
         >
           <TextInput
-            onLayout={(e) => console.log(e.nativeEvent.layout)}
             mode="outlined"
             label="Enter school district zipcode"
             keyboardType="number-pad"
@@ -299,7 +311,11 @@ const Login = () => {
         </View>
       </Modal>
       <ImageBackground
-        source={require('../assets/mountainbackground.png')}
+        source={
+          theme.dark
+            ? require('../assets/mountainbackground-dark.png')
+            : require('../assets/mountainbackground.png')
+        }
         resizeMode="cover"
         style={{
           flex: 1,
@@ -311,7 +327,18 @@ const Login = () => {
           edges={['top', 'left', 'right']}
         >
           <View style={styles.name_container}>
-            <Text style={styles.name}>GradeHelper</Text>
+            <Text
+              style={[
+                styles.name,
+                {
+                  color: theme.dark
+                    ? theme.colors.onSurfaceVariant
+                    : Colors.black
+                }
+              ]}
+            >
+              GradeHelper
+            </Text>
           </View>
         </SafeAreaView>
         <KeyboardAvoidingView
@@ -323,7 +350,14 @@ const Login = () => {
               style={styles.questions_button}
               onPress={() => setQuestionsModalVisible(true)}
             >
-              <Text style={styles.questions_text}>Questions/Concerns</Text>
+              <Text
+                style={[
+                  styles.questions_text,
+                  { color: theme.colors.onSurface }
+                ]}
+              >
+                Questions/Concerns
+              </Text>
             </TouchableOpacity>
             <TextInput
               mode="outlined"
@@ -331,12 +365,9 @@ const Login = () => {
               onChangeText={(u) => setUsername(u)}
               placeholder="Username"
               style={[styles.input, { width: 250 }]}
-              placeholderTextColor={Colors.medium_gray}
               returnKeyType="next"
               onSubmitEditing={() => refInput.current.focus()}
               blurOnSubmit={false}
-              outlineColor={Colors.black}
-              onLayout={(e) => console.log(e.nativeEvent.layout)}
             />
             <TextInput
               mode="outlined"
@@ -345,8 +376,6 @@ const Login = () => {
               placeholder="Password"
               secureTextEntry={isPasswordSecure}
               style={[styles.input, { width: 250 }]}
-              textColor={Colors.black}
-              placeholderTextColor={Colors.medium_gray}
               returnKeyType="next"
               ref={refInput}
               onSubmitEditing={() => {
@@ -358,16 +387,27 @@ const Login = () => {
                   icon={isPasswordSecure ? 'eye-off-outline' : 'eye-outline'}
                   style={{ marginRight: -2 }}
                   onPress={() => setIsPasswordSecure(!isPasswordSecure)}
-                  iconColor={Colors.black}
                 />
               }
-              outlineColor={Colors.black}
             />
             <TouchableOpacity
-              style={[styles.districts_button]}
+              style={[
+                styles.districts_button,
+                { borderColor: theme.colors.outline }
+              ]}
               onPress={async () => onPressOpenDistrictModal()}
             >
-              <Text style={styles.selected_district_text} numberOfLines={2}>
+              <Text
+                style={[
+                  styles.selected_district_text,
+                  {
+                    color: selectedDistrict
+                      ? theme.colors.onSurface
+                      : theme.colors.onSurfaceVariant
+                  }
+                ]}
+                numberOfLines={2}
+              >
                 {selectedDistrict
                   ? selectedDistrict.name
                   : 'Find School District'}
@@ -376,7 +416,7 @@ const Login = () => {
                 <MaterialCommunityIcons
                   name="school-outline"
                   size={24}
-                  color="black"
+                  color={theme.colors.onSurfaceVariant}
                   style={{
                     marginRight: 12
                   }}
@@ -395,7 +435,11 @@ const Login = () => {
                 }}
                 disabled={isLoading}
               />
-              <Text style={styles.save_text}>Remember Me</Text>
+              <Text
+                style={[styles.save_text, { color: theme.colors.onSurface }]}
+              >
+                Remember Me
+              </Text>
             </View>
             <CustomButton
               onPress={() => {
@@ -444,9 +488,17 @@ const Login = () => {
                   iconStyle={styles.insta_button}
                   underlayColor="none"
                   size={20}
+                  color={theme.colors.onSurfaceVariant}
                 />
               </View>
-              <Text style={styles.insta_text}>Richard Y</Text>
+              <Text
+                style={[
+                  styles.insta_text,
+                  { color: theme.colors.onSurfaceVariant }
+                ]}
+              >
+                Richard Y
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.insta_button_container}
@@ -459,9 +511,17 @@ const Login = () => {
                   iconStyle={styles.insta_button}
                   underlayColor="none"
                   size={20}
+                  color={theme.colors.onSurfaceVariant}
                 />
               </View>
-              <Text style={styles.insta_text}>Karthik M</Text>
+              <Text
+                style={[
+                  styles.insta_text,
+                  { color: theme.colors.onSurfaceVariant }
+                ]}
+              >
+                Karthik M
+              </Text>
             </TouchableOpacity>
           </View>
         </SafeAreaView>
@@ -491,7 +551,6 @@ const styles = StyleSheet.create({
   },
   modal: {
     alignSelf: 'center',
-    backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
     width: 350
@@ -504,7 +563,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   questions_modal: {
-    backgroundColor: 'white',
     padding: 20,
     borderRadius: 20,
     maxWidth: 350

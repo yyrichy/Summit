@@ -84,7 +84,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
     if (modified) {
       return Colors.dark_middle_blue_green
     } else {
-      return Colors.black
+      return theme.dark ? theme.colors.onSurface : Colors.black
     }
   }
 
@@ -142,7 +142,10 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
         >
           <View style={styles.horizontal_container}>
             <View style={styles.assignment_info_container}>
-              <Text numberOfLines={!isDropdown ? 1 : 2} style={styles.name}>
+              <Text
+                numberOfLines={!isDropdown ? 1 : 2}
+                style={[styles.name, { color: theme.colors.onSurfaceVariant }]}
+              >
                 {name}
               </Text>
               <View
@@ -248,19 +251,34 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 >
                   <View>
                     <Text style={styles.assignment_property_label}>START</Text>
-                    <Text style={styles.assignment_property_value}>
+                    <Text
+                      style={[
+                        styles.assignment_property_value,
+                        { color: theme.colors.onSurfaceVariant }
+                      ]}
+                    >
                       {dateRelativeToToday(assignment.date.start)}
                     </Text>
                   </View>
                   <View>
                     <Text style={styles.assignment_property_label}>DUE</Text>
-                    <Text style={styles.assignment_property_value}>
+                    <Text
+                      style={[
+                        styles.assignment_property_value,
+                        { color: theme.colors.onSurfaceVariant }
+                      ]}
+                    >
                       {dateRelativeToToday(assignment.date.due)}
                     </Text>
                   </View>
                   <View>
                     <Text style={styles.assignment_property_label}>STATUS</Text>
-                    <Text style={styles.assignment_property_value}>
+                    <Text
+                      style={[
+                        styles.assignment_property_value,
+                        { color: theme.colors.onSurfaceVariant }
+                      ]}
+                    >
                       {assignment.status}
                     </Text>
                   </View>
@@ -279,7 +297,14 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                     >
                       NOTES
                     </Text>
-                    <Text>{assignment.notes}</Text>
+                    <Text
+                      style={{
+                        color: theme.colors.onSurfaceVariant,
+                        fontFamily: 'Inter_400Regular'
+                      }}
+                    >
+                      {assignment.notes}
+                    </Text>
                   </View>
                 </>
               )}
@@ -297,7 +322,6 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     overflow: 'hidden',
     padding: 10,
-    backgroundColor: Colors.white,
     borderWidth: 1
   },
   horizontal_container: {

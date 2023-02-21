@@ -16,6 +16,7 @@ export default {
     },
     assetBundlePatterns: ['**/*'],
     ios: {
+      userInterfaceStyle: 'automatic',
       supportsTablet: true,
       bundleIdentifier: 'com.vaporys.Summit',
       infoPlist: {
@@ -23,6 +24,7 @@ export default {
       }
     },
     android: {
+      userInterfaceStyle: 'automatic',
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FEF156'
@@ -51,7 +53,7 @@ export default {
         }
       ]
     ],
-    userInterfaceStyle: 'light',
+    userInterfaceStyle: 'automatic',
     extra: {
       LOGIN_BANNER_IOS: process.env.LOGIN_BANNER_IOS,
       LOGIN_BANNER_ANDROID: process.env.LOGIN_BANNER_ANDROID,

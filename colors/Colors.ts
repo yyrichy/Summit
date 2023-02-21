@@ -14,7 +14,7 @@ export const Colors = {
   blue_off_white: '#F2F2F7',
   light_gray: '#DADADA',
   navy: '#000080',
-  medium_gray: '#5E5E5E',
+  medium_gray: '#737373',
   baby_blue: '#81B0FF',
   transparent: 'transparent',
   dark_yellow: '#FED756',

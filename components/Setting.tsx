@@ -1,6 +1,8 @@
 import React from 'react'
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'
+import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
+import { palette } from '../theme/colors'
 
 type Props = {
   title: string
@@ -17,14 +19,40 @@ const Setting: React.FC<Props> = ({
   description,
   children
 }: Props) => {
+  const theme = useTheme()
+
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={styles['container_' + position]}
+      style={[
+        styles['container_' + position],
+        {
+          backgroundColor: theme.dark
+            ? theme.colors.primaryContainer
+            : theme.colors.surface
+        }
+      ]}
     >
       <View style={{ flex: 1, marginRight: 18 }}>
-        <Text style={styles.title}>{title}</Text>
-        {description && <Text style={styles.description}>{description}</Text>}
+        <Text
+          style={[styles.title, { color: theme.colors.onPrimaryContainer }]}
+        >
+          {title}
+        </Text>
+        {description && (
+          <Text
+            style={[
+              styles.description,
+              {
+                color: theme.dark
+                  ? palette.neutralVariant90
+                  : Colors.medium_gray
+              }
+            ]}
+          >
+            {description}
+          </Text>
+        )}
       </View>
       {children}
     </TouchableOpacity>
@@ -33,7 +61,6 @@ const Setting: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container_middle: {
-    backgroundColor: Colors.white,
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: 18,
@@ -44,7 +71,6 @@ const styles = StyleSheet.create({
   container_top: {
     borderTopRightRadius: 12,
     borderTopLeftRadius: 12,
-    backgroundColor: Colors.white,
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: 18,
@@ -53,7 +79,6 @@ const styles = StyleSheet.create({
     minHeight: 60
   },
   container_bottom: {
-    backgroundColor: Colors.white,
     borderBottomRightRadius: 12,
     borderBottomLeftRadius: 12,
     justifyContent: 'space-between',
@@ -65,7 +90,6 @@ const styles = StyleSheet.create({
   },
   container_single: {
     borderRadius: 12,
-    backgroundColor: Colors.white,
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingHorizontal: 18,
@@ -80,8 +104,7 @@ const styles = StyleSheet.create({
   description: {
     fontFamily: 'Inter_300Light',
     fontSize: 12,
-    color: Colors.medium_gray,
-    marginTop: 2
+    marginTop: 4
   }
 })
 

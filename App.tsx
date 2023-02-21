@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler'
 import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { RootStackParamList } from './types/RootStackParams'
@@ -50,6 +50,9 @@ import { MD3LightTheme } from './theme/MD3LightTheme'
 import { RootSiblingParent } from 'react-native-root-siblings'
 import * as SplashScreen from 'expo-splash-screen'
 import mobileAds from 'react-native-google-mobile-ads'
+import { MD3DarkTheme } from './theme/MD3DarkTheme'
+import { DarkTheme } from './theme/DarkTheme'
+import { Appearance } from 'react-native'
 
 mobileAds().initialize()
 
@@ -60,12 +63,17 @@ SplashScreen.preventAutoHideAsync()
 const App = () => {
   const [client, setClient] = useState(null as Client)
   const [marks, setMarks] = useState(null as Marks)
+  const [isDarkTheme, setIsDarkTheme] = useState(
+    Appearance.getColorScheme() === 'dark' ? true : false
+  )
 
   const user: User = {
-    client: client,
-    marks: marks,
+    client,
+    marks,
+    isDarkTheme,
     setClient,
-    setMarks
+    setMarks,
+    setIsDarkTheme
   }
   let [fontsLoaded] = useFonts({
     Inter_100Thin,
@@ -113,8 +121,8 @@ const App = () => {
       <SafeAreaProvider onLayout={onLayoutRootView}>
         <AppContext.Provider value={user}>
           <CalendarProvider date="">
-            <PaperProvider theme={MD3LightTheme}>
-              <NavigationContainer theme={LightTheme}>
+            <PaperProvider theme={isDarkTheme ? MD3DarkTheme : MD3LightTheme}>
+              <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
                 <Stack.Navigator initialRouteName="Login">
                   <Stack.Screen
                     name="Login"

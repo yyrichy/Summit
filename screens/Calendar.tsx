@@ -6,10 +6,12 @@ import useAsyncEffect from 'use-async-effect'
 import Item from '../components/Item'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Colors } from '../colors/Colors'
+import { useTheme } from 'react-native-paper'
 
 const CalendarScreen = () => {
   const { client } = useContext(AppContext)
   const [items, setItems] = useState(null as AgendaSchedule)
+  const theme = useTheme()
 
   const lowestScale = 0.4
   const scaleAnim = useRef(new Animated.Value(lowestScale)).current
@@ -88,7 +90,7 @@ const CalendarScreen = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.white }}>
+    <View style={{ flex: 1 }}>
       {items ? (
         <Agenda
           items={items}
@@ -105,7 +107,11 @@ const CalendarScreen = () => {
           ]}
         >
           <Animated.View style={[styles.fadingContainer]}>
-            <MaterialCommunityIcons name="calendar" size={50} color="black" />
+            <MaterialCommunityIcons
+              name="calendar"
+              size={50}
+              color={theme.colors.onSurface}
+            />
           </Animated.View>
         </Animated.View>
       )}

@@ -24,14 +24,19 @@ const ScheduleComponent: React.FC<Props> = ({
   const theme = useTheme()
   return (
     <View style={styles.container}>
-      <Text style={styles.period_number}>{prependZero(period)}</Text>
+      <Text style={[styles.period_number, { color: theme.colors.onSurface }]}>
+        {prependZero(period)}
+      </Text>
       <View
         style={[
           styles.course_info_container,
           { backgroundColor: theme.colors.surfaceVariant }
         ]}
       >
-        <Text numberOfLines={2} style={styles.name}>
+        <Text
+          numberOfLines={2}
+          style={[styles.name, { color: theme.colors.onSurface }]}
+        >
           {name}
         </Text>
         <View style={styles.info_container}>

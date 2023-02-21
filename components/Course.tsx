@@ -40,9 +40,18 @@ const Course: React.FC<Props> = ({
       ]}
       onPress={onPress}
     >
-      <Text style={styles.period_number}>{period}</Text>
+      <Text style={[styles.period_number, { color: theme.colors.onSurface }]}>
+        {period}
+      </Text>
       <View style={styles.course_info_container}>
-        <Text style={styles.name}>{parseCourseName(name)}</Text>
+        <Text
+          style={[
+            styles.name,
+            { color: theme.dark ? theme.colors.onSurface : Colors.navy }
+          ]}
+        >
+          {parseCourseName(name)}
+        </Text>
         <Text
           numberOfLines={1}
           style={[styles.teacher, { color: theme.colors.onSurface }]}

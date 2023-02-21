@@ -32,6 +32,7 @@ import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
 import { getOrdinal, toast } from '../util/Util'
 import { Switch } from '../components/switch/Switch'
+import { palette } from '../theme/colors'
 
 const Profile = () => {
   type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
@@ -154,11 +155,18 @@ const Profile = () => {
           }}
         />
         <View style={styles.info_container}>
-          <Text numberOfLines={2} style={styles.name}>
+          <Text
+            numberOfLines={2}
+            style={[styles.name, { color: theme.colors.onSurface }]}
+          >
             {studentInfo.student.name}
           </Text>
           {studentInfo.currentSchool && (
-            <Text style={styles.school}>{studentInfo.currentSchool}</Text>
+            <Text
+              style={[styles.school, { color: theme.colors.onSurfaceVariant }]}
+            >
+              {studentInfo.currentSchool}
+            </Text>
           )}
         </View>
       </View>
@@ -180,33 +188,36 @@ const Profile = () => {
               <MaterialCommunityIcons
                 name="school-outline"
                 size={24}
-                color={Colors.black}
+                color={theme.colors.onSurfaceVariant}
               />
             }
             text={studentInfo.grade + getOrdinal(parseInt(studentInfo.grade))}
-            backgroundColor={theme.colors.elevation.level1}
+            backgroundColor={theme.colors.surfaceVariant}
+            textColor={theme.colors.onSurfaceVariant}
           />
           <IconPropertyBox
             icon={
               <MaterialCommunityIcons
                 name="cake-variant-outline"
                 size={24}
-                color={Colors.black}
+                color={theme.colors.onSurfaceVariant}
               />
             }
             text={studentInfo.birthDate.toLocaleDateString()}
-            backgroundColor={theme.colors.elevation.level1}
+            backgroundColor={theme.colors.surfaceVariant}
+            textColor={theme.colors.onSurfaceVariant}
           />
           <IconPropertyBox
             icon={
               <MaterialCommunityIcons
                 name="badge-account-horizontal-outline"
                 size={24}
-                color={Colors.black}
+                color={theme.colors.onSurfaceVariant}
               />
             }
             text={studentInfo.id}
-            backgroundColor={theme.colors.elevation.level1}
+            backgroundColor={theme.colors.surfaceVariant}
+            textColor={theme.colors.onSurfaceVariant}
           />
         </View>
         <View style={styles.property_view}>
@@ -217,7 +228,14 @@ const Profile = () => {
                 size={20}
                 color={Colors.secondary}
               />
-              <Text style={styles.property_text}>{studentInfo.phone}</Text>
+              <Text
+                style={[
+                  styles.property_text,
+                  { color: theme.colors.onSurfaceVariant }
+                ]}
+              >
+                {studentInfo.phone}
+              </Text>
             </View>
           )}
           <Divider horizontalInset />
@@ -228,7 +246,12 @@ const Profile = () => {
                 size={20}
                 color={Colors.secondary}
               />
-              <Text style={styles.property_text}>
+              <Text
+                style={[
+                  styles.property_text,
+                  { color: theme.colors.onSurfaceVariant }
+                ]}
+              >
                 {studentInfo.address.replace(/&lt;br&gt;/g, ' ')}
               </Text>
             </View>
@@ -241,7 +264,14 @@ const Profile = () => {
                 size={20}
                 color={Colors.secondary}
               />
-              <Text style={styles.property_text}>{studentInfo.email}</Text>
+              <Text
+                style={[
+                  styles.property_text,
+                  { color: theme.colors.onSurfaceVariant }
+                ]}
+              >
+                {studentInfo.email}
+              </Text>
             </View>
           )}
         </View>
@@ -249,7 +279,9 @@ const Profile = () => {
           style={[
             styles.settings_container,
             {
-              backgroundColor: theme.colors.elevation.level1,
+              backgroundColor: theme.dark
+                ? palette.neutralVariant10
+                : theme.colors.surfaceVariant,
               shadowColor: theme.colors.shadow
             }
           ]}
@@ -262,10 +294,17 @@ const Profile = () => {
             <MaterialCommunityIcons
               name="download"
               size={24}
-              color={Colors.black}
+              color={theme.colors.onPrimaryContainer}
             />
           </Setting>
-          <Text style={styles.settings_title}>Settings</Text>
+          <Text
+            style={[
+              styles.settings_title,
+              { color: theme.colors.onSurfaceVariant }
+            ]}
+          >
+            Settings
+          </Text>
           <Setting
             title="Daily Reminder"
             description="Notifies you to check your grades at a certain time everyday"
@@ -275,7 +314,7 @@ const Profile = () => {
             <MaterialCommunityIcons
               name="chevron-right"
               size={24}
-              color={Colors.black}
+              color={theme.colors.onPrimaryContainer}
             />
           </Setting>
           <Seperator />
@@ -295,7 +334,7 @@ const Profile = () => {
             <MaterialCommunityIcons
               name="delete-outline"
               size={24}
-              color={Colors.black}
+              color={theme.colors.onPrimaryContainer}
             />
           </Setting>
         </View>
@@ -311,7 +350,7 @@ const Profile = () => {
   )
 }
 
-const IconPropertyBox = ({ icon, text, backgroundColor }) => {
+const IconPropertyBox = ({ icon, text, backgroundColor, textColor }) => {
   return (
     <View
       style={{
@@ -327,7 +366,11 @@ const IconPropertyBox = ({ icon, text, backgroundColor }) => {
       {icon}
       <Text
         numberOfLines={1}
-        style={{ fontFamily: 'Inter_500Medium', fontSize: 12 }}
+        style={{
+          fontFamily: 'Inter_500Medium',
+          fontSize: 12,
+          color: textColor
+        }}
       >
         {text}
       </Text>
@@ -369,8 +412,7 @@ const styles = StyleSheet.create({
   property_text: {
     marginLeft: 20,
     fontFamily: 'Inter_400Regular',
-    fontSize: 15,
-    color: Colors.medium_gray
+    fontSize: 15
   },
   settings_title: {
     fontFamily: 'Montserrat_700Bold',
