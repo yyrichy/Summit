@@ -1,11 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -13,7 +7,6 @@ import {
   BackHandler,
   FlatList,
   ScrollView,
-  ActivityIndicator,
   RefreshControl
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
@@ -23,7 +16,6 @@ import {
   convertGradebook,
   isNumber,
   calculateMarkColor,
-  calculateBarColor,
   parseCourseName
 } from '../gradebook/GradeUtil'
 import Modal from 'react-native-modal'
@@ -157,10 +149,10 @@ const CourseDetails = ({ route }) => {
           style={[
             styles.course_mark_container,
             {
-              borderColor: calculateMarkColor(course.value),
               backgroundColor: theme.dark
                 ? palette.neutralVariant20
-                : theme.colors.surfaceVariant
+                : theme.colors.surfaceVariant,
+              opacity: 1
             }
           ]}
         >
@@ -209,7 +201,7 @@ const CourseDetails = ({ route }) => {
                   </View>
                   <ProgressBar
                     progress={hasValue ? value / 100 : 0}
-                    style={{ backgroundColor: calculateBarColor(value) }}
+                    style={{ backgroundColor: calculateMarkColor(value) }}
                   />
                 </View>
               )
@@ -550,7 +542,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 24,
-    backgroundColor: Colors.corn_silk_white,
     maxWidth: '50%',
     minWidth: '25%'
   },

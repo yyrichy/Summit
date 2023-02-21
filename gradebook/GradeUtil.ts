@@ -215,15 +215,15 @@ const addAssignment = (
 const calculateMarkColor = (value: number): string => {
   switch (calculateLetterGrade(value)) {
     case 'A':
-      return '#378137'
+      return '#5bac5b'
     case 'B':
-      return '#212a8f'
+      return '#5664fe'
     case 'C':
       return '#AD6800'
     case 'D':
-      return '#CC3E3E'
+      return '#a12b2b'
     case 'E':
-      return '#440808'
+      return '#410808'
     case 'F':
       return Colors.black
   }
@@ -244,23 +244,6 @@ const calculateLetterGrade = (
     return 'E'
   } else {
     return 'F'
-  }
-}
-
-const calculateBarColor = (value: number): string => {
-  switch (calculateLetterGrade(value)) {
-    case 'A':
-      return '#4eba4e'
-    case 'B':
-      return '#0d2a95'
-    case 'C':
-      return '#AD6800'
-    case 'D':
-      return '#CC3E3E'
-    case 'E':
-      return '#440808'
-    case 'F':
-      return Colors.black
   }
 }
 
@@ -514,7 +497,6 @@ export {
   normalize,
   prependZero,
   formatAMPM,
-  calculateBarColor,
   testMarks,
   getClassGPA
 }
