@@ -1,22 +1,8 @@
 import { Gradebook } from 'studentvue'
 import { Colors } from '../colors/Colors'
 import { Category, Course, Marks } from '../interfaces/Gradebook'
-import { Dimensions, Platform, PixelRatio } from 'react-native'
 import { round } from '../util/Util'
 import { subDays } from 'date-fns'
-
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window')
-
-const scale = SCREEN_WIDTH / 320
-
-const normalize = (size: number): number => {
-  const newSize = size * scale
-  if (Platform.OS === 'ios') {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize))
-  } else {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-  }
-}
 
 // Some course names have the course ID at the end, ex: AP History A (SOC4935B)
 const parseCourseName = (name: string): string => {
@@ -50,8 +36,8 @@ const convertGradebook = (gradebook: Gradebook) => {
                           ? 'Graded'
                           : value,
                       notes: a.notes,
-                      points: points[0],
-                      total: points[1],
+                      points: points.earned,
+                      total: points.total,
                       modified: false,
                       date: a.date
                     }
@@ -137,13 +123,13 @@ const getClassGPA = (value: number) => {
   15.0000 Points Possible
   5.00 / 5.0000
 */
-const parsePoints = (points: string): number[] => {
+const parsePoints = (points: string): { earned: number; total: number } => {
   const regex = /^(\d+\.?\d*|\.\d+) \/ (\d+\.?\d*|\.\d+)$/
   if (points.match(regex)) {
     const p = points.split(regex)
-    return [parseFloat(p[1]), parseFloat(p[2])]
+    return { earned: parseFloat(p[1]), total: parseFloat(p[2]) }
   } else {
-    return [NaN, parseFloat(points)]
+    return { earned: NaN, total: parseFloat(points) }
   }
 }
 
@@ -245,28 +231,6 @@ const calculateLetterGrade = (
   } else {
     return 'F'
   }
-}
-
-const isNumber = (input: string): boolean => {
-  return /^[0-9.]+$/g.test(input)
-}
-
-const prependZero = (number): string => {
-  if (number < 9) return '0' + number
-  else return number
-}
-
-const formatAMPM = (date: Date): string => {
-  let hours = date.getHours()
-  let minutes: string | number = date.getMinutes()
-  const ampm = hours >= 12 ? 'PM' : 'AM'
-
-  hours %= 12
-  hours = hours || 12
-  minutes = minutes < 10 ? `0${minutes}` : minutes
-
-  const strTime = `${hours}:${minutes} ${ampm}`
-  return strTime
 }
 
 const testMarks = (): Marks => {
@@ -493,10 +457,6 @@ export {
   addAssignment,
   calculateMarkColor,
   calculateLetterGrade,
-  isNumber,
-  normalize,
-  prependZero,
-  formatAMPM,
   testMarks,
   getClassGPA
 }

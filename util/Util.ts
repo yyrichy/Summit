@@ -56,4 +56,34 @@ const round = (value: string | number, decimals: string | number): number => {
   return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals)
 }
 
-export { toast, dateRelativeToToday, getOrdinal, round }
+const isNumber = (input: string): boolean => {
+  return /^[0-9.]+$/g.test(input)
+}
+
+const prependZero = (number): string => {
+  if (number < 9) return '0' + number
+  else return number
+}
+
+const formatAMPM = (date: Date): string => {
+  let hours = date.getHours()
+  let minutes: string | number = date.getMinutes()
+  const ampm = hours >= 12 ? 'PM' : 'AM'
+
+  hours %= 12
+  hours = hours || 12
+  minutes = minutes < 10 ? `0${minutes}` : minutes
+
+  const strTime = `${hours}:${minutes} ${ampm}`
+  return strTime
+}
+
+export {
+  toast,
+  dateRelativeToToday,
+  getOrdinal,
+  round,
+  isNumber,
+  prependZero,
+  formatAMPM
+}

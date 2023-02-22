@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
-import { formatAMPM, prependZero } from '../gradebook/GradeUtil'
+import { formatAMPM, prependZero } from '../util/Util'
 
 type Props = {
   name: string

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -12,8 +12,7 @@ import {
   View,
   Platform,
   KeyboardAvoidingView,
-  Appearance,
-  useColorScheme
+  Appearance
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -36,6 +35,8 @@ import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
 import District from '../components/District'
+import { StatusBar } from 'expo-status-bar'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -43,13 +44,13 @@ type loginInfo = 'username' | 'password' | 'district'
 
 const Login = () => {
   const theme = useTheme()
-  const scheme = useColorScheme()
   const insets = useSafeAreaInsets()
   const navigation = useNavigation<loginScreenProp>()
   const refInput = useRef(null)
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
-  const { setClient, setMarks, setIsDarkTheme } = useContext(AppContext)
+  const { isDarkTheme, setClient, setMarks, setIsDarkTheme } =
+    useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(true)
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
@@ -64,8 +65,10 @@ const Login = () => {
   const [isLoadingDistricts, setIsLoadingDistricts] = useState(false)
 
   useAsyncEffect(async () => {
-    Appearance.addChangeListener(({ colorScheme }) => {
-      setIsDarkTheme(colorScheme === 'dark' ? true : false)
+    Appearance.addChangeListener(async ({ colorScheme }) => {
+      const theme = await AsyncStorage.getItem('Theme')
+      if (!theme || theme === 'device')
+        setIsDarkTheme(colorScheme === 'dark' ? true : false)
     })
     savedCredentials()
 
@@ -322,6 +325,7 @@ const Login = () => {
           backgroundColor: Colors.white
         }}
       >
+        <StatusBar style={isDarkTheme ? 'light' : 'dark'} />
         <SafeAreaView
           style={{ alignItems: 'center' }}
           edges={['top', 'left', 'right']}

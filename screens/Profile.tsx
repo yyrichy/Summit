@@ -5,7 +5,8 @@ import {
   View,
   Text,
   Alert,
-  ScrollView
+  ScrollView,
+  Appearance
 } from 'react-native'
 import { StudentInfo } from 'studentvue'
 import { Colors } from '../colors/Colors'
@@ -27,19 +28,31 @@ import * as SecureStore from 'expo-secure-store'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/RootStackParams'
-import { Avatar, Divider, IconButton, useTheme } from 'react-native-paper'
+import {
+  Avatar,
+  Button,
+  Dialog,
+  Divider,
+  IconButton,
+  Portal,
+  TouchableRipple,
+  useTheme,
+  Text as PaperText,
+  RadioButton
+} from 'react-native-paper'
 import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
 import { getOrdinal, toast } from '../util/Util'
 import { Switch } from '../components/switch/Switch'
 import { palette } from '../theme/colors'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Profile = () => {
   type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
   const theme = useTheme()
 
   const navigation = useNavigation<loginScreenProp>()
-  const { client } = useContext(AppContext)
+  const { client, setIsDarkTheme } = useContext(AppContext)
   const [studentInfo, setStudentInfo] = useState(null as StudentInfo)
 
   const [switchOn, switchEnabled] = useState(false)
@@ -60,6 +73,27 @@ const Profile = () => {
       Alert.alert('Error saving reminder preference')
     }
     switchEnabled(newState)
+  }
+  const [themeDialogVisible, setThemeDialogVisible] = React.useState(false)
+  const showDialog = () => setThemeDialogVisible(true)
+  const hideDialog = () => setThemeDialogVisible(false)
+  const [checked, setChecked] = useState('device')
+
+  const setTheme = async (theme: 'device' | 'light' | 'dark') => {
+    setChecked(theme)
+    switch (theme) {
+      case 'dark':
+        setIsDarkTheme(true)
+        break
+      case 'light':
+        setIsDarkTheme(false)
+        break
+      default:
+        setIsDarkTheme(
+          Appearance.getColorScheme() === 'dark' ? 'dark' : 'light'
+        )
+    }
+    await AsyncStorage.setItem('Theme', theme)
   }
 
   const [date, setDate] = useState(new Date() as Date)
@@ -328,11 +362,24 @@ const Profile = () => {
           <Setting
             title="Delete Login Info"
             onPress={deleteLoginInfo}
-            position="bottom"
+            position="middle"
             description="Deletes saved username and password from device"
           >
             <MaterialCommunityIcons
               name="delete-outline"
+              size={24}
+              color={theme.colors.onPrimaryContainer}
+            />
+          </Setting>
+          <Seperator />
+          <Setting
+            title="Choose Theme"
+            onPress={showDialog}
+            position="bottom"
+            description="Light, dark, or device theme"
+          >
+            <MaterialCommunityIcons
+              name="brightness-6"
               size={24}
               color={theme.colors.onPrimaryContainer}
             />
@@ -346,6 +393,59 @@ const Profile = () => {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
+      <Portal>
+        <Dialog
+          visible={themeDialogVisible}
+          onDismiss={hideDialog}
+          style={{ backgroundColor: theme.colors.surface }}
+        >
+          <Dialog.Title>Choose Theme</Dialog.Title>
+          <Dialog.Content>
+            <TouchableRipple onPress={() => setTheme('device')}>
+              <View style={styles.row}>
+                <View pointerEvents="none">
+                  <RadioButton.Android
+                    value="normal"
+                    status={checked === 'device' ? 'checked' : 'unchecked'}
+                  />
+                </View>
+                <PaperText variant="bodyLarge" style={styles.text}>
+                  Use device theme
+                </PaperText>
+              </View>
+            </TouchableRipple>
+            <TouchableRipple onPress={() => setTheme('dark')}>
+              <View style={styles.row}>
+                <View pointerEvents="none">
+                  <RadioButton.Android
+                    value="normal"
+                    status={checked === 'dark' ? 'checked' : 'unchecked'}
+                  />
+                </View>
+                <PaperText variant="bodyLarge" style={styles.text}>
+                  Dark theme
+                </PaperText>
+              </View>
+            </TouchableRipple>
+            <TouchableRipple onPress={() => setTheme('light')}>
+              <View style={styles.row}>
+                <View pointerEvents="none">
+                  <RadioButton.Android
+                    value="normal"
+                    status={checked === 'light' ? 'checked' : 'unchecked'}
+                  />
+                </View>
+                <PaperText variant="bodyLarge" style={styles.text}>
+                  Light theme
+                </PaperText>
+              </View>
+            </TouchableRipple>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </SafeAreaView>
   )
 }
@@ -432,6 +532,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 5
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8
+  },
+  text: {
+    paddingLeft: 8
   }
 })
 

@@ -33,9 +33,6 @@ export default {
       softwareKeyboardLayoutMode: 'pan',
       versionCode: 27
     },
-    androidStatusBar: {
-      barStyle: 'dark-content'
-    },
     plugins: [
       [
         'expo-notifications',

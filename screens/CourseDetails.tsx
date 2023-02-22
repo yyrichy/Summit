@@ -14,7 +14,6 @@ import Assignment from '../components/Assignment'
 import {
   addAssignment,
   convertGradebook,
-  isNumber,
   calculateMarkColor,
   parseCourseName
 } from '../gradebook/GradeUtil'
@@ -30,7 +29,7 @@ import {
   useTheme
 } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { round } from '../util/Util'
+import { isNumber, round } from '../util/Util'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
 import { onOpen, Picker } from 'react-native-actions-sheet-picker'

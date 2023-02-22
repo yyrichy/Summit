@@ -15,15 +15,13 @@ import {
   calculateMarkColor,
   updatePoints,
   deleteAssignment,
-  isNumber,
-  calculateLetterGrade
 } from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Divider, useTheme } from 'react-native-paper'
 import { Swipeable } from 'react-native-gesture-handler'
-import { dateRelativeToToday } from '../util/Util'
+import { dateRelativeToToday, isNumber } from '../util/Util'
 import Animated, {
   FadeIn,
   FadeOut,
