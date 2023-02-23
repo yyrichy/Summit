@@ -361,7 +361,7 @@ const Profile = () => {
           <Seperator />
           <Setting
             title="Delete Login Info"
-            onPress={deleteLoginInfo}
+            onPress={() => deleteLoginInfo(theme.dark)}
             position="middle"
             description="Deletes saved username and password from device"
           >
@@ -553,7 +553,7 @@ const Seperator = () => {
   )
 }
 
-const deleteLoginInfo = async () => {
+const deleteLoginInfo = async (dark: boolean) => {
   try {
     await SecureStore.deleteItemAsync('username')
     await SecureStore.deleteItemAsync('password')
@@ -562,7 +562,7 @@ const deleteLoginInfo = async () => {
     Alert.alert('Error deleting login info')
     return
   }
-  toast('Login info successfully deleted')
+  toast('Login info successfully deleted', dark)
 }
 
 export default Profile

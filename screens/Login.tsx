@@ -126,15 +126,15 @@ const Login = () => {
 
   async function onLogin(): Promise<void> {
     if (!username) {
-      toast('Enter your username')
+      toast('Enter your username', theme.dark)
       return
     }
     if (!password) {
-      toast('Enter your password')
+      toast('Enter your password', theme.dark)
       return
     }
     if (!selectedDistrict) {
-      toast('Select your school district')
+      toast('Select your school district', theme.dark)
       return
     }
     setIsLoading(true)

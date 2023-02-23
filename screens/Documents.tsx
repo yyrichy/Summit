@@ -49,7 +49,7 @@ const Documents = () => {
         file.base64,
         'base64'
       )
-      toast('File downloaded')
+      toast('File downloaded', theme.dark)
     }
   }
 

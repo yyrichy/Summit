@@ -1,8 +1,9 @@
 import { format, isBefore, isToday, isTomorrow, isYesterday } from 'date-fns'
+import { useTheme } from 'react-native-paper'
 import Toast from 'react-native-root-toast'
 import { Colors } from '../colors/Colors'
 
-const toast = (message: string) => {
+const toast = (message: string, dark: boolean) => {
   Toast.show(message, {
     duration: Toast.durations.SHORT,
     position: Toast.positions.BOTTOM - 30,
@@ -10,8 +11,8 @@ const toast = (message: string) => {
     animation: true,
     hideOnPress: true,
     opacity: 0.9,
-    textColor: Colors.black,
-    backgroundColor: Colors.white,
+    textColor: dark ? Colors.white : Colors.black,
+    backgroundColor: dark ? Colors.black : Colors.white,
     containerStyle: {
       height: 48,
       justifyContent: 'center'
