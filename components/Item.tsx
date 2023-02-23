@@ -14,7 +14,12 @@ const Item: React.FC<Props> = ({ item: { event } }) => {
   switch (event.type.toString()) {
     case EventType.ASSIGNMENT:
       return (
-        <View style={[styles.item, { backgroundColor: theme.colors.surface }]}>
+        <View
+          style={[
+            styles.item,
+            { backgroundColor: theme.colors.surfaceVariant }
+          ]}
+        >
           <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>
             {event.title}
           </Text>

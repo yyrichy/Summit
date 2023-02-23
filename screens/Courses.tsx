@@ -6,7 +6,8 @@ import {
   Text,
   TouchableOpacity,
   BackHandler,
-  ActivityIndicator
+  ActivityIndicator,
+  RefreshControl
 } from 'react-native'
 import Course from '../components/Course'
 import { convertGradebook } from '../gradebook/GradeUtil'
@@ -155,6 +156,9 @@ const Courses = ({ navigation }) => {
           </View>
         ) : (
           <FadeInFlatList
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             initialDelay={0}
             durationPerItem={300}
             parallelItems={5}

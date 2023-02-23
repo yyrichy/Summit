@@ -1,17 +1,25 @@
-import React, { useContext, useRef, useState } from 'react'
-import { StyleSheet, View, Text, Animated, Easing } from 'react-native'
+import React, { useContext, useEffect, useRef, useState } from 'react'
+import { StyleSheet, View, Animated, Easing } from 'react-native'
 import AppContext from '../contexts/AppContext'
-import { Agenda, AgendaSchedule } from 'react-native-calendars'
+import { Agenda, AgendaSchedule, DateData } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
 import Item from '../components/Item'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { Colors } from '../colors/Colors'
 import { useTheme } from 'react-native-paper'
+import { startOfMonth } from 'date-fns'
+import { endOfMonth } from 'date-fns/esm'
+import { palette } from '../theme/colors'
+import { Colors } from '../colors/Colors'
 
 const CalendarScreen = () => {
   const { client } = useContext(AppContext)
   const [items, setItems] = useState(null as AgendaSchedule)
   const theme = useTheme()
+  const [key, setKey] = useState(0)
+
+  useEffect(() => {
+    setKey(Math.random())
+  }, [theme])
 
   const lowestScale = 0.4
   const scaleAnim = useRef(new Animated.Value(lowestScale)).current
@@ -36,32 +44,21 @@ const CalendarScreen = () => {
 
     try {
       const calendar = await client.calendar()
-      const start =
-        calendar.schoolDate.start instanceof Date
-          ? calendar.schoolDate.start
-          : new Date(calendar.schoolDate.start)
-      const end =
-        calendar.schoolDate.end instanceof Date
-          ? calendar.schoolDate.end
-          : new Date(calendar.schoolDate.end)
-
-      const fullCalendar = await client.calendar({
-        interval: {
-          start: start,
-          end: end
-        }
-      })
+      const start = new Date(calendar.outputRange.start)
+      const end = new Date(calendar.outputRange.end)
 
       const currentItems = {}
       for (const date of getDatesFromDateRange(start, end)) {
         currentItems[toTimeString(date)] = []
       }
-      for (const event of fullCalendar.events) {
+
+      for (const event of calendar.events) {
         const dateString = toTimeString(event.date)
-        currentItems[dateString].push({
-          event: event,
-          day: dateString
-        })
+        if (currentItems[dateString])
+          currentItems[dateString].push({
+            event: event,
+            day: dateString
+          })
       }
       const newItems = {}
       Object.keys(currentItems).forEach((key) => {
@@ -93,11 +90,37 @@ const CalendarScreen = () => {
     <View style={{ flex: 1 }}>
       {items ? (
         <Agenda
+          key={key}
           items={items}
           renderItem={(item) => renderItem(item)}
           minDate={Object.keys(items)[0]}
           maxDate={Object.keys(items)[Object.keys(items).length - 1]}
           removeClippedSubviews
+          theme={{
+            calendarBackground: theme.dark
+              ? palette.neutralVariant10
+              : theme.colors.elevation.level1,
+            monthTextColor: theme.colors.onSurfaceVariant,
+            dotColor: Colors.accent,
+            dayTextColor: theme.dark ? Colors.white : Colors.black,
+            agendaDayTextColor: theme.colors.onSurfaceVariant,
+            agendaDayNumColor: theme.colors.onSurface,
+            textDisabledColor: Colors.secondary,
+            agendaTodayColor: theme.colors.tertiary,
+            agendaKnobColor: theme.dark ? 'white' : 'black',
+            selectedDayBackgroundColor: theme.colors.primary,
+            selectedDayTextColor: theme.colors.onPrimary,
+            todayBackgroundColor: theme.colors.tertiary,
+            todayTextColor: theme.colors.onTertiary,
+            //@ts-ignore
+            'stylesheet.agenda.main': {
+              reservations: {
+                backgroundColor: theme.colors.surface,
+                flex: 1,
+                marginTop: 100
+              }
+            }
+          }}
         />
       ) : (
         <Animated.View

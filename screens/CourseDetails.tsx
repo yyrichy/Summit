@@ -124,17 +124,13 @@ const CourseDetails = ({ route }) => {
         }}
       >
         <Appbar.BackAction onPress={navigation.goBack} />
-        <Appbar.Content
-          title={parseCourseName(course.name)}
-          titleStyle={{
-            alignSelf: 'flex-start'
-          }}
-        />
+        <Appbar.Content title={parseCourseName(course.name)} />
         <Appbar.Action icon="magnify" onPress={() => setSearchDialog(true)} />
         <Appbar.Action
           icon="information-outline"
           onPress={() => setInfoDialog(true)}
         />
+        <Appbar.Action icon="refresh" onPress={onRefresh} />
       </Appbar.Header>
       <View style={styles.course_info_container}>
         <View
@@ -305,6 +301,7 @@ const CourseDetails = ({ route }) => {
           <Dialog.Content>
             <View style={styles.points_input_container}>
               <TextInput
+                mode="outlined"
                 label="Score"
                 keyboardType="decimal-pad"
                 autoComplete="off"
@@ -315,6 +312,7 @@ const CourseDetails = ({ route }) => {
                 blurOnSubmit={false}
               />
               <TextInput
+                mode="outlined"
                 label="Total"
                 keyboardType="decimal-pad"
                 autoComplete="off"
@@ -358,7 +356,14 @@ const CourseDetails = ({ route }) => {
             </View>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={add}>Add Assignment</Button>
+            <Button onPress={() => setAssignmentDialog(false)}>Cancel</Button>
+            <Button
+              mode="contained"
+              labelStyle={{ marginHorizontal: 24 }}
+              onPress={add}
+            >
+              Save
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -406,7 +411,7 @@ const CourseDetails = ({ route }) => {
             </View>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setInfoDialog(false)}>Done</Button>
+            <Button onPress={() => setInfoDialog(false)}>Close</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -420,7 +425,6 @@ const CourseDetails = ({ route }) => {
           <Dialog.Content>
             <TextInput
               mode="outlined"
-              autoCapitalize="none"
               label="Enter assignment name"
               onChangeText={(text) => setText(text)}
               value={text}
@@ -435,9 +439,11 @@ const CourseDetails = ({ route }) => {
                 setText(null)
               }}
             >
-              Clear
+              Cancel
             </Button>
             <Button
+              mode="contained"
+              labelStyle={{ marginHorizontal: 24 }}
               onPress={() => {
                 setSearchDialog(false)
                 setSearchText(text)
