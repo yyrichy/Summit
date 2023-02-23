@@ -12,7 +12,8 @@ import {
   View,
   Platform,
   KeyboardAvoidingView,
-  Appearance
+  Appearance,
+  Dimensions
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -25,10 +26,17 @@ import { convertGradebook } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as SecureStore from 'expo-secure-store'
-import Modal from 'react-native-modal'
 import useAsyncEffect from 'use-async-effect'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
-import { Divider, TextInput, useTheme } from 'react-native-paper'
+import {
+  Dialog,
+  Divider,
+  Portal,
+  TextInput,
+  useTheme,
+  Text as PaperText,
+  Button
+} from 'react-native-paper'
 import { toast } from '../util/Util'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
@@ -55,8 +63,8 @@ const Login = () => {
   const [isChecked, setToggleCheckBox] = useState(true)
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
 
-  const [isDistrictModalVisible, setDistrictModalVisible] = useState(false)
-  const [isQuestionsModalVisible, setQuestionsModalVisible] = useState(false)
+  const [districtDialogVisible, setDistrictDialog] = useState(false)
+  const [securityDialogVisible, setSecurityDialog] = useState(false)
 
   const [selectedDistrict, setSelectedDistrict] = useState(
     null as SchoolDistrict
@@ -178,7 +186,7 @@ const Login = () => {
 
   const onPressOpenDistrictModal = () => {
     Keyboard.dismiss()
-    setDistrictModalVisible(true)
+    setDistrictDialog(true)
   }
 
   const onSearch = async (zipcode: string) => {
@@ -211,108 +219,89 @@ const Login = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Modal
-        isVisible={isQuestionsModalVisible}
-        coverScreen={false}
-        onBackdropPress={() => setQuestionsModalVisible(false)}
-        animationIn={'fadeIn'}
-        animationOut={'fadeOut'}
-        backdropTransitionOutTiming={0}
-      >
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <View
-            style={[
-              styles.questions_modal,
-              {
-                marginTop: insets.top,
-                marginBottom: insets.bottom,
-                backgroundColor: theme.colors.surface
-              }
-            ]}
-          >
-            <Text
-              style={[styles.questions_text, { color: theme.colors.onSurface }]}
-            >
+      <Portal>
+        <Dialog
+          visible={securityDialogVisible}
+          onDismiss={() => setSecurityDialog(false)}
+          style={{ backgroundColor: theme.colors.surface }}
+        >
+          <Dialog.Title>Security/Privacy</Dialog.Title>
+          <Dialog.Content>
+            <PaperText variant="bodyMedium">
               Your username and password are the same as your school's
               StudentVue website.{'\n\n'}We do not collect your personal
               information nor can we access it remotely
-            </Text>
-          </View>
-        </View>
-      </Modal>
-      <Modal
-        isVisible={isDistrictModalVisible}
-        coverScreen={false}
-        onBackdropPress={() => setDistrictModalVisible(false)}
-        animationIn={'fadeIn'}
-        animationOut={'fadeOut'}
-        backdropTransitionOutTiming={0}
-      >
-        <View
-          style={[
-            styles.modal,
-            {
-              marginTop: insets.top,
-              marginBottom: insets.bottom,
-              paddingTop: 16,
-              backgroundColor: theme.colors.surface
-            }
-          ]}
+            </PaperText>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setSecurityDialog(false)}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+      <Portal>
+        <Dialog
+          visible={districtDialogVisible}
+          onDismiss={() => setDistrictDialog(false)}
+          style={{
+            backgroundColor: theme.colors.surface,
+            marginTop: Math.max(insets.top, 20),
+            maxHeight:
+              Dimensions.get('window').height - insets.top - insets.bottom - 40,
+            marginBottom: Math.max(insets.bottom, 20)
+          }}
         >
-          <TextInput
-            mode="outlined"
-            label="Enter school district zipcode"
-            keyboardType="number-pad"
-            returnKeyType="done"
-            onSubmitEditing={({ nativeEvent: { text } }) => onSearch(text)}
-          />
-          {districts && (
-            <FadeInFlatList
-              initialDelay={0}
-              durationPerItem={300}
-              parallelItems={5}
-              itemsToFadeIn={20}
-              data={districts}
-              keyExtractor={(item) => item.name}
-              renderItem={({ item }) => {
-                return (
-                  <District
-                    onPress={() => {
-                      setDistrictModalVisible(false)
-                      setSelectedDistrict(item)
-                    }}
-                    item={item}
-                    selected={
-                      selectedDistrict && selectedDistrict.name === item.name
-                    }
-                  />
-                )
-              }}
-              style={{ flexGrow: 0 }}
-              contentContainerStyle={{ flexGrow: 0, marginTop: 15 }}
-              ItemSeparatorComponent={Seperator}
-              ListEmptyComponent={
-                <Text
-                  style={{
-                    fontFamily: 'Inter_400Regular',
-                    fontSize: 14
-                  }}
-                >
-                  No school districts found
-                </Text>
-              }
+          <Dialog.Title>Choose School District</Dialog.Title>
+          <Dialog.ScrollArea style={{ borderColor: theme.colors.surface }}>
+            <TextInput
+              mode="outlined"
+              label="Enter school district zipcode"
+              keyboardType="number-pad"
+              returnKeyType="done"
+              onSubmitEditing={({ nativeEvent: { text } }) => onSearch(text)}
             />
-          )}
-          {isLoadingDistricts && (
-            <ActivityIndicator
-              color={Colors.secondary}
-              animating={true}
-              size="large"
-              style={{ marginTop: 20 }}
-            />
-          )}
-        </View>
-      </Modal>
+            {districts && (
+              <FadeInFlatList
+                initialDelay={0}
+                durationPerItem={300}
+                parallelItems={5}
+                itemsToFadeIn={20}
+                data={districts}
+                keyExtractor={(item) => item.name}
+                renderItem={({ item }) => {
+                  return (
+                    <District
+                      onPress={() => {
+                        setDistrictDialog(false)
+                        setSelectedDistrict(item)
+                      }}
+                      item={item}
+                      selected={
+                        selectedDistrict && selectedDistrict.name === item.name
+                      }
+                    />
+                  )
+                }}
+                style={{ flexGrow: 0 }}
+                contentContainerStyle={{ flexGrow: 0, marginTop: 15 }}
+                ItemSeparatorComponent={Seperator}
+                ListEmptyComponent={
+                  <PaperText variant="bodyMedium">
+                    No school districts found
+                  </PaperText>
+                }
+              />
+            )}
+            {isLoadingDistricts && (
+              <ActivityIndicator
+                color={Colors.secondary}
+                animating={true}
+                size="large"
+                style={{ marginTop: 20 }}
+              />
+            )}
+          </Dialog.ScrollArea>
+        </Dialog>
+      </Portal>
       <ImageBackground
         source={
           theme.dark
@@ -352,7 +341,7 @@ const Login = () => {
           <View>
             <TouchableOpacity
               style={styles.questions_button}
-              onPress={() => setQuestionsModalVisible(true)}
+              onPress={() => setSecurityDialog(true)}
             >
               <Text
                 style={[
@@ -553,23 +542,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1
   },
-  modal: {
-    alignSelf: 'center',
-    borderRadius: 20,
-    padding: 20,
-    width: 350
-  },
   questions_button: {
     height: 48,
     alignItems: 'center',
     padding: 10,
     justifyContent: 'flex-end',
     alignSelf: 'center'
-  },
-  questions_modal: {
-    padding: 20,
-    borderRadius: 20,
-    maxWidth: 350
   },
   questions_text: {
     fontFamily: 'Inter_400Regular',

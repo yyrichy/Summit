@@ -17,13 +17,14 @@ import {
   calculateMarkColor,
   parseCourseName
 } from '../gradebook/GradeUtil'
-import Modal from 'react-native-modal'
 import { Colors } from '../colors/Colors'
 import {
   Appbar,
   Button,
   Chip,
+  Dialog,
   FAB,
+  Portal,
   ProgressBar,
   TextInput,
   useTheme
@@ -32,7 +33,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { isNumber, round } from '../util/Util'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
-import { onOpen, Picker } from 'react-native-actions-sheet-picker'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { palette } from '../theme/colors'
 
@@ -43,12 +43,12 @@ const CourseDetails = ({ route }) => {
   const { marks, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(route.params.title)
 
-  const [searchModalVisible, setSearchModal] = useState(false)
+  const [searchDialogVisible, setSearchDialog] = useState(false)
   const [text, setText] = useState(undefined)
   const [searchText, setSearchText] = useState(undefined)
-  const [infoModalVisible, setInfoModal] = useState(false)
-  const [assignmentModalVisible, setAssignmentModal] = useState(false)
-  const [category, setCategory] = useState(
+  const [infoDialogVisible, setInfoDialog] = useState(false)
+  const [assignmentDialogVisible, setAssignmentDialog] = useState(false)
+  const [assignmentCategory, setAssignmentCategory] = useState(
     marks.courses.get(course.name).categories.values().next().value?.name
   )
   const [points, setPoints] = useState('')
@@ -76,11 +76,11 @@ const CourseDetails = ({ route }) => {
   }, [])
 
   useEffect(() => {
-    if (assignmentModalVisible) {
+    if (assignmentDialogVisible) {
       setPoints('')
       setTotal('')
     }
-  }, [assignmentModalVisible])
+  }, [assignmentDialogVisible])
 
   useEffect(() => {
     const backAction = () => {
@@ -99,12 +99,12 @@ const CourseDetails = ({ route }) => {
       addAssignment(
         marks,
         course,
-        category,
+        assignmentCategory,
         parseFloat(points),
         parseFloat(total)
       )
     )
-    setAssignmentModal(false)
+    setAssignmentDialog(false)
   }
 
   return (
@@ -116,13 +116,6 @@ const CourseDetails = ({ route }) => {
           : theme.colors.elevation.level1
       }}
     >
-      <Picker
-        id="categoryPicker"
-        data={[...course.categories.values()]}
-        searchable={false}
-        label="Select Marking Period"
-        setSelected={(category) => setCategory(category.name)}
-      />
       <Appbar.Header
         style={{
           backgroundColor: theme.dark
@@ -137,10 +130,10 @@ const CourseDetails = ({ route }) => {
             alignSelf: 'flex-start'
           }}
         />
-        <Appbar.Action icon="magnify" onPress={() => setSearchModal(true)} />
+        <Appbar.Action icon="magnify" onPress={() => setSearchDialog(true)} />
         <Appbar.Action
           icon="information-outline"
-          onPress={() => setInfoModal(true)}
+          onPress={() => setInfoDialog(true)}
         />
       </Appbar.Header>
       <View style={styles.course_info_container}>
@@ -285,7 +278,7 @@ const CourseDetails = ({ route }) => {
         {course.categories.size > 0 && (
           <FAB
             icon={'plus'}
-            onPress={() => setAssignmentModal(true)}
+            onPress={() => setAssignmentDialog(true)}
             variant={'primary'}
             style={{
               bottom: 16,
@@ -303,196 +296,161 @@ const CourseDetails = ({ route }) => {
           />
         </View>
       )}
-      <Modal
-        isVisible={assignmentModalVisible}
-        coverScreen={false}
-        onBackdropPress={() => setAssignmentModal(false)}
-        animationIn={'fadeIn'}
-        animationOut={'fadeOut'}
-        animationInTiming={150}
-        animationOutTiming={150}
-        backdropTransitionOutTiming={0}
-      >
-        <View style={[styles.modal, { backgroundColor: theme.colors.surface }]}>
-          <View style={styles.points_input_container}>
-            <TextInput
-              mode="outlined"
-              returnKeyType={'next'}
-              keyboardType="decimal-pad"
-              autoComplete="off"
-              onChangeText={(t) => {
-                if (isNumber(t) || t === '') setPoints(t)
-              }}
-              style={styles.input}
-              blurOnSubmit={false}
-            />
-            <TextInput
-              mode="outlined"
-              keyboardType="decimal-pad"
-              autoComplete="off"
-              onChangeText={(t) => {
-                if (isNumber(t) || t === '') setTotal(t)
-              }}
-              style={[styles.input, { marginLeft: 20 }]}
-            />
-          </View>
-          <Chip
-            mode="outlined"
-            style={{
-              height: 32,
-              alignSelf: 'flex-start',
-              marginBottom: 15,
-              marginRight: 20
-            }}
-            onPress={() => onOpen('categoryPicker')}
-            icon="chevron-down"
-            textStyle={{
-              marginTop: 5
-            }}
-          >
-            {category}
-          </Chip>
-          <View style={{ width: '100%' }}>
+      <Portal>
+        <Dialog
+          visible={assignmentDialogVisible}
+          onDismiss={() => setAssignmentDialog(false)}
+          style={{ backgroundColor: theme.colors.surface }}
+        >
+          <Dialog.Content>
+            <View style={styles.points_input_container}>
+              <TextInput
+                label="Score"
+                keyboardType="decimal-pad"
+                autoComplete="off"
+                onChangeText={(t) => {
+                  if (isNumber(t) || t === '') setPoints(t)
+                }}
+                style={styles.input}
+                blurOnSubmit={false}
+              />
+              <TextInput
+                label="Total"
+                keyboardType="decimal-pad"
+                autoComplete="off"
+                onChangeText={(t) => {
+                  if (isNumber(t) || t === '') setTotal(t)
+                }}
+                style={[styles.input, { marginLeft: 20 }]}
+              />
+            </View>
+            <View style={{ height: 32 }}>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                horizontal
+                data={[...course.categories.values()]}
+                renderItem={({ item }) => {
+                  const selected = assignmentCategory === item.name
+                  return (
+                    <Chip
+                      selected={selected}
+                      mode={'flat'}
+                      style={{
+                        marginRight: 16,
+                        height: 32,
+                        backgroundColor: selected
+                          ? theme.colors.secondaryContainer
+                          : theme.colors.surfaceVariant
+                      }}
+                      onPress={() => {
+                        setAssignmentCategory(item.name)
+                      }}
+                      textStyle={{
+                        marginTop: 5
+                      }}
+                    >
+                      {item.name}
+                    </Chip>
+                  )
+                }}
+                keyExtractor={(item) => item.name}
+              />
+            </View>
+          </Dialog.Content>
+          <Dialog.Actions>
             <Button mode="contained" onPress={add}>
               Add Assignment
             </Button>
-          </View>
-        </View>
-      </Modal>
-      <Modal
-        isVisible={infoModalVisible}
-        coverScreen={false}
-        onBackdropPress={() => setInfoModal(false)}
-        animationIn={'fadeIn'}
-        animationOut={'fadeOut'}
-        animationInTiming={150}
-        animationOutTiming={150}
-        backdropTransitionOutTiming={0}
-      >
-        <View
-          style={[styles.info_modal, { backgroundColor: theme.colors.surface }]}
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+      <Portal>
+        <Dialog
+          visible={infoDialogVisible}
+          onDismiss={() => setInfoDialog(false)}
+          style={{ backgroundColor: theme.colors.surface }}
         >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={[
-                styles.info_modal_course_title,
-                { color: theme.colors.onSurfaceVariant }
-              ]}
-            >
-              {course.name}
-            </Text>
-            <View
-              style={{
-                alignSelf: 'flex-start',
-                marginLeft: 10
-              }}
-            >
-              <MaterialCommunityIcons.Button
-                name="close"
-                backgroundColor="transparent"
-                iconStyle={{
-                  color: theme.colors.onSurfaceVariant,
-                  alignSelf: 'flex-end'
-                }}
-                style={{
-                  padding: 0,
-                  marginRight: -10
-                }}
-                underlayColor="none"
-                size={24}
-                onPress={() => setInfoModal(false)}
+          <Dialog.Title>{course.name}</Dialog.Title>
+          <Dialog.Content>
+            <View style={styles.property_container}>
+              <MaterialCommunityIcons
+                name="account-circle-outline"
+                size={20}
+                color={Colors.secondary}
               />
+              <Text style={styles.property_text}>{course.teacher.name}</Text>
             </View>
-          </View>
-          <View style={styles.property_container}>
-            <MaterialCommunityIcons
-              name="account-circle-outline"
-              size={20}
-              color={Colors.secondary}
-            />
-            <Text style={styles.property_text}>{course.teacher.name}</Text>
-          </View>
-          <View style={styles.property_container}>
-            <MaterialCommunityIcons
-              name="email-outline"
-              size={20}
-              color={Colors.secondary}
-            />
-            <Text style={styles.property_text}>{course.teacher.email}</Text>
-          </View>
-          <View style={styles.property_container}>
-            <MaterialCommunityIcons
-              name="map-marker-outline"
-              size={20}
-              color={Colors.secondary}
-            />
-            <Text style={styles.property_text}>Room {course.room}</Text>
-          </View>
-          <View style={styles.property_container}>
-            <MaterialCommunityIcons
-              name="calendar-outline"
-              size={20}
-              color={Colors.secondary}
-            />
-            <Text style={styles.property_text}>
-              {marks.reportingPeriod.name}
-            </Text>
-          </View>
-        </View>
-      </Modal>
-      <Modal
-        isVisible={searchModalVisible}
-        coverScreen={false}
-        onBackdropPress={() => setSearchModal(false)}
-        animationIn={'fadeIn'}
-        animationOut={'fadeOut'}
-        animationInTiming={150}
-        animationOutTiming={150}
-        backdropTransitionOutTiming={0}
-      >
-        <View
-          style={[styles.info_modal, { backgroundColor: theme.colors.surface }]}
+            <View style={styles.property_container}>
+              <MaterialCommunityIcons
+                name="email-outline"
+                size={20}
+                color={Colors.secondary}
+              />
+              <Text style={styles.property_text}>{course.teacher.email}</Text>
+            </View>
+            <View style={styles.property_container}>
+              <MaterialCommunityIcons
+                name="map-marker-outline"
+                size={20}
+                color={Colors.secondary}
+              />
+              <Text style={styles.property_text}>Room {course.room}</Text>
+            </View>
+            <View style={styles.property_container}>
+              <MaterialCommunityIcons
+                name="calendar-outline"
+                size={20}
+                color={Colors.secondary}
+              />
+              <Text style={styles.property_text}>
+                {marks.reportingPeriod.name}
+              </Text>
+            </View>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setInfoDialog(false)}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+      <Portal>
+        <Dialog
+          visible={searchDialogVisible}
+          onDismiss={() => setSearchDialog(false)}
+          style={{ backgroundColor: theme.colors.surface }}
         >
-          <TextInput
-            mode="outlined"
-            autoCapitalize="none"
-            style={{
-              marginBottom: 15
-            }}
-            label="Enter assignment name"
-            onChangeText={(text) => setText(text)}
-            value={text}
-            placeholderTextColor={Colors.medium_gray}
-          />
-          <View style={{ flexDirection: 'row' }}>
-            <Button
-              mode="contained"
-              onPress={() => {
-                setSearchModal(false)
-                setSearchText(text)
-              }}
-            >
-              Search
-            </Button>
+          <Dialog.Title>Search Assignments</Dialog.Title>
+          <Dialog.Content>
+            <TextInput
+              mode="outlined"
+              autoCapitalize="none"
+              label="Enter assignment name"
+              onChangeText={(text) => setText(text)}
+              value={text}
+              placeholderTextColor={Colors.medium_gray}
+            />
+          </Dialog.Content>
+          <Dialog.Actions>
             <Button
               onPress={() => {
-                setSearchModal(false)
+                setSearchDialog(false)
                 setSearchText(null)
                 setText(null)
               }}
             >
               Clear
             </Button>
-          </View>
-        </View>
-      </Modal>
+            <Button
+              mode="contained"
+              onPress={() => {
+                setSearchDialog(false)
+                setSearchText(text)
+              }}
+            >
+              Search
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   )
 }
@@ -500,22 +458,7 @@ const CourseDetails = ({ route }) => {
 const styles = StyleSheet.create({
   input: {
     flex: 1,
-    alignItems: 'center',
     fontSize: 28
-  },
-  modal: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    backgroundColor: Colors.white,
-    borderRadius: 20,
-    width: 300,
-    padding: 20
-  },
-  info_modal: {
-    alignSelf: 'center',
-    borderRadius: 20,
-    width: 300,
-    padding: 20
   },
   course_name: {
     fontSize: 20,
@@ -589,16 +532,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15
-  },
-  dash: {
-    fontSize: 48,
-    marginHorizontal: 20,
-    fontFamily: 'Inter_200ExtraLight'
-  },
-  info_modal_course_title: {
-    fontFamily: 'Montserrat_500Medium',
-    fontSize: 16,
-    flex: 1
   },
   property_container: {
     flexDirection: 'row',
