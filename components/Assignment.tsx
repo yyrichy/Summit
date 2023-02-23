@@ -9,12 +9,13 @@ import {
   StyleProp,
   ViewStyle,
   UIManager,
-  Animated as ReactNativeAnimated
+  Animated as ReactNativeAnimated,
+  GestureResponderEvent
 } from 'react-native'
 import {
   calculateMarkColor,
   updatePoints,
-  deleteAssignment,
+  deleteAssignment
 } from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
@@ -34,7 +35,7 @@ type Props = {
   courseName: string
   name: string
   style?: StyleProp<ViewStyle>
-  onPress?: any
+  onPress?: (event: GestureResponderEvent) => void
 }
 
 if (

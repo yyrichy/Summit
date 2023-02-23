@@ -5,11 +5,12 @@ import {
   View,
   TouchableOpacity,
   StyleProp,
-  ViewStyle
+  ViewStyle,
+  GestureResponderEvent
 } from 'react-native'
 
 type Props = {
-  onPress: any
+  onPress: (event: GestureResponderEvent) => void
   text: string
   backgroundColor: string
   textColor: string

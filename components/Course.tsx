@@ -1,5 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  GestureResponderEvent
+} from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import {
@@ -11,7 +17,7 @@ import { round } from '../util/Util'
 
 type Props = {
   mark: string
-  onPress: any
+  onPress: (event: GestureResponderEvent) => void
   period: number
   name: string
   teacher: string

@@ -1,12 +1,11 @@
 import React, { memo } from 'react'
-import { TouchableOpacity, Text } from 'react-native'
+import { TouchableOpacity, Text, GestureResponderEvent } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
-import { Colors } from '../colors/Colors'
 
 type Props = {
   selected: boolean
-  onPress: any
+  onPress: (event: GestureResponderEvent) => void
   item: SchoolDistrict
 }
 

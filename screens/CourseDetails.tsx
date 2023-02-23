@@ -358,9 +358,7 @@ const CourseDetails = ({ route }) => {
             </View>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button mode="contained" onPress={add}>
-              Add Assignment
-            </Button>
+            <Button onPress={add}>Add Assignment</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -440,7 +438,6 @@ const CourseDetails = ({ route }) => {
               Clear
             </Button>
             <Button
-              mode="contained"
               onPress={() => {
                 setSearchDialog(false)
                 setSearchText(text)

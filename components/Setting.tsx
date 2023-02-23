@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'
+import { TouchableOpacity, Text, StyleSheet, View, GestureResponderEvent } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import { palette } from '../theme/colors'
@@ -7,7 +7,7 @@ import { palette } from '../theme/colors'
 type Props = {
   title: string
   description?: string
-  onPress?: any
+  onPress?: (event: GestureResponderEvent) => void
   position: 'top' | 'middle' | 'bottom' | 'single'
   children?: any
 }

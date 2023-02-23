@@ -225,16 +225,18 @@ const Login = () => {
           onDismiss={() => setSecurityDialog(false)}
           style={{ backgroundColor: theme.colors.surface }}
         >
-          <Dialog.Title>Security/Privacy</Dialog.Title>
+          <Dialog.Icon icon="shield-check-outline" />
+          <Dialog.Title style={{ textAlign: 'center' }}>
+            Security/Privacy
+          </Dialog.Title>
           <Dialog.Content>
             <PaperText variant="bodyMedium">
-              Your username and password are the same as your school's
-              StudentVue website.{'\n\n'}We do not collect your personal
-              information nor can we access it remotely
+              We do not collect your login information. We cannot access your
+              personal information remotely.
             </PaperText>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setSecurityDialog(false)}>Done</Button>
+            <Button onPress={() => setSecurityDialog(false)}>Close</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -349,7 +351,7 @@ const Login = () => {
                   { color: theme.colors.onSurface }
                 ]}
               >
-                Questions/Concerns
+                Security/Privacy
               </Text>
             </TouchableOpacity>
             <TextInput
@@ -371,9 +373,7 @@ const Login = () => {
               style={[styles.input, { width: 250 }]}
               returnKeyType="next"
               ref={refInput}
-              onSubmitEditing={() => {
-                onPressOpenDistrictModal()
-              }}
+              onSubmitEditing={onPressOpenDistrictModal}
               blurOnSubmit={false}
               right={
                 <TextInput.Icon
@@ -388,7 +388,7 @@ const Login = () => {
                 styles.districts_button,
                 { borderColor: theme.colors.outline }
               ]}
-              onPress={async () => onPressOpenDistrictModal()}
+              onPress={onPressOpenDistrictModal}
             >
               <Text
                 style={[
@@ -435,9 +435,7 @@ const Login = () => {
               </Text>
             </View>
             <CustomButton
-              onPress={() => {
-                if (!isLoading) onLogin()
-              }}
+              onPress={onLogin}
               text="Login"
               backgroundColor={
                 !isLoading ? Colors.navy : 'rgba(100, 100, 100, 0.6)'

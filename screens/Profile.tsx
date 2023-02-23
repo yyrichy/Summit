@@ -140,6 +140,18 @@ const Profile = () => {
     } catch (e) {}
   }
 
+  const deleteLoginInfo = async () => {
+    try {
+      await SecureStore.deleteItemAsync('username')
+      await SecureStore.deleteItemAsync('password')
+      await SecureStore.deleteItemAsync('district')
+    } catch (e) {
+      Alert.alert('Error deleting login info')
+      return
+    }
+    toast('Login info successfully deleted', theme.dark)
+  }
+
   if (!studentInfo) {
     return (
       <View style={{ flex: 1 }}>
@@ -361,7 +373,7 @@ const Profile = () => {
           <Seperator />
           <Setting
             title="Delete Login Info"
-            onPress={() => deleteLoginInfo(theme.dark)}
+            onPress={deleteLoginInfo}
             position="middle"
             description="Deletes saved username and password from device"
           >
@@ -551,18 +563,6 @@ const Seperator = () => {
       }}
     />
   )
-}
-
-const deleteLoginInfo = async (dark: boolean) => {
-  try {
-    await SecureStore.deleteItemAsync('username')
-    await SecureStore.deleteItemAsync('password')
-    await SecureStore.deleteItemAsync('district')
-  } catch (e) {
-    Alert.alert('Error deleting login info')
-    return
-  }
-  toast('Login info successfully deleted', dark)
 }
 
 export default Profile

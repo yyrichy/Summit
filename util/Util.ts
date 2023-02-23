@@ -1,5 +1,4 @@
 import { format, isBefore, isToday, isTomorrow, isYesterday } from 'date-fns'
-import { useTheme } from 'react-native-paper'
 import Toast from 'react-native-root-toast'
 import { Colors } from '../colors/Colors'
 

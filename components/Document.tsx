@@ -5,7 +5,8 @@ import {
   Text,
   TouchableOpacity,
   StyleProp,
-  ViewStyle
+  ViewStyle,
+  GestureResponderEvent
 } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
@@ -14,7 +15,7 @@ type Props = {
   name: string
   type: string
   date: string
-  onPress: any
+  onPress: (event: GestureResponderEvent) => void
   style?: StyleProp<ViewStyle>
 }
 
