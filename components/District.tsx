@@ -15,13 +15,15 @@ const District: React.FC<Props> = ({ item, onPress, selected }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={
+      style={[
+        { minHeight: 48, justifyContent: 'center' },
         selected && {
           backgroundColor: theme.colors.surfaceVariant,
-          padding: 8,
+          padding: 12,
+          marginVertical: 8,
           borderRadius: 5
         }
-      }
+      ]}
     >
       <Text
         style={{

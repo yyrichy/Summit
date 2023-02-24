@@ -284,7 +284,7 @@ const Login = () => {
                   )
                 }}
                 style={{ flexGrow: 0 }}
-                contentContainerStyle={{ flexGrow: 0, marginTop: 15 }}
+                contentContainerStyle={{ flexGrow: 0, marginTop: 12 }}
                 ItemSeparatorComponent={Seperator}
                 ListEmptyComponent={
                   <PaperText variant="bodyMedium">
@@ -527,7 +527,7 @@ const Seperator = () => {
   return (
     <Divider
       style={{
-        marginVertical: 8
+        marginVertical: 4
       }}
       bold
     />

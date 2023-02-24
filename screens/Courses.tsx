@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import AppContext from '../contexts/AppContext'
 import {
   StyleSheet,
@@ -15,12 +15,18 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { Picker, onOpen } from 'react-native-actions-sheet-picker'
-import { IconButton, useTheme } from 'react-native-paper'
+import { IconButton, useTheme, Divider } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
 import { palette } from '../theme/colors'
+import ActionSheet, {
+  // @ts-ignore
+  useScrollHandlers,
+  // @ts-ignore
+  ActionSheetRef
+} from 'react-native-actions-sheet'
+import { FlatList } from 'react-native-gesture-handler'
 
 const Courses = ({ navigation }) => {
   const theme = useTheme()
@@ -30,6 +36,8 @@ const Courses = ({ navigation }) => {
   useEffect(() => {
     onRefresh()
   }, [selected])
+  const actionSheetRef = useRef<ActionSheetRef>(null)
+  const scrollHandlers = useScrollHandlers('scroll-view1', actionSheetRef)
 
   useEffect(() => {
     registerForPushNotificationsAsync()
@@ -69,20 +77,60 @@ const Courses = ({ navigation }) => {
       ]}
       edges={['top', 'left', 'right']}
     >
-      <Picker
-        id="mp"
-        data={marks.reportingPeriods}
-        searchable={false}
-        label="Select Marking Period"
-        setSelected={setSelected}
-      />
+      <ActionSheet
+        ref={actionSheetRef}
+        gestureEnabled={true}
+        indicatorStyle={{
+          marginVertical: 22,
+          backgroundColor: theme.colors.onSurfaceVariant
+        }}
+        containerStyle={{ backgroundColor: theme.colors.surface }}
+      >
+        <FlatList
+          {...scrollHandlers}
+          data={marks.reportingPeriods}
+          style={{
+            paddingHorizontal: 24
+          }}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => {
+                setSelected(item)
+                actionSheetRef.current?.hide()
+              }}
+              style={[
+                { minHeight: 48, justifyContent: 'center' },
+                selected.name === item.name && {
+                  backgroundColor: theme.colors.surfaceVariant,
+                  borderRadius: 8,
+                  marginVertical: 8,
+                  padding: 12
+                }
+              ]}
+            >
+              <Text
+                style={{
+                  fontFamily: 'Inter_500Medium',
+                  fontSize: 24,
+                  color: theme.colors.onSurface
+                }}
+              >
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+          ItemSeparatorComponent={() => {
+            return <Divider style={{ marginVertical: 4 }} bold />
+          }}
+        />
+      </ActionSheet>
       <View style={styles.marking_period_info_container}>
         <TouchableOpacity
           style={[
             styles.marking_period_dropdown_button,
             { backgroundColor: theme.colors.surfaceVariant }
           ]}
-          onPress={() => onOpen('mp')}
+          onPress={() => actionSheetRef.current?.show()}
         >
           <Text
             style={[
