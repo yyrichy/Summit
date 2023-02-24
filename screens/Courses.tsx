@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import Course from '../components/Course'
 import { convertGradebook } from '../gradebook/GradeUtil'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -30,6 +30,7 @@ import { FlatList } from 'react-native-gesture-handler'
 
 const Courses = ({ navigation }) => {
   const theme = useTheme()
+  const insets = useSafeAreaInsets()
   const { client, marks, setMarks } = useContext(AppContext)
   const [selected, setSelected] = useState(marks.reportingPeriod)
   const endDate = selected.date.end
@@ -84,7 +85,10 @@ const Courses = ({ navigation }) => {
           marginVertical: 22,
           backgroundColor: theme.colors.onSurfaceVariant
         }}
-        containerStyle={{ backgroundColor: theme.colors.surface }}
+        containerStyle={{
+          backgroundColor: theme.colors.surface,
+          paddingBottom: insets.bottom
+        }}
       >
         <FlatList
           {...scrollHandlers}

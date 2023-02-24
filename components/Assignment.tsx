@@ -135,7 +135,8 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 }
               : {
                   borderColor: theme.colors.outlineVariant
-                }
+                },
+            { backgroundColor: theme.colors.surface }
           ]}
           onPress={transition}
         >
