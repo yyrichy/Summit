@@ -1,7 +1,6 @@
 import { MD3Theme } from 'react-native-paper'
 import color from 'color'
 import configureFonts from './fonts'
-import { Colors } from '../colors/Colors'
 import { palette, opacity } from './colors'
 
 export const MD3LightTheme: MD3Theme = {
