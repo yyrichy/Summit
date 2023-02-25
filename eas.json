@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 0.54.1"
+    "version": ">= 0.54.1",
+    "promptToConfigurePushNotifications": false
   },
   "build": {
     "development": {
@@ -15,7 +16,11 @@
         "buildType": "apk"
       }
     },
-    "production": {}
+    "production": {
+      "ios": {
+        "resourceClass": "m1-medium"
+      }
+    }
   },
   "submit": {
     "production": {
