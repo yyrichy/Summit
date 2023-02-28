@@ -27,8 +27,7 @@ const dateRelativeToToday = (date: Date) => {
 
   // If one week or more in past/future
   if (Math.abs(date.getTime() - today.getTime()) / (1000 * 3600 * 24) > 6)
-    return date.toLocaleDateString()
-
+    return format(date, 'M/dd/yy')
   if (isBefore(date, today)) {
     return `Past ${format(date, `EEEE`)}`
   } else {

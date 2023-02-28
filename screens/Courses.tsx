@@ -27,6 +27,7 @@ import ActionSheet, {
   ActionSheetRef
 } from 'react-native-actions-sheet'
 import { FlatList } from 'react-native-gesture-handler'
+import { format } from 'date-fns'
 
 const Courses = ({ navigation }) => {
   const theme = useTheme()
@@ -171,7 +172,7 @@ const Courses = ({ navigation }) => {
           />
           <Text style={[styles.date, { color: theme.colors.onSurface }]}>
             {' \u2022 '}
-            {endDate.toLocaleDateString()}
+            {format(endDate, 'M/dd')}
           </Text>
         </View>
       </View>

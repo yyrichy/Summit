@@ -75,7 +75,7 @@ const Documents = () => {
             <Doc
               name={(item as Document).comment}
               type={(item as Document).file.type}
-              date={(item as Document).file.date.toLocaleDateString()}
+              date={(item as Document).file.date}
               onPress={() => {
                 downloadDocument(item)
               }}

@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import React from 'react'
 import {
   StyleSheet,
@@ -14,7 +15,7 @@ import { Colors } from '../colors/Colors'
 type Props = {
   name: string
   type: string
-  date: string
+  date: Date
   onPress: (event: GestureResponderEvent) => void
   style?: StyleProp<ViewStyle>
 }
@@ -43,7 +44,7 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
           {type}
         </Text>
         <Text numberOfLines={1} style={[styles.type, { color: theme.colors.onSurface }]}>
-          {date}
+          {format(date, 'M/dd/yy')}
         </Text>
       </View>
     </TouchableOpacity>

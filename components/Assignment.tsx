@@ -26,6 +26,7 @@ import Animated, {
   LightSpeedInLeft,
   LightSpeedOutRight
 } from 'react-native-reanimated'
+import { format } from 'date-fns'
 
 type Props = {
   courseName: string
@@ -169,7 +170,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                   numberOfLines={1}
                   style={[styles.category, { color: theme.colors.onSurface, flexShrink: 1 }]}
                 >
-                  {assignment.date.due.toLocaleDateString()}
+                  {format(assignment.date.due, 'M/dd/yy')}
                 </Text>
               </View>
             </View>
