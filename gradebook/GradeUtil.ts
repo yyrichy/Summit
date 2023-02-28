@@ -196,13 +196,13 @@ const calculateMarkColor = (value: number): string => {
     case 'B':
       return '#5664fe'
     case 'C':
-      return '#AD6800'
+      return '#cfc813'
     case 'D':
-      return '#a12b2b'
+      return '#e99535'
     case 'E':
-      return '#410808'
+      return '#b53232'
     case 'F':
-      return Colors.black
+      return '#512a1f'
   }
 }
 
