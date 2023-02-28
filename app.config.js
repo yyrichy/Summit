@@ -2,7 +2,7 @@ export default {
   expo: {
     name: 'GradeHelper',
     slug: 'Summit',
-    version: '1.3.0',
+    version: '1.3.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
     platforms: ['android', 'ios'],
@@ -31,7 +31,7 @@ export default {
       },
       package: 'com.vaporys.Summit',
       softwareKeyboardLayoutMode: 'pan',
-      versionCode: 30
+      versionCode: 31
     },
     plugins: [
       [
@@ -58,6 +58,8 @@ export default {
       COURSES_BANNER_ANDROID: process.env.COURSES_BANNER_ANDROID,
       DETAILS_BANNER_IOS: process.env.DETAILS_BANNER_IOS,
       DETAILS_BANNER_ANDROID: process.env.DETAILS_BANNER_ANDROID,
+      COURSES_INTER_IOS: process.env.COURSES_INTER_IOS,
+      COURSES_INTER_ANDROID: process.env.COURSES_INTER_ANDROID,
       eas: {
         projectId: 'd59960c3-3bf2-4243-b9d3-22051792b8bc'
       }

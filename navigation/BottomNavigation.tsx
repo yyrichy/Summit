@@ -5,17 +5,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Documents from '../screens/Documents'
 import Profile from '../screens/Profile'
 import Schedule from '../screens/ScheduleNavigator'
-import AppContext from '../contexts/AppContext'
-import { useContext } from 'react'
-import { MD3DarkTheme } from '../theme/MD3DarkTheme'
-import { MD3LightTheme } from '../theme/MD3LightTheme'
 import { useTheme } from 'react-native-paper'
 import { DarkTheme } from '../theme/DarkTheme'
 
 const Tab = createMaterialBottomTabNavigator()
 
 const BottomNavigation = () => {
-  const { isDarkTheme } = useContext(AppContext)
   const theme = useTheme()
 
   return (
@@ -23,7 +18,7 @@ const BottomNavigation = () => {
       initialRouteName="Grades"
       theme={DarkTheme}
       barStyle={{
-        backgroundColor: isDarkTheme ? theme.colors.surface : theme.colors.elevation.level2
+        backgroundColor: theme.dark ? theme.colors.surface : theme.colors.elevation.level2
       }}
     >
       <Tab.Screen
