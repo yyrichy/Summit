@@ -245,14 +245,12 @@ const CourseDetails = ({ route }) => {
           />
         )}
       </View>
-      {false && (
-        <View style={{ backgroundColor: theme.colors.surface }}>
-          <BannerAd
-            androidId={Constants.expoConfig.extra.DETAILS_BANNER_ANDROID}
-            iosId={Constants.expoConfig.extra.DETAILS_BANNER_IOS}
-          />
-        </View>
-      )}
+      <View style={{ backgroundColor: theme.colors.surface }}>
+        <BannerAd
+          androidId={Constants.expoConfig.extra.DETAILS_BANNER_ANDROID}
+          iosId={Constants.expoConfig.extra.DETAILS_BANNER_IOS}
+        />
+      </View>
       <Portal>
         <Dialog
           visible={assignmentDialogVisible}
