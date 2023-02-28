@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
+import { parseScheduleCourseName } from '../gradebook/GradeUtil'
 import { formatAMPM, prependZero } from '../util/Util'
 
 type Props = {
@@ -24,7 +25,7 @@ const ScheduleComponent: React.FC<Props> = ({ name, period, teacher, start, end,
         style={[styles.course_info_container, { backgroundColor: theme.colors.surfaceVariant }]}
       >
         <Text numberOfLines={2} style={[styles.name, { color: theme.colors.onSurface }]}>
-          {name}
+          {parseScheduleCourseName(name)}
         </Text>
         <View style={styles.info_container}>
           <Text

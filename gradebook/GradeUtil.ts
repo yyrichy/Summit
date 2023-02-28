@@ -435,6 +435,13 @@ const testMarks = (): Marks => {
   return m
 }
 
+// Replace "ABC1234 " and " - ABC1234-1234(or 5)"
+const parseScheduleCourseName = (name: string) => {
+  return name
+    .replace(/[A-Z]{3}\d{4}[A-Z]?\s/g, '')
+    .replace(/\s-\s[A-Za-z]{3}\d{4}[A-Za-z]?-\d{4,5}/g, '')
+}
+
 export {
   parseCourseName,
   convertGradebook,
@@ -446,5 +453,6 @@ export {
   calculateMarkColor,
   calculateLetterGrade,
   testMarks,
-  getClassGPA
+  getClassGPA,
+  parseScheduleCourseName
 }
