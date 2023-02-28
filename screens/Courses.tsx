@@ -48,10 +48,7 @@ const Courses = ({ navigation }) => {
       return true
     }
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
 
     return () => backHandler.remove()
   }, [])
@@ -71,9 +68,7 @@ const Courses = ({ navigation }) => {
       style={[
         styles.container,
         {
-          backgroundColor: theme.dark
-            ? palette.neutralVariant10
-            : theme.colors.elevation.level1
+          backgroundColor: theme.dark ? palette.neutralVariant10 : theme.colors.elevation.level1
         }
       ]}
       edges={['top', 'left', 'right']}
@@ -161,9 +156,7 @@ const Courses = ({ navigation }) => {
       <View style={styles.date_info_container}>
         {!isNaN(marks.gpa) && (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={[styles.gpa_text, { color: theme.colors.onSurface }]}>
-              GPA
-            </Text>
+            <Text style={[styles.gpa_text, { color: theme.colors.onSurface }]}>GPA</Text>
             <Text style={[styles.gpa, { color: theme.colors.onSurface }]}>
               {' \u2022 '}
               {marks.gpa.toFixed(2)}
@@ -192,9 +185,7 @@ const Courses = ({ navigation }) => {
         ]}
       >
         {refreshing ? (
-          <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-          >
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <ActivityIndicator
               color={Colors.secondary}
               animating={true}
@@ -208,9 +199,7 @@ const Courses = ({ navigation }) => {
           </View>
         ) : (
           <FadeInFlatList
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             initialDelay={0}
             durationPerItem={300}
             parallelItems={5}

@@ -223,10 +223,7 @@ function configureV3Fonts(
 // eslint-disable-next-line no-redeclare
 export default function configureFonts(params: { isV3: false }): Fonts
 // eslint-disable-next-line no-redeclare
-export default function configureFonts(params: {
-  config?: MD2FontsConfig
-  isV3: false
-}): Fonts
+export default function configureFonts(params: { config?: MD2FontsConfig; isV3: false }): Fonts
 // eslint-disable-next-line no-redeclare
 export default function configureFonts(params?: {
   config?: Partial<MD3Type>

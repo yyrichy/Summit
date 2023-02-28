@@ -78,12 +78,4 @@ const formatAMPM = (date: Date): string => {
   return strTime
 }
 
-export {
-  toast,
-  dateRelativeToToday,
-  getOrdinal,
-  round,
-  isNumber,
-  prependZero,
-  formatAMPM
-}
+export { toast, dateRelativeToToday, getOrdinal, round, isNumber, prependZero, formatAMPM }

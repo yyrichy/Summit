@@ -121,18 +121,9 @@ const CalendarScreen = () => {
           }}
         />
       ) : (
-        <Animated.View
-          style={[
-            styles.scale_container,
-            { transform: [{ scale: scaleAnim }] }
-          ]}
-        >
+        <Animated.View style={[styles.scale_container, { transform: [{ scale: scaleAnim }] }]}>
           <Animated.View style={[styles.fadingContainer]}>
-            <MaterialCommunityIcons
-              name="calendar"
-              size={50}
-              color={theme.colors.onSurface}
-            />
+            <MaterialCommunityIcons name="calendar" size={50} color={theme.colors.onSurface} />
           </Animated.View>
         </Animated.View>
       )}

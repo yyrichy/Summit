@@ -1,13 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import AppContext from '../contexts/AppContext'
-import {
-  StyleSheet,
-  Text,
-  View,
-  RefreshControl,
-  ActivityIndicator,
-  ScrollView
-} from 'react-native'
+import { StyleSheet, Text, View, RefreshControl, ActivityIndicator, ScrollView } from 'react-native'
 import { Colors } from '../colors/Colors'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { Schedule } from 'studentvue'
@@ -63,11 +56,7 @@ const ScheduleScreen = () => {
           }}
           showsHorizontalScrollIndicator={false}
         >
-          <SegmentedButtons
-            value={value}
-            onValueChange={setValue}
-            buttons={buttons}
-          />
+          <SegmentedButtons value={value} onValueChange={setValue} buttons={buttons} />
         </ScrollView>
       </View>
     )
@@ -119,9 +108,7 @@ const ScheduleScreen = () => {
               ></ScheduleComponent>
             )}
             keyExtractor={(item) => item.name}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             contentContainerStyle={{
               paddingHorizontal: 10,
               flexGrow: 1
@@ -130,12 +117,7 @@ const ScheduleScreen = () => {
           />
         ) : (
           <View style={styles.schedule_error_container}>
-            <Text
-              style={[
-                styles.schedule_error_text,
-                { color: theme.colors.onSurface }
-              ]}
-            >
+            <Text style={[styles.schedule_error_text, { color: theme.colors.onSurface }]}>
               No schedule available for today
             </Text>
           </View>
@@ -171,9 +153,7 @@ const ScheduleScreen = () => {
             ></ScheduleComponent>
           )}
           keyExtractor={(item) => item.name}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{
             paddingHorizontal: 10,
             flexGrow: 1
@@ -182,12 +162,7 @@ const ScheduleScreen = () => {
         />
       ) : (
         <View style={styles.schedule_error_container}>
-          <Text
-            style={[
-              styles.schedule_error_text,
-              { color: theme.colors.onSurface }
-            ]}
-          >
+          <Text style={[styles.schedule_error_text, { color: theme.colors.onSurface }]}>
             {schedule.error}
           </Text>
         </View>

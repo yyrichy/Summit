@@ -12,11 +12,7 @@ import {
   Animated as ReactNativeAnimated,
   GestureResponderEvent
 } from 'react-native'
-import {
-  calculateMarkColor,
-  updatePoints,
-  deleteAssignment
-} from '../gradebook/GradeUtil'
+import { calculateMarkColor, updatePoints, deleteAssignment } from '../gradebook/GradeUtil'
 import AppContext from '../contexts/AppContext'
 import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -38,10 +34,7 @@ type Props = {
   onPress?: (event: GestureResponderEvent) => void
 }
 
-if (
-  Platform.OS === 'android' &&
-  UIManager.setLayoutAnimationEnabledExperimental
-) {
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
@@ -51,9 +44,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
   const [isDropdown, setIsDropdown] = useState(false)
   const course = marks.courses.get(courseName)
   const assignment = course.assignments.find((a) => a.name === name)
-  const pointsString = isNaN(assignment.points)
-    ? ''
-    : assignment.points.toString()
+  const pointsString = isNaN(assignment.points) ? '' : assignment.points.toString()
   const totalString = isNaN(assignment.total) ? '' : assignment.total.toString()
   const score: number = (assignment.points / assignment.total) * 100
   const hasScore: boolean = !isNaN(score)
@@ -176,10 +167,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 </Text>
                 <Text
                   numberOfLines={1}
-                  style={[
-                    styles.category,
-                    { color: theme.colors.onSurface, flexShrink: 1 }
-                  ]}
+                  style={[styles.category, { color: theme.colors.onSurface, flexShrink: 1 }]}
                 >
                   {assignment.date.due.toLocaleDateString()}
                 </Text>
@@ -204,14 +192,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                   if (isNumber(input) || input === '') update(input, 'earned')
                 }}
               />
-              <Text
-                style={[
-                  styles.dash,
-                  { color: getModifiedColor(assignment.modified) }
-                ]}
-              >
-                /
-              </Text>
+              <Text style={[styles.dash, { color: getModifiedColor(assignment.modified) }]}>/</Text>
               <TextInput
                 value={total.current}
                 placeholder={'__'}

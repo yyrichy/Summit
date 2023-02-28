@@ -57,8 +57,7 @@ const Login = () => {
   const refInput = useRef(null)
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
-  const { isDarkTheme, setClient, setMarks, setIsDarkTheme } =
-    useContext(AppContext)
+  const { isDarkTheme, setClient, setMarks, setIsDarkTheme } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setToggleCheckBox] = useState(true)
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
@@ -66,17 +65,14 @@ const Login = () => {
   const [districtDialogVisible, setDistrictDialog] = useState(false)
   const [securityDialogVisible, setSecurityDialog] = useState(false)
 
-  const [selectedDistrict, setSelectedDistrict] = useState(
-    null as SchoolDistrict
-  )
+  const [selectedDistrict, setSelectedDistrict] = useState(null as SchoolDistrict)
   const [districts, setDistricts] = useState(null as SchoolDistrict[])
   const [isLoadingDistricts, setIsLoadingDistricts] = useState(false)
 
   useAsyncEffect(async () => {
     Appearance.addChangeListener(async ({ colorScheme }) => {
       const theme = await AsyncStorage.getItem('Theme')
-      if (!theme || theme === 'device')
-        setIsDarkTheme(colorScheme === 'dark' ? true : false)
+      if (!theme || theme === 'device') setIsDarkTheme(colorScheme === 'dark' ? true : false)
     })
     savedCredentials()
 
@@ -85,10 +81,7 @@ const Login = () => {
       return true
     }
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
 
     return () => backHandler.remove()
   }, [])
@@ -193,9 +186,7 @@ const Login = () => {
     setIsLoadingDistricts(true)
     setDistricts(null)
     try {
-      const districtsFound: SchoolDistrict[] = await StudentVue.findDistricts(
-        zipcode
-      )
+      const districtsFound: SchoolDistrict[] = await StudentVue.findDistricts(zipcode)
       setIsLoadingDistricts(false)
       setDistricts(districtsFound)
     } catch (e) {
@@ -226,13 +217,11 @@ const Login = () => {
           style={{ backgroundColor: theme.colors.surface }}
         >
           <Dialog.Icon icon="shield-check-outline" />
-          <Dialog.Title style={{ textAlign: 'center' }}>
-            Security/Privacy
-          </Dialog.Title>
+          <Dialog.Title style={{ textAlign: 'center' }}>Security/Privacy</Dialog.Title>
           <Dialog.Content>
             <PaperText variant="bodyMedium">
-              We do not collect your login information. We cannot access your
-              personal information remotely.
+              We do not collect your login information. We cannot access your personal information
+              remotely.
             </PaperText>
           </Dialog.Content>
           <Dialog.Actions>
@@ -247,8 +236,7 @@ const Login = () => {
           style={{
             backgroundColor: theme.colors.surface,
             marginTop: Math.max(insets.top, 20),
-            maxHeight:
-              Dimensions.get('window').height - insets.top - insets.bottom - 40,
+            maxHeight: Dimensions.get('window').height - insets.top - insets.bottom - 40,
             marginBottom: Math.max(insets.bottom, 20)
           }}
         >
@@ -277,9 +265,7 @@ const Login = () => {
                         setSelectedDistrict(item)
                       }}
                       item={item}
-                      selected={
-                        selectedDistrict && selectedDistrict.name === item.name
-                      }
+                      selected={selectedDistrict && selectedDistrict.name === item.name}
                     />
                   )
                 }}
@@ -287,9 +273,7 @@ const Login = () => {
                 contentContainerStyle={{ flexGrow: 0, marginTop: 12 }}
                 ItemSeparatorComponent={Seperator}
                 ListEmptyComponent={
-                  <PaperText variant="bodyMedium">
-                    No school districts found
-                  </PaperText>
+                  <PaperText variant="bodyMedium">No school districts found</PaperText>
                 }
               />
             )}
@@ -317,18 +301,13 @@ const Login = () => {
         }}
       >
         <StatusBar style={isDarkTheme ? 'light' : 'dark'} />
-        <SafeAreaView
-          style={{ alignItems: 'center' }}
-          edges={['top', 'left', 'right']}
-        >
+        <SafeAreaView style={{ alignItems: 'center' }} edges={['top', 'left', 'right']}>
           <View style={styles.name_container}>
             <Text
               style={[
                 styles.name,
                 {
-                  color: theme.dark
-                    ? theme.colors.onSurfaceVariant
-                    : Colors.black
+                  color: theme.dark ? theme.colors.onSurfaceVariant : Colors.black
                 }
               ]}
             >
@@ -345,12 +324,7 @@ const Login = () => {
               style={styles.questions_button}
               onPress={() => setSecurityDialog(true)}
             >
-              <Text
-                style={[
-                  styles.questions_text,
-                  { color: theme.colors.onSurface }
-                ]}
-              >
+              <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
                 Security/Privacy
               </Text>
             </TouchableOpacity>
@@ -384,26 +358,19 @@ const Login = () => {
               }
             />
             <TouchableOpacity
-              style={[
-                styles.districts_button,
-                { borderColor: theme.colors.outline }
-              ]}
+              style={[styles.districts_button, { borderColor: theme.colors.outline }]}
               onPress={onPressOpenDistrictModal}
             >
               <Text
                 style={[
                   styles.selected_district_text,
                   {
-                    color: selectedDistrict
-                      ? theme.colors.onSurface
-                      : theme.colors.onSurfaceVariant
+                    color: selectedDistrict ? theme.colors.onSurface : theme.colors.onSurfaceVariant
                   }
                 ]}
                 numberOfLines={2}
               >
-                {selectedDistrict
-                  ? selectedDistrict.name
-                  : 'Find School District'}
+                {selectedDistrict ? selectedDistrict.name : 'Find School District'}
               </Text>
               {!selectedDistrict && (
                 <MaterialCommunityIcons
@@ -428,18 +395,12 @@ const Login = () => {
                 }}
                 disabled={isLoading}
               />
-              <Text
-                style={[styles.save_text, { color: theme.colors.onSurface }]}
-              >
-                Remember Me
-              </Text>
+              <Text style={[styles.save_text, { color: theme.colors.onSurface }]}>Remember Me</Text>
             </View>
             <CustomButton
               onPress={onLogin}
               text="Login"
-              backgroundColor={
-                !isLoading ? Colors.navy : 'rgba(100, 100, 100, 0.6)'
-              }
+              backgroundColor={!isLoading ? Colors.navy : 'rgba(100, 100, 100, 0.6)'}
               textColor={Colors.white}
               fontFamily="Inter_800ExtraBold"
               containerStyle={styles.button_container}
@@ -482,12 +443,7 @@ const Login = () => {
                   color={theme.colors.onSurfaceVariant}
                 />
               </View>
-              <Text
-                style={[
-                  styles.insta_text,
-                  { color: theme.colors.onSurfaceVariant }
-                ]}
-              >
+              <Text style={[styles.insta_text, { color: theme.colors.onSurfaceVariant }]}>
                 Richard Y
               </Text>
             </TouchableOpacity>
@@ -505,12 +461,7 @@ const Login = () => {
                   color={theme.colors.onSurfaceVariant}
                 />
               </View>
-              <Text
-                style={[
-                  styles.insta_text,
-                  { color: theme.colors.onSurfaceVariant }
-                ]}
-              >
+              <Text style={[styles.insta_text, { color: theme.colors.onSurfaceVariant }]}>
                 Karthik M
               </Text>
             </TouchableOpacity>

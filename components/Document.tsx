@@ -32,26 +32,17 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
       ]}
       onPress={onPress}
     >
-      <Text
-        numberOfLines={1}
-        style={[styles.name, { color: theme.colors.onSurface }]}
-      >
+      <Text numberOfLines={1} style={[styles.name, { color: theme.colors.onSurface }]}>
         {name}
       </Text>
       <View style={styles.info_container}>
         <Text
           numberOfLines={1}
-          style={[
-            styles.type,
-            { flex: 1, color: theme.colors.onSurface, marginRight: 10 }
-          ]}
+          style={[styles.type, { flex: 1, color: theme.colors.onSurface, marginRight: 10 }]}
         >
           {type}
         </Text>
-        <Text
-          numberOfLines={1}
-          style={[styles.type, { color: theme.colors.onSurface }]}
-        >
+        <Text numberOfLines={1} style={[styles.type, { color: theme.colors.onSurface }]}>
           {date}
         </Text>
       </View>

@@ -89,9 +89,7 @@ const Profile = () => {
         setIsDarkTheme(false)
         break
       default:
-        setIsDarkTheme(
-          Appearance.getColorScheme() === 'dark' ? 'dark' : 'light'
-        )
+        setIsDarkTheme(Appearance.getColorScheme() === 'dark' ? 'dark' : 'light')
     }
     await AsyncStorage.setItem('Theme', theme)
   }
@@ -127,10 +125,7 @@ const Profile = () => {
   }, [])
 
   const downloadSchoolPicture = async () => {
-    const fileName = `${studentInfo.student.name} School Picture.jpg`.replace(
-      / /g,
-      '_'
-    )
+    const fileName = `${studentInfo.student.name} School Picture.jpg`.replace(/ /g, '_')
     const filePath = FileSystem.documentDirectory + fileName
     try {
       await FileSystem.writeAsStringAsync(filePath, studentInfo.photo, {
@@ -182,9 +177,7 @@ const Profile = () => {
         }}
       >
         <IconButton
-          icon={({ color, size }) => (
-            <MaterialIcons name="logout" size={size} color={color} />
-          )}
+          icon={({ color, size }) => <MaterialIcons name="logout" size={size} color={color} />}
           onPress={() => navigation.navigate('Login')}
           mode="contained"
           style={{
@@ -201,16 +194,11 @@ const Profile = () => {
           }}
         />
         <View style={styles.info_container}>
-          <Text
-            numberOfLines={2}
-            style={[styles.name, { color: theme.colors.onSurface }]}
-          >
+          <Text numberOfLines={2} style={[styles.name, { color: theme.colors.onSurface }]}>
             {studentInfo.student.name}
           </Text>
           {studentInfo.currentSchool && (
-            <Text
-              style={[styles.school, { color: theme.colors.onSurfaceVariant }]}
-            >
+            <Text style={[styles.school, { color: theme.colors.onSurfaceVariant }]}>
               {studentInfo.currentSchool}
             </Text>
           )}
@@ -269,17 +257,8 @@ const Profile = () => {
         <View style={styles.property_view}>
           {studentInfo.phone && (
             <View style={styles.property_container}>
-              <MaterialCommunityIcons
-                name="phone"
-                size={20}
-                color={Colors.secondary}
-              />
-              <Text
-                style={[
-                  styles.property_text,
-                  { color: theme.colors.onSurfaceVariant }
-                ]}
-              >
+              <MaterialCommunityIcons name="phone" size={20} color={Colors.secondary} />
+              <Text style={[styles.property_text, { color: theme.colors.onSurfaceVariant }]}>
                 {studentInfo.phone}
               </Text>
             </View>
@@ -287,17 +266,8 @@ const Profile = () => {
           <Divider horizontalInset />
           {studentInfo.address && (
             <View style={styles.property_container}>
-              <MaterialCommunityIcons
-                name="home-outline"
-                size={20}
-                color={Colors.secondary}
-              />
-              <Text
-                style={[
-                  styles.property_text,
-                  { color: theme.colors.onSurfaceVariant }
-                ]}
-              >
+              <MaterialCommunityIcons name="home-outline" size={20} color={Colors.secondary} />
+              <Text style={[styles.property_text, { color: theme.colors.onSurfaceVariant }]}>
                 {studentInfo.address.replace(/&lt;br&gt;/g, ' ')}
               </Text>
             </View>
@@ -305,17 +275,8 @@ const Profile = () => {
           <Divider horizontalInset />
           {studentInfo.email && (
             <View style={styles.property_container}>
-              <MaterialCommunityIcons
-                name="email-outline"
-                size={20}
-                color={Colors.secondary}
-              />
-              <Text
-                style={[
-                  styles.property_text,
-                  { color: theme.colors.onSurfaceVariant }
-                ]}
-              >
+              <MaterialCommunityIcons name="email-outline" size={20} color={Colors.secondary} />
+              <Text style={[styles.property_text, { color: theme.colors.onSurfaceVariant }]}>
                 {studentInfo.email}
               </Text>
             </View>
@@ -325,9 +286,7 @@ const Profile = () => {
           style={[
             styles.settings_container,
             {
-              backgroundColor: theme.dark
-                ? palette.neutralVariant10
-                : theme.colors.surfaceVariant,
+              backgroundColor: theme.dark ? palette.neutralVariant10 : theme.colors.surfaceVariant,
               shadowColor: theme.colors.shadow
             }
           ]}
@@ -343,12 +302,7 @@ const Profile = () => {
               color={theme.colors.onPrimaryContainer}
             />
           </Setting>
-          <Text
-            style={[
-              styles.settings_title,
-              { color: theme.colors.onSurfaceVariant }
-            ]}
-          >
+          <Text style={[styles.settings_title, { color: theme.colors.onSurfaceVariant }]}>
             Settings
           </Text>
           <Setting
@@ -365,10 +319,7 @@ const Profile = () => {
           </Setting>
           <Seperator />
           <Setting title="Disable Reminder" position="middle">
-            <Switch
-              onChange={toggleSwitch}
-              defaultChecked={defaultSwitchOn}
-            ></Switch>
+            <Switch onChange={toggleSwitch} defaultChecked={defaultSwitchOn}></Switch>
           </Setting>
           <Seperator />
           <Setting

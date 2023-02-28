@@ -23,9 +23,7 @@ const BottomNavigation = () => {
       initialRouteName="Grades"
       theme={DarkTheme}
       barStyle={{
-        backgroundColor: isDarkTheme
-          ? theme.colors.surface
-          : theme.colors.elevation.level2
+        backgroundColor: isDarkTheme ? theme.colors.surface : theme.colors.elevation.level2
       }}
     >
       <Tab.Screen

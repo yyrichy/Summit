@@ -13,14 +13,7 @@ type Props = {
   room?: string
 }
 
-const ScheduleComponent: React.FC<Props> = ({
-  name,
-  period,
-  teacher,
-  start,
-  end,
-  room
-}) => {
+const ScheduleComponent: React.FC<Props> = ({ name, period, teacher, start, end, room }) => {
   const theme = useTheme()
   return (
     <View style={styles.container}>
@@ -28,33 +21,21 @@ const ScheduleComponent: React.FC<Props> = ({
         {prependZero(period)}
       </Text>
       <View
-        style={[
-          styles.course_info_container,
-          { backgroundColor: theme.colors.surfaceVariant }
-        ]}
+        style={[styles.course_info_container, { backgroundColor: theme.colors.surfaceVariant }]}
       >
-        <Text
-          numberOfLines={2}
-          style={[styles.name, { color: theme.colors.onSurface }]}
-        >
+        <Text numberOfLines={2} style={[styles.name, { color: theme.colors.onSurface }]}>
           {name}
         </Text>
         <View style={styles.info_container}>
           <Text
             numberOfLines={1}
-            style={[
-              styles.type,
-              { flex: 1, color: theme.colors.onSurfaceVariant }
-            ]}
+            style={[styles.type, { flex: 1, color: theme.colors.onSurfaceVariant }]}
           >
             {teacher}
             {room && ` \u2022 ${room}`}
           </Text>
           {start && end && (
-            <Text
-              numberOfLines={1}
-              style={[styles.type, { color: theme.colors.onSurfaceVariant }]}
-            >
+            <Text numberOfLines={1} style={[styles.type, { color: theme.colors.onSurfaceVariant }]}>
               {formatAMPM(start)} - {formatAMPM(end)}
             </Text>
           )}

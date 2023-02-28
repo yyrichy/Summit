@@ -12,13 +12,7 @@ type Props = {
   children?: any
 }
 
-const Setting: React.FC<Props> = ({
-  title,
-  onPress,
-  position,
-  description,
-  children
-}: Props) => {
+const Setting: React.FC<Props> = ({ title, onPress, position, description, children }: Props) => {
   const theme = useTheme()
 
   return (
@@ -27,26 +21,18 @@ const Setting: React.FC<Props> = ({
       style={[
         styles['container_' + position],
         {
-          backgroundColor: theme.dark
-            ? theme.colors.primaryContainer
-            : theme.colors.surface
+          backgroundColor: theme.dark ? theme.colors.primaryContainer : theme.colors.surface
         }
       ]}
     >
       <View style={{ flex: 1, marginRight: 18 }}>
-        <Text
-          style={[styles.title, { color: theme.colors.onPrimaryContainer }]}
-        >
-          {title}
-        </Text>
+        <Text style={[styles.title, { color: theme.colors.onPrimaryContainer }]}>{title}</Text>
         {description && (
           <Text
             style={[
               styles.description,
               {
-                color: theme.dark
-                  ? palette.neutralVariant90
-                  : Colors.medium_gray
+                color: theme.dark ? palette.neutralVariant90 : Colors.medium_gray
               }
             ]}
           >

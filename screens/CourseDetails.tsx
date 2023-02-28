@@ -68,9 +68,7 @@ const CourseDetails = ({ route }) => {
     setSearchText(null)
     setText(null)
     try {
-      setMarks(
-        convertGradebook(await client.gradebook(marks.reportingPeriod.index))
-      )
+      setMarks(convertGradebook(await client.gradebook(marks.reportingPeriod.index)))
     } catch (err) {}
     setRefreshing(false)
   }, [])
@@ -87,22 +85,13 @@ const CourseDetails = ({ route }) => {
       navigation.goBack()
       return true
     }
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    )
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
     return () => backHandler.remove()
   }, [])
 
   const add = () => {
     setMarks(
-      addAssignment(
-        marks,
-        course,
-        assignmentCategory,
-        parseFloat(points),
-        parseFloat(total)
-      )
+      addAssignment(marks, course, assignmentCategory, parseFloat(points), parseFloat(total))
     )
     setAssignmentDialog(false)
   }
@@ -111,25 +100,18 @@ const CourseDetails = ({ route }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: theme.dark
-          ? palette.neutralVariant10
-          : theme.colors.elevation.level1
+        backgroundColor: theme.dark ? palette.neutralVariant10 : theme.colors.elevation.level1
       }}
     >
       <Appbar.Header
         style={{
-          backgroundColor: theme.dark
-            ? palette.neutralVariant10
-            : theme.colors.elevation.level1
+          backgroundColor: theme.dark ? palette.neutralVariant10 : theme.colors.elevation.level1
         }}
       >
         <Appbar.BackAction onPress={navigation.goBack} />
         <Appbar.Content title={parseCourseName(course.name)} />
         <Appbar.Action icon="magnify" onPress={() => setSearchDialog(true)} />
-        <Appbar.Action
-          icon="information-outline"
-          onPress={() => setInfoDialog(true)}
-        />
+        <Appbar.Action icon="information-outline" onPress={() => setInfoDialog(true)} />
         <Appbar.Action icon="refresh" onPress={onRefresh} />
       </Appbar.Header>
       <View style={styles.course_info_container}>
@@ -137,19 +119,14 @@ const CourseDetails = ({ route }) => {
           style={[
             styles.course_mark_container,
             {
-              backgroundColor: theme.dark
-                ? palette.neutralVariant20
-                : theme.colors.surfaceVariant,
+              backgroundColor: theme.dark ? palette.neutralVariant20 : theme.colors.surfaceVariant,
               opacity: 1
             }
           ]}
         >
           <Text
             numberOfLines={1}
-            style={[
-              styles.course_mark,
-              { color: calculateMarkColor(course.value) }
-            ]}
+            style={[styles.course_mark, { color: calculateMarkColor(course.value) }]}
           >
             {isNaN(course.value) ? 'N/A' : round(course.value, 2)}
           </Text>
@@ -169,19 +146,13 @@ const CourseDetails = ({ route }) => {
                 >
                   <View style={styles.category_details}>
                     <Text
-                      style={[
-                        styles.category_name_text,
-                        { color: theme.colors.onSurface }
-                      ]}
+                      style={[styles.category_name_text, { color: theme.colors.onSurface }]}
                       numberOfLines={2}
                     >
                       {item.name} {`(${item.weight}%)`}
                     </Text>
                     <Text
-                      style={[
-                        styles.category_mark_text,
-                        { color: theme.colors.onSurface }
-                      ]}
+                      style={[styles.category_mark_text, { color: theme.colors.onSurface }]}
                       numberOfLines={2}
                     >
                       {hasValue ? value : 'N/A'}
@@ -217,9 +188,7 @@ const CourseDetails = ({ route }) => {
                       : theme.colors.surfaceVariant
                   }}
                   onPress={() => {
-                    const index = categories.findIndex(
-                      (c) => c.name === item.name
-                    )
+                    const index = categories.findIndex((c) => c.name === item.name)
                     const c = [...categories]
                     const newCategory = c[index]
                     newCategory.show = !item.show
@@ -250,24 +219,16 @@ const CourseDetails = ({ route }) => {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <ScrollView
             contentContainerStyle={styles.assignment_scrollview_container}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           >
             {course.assignments
               .filter(
                 (a) =>
                   categories.find((c) => c.name === a.category).show &&
-                  (searchText
-                    ? a.name.toLowerCase().includes(searchText.toLowerCase())
-                    : true)
+                  (searchText ? a.name.toLowerCase().includes(searchText.toLowerCase()) : true)
               )
               .map((item) => (
-                <Assignment
-                  name={item.name}
-                  courseName={course.name}
-                  key={item.name}
-                ></Assignment>
+                <Assignment name={item.name} courseName={course.name} key={item.name}></Assignment>
               ))}
           </ScrollView>
         </GestureHandlerRootView>
@@ -357,11 +318,7 @@ const CourseDetails = ({ route }) => {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setAssignmentDialog(false)}>Cancel</Button>
-            <Button
-              mode="contained"
-              labelStyle={{ marginHorizontal: 24 }}
-              onPress={add}
-            >
+            <Button mode="contained" labelStyle={{ marginHorizontal: 24 }} onPress={add}>
               Save
             </Button>
           </Dialog.Actions>
@@ -384,11 +341,7 @@ const CourseDetails = ({ route }) => {
               <Text style={styles.property_text}>{course.teacher.name}</Text>
             </View>
             <View style={styles.property_container}>
-              <MaterialCommunityIcons
-                name="email-outline"
-                size={20}
-                color={Colors.secondary}
-              />
+              <MaterialCommunityIcons name="email-outline" size={20} color={Colors.secondary} />
               <Text style={styles.property_text}>{course.teacher.email}</Text>
             </View>
             <View style={styles.property_container}>
@@ -400,14 +353,8 @@ const CourseDetails = ({ route }) => {
               <Text style={styles.property_text}>Room {course.room}</Text>
             </View>
             <View style={styles.property_container}>
-              <MaterialCommunityIcons
-                name="calendar-outline"
-                size={20}
-                color={Colors.secondary}
-              />
-              <Text style={styles.property_text}>
-                {marks.reportingPeriod.name}
-              </Text>
+              <MaterialCommunityIcons name="calendar-outline" size={20} color={Colors.secondary} />
+              <Text style={styles.property_text}>{marks.reportingPeriod.name}</Text>
             </View>
           </Dialog.Content>
           <Dialog.Actions>

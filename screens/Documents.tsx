@@ -44,11 +44,7 @@ const Documents = () => {
       } catch (e) {}
     } else {
       const fs = RNFetchBlob.fs
-      await fs.writeFile(
-        fs.dirs.DownloadDir + `/${fileName}`,
-        file.base64,
-        'base64'
-      )
+      await fs.writeFile(fs.dirs.DownloadDir + `/${fileName}`, file.base64, 'base64')
       toast('File downloaded', theme.dark)
     }
   }
@@ -66,9 +62,7 @@ const Documents = () => {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
       <View style={styles.title_container}>
-        <Text style={[styles.title, { color: theme.colors.onSurface }]}>
-          Documents
-        </Text>
+        <Text style={[styles.title, { color: theme.colors.onSurface }]}>Documents</Text>
       </View>
       {documents ? (
         <FadeInFlatList
@@ -88,9 +82,7 @@ const Documents = () => {
             ></Doc>
           )}
           keyExtractor={(item) => (item as Document).documentGu}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{
             paddingHorizontal: 10,
             paddingTop: 4

@@ -31,10 +31,7 @@ const convertGradebook = (gradebook: Gradebook) => {
                     return {
                       name: a.name,
                       category: a.type,
-                      status:
-                        value != 'Not Graded' && value != 'Not Due'
-                          ? 'Graded'
-                          : value,
+                      status: value != 'Not Graded' && value != 'Not Due' ? 'Graded' : value,
                       notes: a.notes,
                       points: points.earned,
                       total: points.total,
@@ -133,11 +130,7 @@ const parsePoints = (points: string): { earned: number; total: number } => {
   }
 }
 
-const deleteAssignment = (
-  marks: Marks,
-  course: string,
-  assignment: string
-): Marks => {
+const deleteAssignment = (marks: Marks, course: string, assignment: string): Marks => {
   const newMarks = Object.assign({}, marks)
   newMarks.courses.get(course).assignments = newMarks.courses
     .get(course)
@@ -153,9 +146,7 @@ const updatePoints = (
   type: string
 ): Marks => {
   const newMarks = Object.assign({}, marks)
-  const assignment = newMarks.courses
-    .get(course)
-    .assignments.find((a) => a.name === assignmentName)
+  const assignment = newMarks.courses.get(course).assignments.find((a) => a.name === assignmentName)
   if (type === 'earned') {
     assignment.points = points
   } else if (type === 'total') {
@@ -215,9 +206,7 @@ const calculateMarkColor = (value: number): string => {
   }
 }
 
-const calculateLetterGrade = (
-  mark: number
-): 'A' | 'B' | 'C' | 'D' | 'E' | 'F' => {
+const calculateLetterGrade = (mark: number): 'A' | 'B' | 'C' | 'D' | 'E' | 'F' => {
   if (mark >= 89.5) {
     return 'A'
   } else if (mark >= 79.5) {

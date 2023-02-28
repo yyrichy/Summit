@@ -14,15 +14,8 @@ const Item: React.FC<Props> = ({ item: { event } }) => {
   switch (event.type.toString()) {
     case EventType.ASSIGNMENT:
       return (
-        <View
-          style={[
-            styles.item,
-            { backgroundColor: theme.colors.surfaceVariant }
-          ]}
-        >
-          <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>
-            {event.title}
-          </Text>
+        <View style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>
+          <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>{event.title}</Text>
         </View>
       )
     case EventType.HOLIDAY:
@@ -31,9 +24,7 @@ const Item: React.FC<Props> = ({ item: { event } }) => {
           <Text style={[styles.time_text, { color: theme.colors.onSurface }]}>
             HOLIDAY{event.startTime.length !== 0 ? ` - ${event.startTime}` : ''}
           </Text>
-          <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>
-            {event.title}
-          </Text>
+          <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>{event.title}</Text>
         </View>
       )
     default:
@@ -42,9 +33,7 @@ const Item: React.FC<Props> = ({ item: { event } }) => {
           <Text style={[styles.time_text, { color: theme.colors.onSurface }]}>
             EVENT{event.startTime.length !== 0 ? ` - ${event.startTime}` : ''}
           </Text>
-          <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>
-            {event.title}
-          </Text>
+          <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>{event.title}</Text>
         </View>
       )
   }

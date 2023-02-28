@@ -64,10 +64,7 @@ const getReminderIsDisabled = async () => {
 }
 
 const setReminderIsDisabled = async (disabled: boolean) => {
-  await AsyncStorage.setItem(
-    'GradeCheckReminderDisabled',
-    JSON.stringify(disabled)
-  )
+  await AsyncStorage.setItem('GradeCheckReminderDisabled', JSON.stringify(disabled))
 }
 
 const getReminderDate = async () => {

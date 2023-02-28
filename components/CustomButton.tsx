@@ -38,12 +38,7 @@ const CustomButton: React.FC<Props> = ({
     >
       <View style={{ flexDirection: 'row' }}>
         {children}
-        <Text
-          style={[
-            styles.buttonText,
-            { color: textColor, fontFamily: fontFamily }
-          ]}
-        >
+        <Text style={[styles.buttonText, { color: textColor, fontFamily: fontFamily }]}>
           {text}
         </Text>
       </View>

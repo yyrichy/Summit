@@ -1,18 +1,8 @@
 import React from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  GestureResponderEvent
-} from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, GestureResponderEvent } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
-import {
-  calculateLetterGrade,
-  calculateMarkColor,
-  parseCourseName
-} from '../gradebook/GradeUtil'
+import { calculateLetterGrade, calculateMarkColor, parseCourseName } from '../gradebook/GradeUtil'
 import { round } from '../util/Util'
 
 type Props = {
@@ -24,14 +14,7 @@ type Props = {
   room: string
 }
 
-const Course: React.FC<Props> = ({
-  mark,
-  onPress,
-  period,
-  name,
-  teacher,
-  room
-}) => {
+const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher, room }) => {
   const markAsNumber: number = parseFloat(mark)
   const theme = useTheme()
 
@@ -46,22 +29,12 @@ const Course: React.FC<Props> = ({
       ]}
       onPress={onPress}
     >
-      <Text style={[styles.period_number, { color: theme.colors.onSurface }]}>
-        {period}
-      </Text>
+      <Text style={[styles.period_number, { color: theme.colors.onSurface }]}>{period}</Text>
       <View style={styles.course_info_container}>
-        <Text
-          style={[
-            styles.name,
-            { color: theme.dark ? theme.colors.onSurface : Colors.navy }
-          ]}
-        >
+        <Text style={[styles.name, { color: theme.dark ? theme.colors.onSurface : Colors.navy }]}>
           {parseCourseName(name)}
         </Text>
-        <Text
-          numberOfLines={1}
-          style={[styles.teacher, { color: theme.colors.onSurface }]}
-        >
+        <Text numberOfLines={1} style={[styles.teacher, { color: theme.colors.onSurface }]}>
           {teacher} {'\u2022'} {room}
         </Text>
       </View>

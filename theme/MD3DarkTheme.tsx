@@ -19,10 +19,7 @@ export const MD3DarkTheme: MD3Theme = {
     tertiaryContainer: palette.tertiary30,
     surface: palette.neutral10,
     surfaceVariant: palette.neutralVariant30,
-    surfaceDisabled: color(palette.neutral90)
-      .alpha(opacity.level2)
-      .rgb()
-      .string(),
+    surfaceDisabled: color(palette.neutral90).alpha(opacity.level2).rgb().string(),
     background: palette.neutral10,
     error: palette.error80,
     errorContainer: palette.error30,
@@ -34,10 +31,7 @@ export const MD3DarkTheme: MD3Theme = {
     onTertiaryContainer: palette.tertiary90,
     onSurface: palette.neutral90,
     onSurfaceVariant: palette.neutralVariant80,
-    onSurfaceDisabled: color(palette.neutral90)
-      .alpha(opacity.level4)
-      .rgb()
-      .string(),
+    onSurfaceDisabled: color(palette.neutral90).alpha(opacity.level4).rgb().string(),
     onError: palette.error20,
     onErrorContainer: palette.error80,
     onBackground: palette.neutral90,
