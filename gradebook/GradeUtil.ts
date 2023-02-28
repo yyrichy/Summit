@@ -1,5 +1,4 @@
 import { Gradebook } from 'studentvue'
-import { Colors } from '../colors/Colors'
 import { Category, Course, Marks } from '../interfaces/Gradebook'
 import { round } from '../util/Util'
 import { subDays } from 'date-fns'

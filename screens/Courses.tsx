@@ -38,7 +38,7 @@ const Courses = ({ navigation }) => {
     onRefresh()
   }, [selected])
   const actionSheetRef = useRef<ActionSheetRef>(null)
-  const scrollHandlers = useScrollHandlers('scroll-view1', actionSheetRef)
+  const scrollHandlers = useScrollHandlers<FlatList>('scroll-view1', actionSheetRef)
 
   useEffect(() => {
     registerForPushNotificationsAsync()
