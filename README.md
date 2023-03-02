@@ -6,5 +6,5 @@ Created with Expo/React Native
 
 ### Released On
 
-- [x] Android [(Google Play App Store)](https://play.google.com/store/apps/details?id=com.vaporys.Summit)
-- [ ] IOS (Coming Soon)
+- [x] [Google Play App Store](https://play.google.com/store/apps/details?id=com.vaporys.Summit)
+- [x] [Apple App Store](https://apps.apple.com/us/app/gradehelper/id6445867169)
