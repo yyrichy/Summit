@@ -17,7 +17,6 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../types/RootStackParams'
 import { useNavigation } from '@react-navigation/native'
 import CustomButton from '../components/CustomButton'
 import AppContext from '../contexts/AppContext'
@@ -46,14 +45,18 @@ import { StatusBar } from 'expo-status-bar'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Image } from 'expo-image'
 
-type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
-
-type loginInfo = 'username' | 'password' | 'district'
-
 const Login = () => {
   const theme = useTheme()
   const insets = useSafeAreaInsets()
-  const navigation = useNavigation<loginScreenProp>()
+  const navigation = useNavigation<
+    NativeStackNavigationProp<
+      {
+        Login: any
+        Menu: any
+      },
+      'Login'
+    >
+  >()
   const refInput = useRef(null)
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
@@ -168,12 +171,12 @@ const Login = () => {
     } catch (err) {}
   }
 
-  async function save(key: loginInfo, value: string): Promise<void> {
+  async function save(key: 'username' | 'password' | 'district', value: string): Promise<void> {
     if (value === null) return
     await SecureStore.setItemAsync(key, value)
   }
 
-  async function getValueFor(key: loginInfo): Promise<string> {
+  async function getValueFor(key: 'username' | 'password' | 'district'): Promise<string> {
     return await SecureStore.getItemAsync(key)
   }
 
