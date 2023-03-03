@@ -7,7 +7,7 @@ import {
   BackHandler,
   FlatList,
   ScrollView,
-  RefreshControl
+  ActivityIndicator
 } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import Assignment from '../components/Assignment'
@@ -217,20 +217,36 @@ const CourseDetails = ({ route }) => {
         ]}
       >
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <ScrollView
-            contentContainerStyle={styles.assignment_scrollview_container}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          >
-            {course.assignments
-              .filter(
-                (a) =>
-                  categories.find((c) => c.name === a.category).show &&
-                  (searchText ? a.name.toLowerCase().includes(searchText.toLowerCase()) : true)
-              )
-              .map((item) => (
-                <Assignment name={item.name} courseName={course.name} key={item.name}></Assignment>
-              ))}
-          </ScrollView>
+          {refreshing ? (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator
+                color={Colors.secondary}
+                animating={true}
+                size="large"
+                style={{
+                  alignSelf: 'center',
+                  flex: 1,
+                  justifyContent: 'center'
+                }}
+              />
+            </View>
+          ) : (
+            <ScrollView contentContainerStyle={styles.assignment_scrollview_container}>
+              {course.assignments
+                .filter(
+                  (a) =>
+                    categories.find((c) => c.name === a.category).show &&
+                    (searchText ? a.name.toLowerCase().includes(searchText.toLowerCase()) : true)
+                )
+                .map((item) => (
+                  <Assignment
+                    name={item.name}
+                    courseName={course.name}
+                    key={item.name}
+                  ></Assignment>
+                ))}
+            </ScrollView>
+          )}
         </GestureHandlerRootView>
         {course.categories.size > 0 && (
           <FAB

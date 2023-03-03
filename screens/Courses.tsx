@@ -7,12 +7,11 @@ import {
   TouchableOpacity,
   BackHandler,
   ActivityIndicator,
-  RefreshControl,
   Platform
 } from 'react-native'
 import Course from '../components/Course'
 import { convertGradebook } from '../gradebook/GradeUtil'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { registerForPushNotificationsAsync } from '../util/Notification'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -43,7 +42,6 @@ const Courses = ({ navigation }) => {
   const loaded = useRef(false)
   const course = useRef(null)
   const theme = useTheme()
-  const insets = useSafeAreaInsets()
   const { client, marks, setMarks } = useContext(AppContext)
   const [selected, setSelected] = useState(marks.reportingPeriod)
   const endDate = selected.date.end
@@ -112,7 +110,7 @@ const Courses = ({ navigation }) => {
         }}
         containerStyle={{
           backgroundColor: theme.colors.surface,
-          paddingBottom: insets.bottom
+          paddingBottom: Platform.OS === 'android' ? 24 : 0
         }}
       >
         <FlatList
@@ -229,7 +227,6 @@ const Courses = ({ navigation }) => {
           </View>
         ) : (
           <FadeInFlatList
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             initialDelay={0}
             durationPerItem={300}
             parallelItems={5}
