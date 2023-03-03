@@ -428,44 +428,6 @@ const Login = () => {
             androidId={Constants.expoConfig.extra.LOGIN_BANNER_ANDROID}
             iosId={Constants.expoConfig.extra.LOGIN_BANNER_IOS}
           />
-          <View style={styles.insta_container}>
-            <TouchableOpacity
-              style={styles.insta_button_container}
-              onPress={() => openInstagram('richardyin99')}
-            >
-              <View style={styles.insta_icon_container}>
-                <MaterialCommunityIcons
-                  name="instagram"
-                  backgroundColor="transparent"
-                  iconStyle={styles.insta_button}
-                  underlayColor="none"
-                  size={20}
-                  color={theme.colors.onSurfaceVariant}
-                />
-              </View>
-              <Text style={[styles.insta_text, { color: theme.colors.onSurfaceVariant }]}>
-                Richard Y
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.insta_button_container}
-              onPress={() => openInstagram('karthik.whynot')}
-            >
-              <View style={styles.insta_icon_container}>
-                <MaterialCommunityIcons
-                  name="instagram"
-                  backgroundColor="transparent"
-                  iconStyle={styles.insta_button}
-                  underlayColor="none"
-                  size={20}
-                  color={theme.colors.onSurfaceVariant}
-                />
-              </View>
-              <Text style={[styles.insta_text, { color: theme.colors.onSurfaceVariant }]}>
-                Karthik M
-              </Text>
-            </TouchableOpacity>
-          </View>
         </SafeAreaView>
       </ImageBackground>
     </View>
@@ -551,29 +513,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     marginLeft: 10
   },
-  insta_container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 10
-  },
-  insta_icon_container: {
-    flex: 1,
+  details_container: {
     justifyContent: 'center',
     alignItems: 'center'
   },
-  insta_button_container: {
-    marginHorizontal: 10,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    height: 48,
-    minWidth: 48
-  },
-  insta_button: {
-    color: Colors.black
-  },
-  insta_text: {
-    fontFamily: 'Inter_300Light',
-    fontSize: 11
+  details_text: {
+    fontFamily: 'Inter_400Regular'
   }
 })
