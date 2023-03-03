@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ActivityIndicator,
   Linking,
-  ImageBackground,
   BackHandler,
   Alert,
   TouchableOpacity,
@@ -45,6 +44,7 @@ import Constants from 'expo-constants'
 import District from '../components/District'
 import { StatusBar } from 'expo-status-bar'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Image } from 'expo-image'
 
 type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
 
@@ -288,16 +288,15 @@ const Login = () => {
           </Dialog.ScrollArea>
         </Dialog>
       </Portal>
-      <ImageBackground
+      <Image
+        placeholder={theme.dark ? 'L0C#@l[:RR{A02Aa%0t300oxEg3h' : 'LcTH-wnif9nOqDfkfkfPeTflf5g3'}
         source={
           theme.dark
             ? require('../assets/mountainbackground-dark.png')
             : require('../assets/mountainbackground.png')
         }
-        resizeMode="cover"
         style={{
-          flex: 1,
-          backgroundColor: Colors.white
+          flex: 1
         }}
       >
         <StatusBar style={isDarkTheme ? 'light' : 'dark'} />
@@ -429,7 +428,7 @@ const Login = () => {
             iosId={Constants.expoConfig.extra.LOGIN_BANNER_IOS}
           />
         </SafeAreaView>
-      </ImageBackground>
+      </Image>
     </View>
   )
 }
