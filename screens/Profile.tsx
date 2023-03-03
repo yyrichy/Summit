@@ -27,7 +27,6 @@ import {
 import * as SecureStore from 'expo-secure-store'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../types/RootStackParams'
 import {
   Avatar,
   Button,
@@ -48,10 +47,16 @@ import { palette } from '../theme/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Profile = () => {
-  type loginScreenProp = NativeStackNavigationProp<RootStackParamList, 'Login'>
   const theme = useTheme()
-
-  const navigation = useNavigation<loginScreenProp>()
+  const navigation = useNavigation<
+    NativeStackNavigationProp<
+      {
+        Login: any
+        Menu: any
+      },
+      'Login'
+    >
+  >()
   const { client, setIsDarkTheme } = useContext(AppContext)
   const [studentInfo, setStudentInfo] = useState(null as StudentInfo)
 
