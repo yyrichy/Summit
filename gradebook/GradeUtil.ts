@@ -5,7 +5,7 @@ import { subDays } from 'date-fns'
 
 // Some course names have the course ID at the end, ex: AP History A (SOC4935B)
 const parseCourseName = (name: string): string => {
-  return name.replace(/\([A-Z]{3}\d{4}[A-Z]\)/g, '')
+  return name.replace(/\([A-Z]{3}\d{4}[A-Z]?\)/g, '')
 }
 
 const convertGradebook = (gradebook: Gradebook) => {
