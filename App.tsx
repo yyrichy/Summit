@@ -55,9 +55,7 @@ import { Appearance } from 'react-native'
 import * as Sentry from 'sentry-expo'
 
 Sentry.init({
-  dsn: 'https://e3a198c431684c50b83c5dfa94e21436@o4504763946303488.ingest.sentry.io/4504763949580288',
-  enableInExpoDevelopment: true,
-  debug: true
+  dsn: 'https://e3a198c431684c50b83c5dfa94e21436@o4504763946303488.ingest.sentry.io/4504763949580288'
 })
 
 mobileAds().initialize()
