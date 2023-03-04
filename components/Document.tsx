@@ -28,7 +28,7 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
         styles.container,
         style,
         {
-          borderColor: theme.colors.outlineVariant
+          backgroundColor: theme.dark ? Colors.dark_gray : Colors.light_yellow_white
         }
       ]}
       onPress={onPress}
@@ -58,8 +58,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'column',
     justifyContent: 'center',
-    flex: 1,
-    borderWidth: 1
+    flex: 1
   },
   info_container: {
     flexDirection: 'row',

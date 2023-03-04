@@ -128,7 +128,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
               : {
                   borderColor: theme.colors.outlineVariant
                 },
-            { backgroundColor: theme.colors.surface }
+            { backgroundColor: theme.dark ? Colors.dark_gray : Colors.light_yellow_white }
           ]}
           onPress={transition}
         >
@@ -303,8 +303,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginVertical: 5,
     overflow: 'hidden',
-    padding: 10,
-    borderWidth: 1
+    padding: 10
   },
   horizontal_container: {
     flexDirection: 'row',

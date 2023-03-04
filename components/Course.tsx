@@ -23,7 +23,7 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher, room })
       style={[
         styles.container,
         {
-          backgroundColor: theme.colors.surface,
+          backgroundColor: theme.dark ? Colors.dark_gray : Colors.light_yellow_white,
           borderColor: theme.colors.outlineVariant
         }
       ]}
@@ -64,8 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 6,
-    padding: 12,
-    borderWidth: 1
+    padding: 12
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',

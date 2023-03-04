@@ -18,5 +18,7 @@ export const Colors = {
   baby_blue: '#81B0FF',
   transparent: 'transparent',
   dark_yellow: '#FED756',
-  dark_yellow_orange: '#FEC153'
+  dark_yellow_orange: '#FEC153',
+  dark_gray: '#141413',
+  light_yellow_white: '#efeee9'
 }
