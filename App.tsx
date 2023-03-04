@@ -1,10 +1,9 @@
 import 'react-native-gesture-handler'
 import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { RootStackParamList } from './types/RootStackParams'
 import AppContext from './contexts/AppContext'
 import {
   useFonts,
@@ -53,10 +52,17 @@ import mobileAds from 'react-native-google-mobile-ads'
 import { MD3DarkTheme } from './theme/MD3DarkTheme'
 import { DarkTheme } from './theme/DarkTheme'
 import { Appearance } from 'react-native'
+import * as Sentry from 'sentry-expo'
+
+Sentry.init({
+  dsn: 'https://e3a198c431684c50b83c5dfa94e21436@o4504763946303488.ingest.sentry.io/4504763949580288',
+  enableInExpoDevelopment: true,
+  debug: true
+})
 
 mobileAds().initialize()
 
-const Stack = createNativeStackNavigator<RootStackParamList>()
+const Stack = createNativeStackNavigator()
 
 SplashScreen.preventAutoHideAsync()
 

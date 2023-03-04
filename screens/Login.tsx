@@ -12,7 +12,8 @@ import {
   Platform,
   KeyboardAvoidingView,
   Appearance,
-  Dimensions
+  Dimensions,
+  ImageBackground
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -43,7 +44,6 @@ import Constants from 'expo-constants'
 import District from '../components/District'
 import { StatusBar } from 'expo-status-bar'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Image } from 'expo-image'
 
 const Login = () => {
   const theme = useTheme()
@@ -291,16 +291,17 @@ const Login = () => {
           </Dialog.ScrollArea>
         </Dialog>
       </Portal>
-      <Image
-        placeholder={theme.dark ? 'L0C#@l[:RR{A02Aa%0t300oxEg3h' : 'LcTH-wnif9nOqDfkfkfPeTflf5g3'}
+      <ImageBackground
         source={
           theme.dark
             ? require('../assets/mountainbackground-dark.png')
             : require('../assets/mountainbackground.png')
         }
         style={{
-          flex: 1
+          flex: 1,
+          backgroundColor: Colors.primary
         }}
+        resizeMode="cover"
       >
         <StatusBar style={isDarkTheme ? 'light' : 'dark'} />
         <SafeAreaView style={{ alignItems: 'center' }} edges={['top', 'left', 'right']}>
@@ -431,7 +432,7 @@ const Login = () => {
             iosId={Constants.expoConfig.extra.LOGIN_BANNER_IOS}
           />
         </SafeAreaView>
-      </Image>
+      </ImageBackground>
     </View>
   )
 }
