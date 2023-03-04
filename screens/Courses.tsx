@@ -20,15 +20,10 @@ import { Colors } from '../colors/Colors'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
 import { palette } from '../theme/colors'
-import ActionSheet, {
-  // @ts-ignore
-  useScrollHandlers,
-  // @ts-ignore
-  ActionSheetRef
-} from 'react-native-actions-sheet'
+import ActionSheet, { useScrollHandlers, ActionSheetRef } from 'react-native-actions-sheet'
 import { FlatList } from 'react-native-gesture-handler'
-import { format } from 'date-fns'
 import { InterstitialAd, AdEventType, TestIds } from 'react-native-google-mobile-ads'
+import { dateRelativeToToday } from '../util/Util'
 
 const interstitial = InterstitialAd.createForAdRequest(
   __DEV__
@@ -199,7 +194,7 @@ const Courses = ({ navigation }) => {
           />
           <Text style={[styles.date, { color: theme.colors.onSurface }]}>
             {' \u2022 '}
-            {format(endDate, 'M/dd')}
+            {dateRelativeToToday(endDate)}
           </Text>
         </View>
       </View>
