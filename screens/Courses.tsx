@@ -234,7 +234,7 @@ const Courses = ({ navigation }) => {
                 period={item[1].period}
                 teacher={item[1].teacher.name}
                 onPress={() => {
-                  if (loaded.current) {
+                  if (loaded.current && !__DEV__) {
                     course.current = item[0]
                     interstitial.show()
                   } else {

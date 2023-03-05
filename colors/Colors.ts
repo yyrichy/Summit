@@ -12,7 +12,7 @@ export const Colors = {
   red: '#A30800',
   off_white: '#F5F5F5',
   blue_off_white: '#F2F2F7',
-  light_gray: '#DADADA',
+  light_gray: '#DDDDDD',
   navy: '#000080',
   medium_gray: '#737373',
   baby_blue: '#81B0FF',
@@ -20,5 +20,5 @@ export const Colors = {
   dark_yellow: '#FED756',
   dark_yellow_orange: '#FEC153',
   dark_gray: '#141413',
-  light_yellow_white: '#efeee9'
+  light_yellow_white: '#EFEEE9'
 }
