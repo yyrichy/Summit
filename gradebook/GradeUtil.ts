@@ -72,21 +72,24 @@ const calculatePoints = (marks: Marks): Marks => {
     let points = 0
     let total = 0
     course.value = NaN
+    course.data = {}
     for (const category of course.categories.values()) {
       ;(category.points = 0), (category.total = 0), (category.value = NaN)
     }
-    for (const assignment of course.assignments) {
+    for (const assignment of [...course.assignments].reverse()) {
       const category = course.categories.get(assignment.category)
       if (category && !isNaN(assignment.points) && !isNaN(assignment.total)) {
         category.points += assignment.points
         category.total += assignment.total
         category.value = (category.points / category.total) * 100
-      }
-    }
-    for (const category of course.categories.values()) {
-      if (!isNaN(category.value)) {
-        points += (category.value / 100) * category.weight
-        total += category.weight
+        for (const category of course.categories.values()) {
+          if (!isNaN(category.value)) {
+            points += (category.value / 100) * category.weight
+            total += category.weight
+          }
+        }
+        const date = assignment.date.due.toISOString()
+        course.data[date] = { points: points, total: total, value: (points / total) * 100 }
       }
     }
     course.value = (points / total) * 100

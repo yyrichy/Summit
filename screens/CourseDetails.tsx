@@ -35,6 +35,15 @@ import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { palette } from '../theme/colors'
+import {
+  VictoryAxis,
+  VictoryChart,
+  VictoryLine,
+  VictoryScatter,
+  VictoryTheme
+} from 'victory-native'
+import { format } from 'date-fns'
+import Accordion from '../components/Accordion'
 
 const CourseDetails = ({ route }) => {
   const navigation = useNavigation()
@@ -62,6 +71,12 @@ const CourseDetails = ({ route }) => {
   )
 
   const [refreshing, setRefreshing] = useState(false)
+
+  const data = []
+  for (const time in course.data) {
+    data.push({ x: new Date(time), y: course.data[time].value })
+  }
+  const [accordionOpen, setAccordionOpen] = useState(false)
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
@@ -169,7 +184,7 @@ const CourseDetails = ({ route }) => {
         )}
       </View>
       {course.categories.size > 0 && (
-        <View style={{ height: 32, marginBottom: 15, paddingLeft: 4 }}>
+        <View style={{ height: 32, paddingLeft: 4 }}>
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
@@ -207,6 +222,53 @@ const CourseDetails = ({ route }) => {
           />
         </View>
       )}
+      <Button
+        icon={accordionOpen ? 'chevron-up' : 'chevron-down'}
+        onPress={() => setAccordionOpen(!accordionOpen)}
+        style={{ marginHorizontal: 10, marginVertical: 5 }}
+      >
+        More Information
+      </Button>
+      <Accordion open={accordionOpen} height={250}>
+        <VictoryChart
+          height={250}
+          theme={VictoryTheme.material}
+          scale={{ x: 'time', y: 'linear' }}
+          maxDomain={{ y: 100 }}
+          minDomain={{ y: 50 }}
+          animate={true}
+          padding={{ top: 10, left: 50, right: 35, bottom: 50 }}
+        >
+          <VictoryAxis
+            dependentAxis={true}
+            style={{
+              grid: { stroke: theme.dark ? palette.neutralVariant20 : Colors.light_gray },
+              tickLabels: { fill: theme.colors.onSurfaceVariant }
+            }}
+          />
+          <VictoryAxis
+            tickFormat={(x) => `${format(new Date(x), 'M/dd')}`}
+            style={{
+              grid: { stroke: theme.dark ? palette.neutralVariant20 : Colors.light_gray },
+              tickLabels: { fill: theme.colors.onSurfaceVariant }
+            }}
+          />
+          <VictoryLine
+            interpolation="linear"
+            data={data}
+            style={{ data: { stroke: theme.colors.onSurface, strokeWidth: 1 } }}
+          />
+          <VictoryScatter
+            style={{
+              data: {
+                fill: ({ datum }) => calculateMarkColor(datum.y)
+              }
+            }}
+            size={5}
+            data={data}
+          />
+        </VictoryChart>
+      </Accordion>
       <View
         style={[
           styles.assignment_list_container,
