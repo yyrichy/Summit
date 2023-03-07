@@ -336,7 +336,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Inter_500Medium',
     alignSelf: 'center',
-    outlineStyle: 'none',
     flexShrink: 1
   },
   dash: {
