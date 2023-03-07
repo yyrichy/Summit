@@ -77,4 +77,6 @@ dist/
 # My local android apk builds
 builds/
 
+.firebase/
+
 # @end expo-cli
