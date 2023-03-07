@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AppContext from '../contexts/AppContext'
-import * as Sharing from 'expo-sharing'
 import * as FileSystem from 'expo-file-system'
 import {
   StyleSheet,
@@ -10,15 +9,14 @@ import {
   RefreshControl,
   ActivityIndicator,
   Dimensions,
-  Platform
+  Alert
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
 import Doc from '../components/Document'
 import { Colors } from '../colors/Colors'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
-import RNFetchBlob from 'rn-fetch-blob'
-import { toast } from '../util/Util'
 import { useTheme } from 'react-native-paper'
+import FileViewer from 'react-native-file-viewer'
 
 const Documents = () => {
   const { client } = useContext(AppContext)
@@ -29,23 +27,19 @@ const Documents = () => {
     onRefresh()
   }, [])
 
-  const downloadDocument = async (document: Document): Promise<void> => {
+  const downloadDocument = async (document: Document) => {
     const file = (await document.get())[0]
     const fileName =
       document.comment.replace(/ /g, '_') +
       file.file.name.substring(file.file.name.lastIndexOf('.'))
-    if (Platform.OS === 'ios') {
-      const filePath = FileSystem.documentDirectory + fileName
-      try {
-        await FileSystem.writeAsStringAsync(filePath, file.base64, {
-          encoding: 'base64'
-        })
-        await Sharing.shareAsync(filePath)
-      } catch (e) {}
-    } else {
-      const fs = RNFetchBlob.fs
-      await fs.writeFile(fs.dirs.DownloadDir + `/${fileName}`, file.base64, 'base64')
-      toast('File downloaded', theme.dark)
+    const filePath = FileSystem.documentDirectory + fileName
+    try {
+      await FileSystem.writeAsStringAsync(filePath, file.base64, {
+        encoding: 'base64'
+      })
+      FileViewer.open(filePath)
+    } catch (err) {
+      Alert.alert(err.message)
     }
   }
 
@@ -76,12 +70,10 @@ const Documents = () => {
               name={(item as Document).comment}
               type={(item as Document).file.type}
               date={(item as Document).file.date}
-              onPress={() => {
-                downloadDocument(item)
-              }}
-            ></Doc>
+              onPress={() => downloadDocument(item)}
+            />
           )}
-          keyExtractor={(item) => (item as Document).documentGu}
+          keyExtractor={(item: Document) => item.file.name + item.documentGu}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{
             paddingHorizontal: 10,
