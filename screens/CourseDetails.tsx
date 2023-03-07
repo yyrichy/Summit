@@ -229,9 +229,9 @@ const CourseDetails = ({ route }) => {
       >
         More Information
       </Button>
-      <Accordion open={accordionOpen} height={250}>
+      <Accordion open={accordionOpen} height={200}>
         <VictoryChart
-          height={250}
+          height={200}
           theme={VictoryTheme.material}
           scale={{ x: 'time', y: 'linear' }}
           maxDomain={{ y: 100 }}
