@@ -105,6 +105,7 @@ const ScheduleScreen = () => {
                 teacher={item.teacher.name}
                 start={item.time.start}
                 end={item.time.end}
+                room={item.room}
               ></ScheduleComponent>
             )}
             keyExtractor={(item) => item.name}

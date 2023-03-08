@@ -67,7 +67,7 @@
     "react-navigation-stack": "^2.10.4",
     "rn-fetch-blob": "^0.12.0",
     "sentry-expo": "~6.1.0",
-    "studentvue": "^2.0.2",
+    "studentvue": "vaporrrr/studentvue.js",
     "url": "^0.11.0",
     "use-async-effect": "^2.2.5",
     "victory-native": "^36.6.8"
