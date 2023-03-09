@@ -3,7 +3,6 @@ import {
   Text,
   StyleSheet,
   ActivityIndicator,
-  Linking,
   BackHandler,
   Alert,
   TouchableOpacity,
@@ -155,20 +154,6 @@ const Login = () => {
     }
     setIsLoading(false)
     navigation.navigate('Menu')
-  }
-
-  async function openInstagram(username: string): Promise<void> {
-    const appUrl = `instagram://user?username=${username}`
-    try {
-      if (await Linking.canOpenURL(appUrl)) {
-        Linking.openURL(appUrl)
-      } else {
-        // Instagram app not installed
-        try {
-          Linking.openURL(`https://instagram.com/${username}`)
-        } catch (err) {}
-      }
-    } catch (err) {}
   }
 
   async function save(key: 'username' | 'password' | 'district', value: string): Promise<void> {
