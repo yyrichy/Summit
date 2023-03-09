@@ -69,8 +69,7 @@ const calculatePoints = (marks: Marks): Marks => {
   let gpa = 0
   let numOfCourses = 0
   for (const course of marks.courses.values()) {
-    let points = 0
-    let total = 0
+    let value = 0
     course.value = NaN
     course.data = {}
     for (const category of course.categories.values()) {
@@ -82,17 +81,20 @@ const calculatePoints = (marks: Marks): Marks => {
         category.points += assignment.points
         category.total += assignment.total
         category.value = (category.points / category.total) * 100
+        let points = 0
+        let total = 0
         for (const category of course.categories.values()) {
           if (!isNaN(category.value)) {
             points += (category.value / 100) * category.weight
             total += category.weight
           }
         }
+        value = (points / total) * 100
         const date = assignment.date.due.toISOString()
-        course.data[date] = { points: points, total: total, value: (points / total) * 100 }
+        course.data[date] = { points: points, total: total, value: value }
       }
     }
-    course.value = (points / total) * 100
+    course.value = value
     if (!isNaN(course.value)) {
       gpa += getClassGPA(course.value)
       numOfCourses++
