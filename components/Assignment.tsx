@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { memo, useContext, useEffect, useRef, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -354,4 +354,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Assignment
+export default memo(Assignment)
