@@ -67,9 +67,8 @@ const convertGradebook = (gradebook: Gradebook) => {
 
 const calculatePoints = (marks: Marks): Marks => {
   let gpa = 0
-  let numOfCourses = 0
+  let gradedCourses = 0
   for (const course of marks.courses.values()) {
-    let value = 0
     course.value = NaN
     course.data = {}
     for (const category of course.categories.values()) {
@@ -81,6 +80,7 @@ const calculatePoints = (marks: Marks): Marks => {
         category.points += assignment.points
         category.total += assignment.total
         category.value = (category.points / category.total) * 100
+        // Calculate current course grade
         let points = 0
         let total = 0
         for (const category of course.categories.values()) {
@@ -89,18 +89,17 @@ const calculatePoints = (marks: Marks): Marks => {
             total += category.weight
           }
         }
-        value = (points / total) * 100
+        course.value = (points / total) * 100
         const date = assignment.date.due.toISOString()
-        course.data[date] = { points: points, total: total, value: value }
+        course.data[date] = { points: points, total: total, value: course.value }
       }
     }
-    course.value = value
     if (!isNaN(course.value)) {
       gpa += getClassGPA(course.value)
-      numOfCourses++
+      gradedCourses++
     }
   }
-  marks.gpa = round(gpa / numOfCourses, 2)
+  marks.gpa = round(gpa / gradedCourses, 2)
   return marks
 }
 
