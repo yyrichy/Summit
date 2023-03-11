@@ -100,12 +100,12 @@ const Courses = ({ navigation }) => {
         ref={actionSheetRef}
         gestureEnabled={true}
         indicatorStyle={{
-          marginVertical: 22,
+          marginVertical: 16,
           backgroundColor: theme.colors.onSurfaceVariant
         }}
         containerStyle={{
           backgroundColor: theme.colors.surface,
-          paddingBottom: Platform.OS === 'android' ? 24 : 0
+          paddingBottom: Platform.OS === 'android' ? 32 : 0
         }}
       >
         <FlatList

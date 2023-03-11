@@ -18,9 +18,7 @@ const ScheduleComponent: React.FC<Props> = ({ name, period, teacher, start, end,
   const theme = useTheme()
   return (
     <View style={styles.container}>
-      <Text style={[styles.period_number, { color: theme.colors.onSurface }]}>
-        {prependZero(period)}
-      </Text>
+      <Text style={[styles.period_number, { color: theme.colors.onSurface }]}>{period}</Text>
       <View
         style={[styles.course_info_container, { backgroundColor: theme.colors.surfaceVariant }]}
       >
@@ -57,7 +55,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat_700Bold',
     fontSize: 32,
     marginHorizontal: 8,
-    width: 45
+    width: 24
   },
   course_info_container: {
     flex: 1,
