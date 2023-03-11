@@ -103,8 +103,8 @@ const ScheduleScreen = () => {
                 name={item.name}
                 period={item.period}
                 teacher={item.teacher.name}
-                start={item.time.start}
-                end={item.time.end}
+                start={item.time?.start}
+                end={item.time?.end}
                 room={item.room}
               ></ScheduleComponent>
             )}
