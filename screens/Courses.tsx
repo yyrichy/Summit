@@ -22,20 +22,10 @@ import Constants from 'expo-constants'
 import { palette } from '../theme/colors'
 import ActionSheet, { useScrollHandlers, ActionSheetRef } from 'react-native-actions-sheet'
 import { FlatList } from 'react-native-gesture-handler'
-import { InterstitialAd, AdEventType, TestIds } from 'react-native-google-mobile-ads'
+import { AdEventType } from 'react-native-google-mobile-ads'
 import { dateRelativeToToday } from '../util/Util'
 
-const interstitial = InterstitialAd.createForAdRequest(
-  __DEV__
-    ? TestIds.INTERSTITIAL
-    : Platform.OS === 'android'
-    ? Constants.expoConfig.extra.COURSES_INTER_ANDROID
-    : Constants.expoConfig.extra.COURSES_INTER_IOS
-)
-
 const Courses = ({ navigation }) => {
-  const loaded = useRef(false)
-  const course = useRef(null)
   const theme = useTheme()
   const { client, marks, setMarks } = useContext(AppContext)
   const [selected, setSelected] = useState(marks.reportingPeriod)
@@ -47,19 +37,6 @@ const Courses = ({ navigation }) => {
   const scrollHandlers = useScrollHandlers<FlatList>('scroll-view1', actionSheetRef)
 
   useEffect(() => {
-    interstitial.load()
-  }, [navigation])
-
-  useEffect(() => {
-    const unsubscribeLoaded = interstitial.addAdEventListener(AdEventType.LOADED, () => {
-      loaded.current = true
-    })
-    const unsubscribeClosed = interstitial.addAdEventListener(AdEventType.CLOSED, () => {
-      loaded.current = false
-      interstitial.load()
-      navigation.navigate('Course Details', { title: course.current })
-    })
-
     registerForPushNotificationsAsync()
 
     const backAction = () => {
@@ -71,8 +48,6 @@ const Courses = ({ navigation }) => {
 
     return () => {
       backHandler.remove()
-      unsubscribeLoaded
-      unsubscribeClosed
     }
   }, [])
 
@@ -233,14 +208,7 @@ const Courses = ({ navigation }) => {
                 mark={item[1].value}
                 period={item[1].period}
                 teacher={item[1].teacher.name}
-                onPress={() => {
-                  if (loaded.current && !__DEV__) {
-                    course.current = item[0]
-                    interstitial.show()
-                  } else {
-                    navigation.navigate('Course Details', { title: item[0] })
-                  }
-                }}
+                onPress={() => navigation.navigate('Course Details', { title: item[0] })}
                 room={item[1].room}
               ></Course>
             )}
