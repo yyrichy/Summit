@@ -15,7 +15,7 @@ export interface Course {
   assignments: Assignment[]
   categories: Map<string, Category>
   room: string
-  data?: {}
+  data?: { [key: string]: { points: number; total: number; value: number } }
 }
 
 export interface Teacher {
