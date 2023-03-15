@@ -22,7 +22,6 @@ import Constants from 'expo-constants'
 import { palette } from '../theme/colors'
 import ActionSheet, { useScrollHandlers, ActionSheetRef } from 'react-native-actions-sheet'
 import { FlatList } from 'react-native-gesture-handler'
-import { AdEventType } from 'react-native-google-mobile-ads'
 import { dateRelativeToToday } from '../util/Util'
 
 const Courses = ({ navigation }) => {
