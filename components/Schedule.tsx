@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
   type: {
     color: Colors.medium_gray,
     fontFamily: 'Inter_400Regular',
-    fontSize: 12,
-    marginTop: 4
+    fontSize: 11,
+    marginTop: 2
   }
 })
 

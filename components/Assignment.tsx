@@ -18,7 +18,7 @@ import { Colors } from '../colors/Colors'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Divider, useTheme } from 'react-native-paper'
 import { Swipeable } from 'react-native-gesture-handler'
-import { dateRelativeToToday, isNumber } from '../util/Util'
+import { dateRelativeToToday, isNumber, round } from '../util/Util'
 import Animated, {
   FadeIn,
   FadeOut,
@@ -136,20 +136,20 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
             <View style={styles.assignment_info_container}>
               <Text
                 numberOfLines={!isDropdown ? 1 : 2}
-                style={[styles.name, { color: theme.colors.onSurfaceVariant }]}
+                style={[styles.name, { color: theme.colors.onSurface }]}
               >
                 {name}
               </Text>
               <View
                 style={{
                   flexDirection: 'row',
-                  marginTop: 4,
+                  marginTop: 2,
                   alignItems: 'center'
                 }}
               >
                 <Text
                   numberOfLines={1}
-                  style={[styles.category, { color: theme.colors.onSurface }]}
+                  style={[styles.category, { color: theme.colors.onSurfaceVariant }]}
                 >
                   {assignment.category}
                 </Text>
@@ -158,7 +158,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                   style={[
                     styles.category,
                     {
-                      color: theme.colors.onSurface,
+                      color: theme.colors.onSurfaceVariant,
                       fontSize: 8,
                       marginHorizontal: 4
                     }
@@ -168,7 +168,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 </Text>
                 <Text
                   numberOfLines={1}
-                  style={[styles.category, { color: theme.colors.onSurface, flexShrink: 1 }]}
+                  style={[styles.category, { color: theme.colors.onSurfaceVariant, flexShrink: 1 }]}
                 >
                   {format(assignment.date.due, 'M/dd/yy')}
                 </Text>
@@ -217,53 +217,62 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           {isDropdown && (
             <Animated.View
               style={{
-                marginTop: 6,
-                padding: 4
+                marginTop: 10,
+                marginBottom: 4
               }}
               entering={FadeIn.duration(500)}
               exiting={FadeOut.duration(500)}
             >
-              <View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    flex: 1,
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <View>
-                    <Text style={styles.assignment_property_label}>START</Text>
-                    <Text
-                      style={[
-                        styles.assignment_property_value,
-                        { color: theme.colors.onSurfaceVariant }
-                      ]}
-                    >
-                      {dateRelativeToToday(assignment.date.start)}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={styles.assignment_property_label}>DUE</Text>
-                    <Text
-                      style={[
-                        styles.assignment_property_value,
-                        { color: theme.colors.onSurfaceVariant }
-                      ]}
-                    >
-                      {dateRelativeToToday(assignment.date.due)}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={styles.assignment_property_label}>STATUS</Text>
-                    <Text
-                      style={[
-                        styles.assignment_property_value,
-                        { color: theme.colors.onSurfaceVariant }
-                      ]}
-                    >
-                      {assignment.status}
-                    </Text>
-                  </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flex: 1,
+                  justifyContent: 'space-between'
+                }}
+              >
+                <View>
+                  <Text style={styles.assignment_property_label}>START</Text>
+                  <Text
+                    style={[
+                      styles.assignment_property_value,
+                      { color: theme.colors.onSurfaceVariant }
+                    ]}
+                  >
+                    {dateRelativeToToday(assignment.date.start)}
+                  </Text>
+                </View>
+                <View>
+                  <Text style={styles.assignment_property_label}>DUE</Text>
+                  <Text
+                    style={[
+                      styles.assignment_property_value,
+                      { color: theme.colors.onSurfaceVariant }
+                    ]}
+                  >
+                    {dateRelativeToToday(assignment.date.due)}
+                  </Text>
+                </View>
+                <View>
+                  <Text style={styles.assignment_property_label}>GRADE</Text>
+                  <Text
+                    style={[
+                      styles.assignment_property_value,
+                      { color: theme.colors.onSurfaceVariant }
+                    ]}
+                  >
+                    {round((assignment.points / assignment.total) * 100, 2)}
+                  </Text>
+                </View>
+                <View>
+                  <Text style={styles.assignment_property_label}>STATUS</Text>
+                  <Text
+                    style={[
+                      styles.assignment_property_value,
+                      { color: theme.colors.onSurfaceVariant }
+                    ]}
+                  >
+                    {assignment.status}
+                  </Text>
                 </View>
               </View>
               {assignment.notes.length > 0 && (
@@ -323,7 +332,7 @@ const styles = StyleSheet.create({
   category: {
     color: Colors.black,
     fontFamily: 'Inter_400Regular',
-    fontSize: 12
+    fontSize: 11
   },
   input_container: {
     flexDirection: 'row',
@@ -346,7 +355,7 @@ const styles = StyleSheet.create({
   assignment_property_label: {
     fontFamily: 'Inter_400Regular',
     color: Colors.secondary,
-    fontSize: 12
+    fontSize: 11
   },
   assignment_property_value: {
     fontFamily: 'Inter_400Regular',

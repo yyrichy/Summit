@@ -6,7 +6,7 @@ import { calculateLetterGrade, calculateMarkColor, parseCourseName } from '../gr
 import { round } from '../util/Util'
 
 type Props = {
-  mark: string
+  mark: number
   onPress: (event: GestureResponderEvent) => void
   period: number
   name: string
@@ -15,7 +15,6 @@ type Props = {
 }
 
 const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher, room }) => {
-  const markAsNumber: number = parseFloat(mark)
   const theme = useTheme()
 
   return (
@@ -31,25 +30,25 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher, room })
     >
       <Text style={[styles.period_number, { color: theme.colors.onSurface }]}>{period}</Text>
       <View style={styles.course_info_container}>
-        <Text style={[styles.name, { color: theme.dark ? theme.colors.onSurface : Colors.navy }]}>
+        <Text style={[styles.name, { color: theme.colors.onSurface }]}>
           {parseCourseName(name)}
         </Text>
-        <Text numberOfLines={1} style={[styles.teacher, { color: theme.colors.onSurface }]}>
+        <Text numberOfLines={1} style={[styles.teacher, { color: theme.colors.onSurfaceVariant }]}>
           {teacher} {'\u2022'} {room}
         </Text>
       </View>
-      {!isNaN(markAsNumber) && (
+      {!isNaN(mark) && (
         <>
           <Text style={styles.mark}>{round(mark, 2)}</Text>
           <Text
             style={[
               styles.letter_grade,
               {
-                color: calculateMarkColor(markAsNumber)
+                color: calculateMarkColor(mark)
               }
             ]}
           >
-            {calculateLetterGrade(markAsNumber)}
+            {calculateLetterGrade(mark)}
           </Text>
         </>
       )}
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 30,
+    fontSize: 32,
     marginHorizontal: 4
   },
   course_info_container: {
@@ -84,18 +83,19 @@ const styles = StyleSheet.create({
   },
   teacher: {
     fontFamily: 'Inter_400Regular',
-    fontSize: 12,
-    marginTop: 3
+    fontSize: 11,
+    marginTop: 2
   },
   mark: {
-    fontFamily: 'Montserrat_500Medium',
+    fontFamily: 'Inter_500Medium',
     fontSize: 18,
     color: Colors.medium_gray
   },
   letter_grade: {
-    marginLeft: 8,
+    marginLeft: 12,
     fontFamily: 'Montserrat_800ExtraBold',
-    fontSize: 28
+    fontSize: 28,
+    marginRight: 4
   }
 })
 

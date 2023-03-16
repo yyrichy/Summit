@@ -39,11 +39,11 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
       <View style={styles.info_container}>
         <Text
           numberOfLines={1}
-          style={[styles.type, { flex: 1, color: theme.colors.onSurface, marginRight: 10 }]}
+          style={[styles.type, { flex: 1, color: theme.colors.onSurfaceVariant, marginRight: 10 }]}
         >
           {type}
         </Text>
-        <Text numberOfLines={1} style={[styles.type, { color: theme.colors.onSurface }]}>
+        <Text numberOfLines={1} style={[styles.type, { color: theme.colors.onSurfaceVariant }]}>
           {format(date, 'M/dd/yy')}
         </Text>
       </View>
@@ -66,15 +66,13 @@ const styles = StyleSheet.create({
     flex: 1
   },
   name: {
-    color: Colors.black,
     fontFamily: 'Montserrat_600SemiBold',
     fontSize: 14
   },
   type: {
-    color: Colors.black,
     fontFamily: 'Inter_400Regular',
-    fontSize: 12,
-    marginTop: 4
+    fontSize: 11,
+    marginTop: 2
   }
 })
 
