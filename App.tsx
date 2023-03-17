@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler'
 import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import AppContext from './contexts/AppContext'
@@ -53,6 +53,8 @@ import { MD3DarkTheme } from './theme/MD3DarkTheme'
 import { DarkTheme } from './theme/DarkTheme'
 import { Appearance } from 'react-native'
 import * as Sentry from 'sentry-expo'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import useAsyncEffect from 'use-async-effect'
 
 Sentry.init({
   dsn: 'https://e3a198c431684c50b83c5dfa94e21436@o4504763946303488.ingest.sentry.io/4504763949580288'
@@ -67,9 +69,13 @@ SplashScreen.preventAutoHideAsync()
 const App = () => {
   const [client, setClient] = useState(null as Client)
   const [marks, setMarks] = useState(null as Marks)
-  const [isDarkTheme, setIsDarkTheme] = useState(
-    Appearance.getColorScheme() === 'dark' ? true : false
-  )
+  const [isDarkTheme, setIsDarkTheme] = useState(null as boolean)
+
+  useAsyncEffect(async () => {
+    let theme = await AsyncStorage.getItem('Theme')
+    if (!theme || theme === 'device') theme = Appearance.getColorScheme()
+    setIsDarkTheme(theme === 'dark' ? true : false)
+  }, [])
 
   const user: User = {
     client,
@@ -116,7 +122,7 @@ const App = () => {
     }
   }, [fontsLoaded])
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || isDarkTheme === null) {
     return null
   }
 

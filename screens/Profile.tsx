@@ -123,6 +123,9 @@ const Profile = () => {
 
   useAsyncEffect(async () => {
     try {
+      let theme = await AsyncStorage.getItem('Theme')
+      if (!theme || theme === 'device') theme = Appearance.getColorScheme()
+      setChecked(theme === 'dark' ? 'dark' : 'light')
       setDefaultSwitchEnabled(await getReminderIsDisabled())
       setDate(await getReminderDate())
       setStudentInfo(await client.studentInfo())
