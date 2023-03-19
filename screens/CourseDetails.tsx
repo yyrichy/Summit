@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -70,13 +70,7 @@ const CourseDetails = ({ route }) => {
   )
 
   const [refreshing, setRefreshing] = useState(false)
-
-  const data = []
-  for (const time in course.data) {
-    data.push({ x: new Date(time), y: course.data[time].value })
-  }
-
-  const onRefresh = useCallback(async () => {
+  const refresh = async () => {
     setRefreshing(true)
     setSearchText(null)
     setText(null)
@@ -84,7 +78,12 @@ const CourseDetails = ({ route }) => {
       setMarks(convertGradebook(await client.gradebook(marks.reportingPeriod.index)))
     } catch (err) {}
     setRefreshing(false)
-  }, [])
+  }
+
+  const data = []
+  for (const time in course.data) {
+    data.push({ x: new Date(time), y: course.data[time].value })
+  }
 
   useEffect(() => {
     if (assignmentDialogVisible) {
@@ -125,7 +124,7 @@ const CourseDetails = ({ route }) => {
         <Appbar.Content title={parseCourseName(course.name)} />
         <Appbar.Action icon="magnify" onPress={() => setSearchDialog(true)} />
         <Appbar.Action icon="information-outline" onPress={() => setInfoDialog(true)} />
-        <Appbar.Action icon="refresh" onPress={onRefresh} />
+        <Appbar.Action icon="refresh" onPress={refresh} />
       </Appbar.Header>
       <View style={styles.course_info_container}>
         <View

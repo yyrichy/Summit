@@ -30,9 +30,6 @@ const Courses = ({ navigation }) => {
   const { client, marks, setMarks } = useContext(AppContext)
   const [selected, setSelected] = useState(marks.reportingPeriod)
   const endDate = selected.date.end
-  useEffect(() => {
-    onRefresh()
-  }, [selected])
   const actionSheetRef = useRef<ActionSheetRef>(null)
   const scrollHandlers = useScrollHandlers<FlatList>('scroll-view1', actionSheetRef)
 
@@ -52,8 +49,7 @@ const Courses = ({ navigation }) => {
   }, [])
 
   const [refreshing, setRefreshing] = useState(false)
-
-  const onRefresh = async () => {
+  const refresh = async () => {
     setRefreshing(true)
     try {
       setMarks(convertGradebook(await client.gradebook(selected.index)))
@@ -146,7 +142,7 @@ const Courses = ({ navigation }) => {
         <IconButton
           icon="refresh"
           size={40}
-          onPress={onRefresh}
+          onPress={refresh}
           mode={'contained'}
           style={{ margin: 0 }}
         />
