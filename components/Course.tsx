@@ -4,6 +4,7 @@ import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import { calculateLetterGrade, calculateMarkColor, parseCourseName } from '../gradebook/GradeUtil'
 import { round } from '../util/Util'
+import Dot from './Dot'
 
 type Props = {
   mark: number
@@ -30,16 +31,34 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher, room })
     >
       <Text style={[styles.period_number, { color: theme.colors.onSurface }]}>{period}</Text>
       <View style={styles.course_info_container}>
-        <Text style={[styles.name, { color: theme.colors.onSurface }]}>
+        <Text numberOfLines={1} style={[styles.name, { color: theme.colors.onSurface }]}>
           {parseCourseName(name)}
         </Text>
-        <Text numberOfLines={1} style={[styles.teacher, { color: theme.colors.onSurfaceVariant }]}>
-          {teacher} {'\u2022'} {room}
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text
+            numberOfLines={1}
+            style={[styles.teacher, { color: theme.colors.onSurfaceVariant }]}
+          >
+            {teacher}
+          </Text>
+          <Dot />
+          <Text
+            numberOfLines={1}
+            style={[styles.teacher, { color: theme.colors.onSurfaceVariant }]}
+          >
+            {room}
+          </Text>
+        </View>
       </View>
       {!isNaN(mark) && (
         <>
-          <Text style={styles.mark}>{round(mark, 2)}</Text>
+          <View
+            style={{ backgroundColor: theme.colors.surfaceVariant, padding: 8, borderRadius: 12 }}
+          >
+            <Text style={[styles.mark, { color: theme.colors.onSurfaceVariant }]}>
+              {round(mark, 2)}
+            </Text>
+          </View>
           <Text
             style={[
               styles.letter_grade,

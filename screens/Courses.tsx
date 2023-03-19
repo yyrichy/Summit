@@ -23,6 +23,7 @@ import { palette } from '../theme/colors'
 import ActionSheet, { useScrollHandlers, ActionSheetRef } from 'react-native-actions-sheet'
 import { FlatList } from 'react-native-gesture-handler'
 import { dateRelativeToToday } from '../util/Util'
+import Dot from '../components/Dot'
 
 const Courses = ({ navigation }) => {
   const theme = useTheme()
@@ -154,8 +155,8 @@ const Courses = ({ navigation }) => {
         {!isNaN(marks.gpa) && (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={[styles.gpa_text, { color: theme.colors.onSurface }]}>GPA</Text>
+            <Dot />
             <Text style={[styles.gpa, { color: theme.colors.onSurface }]}>
-              {' \u2022 '}
               {marks.gpa.toFixed(2)}
             </Text>
           </View>
@@ -166,8 +167,8 @@ const Courses = ({ navigation }) => {
             size={18}
             color={theme.colors.onSurface}
           />
+          <Dot />
           <Text style={[styles.date, { color: theme.colors.onSurface }]}>
-            {' \u2022 '}
             {dateRelativeToToday(endDate)}
           </Text>
         </View>

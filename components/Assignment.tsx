@@ -27,6 +27,8 @@ import Animated, {
   LightSpeedOutRight
 } from 'react-native-reanimated'
 import { format } from 'date-fns'
+import Chip from './Chip'
+import Dot from './Dot'
 
 type Props = {
   courseName: string
@@ -47,8 +49,9 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
   const assignment = course.assignments.find((a) => a.name === name)
   const pointsString = isNaN(assignment.points) ? '' : assignment.points.toString()
   const totalString = isNaN(assignment.total) ? '' : assignment.total.toString()
-  const score: number = (assignment.points / assignment.total) * 100
-  const hasScore: boolean = !isNaN(score)
+  const value: number = (assignment.points / assignment.total) * 100
+  const grade: number = round(value, 2)
+  const graded: boolean = !isNaN(value)
 
   const update = (input: string, type: 'total' | 'earned') => {
     if (type === 'total') {
@@ -117,9 +120,9 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
           style={[
             styles.container,
             style,
-            hasScore
+            graded
               ? {
-                  borderLeftColor: calculateMarkColor(score),
+                  borderLeftColor: calculateMarkColor(value),
                   borderLeftWidth: 3,
                   borderBottomColor: theme.colors.outlineVariant,
                   borderTopColor: theme.colors.outlineVariant,
@@ -143,35 +146,18 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
               <View
                 style={{
                   flexDirection: 'row',
-                  marginTop: 2,
+                  marginTop: 4,
                   alignItems: 'center'
                 }}
               >
-                <Text
-                  numberOfLines={1}
-                  style={[styles.category, { color: theme.colors.onSurfaceVariant }]}
+                <Chip
+                  backgroundColor={theme.colors.surfaceVariant}
+                  textColor={theme.colors.onSurfaceVariant}
                 >
                   {assignment.category}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={[
-                    styles.category,
-                    {
-                      color: theme.colors.onSurfaceVariant,
-                      fontSize: 8,
-                      marginHorizontal: 4
-                    }
-                  ]}
-                >
-                  {'\u2022'}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  style={[styles.category, { color: theme.colors.onSurfaceVariant, flexShrink: 1 }]}
-                >
-                  {format(assignment.date.due, 'M/dd/yy')}
-                </Text>
+                </Chip>
+                <Dot />
+                <Chip>{format(assignment.date.due, 'MMM dd')}</Chip>
               </View>
             </View>
             <View style={styles.input_container}>
@@ -231,7 +217,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 }}
               >
                 <View>
-                  <Text style={styles.assignment_property_label}>START</Text>
+                  <Text style={styles.assignment_property_label}>Start</Text>
                   <Text
                     style={[
                       styles.assignment_property_value,
@@ -242,7 +228,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                   </Text>
                 </View>
                 <View>
-                  <Text style={styles.assignment_property_label}>DUE</Text>
+                  <Text style={styles.assignment_property_label}>Due</Text>
                   <Text
                     style={[
                       styles.assignment_property_value,
@@ -252,19 +238,21 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                     {dateRelativeToToday(assignment.date.due)}
                   </Text>
                 </View>
+                {graded && (
+                  <View>
+                    <Text style={styles.assignment_property_label}>Grade</Text>
+                    <Text
+                      style={[
+                        styles.assignment_property_value,
+                        { color: theme.colors.onSurfaceVariant }
+                      ]}
+                    >
+                      {grade}
+                    </Text>
+                  </View>
+                )}
                 <View>
-                  <Text style={styles.assignment_property_label}>GRADE</Text>
-                  <Text
-                    style={[
-                      styles.assignment_property_value,
-                      { color: theme.colors.onSurfaceVariant }
-                    ]}
-                  >
-                    {round((assignment.points / assignment.total) * 100, 2)}
-                  </Text>
-                </View>
-                <View>
-                  <Text style={styles.assignment_property_label}>STATUS</Text>
+                  <Text style={styles.assignment_property_label}>Status</Text>
                   <Text
                     style={[
                       styles.assignment_property_value,
@@ -286,7 +274,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                         fontFamily: 'Inter_400Regular'
                       }}
                     >
-                      NOTES
+                      Notes:
                     </Text>
                     <Text
                       style={{

@@ -3,7 +3,8 @@ import { StyleSheet, View, Text } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import { parseScheduleCourseName } from '../gradebook/GradeUtil'
-import { formatAMPM, prependZero } from '../util/Util'
+import { formatAMPM } from '../util/Util'
+import Dot from './Dot'
 
 type Props = {
   name: string
@@ -26,13 +27,22 @@ const ScheduleComponent: React.FC<Props> = ({ name, period, teacher, start, end,
           {parseScheduleCourseName(name)}
         </Text>
         <View style={styles.info_container}>
-          <Text
-            numberOfLines={1}
-            style={[styles.type, { flex: 1, color: theme.colors.onSurfaceVariant }]}
-          >
-            {teacher}
-            {room && ` \u2022 ${room}`}
-          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text numberOfLines={1} style={[styles.type, { color: theme.colors.onSurfaceVariant }]}>
+              {teacher}
+            </Text>
+            {room && (
+              <>
+                <Dot />
+                <Text
+                  numberOfLines={1}
+                  style={[styles.type, { color: theme.colors.onSurfaceVariant }]}
+                >
+                  {room}
+                </Text>
+              </>
+            )}
+          </View>
           {start && end && (
             <Text numberOfLines={1} style={[styles.type, { color: theme.colors.onSurfaceVariant }]}>
               {formatAMPM(start)} - {formatAMPM(end)}
@@ -71,7 +81,7 @@ const styles = StyleSheet.create({
   },
   info_container: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     flex: 1
   },
   type: {

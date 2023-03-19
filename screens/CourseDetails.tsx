@@ -208,9 +208,6 @@ const CourseDetails = ({ route }) => {
                     c[index] = newCategory
                     setCategories(c)
                   }}
-                  textStyle={{
-                    marginTop: 5
-                  }}
                 >
                   {item.name}
                 </Chip>
@@ -330,9 +327,6 @@ const CourseDetails = ({ route }) => {
                       }}
                       onPress={() => {
                         setAssignmentCategory(item.name)
-                      }}
-                      textStyle={{
-                        marginTop: 5
                       }}
                     >
                       {item.name}
