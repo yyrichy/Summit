@@ -21,7 +21,13 @@ const Chip: React.FC<Props> = ({ children, backgroundColor, textColor }) => {
         alignSelf: 'flex-start'
       }}
     >
-      <Text style={{ color: textColor || theme.colors.onSurfaceVariant, fontSize: 12 }}>
+      <Text
+        style={{
+          color: textColor || theme.colors.onSurfaceVariant,
+          fontSize: 12,
+          fontFamily: 'Inter_400Regular'
+        }}
+      >
         {children}
       </Text>
     </View>

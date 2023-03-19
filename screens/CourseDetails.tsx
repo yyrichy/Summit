@@ -508,15 +508,16 @@ const styles = StyleSheet.create({
     alignContent: 'flex-start'
   },
   category_name_text: {
-    fontSize: 12,
+    fontSize: 10,
     flex: 1,
     marginRight: 2,
+    fontFamily: 'Inter_400Regular',
     maxWidth: '75%'
   },
   category_mark_text: {
     fontSize: 12,
-    fontWeight: 'bold',
-    maxWidth: '25%'
+    maxWidth: '25%',
+    fontFamily: 'Inter_700Bold'
   },
   assignment_list_container: {
     borderTopLeftRadius: 15,
