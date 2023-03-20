@@ -36,9 +36,9 @@ import Constants from 'expo-constants'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { palette } from '../theme/colors'
 import {
+  VictoryArea,
   VictoryAxis,
   VictoryChart,
-  VictoryLine,
   VictoryScatter,
   VictoryTheme
 } from 'victory-native'
@@ -122,7 +122,7 @@ const CourseDetails = ({ route }) => {
       >
         <Appbar.BackAction onPress={navigation.goBack} />
         <Appbar.Content
-          titleStyle={{ fontFamily: 'RobotoSerif_900Black_Italic' }}
+          titleStyle={{ fontFamily: 'RobotoSerif_700Bold_Italic' }}
           title={parseCourseName(course.name)}
         />
         <Appbar.Action icon="magnify" onPress={() => setSearchDialog(true)} />
@@ -403,10 +403,16 @@ const CourseDetails = ({ route }) => {
                     tickLabels: { fill: theme.colors.onSurfaceVariant }
                   }}
                 />
-                <VictoryLine
+                <VictoryArea
                   interpolation="linear"
                   data={data}
-                  style={{ data: { stroke: theme.colors.onSurface, strokeWidth: 1 } }}
+                  style={{
+                    data: {
+                      stroke: theme.colors.onSurface,
+                      strokeWidth: 1,
+                      fill: theme.dark ? '#44444444' : '#44444411'
+                    }
+                  }}
                 />
                 <VictoryScatter
                   style={{
