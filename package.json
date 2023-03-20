@@ -12,6 +12,8 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.2",
     "@expo-google-fonts/montserrat": "^0.2.2",
+    "@expo-google-fonts/roboto": "^0.2.3",
+    "@expo-google-fonts/roboto-serif": "^0.2.3",
     "@ja-ka/react-native-fade-in-flatlist": "^1.0.13",
     "@md3-ui/button": "^0.2.0",
     "@md3-ui/system": "^0.2.0",
@@ -26,7 +28,7 @@
     "@sentry/react-native": "4.13.0",
     "date-fns": "^2.29.3",
     "expo": "~48.0.6",
-    "expo-app-loading": "~2.1.1",
+    "expo-app-loading": "^2.1.1",
     "expo-application": "~5.1.1",
     "expo-build-properties": "~0.5.1",
     "expo-constants": "~14.2.1",

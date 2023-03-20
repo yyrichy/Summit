@@ -121,7 +121,10 @@ const CourseDetails = ({ route }) => {
         }}
       >
         <Appbar.BackAction onPress={navigation.goBack} />
-        <Appbar.Content title={parseCourseName(course.name)} />
+        <Appbar.Content
+          titleStyle={{ fontFamily: 'RobotoSerif_900Black_Italic' }}
+          title={parseCourseName(course.name)}
+        />
         <Appbar.Action icon="magnify" onPress={() => setSearchDialog(true)} />
         <Appbar.Action icon="information-outline" onPress={() => setInfoDialog(true)} />
         <Appbar.Action icon="refresh" onPress={refresh} />

@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   title: {
-    fontFamily: 'Inter_800ExtraBold',
+    fontFamily: 'RobotoSerif_900Black_Italic',
     fontSize: 30
   },
   refresh_button_container: {

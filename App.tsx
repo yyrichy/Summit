@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler'
 import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import AppContext from './contexts/AppContext'
@@ -37,6 +37,40 @@ import {
   Montserrat_800ExtraBold_Italic,
   Montserrat_900Black_Italic
 } from '@expo-google-fonts/montserrat'
+import {
+  RobotoSerif_100Thin,
+  RobotoSerif_200ExtraLight,
+  RobotoSerif_300Light,
+  RobotoSerif_400Regular,
+  RobotoSerif_500Medium,
+  RobotoSerif_600SemiBold,
+  RobotoSerif_700Bold,
+  RobotoSerif_800ExtraBold,
+  RobotoSerif_900Black,
+  RobotoSerif_100Thin_Italic,
+  RobotoSerif_200ExtraLight_Italic,
+  RobotoSerif_300Light_Italic,
+  RobotoSerif_400Regular_Italic,
+  RobotoSerif_500Medium_Italic,
+  RobotoSerif_600SemiBold_Italic,
+  RobotoSerif_700Bold_Italic,
+  RobotoSerif_800ExtraBold_Italic,
+  RobotoSerif_900Black_Italic
+} from '@expo-google-fonts/roboto-serif'
+import {
+  Roboto_100Thin,
+  Roboto_100Thin_Italic,
+  Roboto_300Light,
+  Roboto_300Light_Italic,
+  Roboto_400Regular,
+  Roboto_400Regular_Italic,
+  Roboto_500Medium,
+  Roboto_500Medium_Italic,
+  Roboto_700Bold,
+  Roboto_700Bold_Italic,
+  Roboto_900Black,
+  Roboto_900Black_Italic
+} from '@expo-google-fonts/roboto'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { User } from './interfaces/User'
 import { Client } from 'studentvue'
@@ -112,7 +146,37 @@ const App = () => {
     Montserrat_600SemiBold_Italic,
     Montserrat_700Bold_Italic,
     Montserrat_800ExtraBold_Italic,
-    Montserrat_900Black_Italic
+    Montserrat_900Black_Italic,
+    RobotoSerif_100Thin,
+    RobotoSerif_200ExtraLight,
+    RobotoSerif_300Light,
+    RobotoSerif_400Regular,
+    RobotoSerif_500Medium,
+    RobotoSerif_600SemiBold,
+    RobotoSerif_700Bold,
+    RobotoSerif_800ExtraBold,
+    RobotoSerif_900Black,
+    RobotoSerif_100Thin_Italic,
+    RobotoSerif_200ExtraLight_Italic,
+    RobotoSerif_300Light_Italic,
+    RobotoSerif_400Regular_Italic,
+    RobotoSerif_500Medium_Italic,
+    RobotoSerif_600SemiBold_Italic,
+    RobotoSerif_700Bold_Italic,
+    RobotoSerif_800ExtraBold_Italic,
+    RobotoSerif_900Black_Italic,
+    Roboto_100Thin,
+    Roboto_100Thin_Italic,
+    Roboto_300Light,
+    Roboto_300Light_Italic,
+    Roboto_400Regular,
+    Roboto_400Regular_Italic,
+    Roboto_500Medium,
+    Roboto_500Medium_Italic,
+    Roboto_700Bold,
+    Roboto_700Bold_Italic,
+    Roboto_900Black,
+    Roboto_900Black_Italic
   })
 
   const onLayoutRootView = useCallback(async () => {

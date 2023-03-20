@@ -390,7 +390,7 @@ const Login = () => {
               text="Login"
               backgroundColor={!isLoading ? Colors.navy : 'rgba(100, 100, 100, 0.6)'}
               textColor={Colors.white}
-              fontFamily="Inter_800ExtraBold"
+              fontFamily="RobotoSerif_900Black_Italic"
               containerStyle={styles.button_container}
               disabled={isLoading}
             >
@@ -458,7 +458,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   name: {
-    fontFamily: 'Montserrat_900Black',
+    fontFamily: 'RobotoSerif_900Black_Italic',
     fontSize: 40
   },
   checkbox_container: {

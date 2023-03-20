@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   marking_period_dropdown_button_text: {
-    fontFamily: 'Inter_800ExtraBold',
+    fontFamily: 'RobotoSerif_900Black_Italic',
     fontSize: 30,
     marginRight: 5
   },

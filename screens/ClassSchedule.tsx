@@ -82,7 +82,7 @@ const ScheduleScreen = () => {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.title_container}>
-          <Text style={[styles.title, { color: theme.colors.onSurface }]}>
+          <Text numberOfLines={1} style={[styles.title, { color: theme.colors.onSurface }]}>
             {schedule.today[0] ? schedule.today[0].name : 'Schedule'}
           </Text>
           <Text style={[styles.term_name, { color: theme.colors.onSurface }]}>
@@ -130,7 +130,7 @@ const ScheduleScreen = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.title_container}>
-        <Text style={[styles.title, { color: theme.colors.onSurface }]}>
+        <Text numberOfLines={1} style={[styles.title, { color: theme.colors.onSurface }]}>
           {schedule.today[0] ? schedule.today[0].name : 'Schedule'}
         </Text>
         <Text style={[styles.term_name, { color: theme.colors.onSurface }]}>
@@ -176,26 +176,28 @@ const Seperator = () => {
   return (
     <Divider
       style={{
-        marginHorizontal: 12,
         marginVertical: 8
       }}
       horizontalInset
-      bold
     />
   )
 }
 
 const styles = StyleSheet.create({
   title_container: {
-    marginVertical: 5,
-    paddingHorizontal: 10
+    marginVertical: 8,
+    marginHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap'
   },
   title: {
-    fontFamily: 'Inter_800ExtraBold',
-    fontSize: 24
+    fontFamily: 'RobotoSerif_700Bold_Italic',
+    fontSize: 28
   },
   term_name: {
-    fontFamily: 'Inter_400Regular',
+    fontFamily: 'Inter_500Medium',
     fontSize: 14
   },
   schedule_error_container: {
