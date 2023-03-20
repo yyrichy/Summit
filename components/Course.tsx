@@ -39,14 +39,7 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher, room })
             numberOfLines={1}
             style={[styles.teacher, { color: theme.colors.onSurfaceVariant }]}
           >
-            {teacher}
-          </Text>
-          <Dot />
-          <Text
-            numberOfLines={1}
-            style={[styles.teacher, { color: theme.colors.onSurfaceVariant }]}
-          >
-            {room}
+            {teacher} {'\u00B7'} {room}
           </Text>
         </View>
       </View>

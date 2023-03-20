@@ -30,18 +30,8 @@ const ScheduleComponent: React.FC<Props> = ({ name, period, teacher, start, end,
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text numberOfLines={1} style={[styles.type, { color: theme.colors.onSurfaceVariant }]}>
               {teacher}
+              {room && ` \u00B7 ${room}`}
             </Text>
-            {room && (
-              <>
-                <Dot />
-                <Text
-                  numberOfLines={1}
-                  style={[styles.type, { color: theme.colors.onSurfaceVariant }]}
-                >
-                  {room}
-                </Text>
-              </>
-            )}
           </View>
           {start && end && (
             <Text numberOfLines={1} style={[styles.type, { color: theme.colors.onSurfaceVariant }]}>

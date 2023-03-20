@@ -16,13 +16,13 @@ const Dot: React.FC<Props> = ({ size, style, color }) => {
       style={[
         {
           marginHorizontal: 4,
-          fontSize: size || 10,
+          fontSize: size || 12,
           color: color || theme.colors.onSurface
         },
         style
       ]}
     >
-      {'\u2022'}
+      {'\u00B7'}
     </Text>
   )
 }

@@ -152,8 +152,8 @@ const Courses = ({ navigation }) => {
         {!isNaN(marks.gpa) && (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={[styles.gpa_text, { color: theme.colors.onSurface }]}>GPA</Text>
-            <Dot />
             <Text style={[styles.gpa, { color: theme.colors.onSurface }]}>
+              {' \u00B7 '}
               {marks.gpa.toFixed(2)}
             </Text>
           </View>
@@ -164,8 +164,8 @@ const Courses = ({ navigation }) => {
             size={18}
             color={theme.colors.onSurface}
           />
-          <Dot />
           <Text style={[styles.date, { color: theme.colors.onSurface }]}>
+            {' \u00B7 '}
             {dateRelativeToToday(endDate)}
           </Text>
         </View>
