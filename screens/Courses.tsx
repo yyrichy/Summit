@@ -49,10 +49,10 @@ const Courses = ({ navigation }) => {
   }, [])
 
   const [refreshing, setRefreshing] = useState(false)
-  const refresh = async () => {
+  const refresh = async (index: number) => {
     setRefreshing(true)
     try {
-      setMarks(convertGradebook(await client.gradebook(selected.index)))
+      setMarks(convertGradebook(await client.gradebook(index)))
     } catch (err) {}
     setRefreshing(false)
   }
@@ -89,6 +89,7 @@ const Courses = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 setSelected(item)
+                refresh(item.index)
                 actionSheetRef.current?.hide()
               }}
               style={[
@@ -142,7 +143,7 @@ const Courses = ({ navigation }) => {
         <IconButton
           icon="refresh"
           size={40}
-          onPress={refresh}
+          onPress={() => refresh(selected.index)}
           mode={'contained'}
           style={{ margin: 0 }}
         />
