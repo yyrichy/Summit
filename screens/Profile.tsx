@@ -39,8 +39,6 @@ import {
   Text as PaperText,
   RadioButton
 } from 'react-native-paper'
-import * as Sharing from 'expo-sharing'
-import * as FileSystem from 'expo-file-system'
 import { getOrdinal, toast } from '../util/Util'
 import { Switch } from '../components/switch/Switch'
 import { palette } from '../theme/colors'
@@ -124,24 +122,15 @@ const Profile = () => {
   useAsyncEffect(async () => {
     try {
       let theme = await AsyncStorage.getItem('Theme')
-      if (!theme || theme === 'device') theme = Appearance.getColorScheme()
-      setChecked(theme === 'dark' ? 'dark' : 'light')
+      if (!theme) {
+        theme = 'device'
+      }
+      setChecked(theme)
       setDefaultSwitchEnabled(await getReminderIsDisabled())
       setDate(await getReminderDate())
       setStudentInfo(await client.studentInfo())
     } catch (err) {}
   }, [])
-
-  const downloadSchoolPicture = async () => {
-    const fileName = `${studentInfo.student.name} School Picture.jpg`.replace(/ /g, '_')
-    const filePath = FileSystem.documentDirectory + fileName
-    try {
-      await FileSystem.writeAsStringAsync(filePath, studentInfo.photo, {
-        encoding: 'base64'
-      })
-      await Sharing.shareAsync(filePath)
-    } catch (e) {}
-  }
 
   const deleteLoginInfo = async () => {
     try {
@@ -266,7 +255,7 @@ const Profile = () => {
           {studentInfo.phone && (
             <View style={styles.property_container}>
               <MaterialCommunityIcons name="phone" size={20} color={Colors.secondary} />
-              <Text style={[styles.property_text, { color: theme.colors.onSurfaceVariant }]}>
+              <Text style={[styles.property_text, { color: Colors.medium_gray }]}>
                 {studentInfo.phone}
               </Text>
             </View>
@@ -275,7 +264,7 @@ const Profile = () => {
           {studentInfo.address && (
             <View style={styles.property_container}>
               <MaterialCommunityIcons name="home-outline" size={20} color={Colors.secondary} />
-              <Text style={[styles.property_text, { color: theme.colors.onSurfaceVariant }]}>
+              <Text style={[styles.property_text, { color: Colors.medium_gray }]}>
                 {studentInfo.address.replace(/&lt;br&gt;/g, ' ')}
               </Text>
             </View>
@@ -284,7 +273,7 @@ const Profile = () => {
           {studentInfo.email && (
             <View style={styles.property_container}>
               <MaterialCommunityIcons name="email-outline" size={20} color={Colors.secondary} />
-              <Text style={[styles.property_text, { color: theme.colors.onSurfaceVariant }]}>
+              <Text style={[styles.property_text, { color: Colors.medium_gray }]}>
                 {studentInfo.email}
               </Text>
             </View>
@@ -299,17 +288,6 @@ const Profile = () => {
             }
           ]}
         >
-          <Setting
-            title="Download School Picture"
-            onPress={downloadSchoolPicture}
-            position="single"
-          >
-            <MaterialCommunityIcons
-              name="download"
-              size={24}
-              color={theme.colors.onPrimaryContainer}
-            />
-          </Setting>
           <Text style={[styles.settings_title, { color: theme.colors.onSurfaceVariant }]}>
             Settings
           </Text>
@@ -451,8 +429,8 @@ const IconPropertyBox = ({ icon, text, backgroundColor, textColor }) => {
 
 const styles = StyleSheet.create({
   name: {
-    fontSize: 28,
-    fontFamily: 'Montserrat_700Bold'
+    fontSize: 24,
+    fontFamily: 'RobotoSerif_900Black_Italic'
   },
   school: {
     fontSize: 14,
@@ -477,19 +455,19 @@ const styles = StyleSheet.create({
   },
   property_container: {
     flexDirection: 'row',
-    padding: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     alignItems: 'center'
   },
   property_text: {
     marginLeft: 20,
     fontFamily: 'Inter_400Regular',
-    fontSize: 15
+    fontSize: 12
   },
   settings_title: {
-    fontFamily: 'Montserrat_700Bold',
+    fontFamily: 'RobotoSerif_900Black_Italic',
     fontSize: 24,
-    marginTop: 15,
-    marginBottom: 10
+    marginBottom: 15
   },
   settings_container: {
     padding: 25,
