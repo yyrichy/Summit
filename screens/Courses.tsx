@@ -23,7 +23,6 @@ import { palette } from '../theme/colors'
 import ActionSheet, { useScrollHandlers, ActionSheetRef } from 'react-native-actions-sheet'
 import { FlatList } from 'react-native-gesture-handler'
 import { dateRelativeToToday } from '../util/Util'
-import Dot from '../components/Dot'
 
 const Courses = ({ navigation }) => {
   const theme = useTheme()

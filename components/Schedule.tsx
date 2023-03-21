@@ -4,7 +4,6 @@ import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import { parseScheduleCourseName } from '../gradebook/GradeUtil'
 import { formatAMPM } from '../util/Util'
-import Dot from './Dot'
 
 type Props = {
   name: string

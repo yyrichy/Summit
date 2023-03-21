@@ -4,7 +4,6 @@ import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
 import { calculateLetterGrade, calculateMarkColor, parseCourseName } from '../gradebook/GradeUtil'
 import { round } from '../util/Util'
-import Dot from './Dot'
 
 type Props = {
   mark: number

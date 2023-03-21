@@ -52,8 +52,8 @@ const CourseDetails = ({ route }) => {
   const course = marks.courses.get(route.params.title)
 
   const [searchDialogVisible, setSearchDialog] = useState(false)
-  const [text, setText] = useState(undefined)
-  const [searchText, setSearchText] = useState(undefined)
+  const [text, setText] = useState(null)
+  const [searchText, setSearchText] = useState(null)
   const [infoDialogVisible, setInfoDialog] = useState(false)
   const [assignmentDialogVisible, setAssignmentDialog] = useState(false)
   const [assignmentCategory, setAssignmentCategory] = useState(
@@ -248,7 +248,7 @@ const CourseDetails = ({ route }) => {
                 .filter(
                   (a) =>
                     categories.find((c) => c.name === a.category).show &&
-                    (searchText ? a.name.toLowerCase().includes(searchText.toLowerCase()) : true)
+                    (!searchText || a.name.toLowerCase().includes(searchText.toLowerCase()))
                 )
                 .map((item) => (
                   <Assignment
