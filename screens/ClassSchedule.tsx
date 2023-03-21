@@ -45,7 +45,7 @@ const ScheduleScreen = () => {
 
   const TermButtons = () => {
     return (
-      <View style={{ height: 50, marginBottom: 8 }}>
+      <View style={{ height: 40, marginBottom: 8 }}>
         <ScrollView
           horizontal
           contentContainerStyle={{
