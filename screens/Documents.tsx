@@ -27,24 +27,7 @@ const Documents = () => {
     onRefresh()
   }, [])
 
-  const downloadDocument = async (document: Document) => {
-    const file = (await document.get())[0]
-    const fileName =
-      document.comment.replace(/ /g, '_') +
-      file.file.name.substring(file.file.name.lastIndexOf('.'))
-    const filePath = FileSystem.documentDirectory + fileName
-    try {
-      await FileSystem.writeAsStringAsync(filePath, file.base64, {
-        encoding: 'base64'
-      })
-      FileViewer.open(filePath)
-    } catch (err) {
-      Alert.alert(err.message)
-    }
-  }
-
   const [refreshing, setRefreshing] = useState(false)
-
   const onRefresh = async () => {
     setRefreshing(true)
     try {
@@ -70,7 +53,7 @@ const Documents = () => {
               name={(item as Document).comment}
               type={(item as Document).file.type}
               date={(item as Document).file.date}
-              onPress={() => downloadDocument(item)}
+              onPress={() => openDocument(item)}
             />
           )}
           keyExtractor={(item: Document) => item.file.name + item.documentGu}
@@ -94,6 +77,21 @@ const Documents = () => {
       )}
     </SafeAreaView>
   )
+}
+
+const openDocument = async (document: Document) => {
+  const file = (await document.get())[0]
+  const fileName =
+    document.comment.replace(/ /g, '_') + file.file.name.substring(file.file.name.lastIndexOf('.'))
+  const filePath = FileSystem.documentDirectory + fileName
+  try {
+    await FileSystem.writeAsStringAsync(filePath, file.base64, {
+      encoding: 'base64'
+    })
+    FileViewer.open(filePath)
+  } catch (err) {
+    Alert.alert(err.message)
+  }
 }
 
 const styles = StyleSheet.create({

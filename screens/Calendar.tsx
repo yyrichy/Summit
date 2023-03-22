@@ -47,11 +47,11 @@ const CalendarScreen = () => {
 
       const currentItems = {}
       for (const date of getDatesFromDateRange(start, end)) {
-        currentItems[toTimeString(date)] = []
+        currentItems[toCalendarTimeString(date)] = []
       }
 
       for (const event of calendar.events) {
-        const dateString = toTimeString(event.date)
+        const dateString = toCalendarTimeString(event.date)
         if (currentItems[dateString])
           currentItems[dateString].push({
             event: event,
@@ -65,24 +65,6 @@ const CalendarScreen = () => {
       setItems(newItems)
     } catch (err) {}
   }, [])
-
-  const getDatesFromDateRange = (from: Date, to: Date): Date[] => {
-    const dates = []
-    for (let date = from; date < to; date.setDate(date.getDate() + 1)) {
-      const cloned = new Date(date.valueOf())
-      dates.push(cloned)
-    }
-    dates.push(to)
-    return dates
-  }
-
-  const renderItem = (item) => {
-    return <Item item={item}></Item>
-  }
-
-  const toTimeString = (date: Date) => {
-    return date.toISOString().split('T')[0]
-  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -129,6 +111,24 @@ const CalendarScreen = () => {
       )}
     </View>
   )
+}
+
+const getDatesFromDateRange = (from: Date, to: Date): Date[] => {
+  const dates = []
+  for (let date = from; date < to; date.setDate(date.getDate() + 1)) {
+    const cloned = new Date(date.valueOf())
+    dates.push(cloned)
+  }
+  dates.push(to)
+  return dates
+}
+
+const renderItem = (item) => {
+  return <Item item={item}></Item>
+}
+
+const toCalendarTimeString = (date: Date) => {
+  return date.toISOString().split('T')[0]
 }
 
 const styles = StyleSheet.create({

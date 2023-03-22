@@ -156,15 +156,6 @@ const Login = () => {
     navigation.navigate('Menu')
   }
 
-  async function save(key: 'username' | 'password' | 'district', value: string): Promise<void> {
-    if (value === null) return
-    await SecureStore.setItemAsync(key, value)
-  }
-
-  async function getValueFor(key: 'username' | 'password' | 'district'): Promise<string> {
-    return await SecureStore.getItemAsync(key)
-  }
-
   const onPressOpenDistrictModal = () => {
     Keyboard.dismiss()
     setDistrictDialog(true)
@@ -422,8 +413,6 @@ const Login = () => {
   )
 }
 
-export default Login
-
 const Seperator = () => {
   return (
     <Divider
@@ -433,6 +422,15 @@ const Seperator = () => {
       bold
     />
   )
+}
+
+const save = async (key: 'username' | 'password' | 'district', value: string): Promise<void> => {
+  if (value === null) return
+  await SecureStore.setItemAsync(key, value)
+}
+
+const getValueFor = async (key: 'username' | 'password' | 'district'): Promise<string> => {
+  return await SecureStore.getItemAsync(key)
 }
 
 const styles = StyleSheet.create({
@@ -509,3 +507,5 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular'
   }
 })
+
+export default Login
