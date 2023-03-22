@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import AppContext from '../contexts/AppContext'
-import { StyleSheet, Text, View, RefreshControl, ActivityIndicator, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator, ScrollView } from 'react-native'
 import { Colors } from '../colors/Colors'
 import { FadeInFlatList } from '@ja-ka/react-native-fade-in-flatlist'
 import { Schedule } from 'studentvue'
@@ -12,7 +12,6 @@ const ScheduleScreen = () => {
   const theme = useTheme()
   const { client } = useContext(AppContext)
   const [schedule, setSchedule] = useState(null as Schedule)
-  const [refreshing, setRefreshing] = useState(false)
   const [value, setValue] = React.useState('today' as string)
   const [buttons, setButtons] = React.useState([])
 
@@ -23,8 +22,6 @@ const ScheduleScreen = () => {
       b.push({ value: t.index.toString(), label: t.name })
     }
     setButtons(b)
-
-    onRefresh()
   }, [])
 
   useEffect(() => {
@@ -32,7 +29,6 @@ const ScheduleScreen = () => {
   }, [value])
 
   const onRefresh = async () => {
-    setRefreshing(true)
     try {
       if (value === 'today') {
         setSchedule(await client.schedule())
@@ -40,7 +36,6 @@ const ScheduleScreen = () => {
         setSchedule(await client.schedule(parseInt(value)))
       }
     } catch (err) {}
-    setRefreshing(false)
   }
 
   const TermButtons = () => {
@@ -109,7 +104,6 @@ const ScheduleScreen = () => {
               ></ScheduleComponent>
             )}
             keyExtractor={(item) => item.name}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             contentContainerStyle={{
               paddingHorizontal: 10,
               flexGrow: 1
@@ -154,7 +148,6 @@ const ScheduleScreen = () => {
             ></ScheduleComponent>
           )}
           keyExtractor={(item) => item.name}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{
             paddingHorizontal: 10,
             flexGrow: 1
