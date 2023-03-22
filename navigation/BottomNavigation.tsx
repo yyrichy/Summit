@@ -30,7 +30,7 @@ const BottomNavigation = () => {
             <MaterialCommunityIcons
               name={focused ? 'chart-box' : 'chart-box-outline'}
               color={color}
-              size={26}
+              size={24}
             />
           )
         }}
@@ -44,7 +44,7 @@ const BottomNavigation = () => {
             <MaterialCommunityIcons
               name={focused ? 'folder' : 'folder-outline'}
               color={color}
-              size={26}
+              size={24}
             />
           )
         }}
@@ -57,7 +57,7 @@ const BottomNavigation = () => {
             <MaterialCommunityIcons
               name={focused ? 'calendar' : 'calendar-outline'}
               color={color}
-              size={26}
+              size={24}
             />
           )
         }}
@@ -70,7 +70,7 @@ const BottomNavigation = () => {
             <MaterialCommunityIcons
               name={focused ? 'account-circle' : 'account-circle-outline'}
               color={color}
-              size={26}
+              size={24}
             />
           )
         }}
