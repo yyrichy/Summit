@@ -2,7 +2,7 @@ export default {
   expo: {
     name: 'GradeHelper',
     slug: 'Summit',
-    version: '1.3.12',
+    version: '1.3.13',
     orientation: 'portrait',
     icon: './assets/icon.png',
     platforms: ['android', 'ios'],
@@ -31,7 +31,7 @@ export default {
       },
       package: 'com.vaporys.Summit',
       softwareKeyboardLayoutMode: 'pan',
-      versionCode: 42
+      versionCode: 43
     },
     plugins: [
       [
