@@ -168,11 +168,11 @@ const addAssignment = (
 ): Marks => {
   let name = 'Assignment'
   if (course.assignments.some((a) => a.name === name)) {
-    let indentifier = 2
-    while (course.assignments.some((a) => a.name === name + indentifier)) {
-      indentifier++
+    let identifier = 2
+    while (course.assignments.some((a) => a.name === name + identifier)) {
+      identifier++
     }
-    name = name + indentifier
+    name = name + identifier
   }
   course.assignments.unshift({
     name: name,
@@ -330,7 +330,7 @@ const testMarks = (): Marks => {
         }
       },
       {
-        name: 'Cumalative Exam',
+        name: 'Cumulative Exam',
         category: 'Assessments',
         status: 'Graded',
         notes: '',
