@@ -80,11 +80,12 @@ const Documents = () => {
 }
 
 const openDocument = async (document: Document) => {
-  const file = (await document.get())[0]
-  const fileName =
-    document.comment.replace(/ /g, '_') + file.file.name.substring(file.file.name.lastIndexOf('.'))
-  const filePath = FileSystem.documentDirectory + fileName
   try {
+    const file = (await document.get())[0]
+    const fileName =
+      document.comment.replace(/ /g, '_') +
+      file.file.name.substring(file.file.name.lastIndexOf('.'))
+    const filePath = FileSystem.documentDirectory + fileName
     await FileSystem.writeAsStringAsync(filePath, file.base64, {
       encoding: 'base64'
     })
