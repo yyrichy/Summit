@@ -1,8 +1,8 @@
 # GradeHelper - Summit
 
-Cross platform mobile app for viewing grades with the [StudentVue api](https://eggaming.github.io/studentvue.js/)
+Cross platform mobile app for viewing grades using the StudentVUE api
 
-Created with Expo/React Native
+Created with Expo/React Native and [studentvue](https://eggaming.github.io/studentvue.js/) library
 
 ### Released On
 
