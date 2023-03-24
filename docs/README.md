@@ -1,12 +1,10 @@
-# Privacy Policy
+## Privacy Policy
 
 Last updated: January 22, 2023
 
 This Privacy Policy describes our policies and procedures on the collection, use and disclosure of your information when you use the Service and tells You about your privacy rights and how the law protects you.
 
 We use your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the [Free Privacy Policy Generator](https://www.freeprivacypolicy.com/free-privacy-policy-generator/).
-
-# Interpretation and Definitions
 
 ## Interpretation
 
@@ -37,17 +35,17 @@ For the purposes of this Privacy Policy:
 
 - **You** means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.
 
-# Collecting and Using Your Personal Data
+## Collecting and Using Your Personal Data
 
-## Types of Data Collected
+## #Types of Data Collected
 
-### Personal Data
+#### Personal Data
 
 While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:
 
 - Usage Data
 
-### Usage Data
+#### Usage Data
 
 Usage Data is collected automatically when using the Service.
 
@@ -57,7 +55,7 @@ When you access the Service by or through a mobile device, We may collect certai
 
 We may also collect information when you access the Service by or through a mobile device.
 
-### Information Shared while Using the Application
+#### Information Shared while Using the Application
 
 While using Our Application, in order to provide features of our application, We may share, with your prior permission:
 
@@ -65,7 +63,7 @@ While using Our Application, in order to provide features of our application, We
 
 We share your username and password to your school district to retrieve your school data for displaying in the app. We DO NOT send this data to anyone else, including us.
 
-## Use of Your Personal Data
+### Use of Your Personal Data
 
 The Company may use Personal Data for the following purposes:
 
@@ -93,7 +91,7 @@ The Company will retain your personal data only for as long as is necessary for 
 
 The company will also retain usage data for internal analysis purposes. usage data is generally retained for a shorter period of time, except when this data is used to strengthen the security or to improve the functionality of our service, or we are legally obligated to retain this data for longer time periods.
 
-## Transfer of Your Personal Data
+### Transfer of Your Personal Data
 
 Your information, including personal data, is processed at the company's operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from your jurisdiction.
 
@@ -101,7 +99,7 @@ Your consent to this Privacy Policy followed by your submission of such informat
 
 The Company will take all steps reasonably necessary to ensure that your data is treated securely and in accordance with this Privacy Policy and no transfer of your personal data will take place to an organization or a country unless there are adequate controls in place including the security of your data and other personal information.
 
-## Delete Your Personal Data
+### Delete Your Personal Data
 
 You have the right to delete or request that We assist in deleting the Personal Data that We have collected about you.
 
@@ -111,17 +109,17 @@ You may update, amend, or delete your information at any time by signing in to y
 
 Please note, however, that We may need to retain certain information when we have a legal obligation or lawful basis to do so.
 
-## Disclosure of Your Personal Data
+### Disclosure of Your Personal Data
 
-### Business Transactions
+#### Business Transactions
 
 If the company is involved in a merger, acquisition or asset sale, your personal Data may be transferred. We will provide notice before your personal data is transferred and becomes subject to a different Privacy Policy.
 
-### Law enforcement
+#### Law enforcement
 
 Under certain circumstances, the company may be required to disclose your personal data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency).
 
-### Other legal requirements
+#### Other legal requirements
 
 The company may disclose your personal data in the good faith belief that such action is necessary to:
 
@@ -131,23 +129,23 @@ The company may disclose your personal data in the good faith belief that such a
 - Protect the personal safety of users of the Service or the public
 - Protect against legal liability
 
-## Security of Your Personal Data
+### Security of Your Personal Data
 
 The security of your personal data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your personal data, We cannot guarantee its absolute security.
 
-# Children's Privacy
+## Children's Privacy
 
 Our service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If you are a parent or guardian and You are aware that your child has provided us with personal data, please contact us. If We become aware that We have collected personal data from anyone under the age of 13 without verification of parental consent, We take steps to remove that information from Our servers.
 
 If We need to rely on consent as a legal basis for processing your information and your country requires consent from a parent, we may require your parent's consent before We collect and use that information.
 
-# Links to Other Websites
+## Links to Other Websites
 
 Our service may contain links to other websites that are not operated by us. If you click on a third party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit.
 
 We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.
 
-# Changes to this Privacy Policy
+## Changes to this Privacy Policy
 
 We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.
 
@@ -155,7 +153,7 @@ We will let you know via email and/or a prominent notice on Our Service, prior t
 
 You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.
 
-# Contact Us
+## Contact Us
 
 If you have any questions about this Privacy Policy, you can contact us:
 
