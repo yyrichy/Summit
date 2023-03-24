@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Last updated: January 22, 2023
+Last updated: March 24, 2023
 
 This Privacy Policy describes our policies and procedures on the collection, use and disclosure of your information when you use the Service and tells You about your privacy rights and how the law protects you.
 
@@ -84,7 +84,7 @@ We may share your personal information in the following situations:
 - **With Service Providers:** We may share your personal information with Service Providers to monitor and analyze the use of our Service, to contact you.
 - **For Business Transfers:** We may share or transfer your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.
 - **With Affiliates:** We may share your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.
-- **With Business p\Partners:** We may share your information with Our business partners to offer you certain products, services or promotions.
+- **With Business Partners:** We may share your information with Our business partners to offer you certain products, services or promotions.
 - **With Your Consent**: We may disclose your personal information for any other purpose with your consent.
 
 ## Retention of Your Personal Data
