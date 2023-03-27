@@ -91,6 +91,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import useAsyncEffect from 'use-async-effect'
 
 Sentry.init({
+  release: 'com.vaporys.Summit@1.3.14',
   dsn: 'https://e3a198c431684c50b83c5dfa94e21436@o4504763946303488.ingest.sentry.io/4504763949580288'
 })
 

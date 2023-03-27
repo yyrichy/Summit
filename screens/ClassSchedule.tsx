@@ -16,12 +16,14 @@ const ScheduleScreen = () => {
   const [buttons, setButtons] = React.useState([])
 
   useAsyncEffect(async () => {
-    const schedule = await client.schedule()
-    const b = [{ value: 'today', label: 'Today' }]
-    for (const t of schedule.terms) {
-      b.push({ value: t.index.toString(), label: t.name })
-    }
-    setButtons(b)
+    try {
+      const schedule = await client.schedule()
+      const b = [{ value: 'today', label: 'Today' }]
+      for (const t of schedule.terms) {
+        b.push({ value: t.index.toString(), label: t.name })
+      }
+      setButtons(b)
+    } catch (e) {}
   }, [])
 
   useEffect(() => {
