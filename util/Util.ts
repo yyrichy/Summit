@@ -23,7 +23,7 @@ const dateRelativeToToday = (date: Date) => {
   const today = new Date()
   if (isToday(date)) return 'Today'
   if (isYesterday(date)) return 'Yesterday'
-  if (isTomorrow(date)) return 'Tommorow'
+  if (isTomorrow(date)) return 'Tomorrow'
 
   // If one week or more in past/future
   if (Math.abs(date.getTime() - today.getTime()) / (1000 * 3600 * 24) > 6)

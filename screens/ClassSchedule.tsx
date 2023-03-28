@@ -110,7 +110,7 @@ const ScheduleScreen = () => {
               paddingHorizontal: 10,
               flexGrow: 1
             }}
-            ItemSeparatorComponent={Seperator}
+            ItemSeparatorComponent={Separator}
           />
         ) : (
           <View style={styles.schedule_error_container}>
@@ -154,7 +154,7 @@ const ScheduleScreen = () => {
             paddingHorizontal: 10,
             flexGrow: 1
           }}
-          ItemSeparatorComponent={Seperator}
+          ItemSeparatorComponent={Separator}
         />
       ) : (
         <View style={styles.schedule_error_container}>
@@ -167,7 +167,7 @@ const ScheduleScreen = () => {
   )
 }
 
-const Seperator = () => {
+const Separator = () => {
   return (
     <Divider
       style={{

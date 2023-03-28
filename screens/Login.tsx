@@ -175,6 +175,8 @@ const Login = () => {
         case 'Please enter zip code. Missing zip code as expected parameters.':
           message = 'Please enter a zipcode'
           break
+        // The api misspells this error message
+        // cspell:disable-next-line
         case 'Please enter zip code with atleast 3 characters and not more than 5 characters.':
           message = 'Zipcode must be between 3-5 characters'
           break
@@ -250,7 +252,7 @@ const Login = () => {
                 }}
                 style={{ flexGrow: 0 }}
                 contentContainerStyle={{ flexGrow: 0, marginTop: 12 }}
-                ItemSeparatorComponent={Seperator}
+                ItemSeparatorComponent={Separator}
                 ListEmptyComponent={
                   <PaperText variant="bodyMedium">No school districts found</PaperText>
                 }
@@ -413,7 +415,7 @@ const Login = () => {
   )
 }
 
-const Seperator = () => {
+const Separator = () => {
   return (
     <Divider
       style={{

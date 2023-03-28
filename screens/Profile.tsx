@@ -303,11 +303,11 @@ const Profile = () => {
               color={theme.colors.onPrimaryContainer}
             />
           </Setting>
-          <Seperator />
+          <Separator />
           <Setting title="Disable Reminder" position="middle">
             <Switch onChange={toggleSwitch} defaultChecked={defaultSwitchOn}></Switch>
           </Setting>
-          <Seperator />
+          <Separator />
           <Setting
             title="Delete Login Info"
             onPress={deleteLoginInfo}
@@ -320,7 +320,7 @@ const Profile = () => {
               color={theme.colors.onPrimaryContainer}
             />
           </Setting>
-          <Seperator />
+          <Separator />
           <Setting
             title="Choose Theme"
             onPress={showDialog}
@@ -492,7 +492,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const Seperator = () => {
+const Separator = () => {
   return (
     <View
       style={{
