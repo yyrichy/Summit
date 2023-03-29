@@ -467,10 +467,10 @@ const styles = StyleSheet.create({
   settings_title: {
     fontFamily: 'RobotoSerif_900Black_Italic',
     fontSize: 24,
-    marginBottom: 15
+    marginVertical: 15
   },
   settings_container: {
-    padding: 25,
+    paddingHorizontal: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     flex: 1,

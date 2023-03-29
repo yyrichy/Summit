@@ -20,18 +20,18 @@ const Item: React.FC<Props> = ({ item: { event } }) => {
       )
     case EventType.HOLIDAY:
       return (
-        <View style={[styles.item, { backgroundColor: theme.colors.surface }]}>
-          <Text style={[styles.time_text, { color: theme.colors.onSurface }]}>
-            HOLIDAY{event.startTime.length !== 0 ? ` - ${event.startTime}` : ''}
+        <View style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>
+          <Text style={[styles.time_text, { color: theme.colors.onSurfaceVariant }]}>
+            {event.startTime.length !== 0 ? `HOLIDAY - ${event.startTime}` : 'HOLIDAY'}
           </Text>
           <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>{event.title}</Text>
         </View>
       )
     default:
       return (
-        <View style={[styles.item, { backgroundColor: theme.colors.surface }]}>
-          <Text style={[styles.time_text, { color: theme.colors.onSurface }]}>
-            EVENT{event.startTime.length !== 0 ? ` - ${event.startTime}` : ''}
+        <View style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>
+          <Text style={[styles.time_text, { color: theme.colors.onSurfaceVariant }]}>
+            {event.startTime.length !== 0 ? `EVENT - ${event.startTime}` : 'EVENT'}
           </Text>
           <Text style={[styles.item_text, { color: theme.colors.onSurface }]}>{event.title}</Text>
         </View>
