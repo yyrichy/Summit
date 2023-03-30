@@ -293,7 +293,7 @@ const Profile = () => {
           </Text>
           <Setting
             title="Daily Reminder"
-            description="Notifies you to check your grades at a certain time everyday"
+            description="Reminds you to check your grades daily"
             onPress={showDatePicker}
             position="top"
           >
@@ -321,12 +321,7 @@ const Profile = () => {
             />
           </Setting>
           <Separator />
-          <Setting
-            title="Choose Theme"
-            onPress={showDialog}
-            position="bottom"
-            description="Light, dark, or device theme"
-          >
+          <Setting title="Choose Theme" onPress={showDialog} position="bottom">
             <MaterialCommunityIcons
               name="brightness-6"
               size={24}
