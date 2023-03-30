@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View } from 'react-native'
 import AppContext from '../contexts/AppContext'
 import { Agenda, AgendaSchedule } from 'react-native-calendars'
 import useAsyncEffect from 'use-async-effect'
@@ -41,39 +40,37 @@ const CalendarScreen = () => {
   }, [])
 
   return (
-    <View style={{ flex: 1 }}>
-      <Agenda
-        key={key}
-        items={items}
-        renderItem={(item) => renderItem(item)}
-        minDate={items && Object.keys(items)[0]}
-        maxDate={items && Object.keys(items)[Object.keys(items).length - 1]}
-        removeClippedSubviews
-        theme={{
-          calendarBackground: theme.dark ? palette.neutralVariant10 : theme.colors.elevation.level1,
-          monthTextColor: theme.colors.onSurfaceVariant,
-          dotColor: Colors.accent,
-          dayTextColor: theme.dark ? Colors.white : Colors.black,
-          agendaDayTextColor: theme.colors.onSurfaceVariant,
-          agendaDayNumColor: theme.colors.onSurface,
-          textDisabledColor: Colors.secondary,
-          agendaTodayColor: theme.colors.tertiary,
-          agendaKnobColor: theme.dark ? 'white' : 'black',
-          selectedDayBackgroundColor: theme.colors.primary,
-          selectedDayTextColor: theme.colors.onPrimary,
-          todayBackgroundColor: theme.colors.tertiary,
-          todayTextColor: theme.colors.onTertiary,
-          //@ts-ignore
-          'stylesheet.agenda.main': {
-            reservations: {
-              backgroundColor: theme.colors.surface,
-              flex: 1,
-              marginTop: 100
-            }
+    <Agenda
+      key={key}
+      items={items}
+      renderItem={(item) => renderItem(item)}
+      minDate={items && Object.keys(items)[0]}
+      maxDate={items && Object.keys(items)[Object.keys(items).length - 1]}
+      removeClippedSubviews
+      theme={{
+        calendarBackground: theme.dark ? palette.neutralVariant10 : theme.colors.elevation.level1,
+        monthTextColor: theme.colors.onSurfaceVariant,
+        dotColor: Colors.accent,
+        dayTextColor: theme.dark ? Colors.white : Colors.black,
+        agendaDayTextColor: theme.colors.onSurfaceVariant,
+        agendaDayNumColor: theme.colors.onSurface,
+        textDisabledColor: Colors.secondary,
+        agendaTodayColor: theme.colors.tertiary,
+        agendaKnobColor: theme.dark ? 'white' : 'black',
+        selectedDayBackgroundColor: theme.colors.primary,
+        selectedDayTextColor: theme.colors.onPrimary,
+        todayBackgroundColor: theme.colors.tertiary,
+        todayTextColor: theme.colors.onTertiary,
+        //@ts-ignore
+        'stylesheet.agenda.main': {
+          reservations: {
+            backgroundColor: theme.colors.surface,
+            flex: 1,
+            marginTop: 100
           }
-        }}
-      />
-    </View>
+        }
+      }}
+    />
   )
 }
 
