@@ -49,7 +49,6 @@ const convertGradebook = (gradebook: Gradebook) => {
                         {
                           name: c.type,
                           weight: parseFloat(c.weight.standard),
-                          show: true
                         } as Category
                       ])
                   )
@@ -365,7 +364,6 @@ const testMarks = (): Marks => {
           total: 10,
           value: 90,
           weight: 10,
-          show: true
         }
       ],
       [
@@ -376,7 +374,6 @@ const testMarks = (): Marks => {
           total: 100,
           value: 86.69,
           weight: 90,
-          show: true
         }
       ]
     ]),

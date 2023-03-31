@@ -183,7 +183,7 @@ const CourseDetails = ({ route }) => {
           </View>
         )}
       </View>
-      {course.categories.size > 0 && (
+      {categories && (
         <View style={{ height: 32, paddingLeft: 4, marginVertical: 15 }}>
           <FlatList
             showsHorizontalScrollIndicator={false}
@@ -206,7 +206,7 @@ const CourseDetails = ({ route }) => {
                     const index = categories.findIndex((c) => c.name === item.name)
                     const c = [...categories]
                     const newCategory = c[index]
-                    newCategory.show = !item.show
+                    newCategory.show = !selected
                     c[index] = newCategory
                     setCategories(c)
                   }}
@@ -247,7 +247,8 @@ const CourseDetails = ({ route }) => {
               {course.assignments
                 .filter(
                   (a) =>
-                    categories.find((c) => c.name === a.category).show &&
+                    (!categories.find((c) => c.name === a.category) ||
+                      categories.find((c) => c.name === a.category).show) &&
                     (!searchText || a.name.toLowerCase().includes(searchText.toLowerCase()))
                 )
                 .map((item) => (
