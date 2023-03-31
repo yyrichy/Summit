@@ -12,8 +12,8 @@ const ScheduleScreen = () => {
   const theme = useTheme()
   const { client } = useContext(AppContext)
   const [schedule, setSchedule] = useState(null as Schedule)
-  const [value, setValue] = React.useState('today' as string)
-  const [buttons, setButtons] = React.useState([])
+  const [value, setValue] = useState('today' as string)
+  const [buttons, setButtons] = useState([])
 
   useAsyncEffect(async () => {
     try {
@@ -108,6 +108,7 @@ const ScheduleScreen = () => {
             keyExtractor={(item) => item.name}
             contentContainerStyle={{
               paddingHorizontal: 10,
+              paddingTop: 4,
               flexGrow: 1
             }}
             ItemSeparatorComponent={Separator}
@@ -152,6 +153,7 @@ const ScheduleScreen = () => {
           keyExtractor={(item) => item.name}
           contentContainerStyle={{
             paddingHorizontal: 10,
+            paddingTop: 4,
             flexGrow: 1
           }}
           ItemSeparatorComponent={Separator}

@@ -99,14 +99,8 @@ const Profile = () => {
 
   const [date, setDate] = useState(new Date() as Date)
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true)
-  }
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false)
-  }
+  const showDatePicker = () => setDatePickerVisibility(true)
+  const hideDatePicker = () => setDatePickerVisibility(false)
 
   const handleConfirm = async (date: Date) => {
     hideDatePicker()
@@ -466,6 +460,7 @@ const styles = StyleSheet.create({
   },
   settings_container: {
     paddingHorizontal: 25,
+    paddingBottom: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     flex: 1,
