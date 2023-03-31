@@ -31,8 +31,6 @@ import {
 } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { isNumber, round } from '../util/Util'
-import BannerAd from '../components/BannerAd'
-import Constants from 'expo-constants'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { palette } from '../theme/colors'
 import {
@@ -273,12 +271,6 @@ const CourseDetails = ({ route }) => {
             }}
           />
         )}
-      </View>
-      <View style={{ backgroundColor: theme.colors.surface }}>
-        <BannerAd
-          androidId={Constants.expoConfig.extra.DETAILS_BANNER_ANDROID}
-          iosId={Constants.expoConfig.extra.DETAILS_BANNER_IOS}
-        />
       </View>
       <Portal>
         <Dialog
