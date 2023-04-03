@@ -58,7 +58,7 @@ const Profile = () => {
   const { client, setIsDarkTheme } = useContext(AppContext)
   const [studentInfo, setStudentInfo] = useState(null as StudentInfo)
 
-  const [switchOn, switchEnabled] = useState(false)
+  const [switchOn, switchEnabled] = useState(null as boolean)
   const [defaultSwitchOn, setDefaultSwitchEnabled] = useState(null as boolean)
   const toggleSwitch = async () => {
     const newState = !switchOn
@@ -120,7 +120,9 @@ const Profile = () => {
         theme = 'device'
       }
       setChecked(theme)
-      setDefaultSwitchEnabled(await getReminderIsDisabled())
+      const reminderDisabled = await getReminderIsDisabled()
+      switchEnabled(reminderDisabled)
+      setDefaultSwitchEnabled(reminderDisabled)
       setDate(await getReminderDate())
       setStudentInfo(await client.studentInfo())
     } catch (err) {}
