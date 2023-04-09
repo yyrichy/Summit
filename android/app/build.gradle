@@ -118,8 +118,8 @@ android {
         applicationId 'com.vaporys.Summit'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 46
-        versionName "1.3.16"
+        versionCode 47
+        versionName "1.3.17"
     }
 
     splits {
