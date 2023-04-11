@@ -19,21 +19,21 @@ PODS:
     - ExpoModulesCore
   - Expo (48.0.10):
     - ExpoModulesCore
-  - expo-dev-client (2.1.5):
+  - expo-dev-client (2.1.6):
     - EXManifests
     - expo-dev-launcher
     - expo-dev-menu
     - expo-dev-menu-interface
     - EXUpdatesInterface
-  - expo-dev-launcher (2.1.5):
+  - expo-dev-launcher (2.1.6):
     - EXManifests
-    - expo-dev-launcher/Main (= 2.1.5)
+    - expo-dev-launcher/Main (= 2.1.6)
     - expo-dev-menu
     - expo-dev-menu-interface
     - ExpoModulesCore
     - EXUpdatesInterface
     - React-Core
-  - expo-dev-launcher/Main (2.1.5):
+  - expo-dev-launcher/Main (2.1.6):
     - EXManifests
     - expo-dev-launcher/Unsafe
     - expo-dev-menu
@@ -41,24 +41,24 @@ PODS:
     - ExpoModulesCore
     - EXUpdatesInterface
     - React-Core
-  - expo-dev-launcher/Unsafe (2.1.5):
+  - expo-dev-launcher/Unsafe (2.1.6):
     - EXManifests
     - expo-dev-menu
     - expo-dev-menu-interface
     - ExpoModulesCore
     - EXUpdatesInterface
     - React-Core
-  - expo-dev-menu (2.1.3):
-    - expo-dev-menu/Main (= 2.1.3)
+  - expo-dev-menu (2.1.4):
+    - expo-dev-menu/Main (= 2.1.4)
   - expo-dev-menu-interface (1.1.1)
-  - expo-dev-menu/GestureHandler (2.1.3)
-  - expo-dev-menu/Main (2.1.3):
+  - expo-dev-menu/GestureHandler (2.1.4)
+  - expo-dev-menu/Main (2.1.4):
     - EXManifests
     - expo-dev-menu-interface
     - expo-dev-menu/Vendored
     - ExpoModulesCore
     - React-Core
-  - expo-dev-menu/Reanimated (2.1.3):
+  - expo-dev-menu/Reanimated (2.1.4):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -86,8 +86,8 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - expo-dev-menu/SafeAreaView (2.1.3)
-  - expo-dev-menu/Vendored (2.1.3):
+  - expo-dev-menu/SafeAreaView (2.1.4)
+  - expo-dev-menu/Vendored (2.1.4):
     - expo-dev-menu/GestureHandler
     - expo-dev-menu/Reanimated
     - expo-dev-menu/SafeAreaView
@@ -109,7 +109,7 @@ PODS:
     - ExpoModulesCore
     - React-Core
   - EXStructuredHeaders (3.1.1)
-  - EXUpdates (0.16.3):
+  - EXUpdates (0.16.4):
     - ASN1Decoder (~> 1.8)
     - EASClient
     - EXManifests
@@ -169,9 +169,9 @@ PODS:
   - "GoogleUtilities/NSData+zlib (7.11.0)"
   - GoogleUtilities/Reachability (7.11.0):
     - GoogleUtilities/Logger
-  - hermes-engine (0.71.4):
-    - hermes-engine/Pre-built (= 0.71.4)
-  - hermes-engine/Pre-built (0.71.4)
+  - hermes-engine (0.71.6):
+    - hermes-engine/Pre-built (= 0.71.6)
+  - hermes-engine/Pre-built (0.71.6)
   - libevent (2.1.12)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
@@ -818,9 +818,9 @@ SPEC CHECKSUMS:
   EXManifests: 500666d48e8dd7ca5a482c9e729e4a7a6c34081b
   EXNotifications: dd628737af60fc8cc62dccebacd326b0fbbc0dcb
   Expo: b04d142a2b477a391b47c62d179c1a9e1140e6ad
-  expo-dev-client: 7c1ef51516853465f4d448c14ddf365167d20361
-  expo-dev-launcher: 90de99d9e5d1a883d81355ca10e87c2f3c81d46e
-  expo-dev-menu: d77ad430dd63211a4e904c075b207f37914b4da4
+  expo-dev-client: 84792ce20d34fa5c882cdc3ca338ea1b2cde5013
+  expo-dev-launcher: c50f1b78ea294f5762902b768952898d17739983
+  expo-dev-menu: 323c5259cee5713992bd95a4bdd5e549875d7796
   expo-dev-menu-interface: 6c82ae323c4b8724dead4763ce3ff24a2108bdb1
   ExpoDevice: e0bebf68f978b3d353377ce42e73c20c0a070215
   ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
@@ -830,7 +830,7 @@ SPEC CHECKSUMS:
   EXSharing: 09839ace249f61bfa13c50c6a28256c31d260355
   EXSplashScreen: cd7fb052dff5ba8311d5c2455ecbebffe1b7a8ca
   EXStructuredHeaders: b1a48d732562e2cc81f11771bcfd29534f5d9254
-  EXUpdates: 46d6cf222e92e5b22ac06a9b03f1ffba9b6886fc
+  EXUpdates: 603c4dfec2ed9ef323dfbd9c59c946593d4d9a5c
   EXUpdatesInterface: dd699d1930e28639dcbd70a402caea98e86364ca
   FBLazyVector: a83ceaa8a8581003a623facdb3c44f6d4f342ac5
   FBReactNativeSpec: 85eee79837cb797ab6176f0243a2b40511c09158
@@ -840,7 +840,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: 686b48c3c895f3c55c70719041913d5d150b74f6
   GoogleUserMessagingPlatform: ab890ce5f6620f293a21b6bdd82e416a2c73aeca
   GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
-  hermes-engine: a1f157c49ea579c28b0296bda8530e980c45bdb3
+  hermes-engine: b434cea529ad0152c56c7cb6486b0c4c0b23b5de
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
