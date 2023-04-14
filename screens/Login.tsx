@@ -312,7 +312,6 @@ const Login = () => {
               returnKeyType="next"
               onSubmitEditing={() => refInput.current.focus()}
               blurOnSubmit={false}
-              onLayout={(e) => console.log(e.nativeEvent.layout)}
             />
             <TextInput
               mode="outlined"
