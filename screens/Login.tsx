@@ -61,7 +61,7 @@ const Login = () => {
   const [password, setPassword] = useState(null)
   const { isDarkTheme, setClient, setMarks, setIsDarkTheme } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
-  const [isChecked, setToggleCheckBox] = useState(true)
+  const [isChecked, setToggleCheckBox] = useState(false)
   const [isPasswordSecure, setIsPasswordSecure] = useState(true)
 
   const [districtDialogVisible, setDistrictDialog] = useState(false)
@@ -92,19 +92,21 @@ const Login = () => {
     const username: string = await getValueFor('username')
     const password: string = await getValueFor('password')
     const district: SchoolDistrict = JSON.parse(await getValueFor('district'))
-
-    if (!username || !password || !district) {
+    const savedIsParent = await getValueFor('isParent')
+    const isParent: boolean = savedIsParent === 'true'
+    if (!username || !password || !district || !savedIsParent) {
       return
     }
-
+    setIsLoading(true)
     setUsername(username)
     setPassword(password)
     setSelectedDistrict(district)
-    setIsLoading(true)
+    setToggleCheckBox(isParent)
     try {
       const client = await StudentVue.login(district.parentVueUrl, {
         username: username,
-        password: password
+        password: password,
+        isParent: isParent
       })
       const gradebook = await client.gradebook()
       const marks = convertGradebook(gradebook)
@@ -136,7 +138,8 @@ const Login = () => {
     try {
       const client = await StudentVue.login(selectedDistrict.parentVueUrl, {
         username: username,
-        password: password
+        password: password,
+        isParent: isChecked
       })
       const gradebook = await client.gradebook()
       const marks = convertGradebook(gradebook)
@@ -147,11 +150,10 @@ const Login = () => {
       Alert.alert(err.message)
       return
     }
-    if (isChecked) {
-      save('username', username)
-      save('password', password)
-      save('district', JSON.stringify(selectedDistrict))
-    }
+    save('username', username)
+    save('password', password)
+    save('district', JSON.stringify(selectedDistrict))
+    save('isParent', isChecked.toString())
     setIsLoading(false)
     navigation.navigate('Menu')
   }
@@ -301,14 +303,6 @@ const Login = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <View>
-            <TouchableOpacity
-              style={styles.questions_button}
-              onPress={() => setSecurityDialog(true)}
-            >
-              <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
-                Security/Privacy
-              </Text>
-            </TouchableOpacity>
             <TextInput
               mode="outlined"
               defaultValue={username}
@@ -318,6 +312,7 @@ const Login = () => {
               returnKeyType="next"
               onSubmitEditing={() => refInput.current.focus()}
               blurOnSubmit={false}
+              onLayout={(e) => console.log(e.nativeEvent.layout)}
             />
             <TextInput
               mode="outlined"
@@ -349,7 +344,7 @@ const Login = () => {
                     color: selectedDistrict ? theme.colors.onSurface : theme.colors.onSurfaceVariant
                   }
                 ]}
-                numberOfLines={2}
+                numberOfLines={1}
               >
                 {selectedDistrict ? selectedDistrict.name : 'Find School District'}
               </Text>
@@ -376,7 +371,9 @@ const Login = () => {
                 }}
                 disabled={isLoading}
               />
-              <Text style={[styles.save_text, { color: theme.colors.onSurface }]}>Remember Me</Text>
+              <Text style={[styles.parent_login_text, { color: theme.colors.onSurface }]}>
+                Sign in as parent
+              </Text>
             </View>
             <CustomButton
               onPress={onLogin}
@@ -405,6 +402,11 @@ const Login = () => {
             width: '100%'
           }}
         >
+          <TouchableOpacity style={styles.questions_button} onPress={() => setSecurityDialog(true)}>
+            <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
+              Security/Privacy
+            </Text>
+          </TouchableOpacity>
           <BannerAd
             androidId={Constants.expoConfig.extra.LOGIN_BANNER_ANDROID}
             iosId={Constants.expoConfig.extra.LOGIN_BANNER_IOS}
@@ -426,12 +428,17 @@ const Separator = () => {
   )
 }
 
-const save = async (key: 'username' | 'password' | 'district', value: string): Promise<void> => {
+const save = async (
+  key: 'username' | 'password' | 'district' | 'isParent',
+  value: string
+): Promise<void> => {
   if (value === null) return
   await SecureStore.setItemAsync(key, value)
 }
 
-const getValueFor = async (key: 'username' | 'password' | 'district'): Promise<string> => {
+const getValueFor = async (
+  key: 'username' | 'password' | 'district' | 'isParent'
+): Promise<string> => {
   return await SecureStore.getItemAsync(key)
 }
 
@@ -444,8 +451,7 @@ const styles = StyleSheet.create({
   questions_button: {
     height: 48,
     alignItems: 'center',
-    padding: 10,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignSelf: 'center'
   },
   questions_text: {
@@ -464,7 +470,7 @@ const styles = StyleSheet.create({
   checkbox_container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginVertical: 10,
     alignSelf: 'flex-start'
   },
   input: {
@@ -478,16 +484,14 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
-    minHeight: 56,
+    height: 48,
     marginTop: 6
   },
   selected_district_text: {
-    fontFamily: 'Inter_600SemiBold',
+    fontFamily: 'Inter_400Regular',
     fontSize: 16,
-    color: Colors.black,
     flex: 1,
-    margin: 16
+    marginHorizontal: 16
   },
   button_container: {
     justifyContent: 'center',
@@ -495,9 +499,9 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderWidth: 0,
     width: 250,
-    height: 50
+    height: 56
   },
-  save_text: {
+  parent_login_text: {
     fontFamily: 'Inter_400Regular',
     marginLeft: 10
   },

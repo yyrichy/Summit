@@ -48,7 +48,7 @@ const CustomButton: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   buttonText: {
-    fontSize: 22
+    fontSize: 24
   }
 })
 

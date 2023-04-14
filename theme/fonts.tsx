@@ -10,14 +10,14 @@ import type {
 
 const typeface = {
   brandRegular: Platform.select({
-    ios: 'Roboto_400Regular',
-    default: 'Roboto_400Regular'
+    ios: 'Inter_400Regular',
+    default: 'Inter_400Regular'
   }),
   weightRegular: '400' as Font['fontWeight'],
 
   plainMedium: Platform.select({
-    ios: 'Roboto_500Medium',
-    default: 'Roboto_500Medium'
+    ios: 'Inter_500Medium',
+    default: 'Inter_500Medium'
   }),
   weightMedium: '500' as Font['fontWeight']
 }
