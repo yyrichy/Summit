@@ -372,7 +372,7 @@ const Login = () => {
                 disabled={isLoading}
               />
               <Text style={[styles.parent_login_text, { color: theme.colors.onSurface }]}>
-                Sign in as parent
+                Parent Login
               </Text>
             </View>
             <CustomButton
