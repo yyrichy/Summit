@@ -155,11 +155,11 @@ const App = () => {
   })
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (fontsLoaded && isDarkTheme !== null) {
       // Hide the splash screen
       await SplashScreen.hideAsync()
     }
-  }, [fontsLoaded])
+  }, [fontsLoaded, isDarkTheme])
 
   if (!fontsLoaded || isDarkTheme === null) {
     return null

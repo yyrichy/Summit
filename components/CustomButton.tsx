@@ -37,10 +37,10 @@ const CustomButton: React.FC<Props> = ({
       disabled={disabled}
     >
       <View style={{ flexDirection: 'row' }}>
-        {children}
         <Text style={[styles.buttonText, { color: textColor, fontFamily: fontFamily }]}>
           {text}
         </Text>
+        {children}
       </View>
     </TouchableOpacity>
   )

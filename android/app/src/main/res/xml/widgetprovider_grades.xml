@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="320dp"
+    android:minHeight="120dp"
+
+
+
+    android:resizeMode="none"
+
+
+
+    android:initialLayout="@layout/rn_widget"
+    android:previewImage="@drawable/grades_preview"
+
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen">
+</appwidget-provider>

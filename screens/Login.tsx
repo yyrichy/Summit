@@ -35,14 +35,15 @@ import {
   Text as PaperText,
   Button
 } from 'react-native-paper'
-import { toast } from '../util/Util'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
-import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import BannerAd from '../components/BannerAd'
 import Constants from 'expo-constants'
 import District from '../components/District'
 import { StatusBar } from 'expo-status-bar'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import BackgroundFetch from 'react-native-background-fetch'
+import { updateGradesWidget } from '../util/Widget'
+import Dot from '../components/Dot'
 
 const Login = () => {
   const theme = useTheme()
@@ -72,6 +73,7 @@ const Login = () => {
   const [isLoadingDistricts, setIsLoadingDistricts] = useState(false)
 
   useAsyncEffect(async () => {
+    if (Platform.OS === 'android') configureBackgroundFetch()
     Appearance.addChangeListener(async ({ colorScheme }) => {
       const theme = await AsyncStorage.getItem('Theme')
       if (!theme || theme === 'device') setIsDarkTheme(colorScheme === 'dark' ? true : false)
@@ -123,15 +125,15 @@ const Login = () => {
 
   async function onLogin(): Promise<void> {
     if (!username) {
-      toast('Enter your username', theme.dark)
+      Alert.alert('Enter your username')
       return
     }
     if (!password) {
-      toast('Enter your password', theme.dark)
+      Alert.alert('Enter your password')
       return
     }
     if (!selectedDistrict) {
-      toast('Select your school district', theme.dark)
+      Alert.alert('Select your school district')
       return
     }
     setIsLoading(true)
@@ -278,8 +280,7 @@ const Login = () => {
             : require('../assets/mountainbackground.png')
         }
         style={{
-          flex: 1,
-          backgroundColor: Colors.primary
+          flex: 1
         }}
         resizeMode="cover"
       >
@@ -303,6 +304,48 @@ const Login = () => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
           <View>
+            <TouchableOpacity
+              style={{
+                paddingBottom: 4,
+                height: 48,
+                alignSelf: 'center',
+                paddingHorizontal: 12,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                width: 250
+              }}
+              onPress={onPressOpenDistrictModal}
+              disabled={isLoading}
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center'
+                }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <Text
+                    style={{
+                      fontFamily: 'Inter_400Regular',
+                      textDecorationLine: 'underline',
+                      flexShrink: 1,
+                      color: theme.colors.onSurfaceVariant
+                    }}
+                    numberOfLines={1}
+                  >
+                    {selectedDistrict ? selectedDistrict.name : 'Select School District'}
+                  </Text>
+                </View>
+                <MaterialCommunityIcons
+                  name="school-outline"
+                  size={20}
+                  color={theme.colors.onSurfaceVariant}
+                  style={{
+                    marginLeft: 4
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
             <TextInput
               mode="outlined"
               defaultValue={username}
@@ -322,7 +365,7 @@ const Login = () => {
               style={[styles.input, { width: 250 }]}
               returnKeyType="next"
               ref={refInput}
-              onSubmitEditing={onPressOpenDistrictModal}
+              onSubmitEditing={onLogin}
               blurOnSubmit={false}
               right={
                 <TextInput.Icon
@@ -332,48 +375,6 @@ const Login = () => {
                 />
               }
             />
-            <TouchableOpacity
-              style={[styles.districts_button, { borderColor: theme.colors.outline }]}
-              onPress={onPressOpenDistrictModal}
-            >
-              <Text
-                style={[
-                  styles.selected_district_text,
-                  {
-                    color: selectedDistrict ? theme.colors.onSurface : theme.colors.onSurfaceVariant
-                  }
-                ]}
-                numberOfLines={1}
-              >
-                {selectedDistrict ? selectedDistrict.name : 'Find School District'}
-              </Text>
-              {!selectedDistrict && (
-                <MaterialCommunityIcons
-                  name="school-outline"
-                  size={24}
-                  color={theme.colors.onSurfaceVariant}
-                  style={{
-                    marginRight: 12
-                  }}
-                />
-              )}
-            </TouchableOpacity>
-            <View style={styles.checkbox_container}>
-              <BouncyCheckbox
-                disableBuiltInState
-                disableText
-                isChecked={isChecked}
-                size={24}
-                fillColor={Colors.navy}
-                onPress={() => {
-                  setToggleCheckBox(!isChecked)
-                }}
-                disabled={isLoading}
-              />
-              <Text style={[styles.parent_login_text, { color: theme.colors.onSurface }]}>
-                Parent Login
-              </Text>
-            </View>
             <CustomButton
               onPress={onLogin}
               text="Login"
@@ -387,7 +388,7 @@ const Login = () => {
                 <ActivityIndicator
                   color={Colors.white}
                   size="small"
-                  style={{ margin: 0, marginRight: 10 }}
+                  style={{ margin: 0, marginLeft: 10 }}
                 />
               )}
             </CustomButton>
@@ -401,11 +402,34 @@ const Login = () => {
             width: '100%'
           }}
         >
-          <TouchableOpacity style={styles.questions_button} onPress={() => setSecurityDialog(true)}>
-            <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
-              Security/Privacy
-            </Text>
-          </TouchableOpacity>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity
+              style={styles.parent_button}
+              onPress={() => setToggleCheckBox(!isChecked)}
+              disabled={isLoading}
+            >
+              <MaterialCommunityIcons
+                name="check"
+                size={20}
+                color={isChecked ? theme.colors.onSurface : Colors.transparent}
+                style={{ marginRight: 4 }}
+              />
+
+              <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
+                Parent Login
+              </Text>
+            </TouchableOpacity>
+            <Dot size={16} style={{ marginHorizontal: 8 }} />
+            <TouchableOpacity
+              style={styles.questions_button}
+              onPress={() => setSecurityDialog(true)}
+              disabled={isLoading}
+            >
+              <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
+                Security/Privacy
+              </Text>
+            </TouchableOpacity>
+          </View>
           <BannerAd
             androidId={Constants.expoConfig.extra.LOGIN_BANNER_ANDROID}
             iosId={Constants.expoConfig.extra.LOGIN_BANNER_IOS}
@@ -424,6 +448,24 @@ const Separator = () => {
       }}
       bold
     />
+  )
+}
+
+const configureBackgroundFetch = () => {
+  BackgroundFetch.configure(
+    {
+      minimumFetchInterval: 120,
+      enableHeadless: true,
+      stopOnTerminate: false,
+      startOnBoot: true,
+      requiredNetworkType: BackgroundFetch.NETWORK_TYPE_ANY
+    },
+    async (taskId) => {
+      updateGradesWidget(taskId)
+    },
+    async (taskId) => {
+      BackgroundFetch.finish(taskId)
+    }
   )
 }
 
@@ -457,6 +499,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     fontSize: 14
   },
+  parent_button: {
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    flexDirection: 'row'
+  },
   name_container: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -466,25 +515,9 @@ const styles = StyleSheet.create({
     fontFamily: 'RobotoSerif_900Black_Italic',
     fontSize: 40
   },
-  checkbox_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-    alignSelf: 'flex-start'
-  },
   input: {
     marginBottom: 6,
     backgroundColor: 'transparent'
-  },
-  districts_button: {
-    width: 250,
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderRadius: 4,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    height: 48,
-    marginTop: 6
   },
   selected_district_text: {
     fontFamily: 'Inter_400Regular',
@@ -495,14 +528,11 @@ const styles = StyleSheet.create({
   button_container: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 25,
+    borderRadius: 28,
     borderWidth: 0,
     width: 250,
-    height: 56
-  },
-  parent_login_text: {
-    fontFamily: 'Inter_400Regular',
-    marginLeft: 10
+    height: 56,
+    marginTop: 64
   },
   details_container: {
     justifyContent: 'center',

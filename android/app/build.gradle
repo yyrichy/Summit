@@ -109,6 +109,9 @@ def reactNativeArchitectures() {
 }
 
 android {
+// @generated begin [react-native-background-fetch]-project - expo prebuild (DO NOT MODIFY) sync-56d2d70cbc3f26369dd5e711d0ab87bf3c0aebb3
+Project background_fetch = project(':react-native-background-fetch')
+// @generated end [react-native-background-fetch]-project
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -146,8 +149,12 @@ android {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
+            shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+// @generated begin [react-native-background-fetch]-proguard - expo prebuild (DO NOT MODIFY) sync-7cb5d9a88ae03463dcde5b7e8571a725ecd5854f
+	    proguardFiles "${background_fetch.projectDir}/proguard-rules.pro"
+// @generated end [react-native-background-fetch]-proguard
         }
     }
 
