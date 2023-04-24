@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useReducer, useState } from 'react'
 import {
   ActivityIndicator,
   StyleSheet,
@@ -77,9 +77,7 @@ const Profile = () => {
     }
     switchEnabled(newState)
   }
-  const [themeDialogVisible, setThemeDialogVisible] = React.useState(false)
-  const showDialog = () => setThemeDialogVisible(true)
-  const hideDialog = () => setThemeDialogVisible(false)
+  const [themeDialogVisible, toggleThemeDialog] = useReducer((s) => !s, false)
   const [checked, setChecked] = useState('device')
 
   const setTheme = async (theme: 'device' | 'light' | 'dark') => {
@@ -317,7 +315,7 @@ const Profile = () => {
             />
           </Setting>
           <Separator />
-          <Setting title="Choose Theme" onPress={showDialog} position="bottom">
+          <Setting title="Choose Theme" onPress={toggleThemeDialog} position="bottom">
             <MaterialCommunityIcons
               name="brightness-6"
               size={24}
@@ -336,7 +334,7 @@ const Profile = () => {
       <Portal>
         <Dialog
           visible={themeDialogVisible}
-          onDismiss={hideDialog}
+          onDismiss={toggleThemeDialog}
           style={{ backgroundColor: theme.colors.surface }}
         >
           <Dialog.Title>Choose Theme</Dialog.Title>
@@ -382,7 +380,7 @@ const Profile = () => {
             </TouchableRipple>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Done</Button>
+            <Button onPress={toggleThemeDialog}>Done</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

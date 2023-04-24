@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useReducer, useRef, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -62,11 +62,11 @@ const Login = () => {
   const [password, setPassword] = useState(null)
   const { isDarkTheme, setClient, setMarks, setIsDarkTheme } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
-  const [isChecked, setToggleCheckBox] = useState(false)
-  const [isPasswordSecure, setIsPasswordSecure] = useState(true)
+  const [isChecked, setCheckBox] = useState(false)
+  const [isPasswordSecure, togglePasswordSecure] = useReducer((s) => !s, false)
 
-  const [districtDialogVisible, setDistrictDialog] = useState(false)
-  const [securityDialogVisible, setSecurityDialog] = useState(false)
+  const [districtDialogVisible, toggleDistrictDialog] = useReducer((s) => !s, false)
+  const [securityDialogVisible, toggleSecurityDialog] = useReducer((s) => !s, false)
 
   const [selectedDistrict, setSelectedDistrict] = useState(null as SchoolDistrict)
   const [districts, setDistricts] = useState(null as SchoolDistrict[])
@@ -103,7 +103,7 @@ const Login = () => {
     setUsername(username)
     setPassword(password)
     setSelectedDistrict(district)
-    setToggleCheckBox(isParent)
+    setCheckBox(isParent)
     try {
       const client = await StudentVue.login(district.parentVueUrl, {
         username: username,
@@ -160,9 +160,9 @@ const Login = () => {
     navigation.navigate('Menu')
   }
 
-  const onPressOpenDistrictModal = () => {
+  const onPressOpenDistrictDialog = () => {
     Keyboard.dismiss()
-    setDistrictDialog(true)
+    toggleDistrictDialog()
   }
 
   const onSearch = async (zipcode: string) => {
@@ -198,7 +198,7 @@ const Login = () => {
       <Portal>
         <Dialog
           visible={securityDialogVisible}
-          onDismiss={() => setSecurityDialog(false)}
+          onDismiss={toggleSecurityDialog}
           style={{ backgroundColor: theme.colors.surface }}
         >
           <Dialog.Icon icon="shield-check-outline" />
@@ -210,14 +210,14 @@ const Login = () => {
             </PaperText>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setSecurityDialog(false)}>Close</Button>
+            <Button onPress={toggleSecurityDialog}>Close</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
       <Portal>
         <Dialog
           visible={districtDialogVisible}
-          onDismiss={() => setDistrictDialog(false)}
+          onDismiss={toggleDistrictDialog}
           style={{
             backgroundColor: theme.colors.surface,
             marginTop: Math.max(insets.top, 20),
@@ -246,7 +246,7 @@ const Login = () => {
                   return (
                     <District
                       onPress={() => {
-                        setDistrictDialog(false)
+                        toggleDistrictDialog()
                         setSelectedDistrict(item)
                       }}
                       item={item}
@@ -314,7 +314,7 @@ const Login = () => {
                 alignItems: 'center',
                 width: 250
               }}
-              onPress={onPressOpenDistrictModal}
+              onPress={onPressOpenDistrictDialog}
               disabled={isLoading}
             >
               <View
@@ -371,7 +371,7 @@ const Login = () => {
                 <TextInput.Icon
                   icon={isPasswordSecure ? 'eye-off-outline' : 'eye-outline'}
                   style={{ marginRight: -2 }}
-                  onPress={() => setIsPasswordSecure(!isPasswordSecure)}
+                  onPress={togglePasswordSecure}
                 />
               }
             />
@@ -405,7 +405,7 @@ const Login = () => {
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
               style={styles.parent_button}
-              onPress={() => setToggleCheckBox(!isChecked)}
+              onPress={() => setCheckBox(!isChecked)}
               disabled={isLoading}
             >
               <MaterialCommunityIcons
@@ -422,7 +422,7 @@ const Login = () => {
             <Dot size={16} style={{ marginHorizontal: 8 }} />
             <TouchableOpacity
               style={styles.questions_button}
-              onPress={() => setSecurityDialog(true)}
+              onPress={toggleSecurityDialog}
               disabled={isLoading}
             >
               <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>

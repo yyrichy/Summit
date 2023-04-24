@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -49,11 +49,11 @@ const CourseDetails = ({ route }) => {
   const { marks, client, setMarks } = useContext(AppContext)
   const course = marks.courses.get(route.params.title)
 
-  const [searchDialogVisible, setSearchDialog] = useState(false)
+  const [searchDialogVisible, toggleSearchDialog] = useReducer((s) => !s, false)
   const [text, setText] = useState(null)
   const [searchText, setSearchText] = useState(null)
-  const [infoDialogVisible, setInfoDialog] = useState(false)
-  const [assignmentDialogVisible, setAssignmentDialog] = useState(false)
+  const [infoDialogVisible, toggleInfoDialog] = useReducer((s) => !s, false)
+  const [assignmentDialogVisible, toggleAssignmentDialog] = useReducer((s) => !s, false)
   const [assignmentCategory, setAssignmentCategory] = useState(
     marks.courses.get(course.name).categories.values().next().value?.name
   )
@@ -103,7 +103,7 @@ const CourseDetails = ({ route }) => {
     setMarks(
       addAssignment(marks, course, assignmentCategory, parseFloat(points), parseFloat(total))
     )
-    setAssignmentDialog(false)
+    toggleAssignmentDialog()
   }
 
   return (
@@ -123,8 +123,8 @@ const CourseDetails = ({ route }) => {
           titleStyle={{ fontFamily: 'RobotoSerif_700Bold_Italic' }}
           title={parseCourseName(course.name)}
         />
-        <Appbar.Action icon="magnify" onPress={() => setSearchDialog(true)} />
-        <Appbar.Action icon="information-outline" onPress={() => setInfoDialog(true)} />
+        <Appbar.Action icon="magnify" onPress={toggleSearchDialog} />
+        <Appbar.Action icon="information-outline" onPress={toggleInfoDialog} />
         <Appbar.Action icon="refresh" onPress={refresh} />
       </Appbar.Header>
       <View style={styles.course_info_container}>
@@ -262,7 +262,7 @@ const CourseDetails = ({ route }) => {
         {course.categories.size > 0 && (
           <FAB
             icon={'plus'}
-            onPress={() => setAssignmentDialog(true)}
+            onPress={toggleAssignmentDialog}
             variant={'primary'}
             style={{
               bottom: 16,
@@ -275,7 +275,7 @@ const CourseDetails = ({ route }) => {
       <Portal>
         <Dialog
           visible={assignmentDialogVisible}
-          onDismiss={() => setAssignmentDialog(false)}
+          onDismiss={toggleAssignmentDialog}
           style={{ backgroundColor: theme.colors.surface }}
         >
           <Dialog.Content>
@@ -333,7 +333,7 @@ const CourseDetails = ({ route }) => {
             </View>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setAssignmentDialog(false)}>Cancel</Button>
+            <Button onPress={toggleAssignmentDialog}>Cancel</Button>
             <Button mode="contained" labelStyle={{ marginHorizontal: 24 }} onPress={add}>
               Save
             </Button>
@@ -343,7 +343,7 @@ const CourseDetails = ({ route }) => {
       <Portal>
         <Dialog
           visible={infoDialogVisible}
-          onDismiss={() => setInfoDialog(false)}
+          onDismiss={toggleInfoDialog}
           style={{ backgroundColor: theme.colors.surface }}
         >
           <Dialog.Title>{course.name}</Dialog.Title>
@@ -420,14 +420,14 @@ const CourseDetails = ({ route }) => {
             </View>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setInfoDialog(false)}>Close</Button>
+            <Button onPress={toggleInfoDialog}>Close</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
       <Portal>
         <Dialog
           visible={searchDialogVisible}
-          onDismiss={() => setSearchDialog(false)}
+          onDismiss={toggleSearchDialog}
           style={{ backgroundColor: theme.colors.surface }}
         >
           <Dialog.Title>Search Assignments</Dialog.Title>
@@ -443,18 +443,18 @@ const CourseDetails = ({ route }) => {
           <Dialog.Actions>
             <Button
               onPress={() => {
-                setSearchDialog(false)
+                toggleSearchDialog()
                 setSearchText(null)
                 setText(null)
               }}
             >
-              Cancel
+              Clear
             </Button>
             <Button
               mode="contained"
               labelStyle={{ marginHorizontal: 24 }}
               onPress={() => {
-                setSearchDialog(false)
+                toggleSearchDialog()
                 setSearchText(text)
               }}
             >
