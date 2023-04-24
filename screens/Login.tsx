@@ -306,7 +306,7 @@ const Login = () => {
           <View>
             <TouchableOpacity
               style={{
-                paddingBottom: 4,
+                paddingBottom: 8,
                 height: 48,
                 alignSelf: 'center',
                 paddingHorizontal: 12,
@@ -513,10 +513,11 @@ const styles = StyleSheet.create({
   },
   name: {
     fontFamily: 'RobotoSerif_900Black_Italic',
-    fontSize: 40
+    fontSize: 40,
+    marginTop: 10
   },
   input: {
-    marginBottom: 6,
+    marginBottom: 16,
     backgroundColor: 'transparent'
   },
   selected_district_text: {
@@ -532,7 +533,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: 250,
     height: 56,
-    marginTop: 64
+    marginTop: 40
   },
   details_container: {
     justifyContent: 'center',
