@@ -10,8 +10,7 @@ import {
   View,
   Platform,
   KeyboardAvoidingView,
-  Dimensions,
-  ImageBackground
+  useWindowDimensions
 } from 'react-native'
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import StudentVue from 'studentvue'
@@ -35,8 +34,6 @@ import {
   Button
 } from 'react-native-paper'
 import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
-import BannerAd from '../components/BannerAd'
-import Constants from 'expo-constants'
 import District from '../components/District'
 import { StatusBar } from 'expo-status-bar'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -44,10 +41,14 @@ import BackgroundFetch from 'react-native-background-fetch'
 import { updateGradesWidget } from '../util/Widget'
 import Dot from '../components/Dot'
 import ThemePicker from '../components/ThemePicker'
+import Svg, { Path } from 'react-native-svg'
 
 const Login = () => {
-  const theme = useTheme()
   const insets = useSafeAreaInsets()
+  const svgWidth = 500
+  const svgHeight = 130 + insets.bottom
+  const { height, width } = useWindowDimensions()
+  const theme = useTheme()
   const navigation = useNavigation<
     NativeStackNavigationProp<
       {
@@ -228,7 +229,7 @@ const Login = () => {
           style={{
             backgroundColor: theme.colors.surface,
             marginTop: Math.max(insets.top, 20),
-            maxHeight: Dimensions.get('window').height - insets.top - insets.bottom - 40,
+            maxHeight: height - insets.top - insets.bottom - 40,
             marginBottom: Math.max(insets.bottom, 20)
           }}
         >
@@ -280,16 +281,10 @@ const Login = () => {
           </Dialog.ScrollArea>
         </Dialog>
       </Portal>
-      <ImageBackground
-        source={
-          theme.dark
-            ? require('../assets/mountainbackground-dark.png')
-            : require('../assets/mountainbackground.png')
-        }
+      <View
         style={{
           flex: 1
         }}
-        resizeMode="cover"
       >
         <StatusBar style={isDarkTheme ? 'light' : 'dark'} />
         <SafeAreaView style={{ alignItems: 'center' }} edges={['top', 'left', 'right']}>
@@ -406,48 +401,61 @@ const Login = () => {
             </CustomButton>
           </View>
         </KeyboardAvoidingView>
-        <SafeAreaView
-          edges={['bottom', 'left', 'right']}
+        <View
           style={{
-            alignSelf: 'flex-end',
-            alignItems: 'center',
-            width: '100%'
+            width: width + 10,
+            aspectRatio: svgWidth / svgHeight,
+            marginLeft: -5
           }}
         >
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity
-              style={styles.parent_button}
-              onPress={() => setCheckBox(!isChecked)}
-              disabled={isLoading}
-            >
-              <MaterialCommunityIcons
-                name="check"
-                size={20}
-                color={isChecked ? theme.colors.onSurface : Colors.transparent}
-                style={{ marginRight: 4 }}
-              />
-
-              <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
-                Parent Login
-              </Text>
-            </TouchableOpacity>
-            <Dot size={16} style={{ marginHorizontal: 8 }} />
-            <TouchableOpacity
-              style={styles.questions_button}
-              onPress={toggleSecurityDialog}
-              disabled={isLoading}
-            >
-              <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
-                Security/Privacy
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <BannerAd
-            androidId={Constants.expoConfig.extra.LOGIN_BANNER_ANDROID}
-            iosId={Constants.expoConfig.extra.LOGIN_BANNER_IOS}
-          />
-        </SafeAreaView>
-      </ImageBackground>
+          <Svg
+            height="100%"
+            width="100%"
+            viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+            style={{ position: 'absolute' }}
+          >
+            <Path
+              d={`M0 0 C203 2 266 ${90 + insets.bottom} 500 10 l0 ${130 + insets.bottom} L0 ${
+                140 + insets.bottom
+              } L0 0`}
+              fill={theme.colors.secondaryContainer}
+            />
+          </Svg>
+          <SafeAreaView
+            style={{
+              alignItems: 'center'
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity
+                style={styles.parent_button}
+                onPress={() => setCheckBox(!isChecked)}
+                disabled={isLoading}
+              >
+                <MaterialCommunityIcons
+                  name="check"
+                  size={20}
+                  color={isChecked ? theme.colors.onSurface : Colors.transparent}
+                  style={{ marginRight: 4 }}
+                />
+                <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
+                  Parent Login
+                </Text>
+              </TouchableOpacity>
+              <Dot size={16} style={{ marginHorizontal: 8 }} />
+              <TouchableOpacity
+                style={styles.questions_button}
+                onPress={toggleSecurityDialog}
+                disabled={isLoading}
+              >
+                <Text style={[styles.questions_text, { color: theme.colors.onSurface }]}>
+                  Security/Privacy
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </SafeAreaView>
+        </View>
+      </View>
     </View>
   )
 }
@@ -505,7 +513,8 @@ const styles = StyleSheet.create({
     height: 48,
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    marginRight: 20
   },
   questions_text: {
     fontFamily: 'Inter_400Regular',

@@ -22,7 +22,7 @@ const ThemePicker: React.FC<Props> = ({ visible, onDismiss }) => {
     '#7de677',
     '#77e6c6',
     '#778ae6',
-    '#e677c3'
+    '#d377e6'
   ]
 
   const onColorSelect = async (color) => {

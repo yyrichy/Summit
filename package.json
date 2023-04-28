@@ -12,7 +12,6 @@
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.2",
     "@expo-google-fonts/montserrat": "^0.2.2",
-    "@expo-google-fonts/roboto": "^0.2.3",
     "@expo-google-fonts/roboto-serif": "^0.2.3",
     "@ja-ka/react-native-fade-in-flatlist": "^1.0.13",
     "@md3-ui/button": "^0.2.0",

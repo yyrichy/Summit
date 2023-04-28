@@ -8,8 +8,8 @@ import {
   View,
   RefreshControl,
   ActivityIndicator,
-  Dimensions,
-  Alert
+  Alert,
+  useWindowDimensions
 } from 'react-native'
 import Document from 'studentvue/StudentVue/Document/Document'
 import Doc from '../components/Document'
@@ -19,6 +19,7 @@ import { useTheme } from 'react-native-paper'
 import FileViewer from 'react-native-file-viewer'
 
 const Documents = () => {
+  const { height } = useWindowDimensions()
   const { client } = useContext(AppContext)
   const [documents, setDocuments] = useState(null as Document[])
   const theme = useTheme()
@@ -46,7 +47,7 @@ const Documents = () => {
           initialDelay={0}
           durationPerItem={300}
           parallelItems={5}
-          itemsToFadeIn={Dimensions.get('window').height / 50}
+          itemsToFadeIn={height / 50}
           data={documents}
           renderItem={({ item }) => (
             <Doc
