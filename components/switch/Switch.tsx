@@ -4,6 +4,7 @@ import { useBoolean, useControlled, useEventCallback } from '@md3-ui/hooks'
 import { styled, SxProps, useThemeProps } from '@md3-ui/system'
 import { __DEV__ } from '@md3-ui/utils'
 import * as React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Animated,
   Easing,
@@ -13,11 +14,7 @@ import {
   ViewStyle as RNViewStyle
 } from 'react-native'
 import { useTheme } from 'react-native-paper'
-import {
-  SwitchBase,
-  SwitchBaseProps,
-  SwitchChangeEventData
-} from './SwitchBase'
+import { SwitchBase, SwitchBaseProps, SwitchChangeEventData } from './SwitchBase'
 
 export interface SwitchProps extends SwitchBaseProps {
   /**
@@ -118,44 +115,36 @@ export const Switch = React.forwardRef<RNView, SwitchProps>((inProps, ref) => {
     state: 'checked'
   })
 
-  const [prevChecked, setPrevChecked] = React.useState(checked)
+  const [prevChecked, setPrevChecked] = useState(checked)
 
   const [, handleHover] = useBoolean()
   const [pressed, handlePress] = useBoolean()
 
-  const [alignItems, setAlignItems] = React.useState<RNFlexAlignType>(
-    checked ? 'flex-end' : 'flex-start'
-  )
+  const [alignItems, setAlignItems] = useState<RNFlexAlignType>(checked ? 'flex-end' : 'flex-start')
 
   const offset = 20
 
-  const switchAnimation = React.useRef(
-    new Animated.Value(checked ? -1 : 1)
-  ).current
+  const switchAnimation = useRef(new Animated.Value(checked ? -1 : 1)).current
 
-  const animateSwitch = useEventCallback(
-    (newChecked: boolean, callback?: Animated.EndCallback) => {
-      Animated.timing(switchAnimation, {
-        toValue: newChecked ? offset : -offset,
-        duration: 150,
-        easing: Easing.linear,
-        useNativeDriver: false
-      }).start(callback)
-    }
-  )
+  const animateSwitch = useEventCallback((newChecked: boolean, callback?: Animated.EndCallback) => {
+    Animated.timing(switchAnimation, {
+      toValue: newChecked ? offset : -offset,
+      duration: 150,
+      easing: Easing.linear,
+      useNativeDriver: false
+    }).start(callback)
+  })
 
-  const thumbAnimation = React.useRef(new Animated.Value(0)).current
+  const thumbAnimation = useRef(new Animated.Value(0)).current
 
-  const animateThumb = useEventCallback(
-    (toValue: number, callback?: Animated.EndCallback) => {
-      Animated.timing(thumbAnimation, {
-        toValue,
-        duration: 150,
-        easing: Easing.linear,
-        useNativeDriver: false
-      }).start(callback)
-    }
-  )
+  const animateThumb = useEventCallback((toValue: number, callback?: Animated.EndCallback) => {
+    Animated.timing(thumbAnimation, {
+      toValue,
+      duration: 150,
+      easing: Easing.linear,
+      useNativeDriver: false
+    }).start(callback)
+  })
 
   const animate = useEventCallback((newChecked: boolean) => {
     animateSwitch(newChecked, ({ finished }) => {
@@ -170,13 +159,13 @@ export const Switch = React.forwardRef<RNView, SwitchProps>((inProps, ref) => {
     animateThumb(0)
   })
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (checked !== checkedProp) {
       animate(!!checked)
     }
   }, [checked, checkedProp, animate])
 
-  React.useEffect(() => {
+  useEffect(() => {
     animateThumb(pressed ? 1 : 0)
   }, [animateThumb, pressed])
 
@@ -232,9 +221,7 @@ export const Switch = React.forwardRef<RNView, SwitchProps>((inProps, ref) => {
           checked={checked}
           disabled={disabled}
           required={required}
-          rippleColor={
-            prevChecked ? theme.colors.primary : theme.colors.onSurface
-          }
+          rippleColor={prevChecked ? theme.colors.primary : theme.colors.onSurface}
           style={styles?.switchBase}
           styles={{
             input: {
@@ -258,18 +245,12 @@ export const Switch = React.forwardRef<RNView, SwitchProps>((inProps, ref) => {
                   pressed && !prevChecked
                     ? thumbAnimation.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [
-                          theme.colors.outline,
-                          theme.colors.onSurfaceVariant
-                        ],
+                        outputRange: [theme.colors.outline, theme.colors.onSurfaceVariant],
                         extrapolate: 'clamp'
                       })
                     : switchAnimation.interpolate({
                         inputRange: switchAnimationInputRange,
-                        outputRange: [
-                          theme.colors.outline,
-                          theme.colors.onPrimary
-                        ],
+                        outputRange: [theme.colors.outline, theme.colors.onPrimary],
                         extrapolate: 'clamp'
                       }),
                 height: thumbSize,

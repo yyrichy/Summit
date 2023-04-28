@@ -10,7 +10,6 @@ import {
   View,
   Platform,
   KeyboardAvoidingView,
-  Appearance,
   Dimensions,
   ImageBackground
 } from 'react-native'
@@ -44,6 +43,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import BackgroundFetch from 'react-native-background-fetch'
 import { updateGradesWidget } from '../util/Widget'
 import Dot from '../components/Dot'
+import ThemePicker from '../components/ThemePicker'
 
 const Login = () => {
   const theme = useTheme()
@@ -60,13 +60,14 @@ const Login = () => {
   const refInput = useRef(null)
   const [username, setUsername] = useState(null)
   const [password, setPassword] = useState(null)
-  const { isDarkTheme, setClient, setMarks, setIsDarkTheme } = useContext(AppContext)
+  const { isDarkTheme, setClient, setMarks } = useContext(AppContext)
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setCheckBox] = useState(false)
-  const [isPasswordSecure, togglePasswordSecure] = useReducer((s) => !s, false)
+  const [isPasswordSecure, togglePasswordSecure] = useReducer((s) => !s, true)
 
   const [districtDialogVisible, toggleDistrictDialog] = useReducer((s) => !s, false)
   const [securityDialogVisible, toggleSecurityDialog] = useReducer((s) => !s, false)
+  const [themeDialogVisible, toggleThemeDialog] = useReducer((s) => !s, false)
 
   const [selectedDistrict, setSelectedDistrict] = useState(null as SchoolDistrict)
   const [districts, setDistricts] = useState(null as SchoolDistrict[])
@@ -74,17 +75,22 @@ const Login = () => {
 
   useAsyncEffect(async () => {
     if (Platform.OS === 'android') configureBackgroundFetch()
-    Appearance.addChangeListener(async ({ colorScheme }) => {
-      const theme = await AsyncStorage.getItem('Theme')
-      if (!theme || theme === 'device') setIsDarkTheme(colorScheme === 'dark' ? true : false)
-    })
-    savedCredentials()
+    let isThemeSelected = false
+    try {
+      if (!(await AsyncStorage.getItem('ThemeColor'))) {
+        isThemeSelected = true
+      }
+    } catch (e) {}
+    if (isThemeSelected) {
+      toggleThemeDialog()
+    } else {
+      savedCredentials()
+    }
 
     const backAction = () => {
       BackHandler.exitApp()
       return true
     }
-
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
 
     return () => backHandler.remove()
@@ -195,6 +201,7 @@ const Login = () => {
 
   return (
     <View style={{ flex: 1 }}>
+      <ThemePicker visible={themeDialogVisible} onDismiss={toggleThemeDialog} />
       <Portal>
         <Dialog
           visible={securityDialogVisible}
@@ -378,15 +385,20 @@ const Login = () => {
             <CustomButton
               onPress={onLogin}
               text="Login"
-              backgroundColor={!isLoading ? Colors.navy : 'rgba(100, 100, 100, 0.6)'}
-              textColor={Colors.white}
+              backgroundColor={theme.colors.secondaryContainer}
+              textColor={theme.colors.onSecondaryContainer}
               fontFamily="RobotoSerif_900Black_Italic"
-              containerStyle={styles.button_container}
+              containerStyle={[
+                styles.button_container,
+                {
+                  opacity: isLoading ? 0.2 : 1
+                }
+              ]}
               disabled={isLoading}
             >
               {isLoading && (
                 <ActivityIndicator
-                  color={Colors.white}
+                  color={theme.colors.onSecondaryContainer}
                   size="small"
                   style={{ margin: 0, marginLeft: 10 }}
                 />

@@ -61,7 +61,7 @@ const Courses = ({ navigation }) => {
       style={[
         styles.container,
         {
-          backgroundColor: theme.dark ? palette.neutralVariant10 : theme.colors.elevation.level1
+          backgroundColor: theme.dark ? theme.colors.backdrop : palette.neutral98
         }
       ]}
       edges={['top', 'left', 'right']}

@@ -100,91 +100,87 @@ const SwitchBaseInput = styled('input', {
   })
 })
 
-export const SwitchBase = React.forwardRef<RNView, SwitchBaseProps>(
-  (inProps, ref) => {
-    const {
-      checked: checkedProp,
-      children,
-      defaultChecked,
-      disabled,
-      editable = true,
-      name,
-      nativeID,
-      onChange,
-      onPress,
-      required = false,
-      style,
-      styles,
-      type = 'checkbox',
-      value,
-      ...props
-    } = useThemeProps({
-      name: 'SwitchBase',
-      props: inProps
-    })
+export const SwitchBase = React.forwardRef<RNView, SwitchBaseProps>((inProps, ref) => {
+  const {
+    checked: checkedProp,
+    children,
+    defaultChecked,
+    disabled,
+    editable = true,
+    name,
+    nativeID,
+    onChange,
+    onPress,
+    required = false,
+    style,
+    styles,
+    type = 'checkbox',
+    value,
+    ...props
+  } = useThemeProps({
+    name: 'SwitchBase',
+    props: inProps
+  })
 
-    const [checked, setChecked] = useControlled({
-      controlled: checkedProp,
-      default: Boolean(defaultChecked),
-      name: 'SwitchBase',
-      state: 'checked'
-    })
+  const [checked, setChecked] = useControlled({
+    controlled: checkedProp,
+    default: Boolean(defaultChecked),
+    name: 'SwitchBase',
+    state: 'checked'
+  })
 
-    const handleChange = (
-      event: GestureResponderEvent | React.ChangeEvent<HTMLInputElement>
-    ) => {
-      const newChecked =
-        typeof event.target === 'object' && 'checked' in event.target
-          ? event.target.checked
-          : !checked
+  const handleChange = (event: GestureResponderEvent | React.ChangeEvent<HTMLInputElement>) => {
+    const newChecked =
+      typeof event.target === 'object' && 'checked' in event.target
+        ? event.target.checked
+        : !checked
 
-      setChecked(newChecked)
-      ;(event.nativeEvent as any).checked = newChecked
-      ;(event.nativeEvent as any).value = value ?? 'on'
+    setChecked(newChecked)
+    ;(event.nativeEvent as any).checked = newChecked
+    ;(event.nativeEvent as any).value = value ?? 'on'
 
-      onChange?.(event as NativeSyntheticEvent<SwitchChangeEventData>)
-    }
-
-    return (
-      <SwitchBaseRoot
-        ref={ref}
-        centerRipple
-        accessibilityRole="none"
-        disabled={disabled}
-        style={[style, styles?.root]}
-        {...(Platform.OS === 'web'
-          ? {
-              focusable: false,
-              onPress
-            }
-          : {
-              nativeID,
-              onPress: createChainedFunction(onPress, handleChange)
-            })}
-        {...props}
-      >
-        <>
-          {Platform.OS === 'web' && (
-            <SwitchBaseInput
-              checked={checked}
-              defaultChecked={defaultChecked}
-              disabled={disabled}
-              id={nativeID}
-              name={name}
-              readOnly={!editable}
-              required={required}
-              style={styles?.input}
-              type={type}
-              onChange={handleChange}
-              {...(type === 'checkbox' && value == null ? {} : { value })}
-            />
-          )}
-          {children}
-        </>
-      </SwitchBaseRoot>
-    )
+    onChange?.(event as NativeSyntheticEvent<SwitchChangeEventData>)
   }
-)
+
+  return (
+    <SwitchBaseRoot
+      ref={ref}
+      centerRipple
+      accessibilityRole="none"
+      disabled={disabled}
+      style={[style, styles?.root]}
+      {...(Platform.OS === 'web'
+        ? {
+            focusable: false,
+            onPress
+          }
+        : {
+            nativeID,
+            onPress: createChainedFunction(onPress, handleChange)
+          })}
+      {...props}
+    >
+      <>
+        {Platform.OS === 'web' && (
+          <SwitchBaseInput
+            checked={checked}
+            defaultChecked={defaultChecked}
+            disabled={disabled}
+            id={nativeID}
+            name={name}
+            readOnly={!editable}
+            required={required}
+            style={styles?.input}
+            type={type}
+            onChange={handleChange}
+            {...(type === 'checkbox' && value == null ? {} : { value })}
+          />
+        )}
+        {children}
+      </>
+    </SwitchBaseRoot>
+  )
+})
 
 if (__DEV__) {
   SwitchBase.displayName = 'SwitchBase'

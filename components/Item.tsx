@@ -11,7 +11,7 @@ type Props = {
 const Item: React.FC<Props> = ({ item: { event } }) => {
   const theme = useTheme()
 
-  switch (event.type.toString()) {
+  switch (event.type) {
     case EventType.ASSIGNMENT:
       return (
         <View style={[styles.item, { backgroundColor: theme.colors.surfaceVariant }]}>

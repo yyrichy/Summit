@@ -41,8 +41,8 @@ import {
 } from 'react-native-paper'
 import { getOrdinal, toast } from '../util/Util'
 import { Switch } from '../components/switch/Switch'
-import { palette } from '../theme/colors'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ThemePicker from '../components/ThemePicker'
 
 const Profile = () => {
   const theme = useTheme()
@@ -77,7 +77,9 @@ const Profile = () => {
     }
     switchEnabled(newState)
   }
+  const [appearanceDialogVisible, toggleAppearanceDialog] = useReducer((s) => !s, false)
   const [themeDialogVisible, toggleThemeDialog] = useReducer((s) => !s, false)
+
   const [checked, setChecked] = useState('device')
 
   const setTheme = async (theme: 'device' | 'light' | 'dark') => {
@@ -277,7 +279,7 @@ const Profile = () => {
           style={[
             styles.settings_container,
             {
-              backgroundColor: theme.dark ? palette.neutralVariant10 : theme.colors.surfaceVariant,
+              backgroundColor: theme.dark ? theme.colors.backdrop : theme.colors.surfaceVariant,
               shadowColor: theme.colors.shadow
             }
           ]}
@@ -315,15 +317,24 @@ const Profile = () => {
             />
           </Setting>
           <Separator />
-          <Setting title="Choose Theme" onPress={toggleThemeDialog} position="bottom">
+          <Setting title="Light/Dark Mode" onPress={toggleAppearanceDialog} position="middle">
             <MaterialCommunityIcons
               name="brightness-6"
               size={24}
               color={theme.colors.onPrimaryContainer}
             />
           </Setting>
+          <Separator />
+          <Setting title="Custom Theme" onPress={toggleThemeDialog} position="bottom">
+            <MaterialCommunityIcons
+              name="palette-outline"
+              size={24}
+              color={theme.colors.onPrimaryContainer}
+            />
+          </Setting>
         </View>
       </ScrollView>
+      <ThemePicker visible={themeDialogVisible} onDismiss={toggleThemeDialog} />
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="time"
@@ -333,11 +344,10 @@ const Profile = () => {
       />
       <Portal>
         <Dialog
-          visible={themeDialogVisible}
-          onDismiss={toggleThemeDialog}
+          visible={appearanceDialogVisible}
+          onDismiss={toggleAppearanceDialog}
           style={{ backgroundColor: theme.colors.surface }}
         >
-          <Dialog.Title>Choose Theme</Dialog.Title>
           <Dialog.Content>
             <TouchableRipple onPress={() => setTheme('device')}>
               <View style={styles.row}>
@@ -361,7 +371,7 @@ const Profile = () => {
                   />
                 </View>
                 <PaperText variant="bodyLarge" style={styles.text}>
-                  Dark theme
+                  Dark mode
                 </PaperText>
               </View>
             </TouchableRipple>
@@ -374,13 +384,13 @@ const Profile = () => {
                   />
                 </View>
                 <PaperText variant="bodyLarge" style={styles.text}>
-                  Light theme
+                  Light mode
                 </PaperText>
               </View>
             </TouchableRipple>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={toggleThemeDialog}>Done</Button>
+            <Button onPress={toggleAppearanceDialog}>Done</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

@@ -2,7 +2,6 @@ import React from 'react'
 import { TouchableOpacity, Text, StyleSheet, View, GestureResponderEvent } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { Colors } from '../colors/Colors'
-import { palette } from '../theme/colors'
 
 type Props = {
   title: string
@@ -21,7 +20,7 @@ const Setting: React.FC<Props> = ({ title, onPress, position, description, child
       style={[
         styles['container_' + position],
         {
-          backgroundColor: theme.dark ? theme.colors.backdrop : theme.colors.surface
+          backgroundColor: theme.dark ? theme.colors.backdrop : theme.colors.inverseOnSurface
         }
       ]}
     >
@@ -32,7 +31,7 @@ const Setting: React.FC<Props> = ({ title, onPress, position, description, child
             style={[
               styles.description,
               {
-                color: theme.dark ? palette.neutralVariant70 : Colors.medium_gray
+                color: theme.dark ? Colors.secondary : Colors.medium_gray
               }
             ]}
           >

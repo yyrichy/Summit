@@ -45,14 +45,11 @@ export const MD3DarkTheme: MD3Theme = {
     backdrop: color(palette.neutralVariant20).alpha(0.4).rgb().string(),
     elevation: {
       level0: 'transparent',
-      // Note: Color values with transparency cause RN to transfer shadows to children nodes
-      // instead of View component in Surface. Providing solid background fixes the issue.
-      // Opaque color values generated with `palette.primary80` used as background
-      level1: 'rgb(203,192,46)', // palette.primary80, alpha 0.05
-      level2: 'rgb(197,186,44)', // palette.primary80, alpha 0.08
-      level3: 'rgb(190,180,43)', // palette.primary80, alpha 0.11
-      level4: 'rgb(188,178,42)', // palette.primary80, alpha 0.12
-      level5: 'rgb(184,174,41)' // palette.primary80, alpha 0.14
+      level1: 'rgb(38, 37, 23)',
+      level2: 'rgb(44, 42, 24)',
+      level3: 'rgb(49, 47, 25)',
+      level4: 'rgb(51, 49, 25)',
+      level5: 'rgb(55, 52, 26)'
     }
   },
   fonts: configureFonts(),

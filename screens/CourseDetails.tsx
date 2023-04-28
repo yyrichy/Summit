@@ -110,12 +110,12 @@ const CourseDetails = ({ route }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: theme.dark ? palette.neutralVariant10 : theme.colors.elevation.level1
+        backgroundColor: theme.dark ? theme.colors.backdrop : palette.neutral98
       }}
     >
       <Appbar.Header
         style={{
-          backgroundColor: theme.dark ? palette.neutralVariant10 : theme.colors.elevation.level1
+          backgroundColor: theme.dark ? theme.colors.backdrop : palette.neutral98
         }}
       >
         <Appbar.BackAction onPress={navigation.goBack} />

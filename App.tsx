@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler'
 import 'react-native-url-polyfill/auto'
 import Login from './screens/Login'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import AppContext from './contexts/AppContext'
@@ -61,20 +61,22 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { User } from './interfaces/User'
 import { Client } from 'studentvue'
 import { Marks } from './interfaces/Gradebook'
-import { Provider as PaperProvider } from 'react-native-paper'
 import BottomNavigation from './navigation/BottomNavigation'
 import { CalendarProvider } from 'react-native-calendars'
 import { NavLightTheme as LightTheme } from './theme/LightTheme'
-import { MD3LightTheme } from './theme/MD3LightTheme'
+import { MD3LightTheme as CustomLightTheme } from './theme/MD3LightTheme'
 import { RootSiblingParent } from 'react-native-root-siblings'
 import * as SplashScreen from 'expo-splash-screen'
 import mobileAds from 'react-native-google-mobile-ads'
-import { MD3DarkTheme } from './theme/MD3DarkTheme'
+import { MD3DarkTheme as CustomDarkTheme } from './theme/MD3DarkTheme'
 import { DarkTheme } from './theme/DarkTheme'
 import { Appearance } from 'react-native'
 import * as Sentry from 'sentry-expo'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import useAsyncEffect from 'use-async-effect'
+import { useMaterial3Theme } from '@pchmn/expo-material3-theme'
+import { Provider as PaperProvider } from 'react-native-paper'
+import { Colors } from './colors/Colors'
 
 Sentry.init({
   release: 'com.vaporys.Summit@1.3.18',
@@ -90,10 +92,31 @@ SplashScreen.preventAutoHideAsync()
 const App = () => {
   const [client, setClient] = useState(null as Client)
   const [marks, setMarks] = useState(null as Marks)
+  const { theme, updateTheme } = useMaterial3Theme({ sourceColor: Colors.primary })
   const [isDarkTheme, setIsDarkTheme] = useState(null as boolean)
+  const paperTheme = useMemo(
+    () =>
+      isDarkTheme
+        ? { ...CustomDarkTheme, colors: theme.dark }
+        : { ...CustomLightTheme, colors: theme.light },
+    [isDarkTheme, theme]
+  )
 
   useAsyncEffect(async () => {
-    let theme = await AsyncStorage.getItem('Theme')
+    Appearance.addChangeListener(async ({ colorScheme }) => {
+      const theme = await AsyncStorage.getItem('Theme')
+      if (!theme || theme === 'device') setIsDarkTheme(colorScheme === 'dark' ? true : false)
+    })
+    let themeColor: string
+    try {
+      themeColor = await AsyncStorage.getItem('ThemeColor')
+    } catch (e) {}
+    if (!themeColor) themeColor = Colors.primary
+    updateTheme(themeColor)
+    let theme: any
+    try {
+      theme = await AsyncStorage.getItem('Theme')
+    } catch (e) {}
     if (!theme || theme === 'device') theme = Appearance.getColorScheme()
     setIsDarkTheme(theme === 'dark' ? true : false)
   }, [])
@@ -104,7 +127,8 @@ const App = () => {
     isDarkTheme,
     setClient,
     setMarks,
-    setIsDarkTheme
+    setIsDarkTheme,
+    updateTheme
   }
   let [fontsLoaded] = useFonts({
     Inter_100Thin,
@@ -170,7 +194,7 @@ const App = () => {
       <SafeAreaProvider onLayout={onLayoutRootView}>
         <AppContext.Provider value={user}>
           <CalendarProvider date="">
-            <PaperProvider theme={isDarkTheme ? MD3DarkTheme : MD3LightTheme}>
+            <PaperProvider theme={paperTheme}>
               <NavigationContainer theme={isDarkTheme ? DarkTheme : LightTheme}>
                 <Stack.Navigator initialRouteName="Login">
                   <Stack.Screen

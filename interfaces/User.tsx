@@ -8,4 +8,5 @@ export interface User {
   setClient: React.Dispatch<any>
   setMarks: React.Dispatch<any>
   setIsDarkTheme: React.Dispatch<any>
+  updateTheme: (sourceColor: string) => void
 }
