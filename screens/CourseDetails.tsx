@@ -109,15 +109,10 @@ const CourseDetails = ({ route }) => {
   return (
     <View
       style={{
-        flex: 1,
-        backgroundColor: theme.dark ? theme.colors.backdrop : palette.neutral98
+        flex: 1
       }}
     >
-      <Appbar.Header
-        style={{
-          backgroundColor: theme.dark ? theme.colors.backdrop : palette.neutral98
-        }}
-      >
+      <Appbar.Header>
         <Appbar.BackAction onPress={navigation.goBack} />
         <Appbar.Content
           titleStyle={{ fontFamily: 'RobotoSerif_700Bold_Italic' }}

@@ -18,7 +18,7 @@ const District: React.FC<Props> = ({ item, onPress, selected }) => {
       style={[
         { minHeight: 48, justifyContent: 'center' },
         selected && {
-          backgroundColor: theme.colors.surfaceVariant,
+          backgroundColor: theme.colors.secondaryContainer,
           padding: 12,
           marginVertical: 8,
           borderRadius: 5

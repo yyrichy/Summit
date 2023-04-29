@@ -57,15 +57,7 @@ const Courses = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        {
-          backgroundColor: theme.dark ? theme.colors.backdrop : palette.neutral98
-        }
-      ]}
-      edges={['top', 'left', 'right']}
-    >
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <ActionSheet
         ref={actionSheetRef}
         gestureEnabled={true}
