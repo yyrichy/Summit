@@ -19,7 +19,7 @@ const updateGradesWidget = async (taskId: string) => {
       BackgroundFetch.finish(taskId)
       return
     }
-    requestWidgetUpdate({
+    await requestWidgetUpdate({
       widgetName: 'Grades',
       renderWidget: () => <GradesWidget gradebook={gradebook} />
     })
