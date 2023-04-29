@@ -1,7 +1,6 @@
 import React from 'react'
 import { FlexWidget, TextWidget, IconWidget } from 'react-native-android-widget'
 import { Gradebook } from 'studentvue'
-import { Colors } from '../colors/Colors'
 import { parseCourseName } from '../gradebook/GradeUtil'
 import { MD3LightTheme } from '../theme/MD3LightTheme'
 import { formatAMPM } from '../util/Util'
@@ -42,8 +41,7 @@ export function GradesWidget({ gradebook = null }: GradesWidgetProps) {
       style={{
         height: 'match_parent',
         width: 'match_parent',
-        //@ts-ignore
-        backgroundColor: Colors.white,
+        backgroundColor: '#ffffff',
         borderRadius: 28,
         padding: 16
       }}
@@ -82,8 +80,7 @@ export function GradesWidget({ gradebook = null }: GradesWidgetProps) {
           borderRadius: 12,
           paddingHorizontal: 12,
           paddingTop: 7,
-          //@ts-ignore
-          backgroundColor: MD3LightTheme.colors.elevation.level1,
+          backgroundColor: '#faf9f5',
           width: 'match_parent',
           flex: 1
         }}
