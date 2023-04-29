@@ -358,7 +358,7 @@ const Profile = () => {
                   />
                 </View>
                 <PaperText variant="bodyLarge" style={styles.text}>
-                  Use device theme
+                  System default
                 </PaperText>
               </View>
             </TouchableRipple>
