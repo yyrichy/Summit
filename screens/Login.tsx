@@ -423,7 +423,10 @@ const Login = () => {
           </Svg>
           <SafeAreaView
             style={{
-              alignItems: 'center'
+              alignItems: 'center',
+              position: 'absolute',
+              bottom: 10,
+              width: '100%'
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
