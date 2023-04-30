@@ -279,8 +279,7 @@ const Profile = () => {
           style={[
             styles.settings_container,
             {
-              backgroundColor: theme.dark ? theme.colors.backdrop : theme.colors.surfaceVariant,
-              shadowColor: theme.colors.shadow
+              backgroundColor: theme.dark ? theme.colors.backdrop : theme.colors.surfaceVariant
             }
           ]}
         >
@@ -473,14 +472,7 @@ const styles = StyleSheet.create({
     paddingBottom: 25,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    flex: 1,
-    shadowOffset: {
-      width: 0,
-      height: -4
-    },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 5
+    flex: 1
   },
   row: {
     flexDirection: 'row',
