@@ -90,7 +90,8 @@ const openDocument = async (document: Document) => {
     await FileSystem.writeAsStringAsync(filePath, file.base64, {
       encoding: 'base64'
     })
-    FileViewer.open(filePath)
+    await FileViewer.open(filePath)
+    await FileSystem.deleteAsync(filePath)
   } catch (err) {
     Alert.alert(err.message)
   }
