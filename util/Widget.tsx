@@ -14,29 +14,37 @@ const updateGradesWidget = async (taskId: string) => {
       BackgroundFetch.finish(taskId)
       return
     }
-    const gradebook = await getGradebook()
-    if (!gradebook) {
-      BackgroundFetch.finish(taskId)
-      return
+    try {
+      const gradebook = await getGradebook()
+      await requestWidgetUpdate({
+        widgetName: 'Grades',
+        renderWidget: () => <GradesWidget gradebook={gradebook} />
+      })
+    } catch (e) {
+      await requestWidgetUpdate({
+        widgetName: 'Grades',
+        renderWidget: () => <GradesWidget error={e.message} />
+      })
     }
-    await requestWidgetUpdate({
-      widgetName: 'Grades',
-      renderWidget: () => <GradesWidget gradebook={gradebook} />
-    })
   } catch (e) {}
   BackgroundFetch.finish(taskId)
 }
 
 const getGradebook = async () => {
+  let username: string, password: string, district: SchoolDistrict, isParent: boolean
   try {
-    const username: string = await SecureStore.getItemAsync('username')
-    const password: string = await SecureStore.getItemAsync('password')
-    const district: SchoolDistrict = JSON.parse(await SecureStore.getItemAsync('district'))
+    username = await SecureStore.getItemAsync('username')
+    password = await SecureStore.getItemAsync('password')
+    district = JSON.parse(await SecureStore.getItemAsync('district'))
     const savedIsParent = await SecureStore.getItemAsync('isParent')
-    const isParent: boolean = savedIsParent === 'true'
-    if (!username || !password || !district || !savedIsParent) {
-      return null
-    }
+    isParent = savedIsParent === 'true'
+  } catch (e) {
+    throw new Error('Error retrieving saved login info')
+  }
+  if (!username || !password || !district) {
+    throw new Error('No saved login info, open the app and login first')
+  }
+  try {
     const client = await StudentVue.login(district.parentVueUrl, {
       username: username,
       password: password,
@@ -44,7 +52,7 @@ const getGradebook = async () => {
     })
     return await client.gradebook()
   } catch (e) {
-    return null
+    throw e
   }
 }
 

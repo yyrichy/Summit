@@ -15,7 +15,12 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
     case 'WIDGET_ADDED':
       if (widgetInfo.widgetName === 'Grades') {
         props.renderWidget(<Widget />)
-        props.renderWidget(<Widget gradebook={await getGradebook()} />)
+        try {
+          const gradebook = await getGradebook()
+          props.renderWidget(<Widget gradebook={gradebook} />)
+        } catch (e) {
+          props.renderWidget(<Widget error={e.message} />)
+        }
       }
       break
 
@@ -26,7 +31,12 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
     case 'WIDGET_CLICK':
       if (props.clickAction === 'REFRESH') {
         props.renderWidget(<Widget />)
-        props.renderWidget(<Widget gradebook={await getGradebook()} />)
+        try {
+          const gradebook = await getGradebook()
+          props.renderWidget(<Widget gradebook={gradebook} />)
+        } catch (e) {
+          props.renderWidget(<Widget error={e.message} />)
+        }
       }
       break
 

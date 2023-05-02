@@ -7,10 +7,11 @@ import { formatAMPM } from '../util/Util'
 
 interface GradesWidgetProps {
   gradebook?: Gradebook
+  error?: string
 }
 
-export function GradesWidget({ gradebook = null }: GradesWidgetProps) {
-  if (!gradebook) {
+export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
+  if (!gradebook && !error) {
     return (
       <FlexWidget
         style={{
@@ -27,6 +28,32 @@ export function GradesWidget({ gradebook = null }: GradesWidgetProps) {
           text={'Loading...'}
           style={{
             fontSize: 32,
+            fontFamily: 'Inter',
+            color: '#000000'
+          }}
+        />
+      </FlexWidget>
+    )
+  }
+
+  if (error) {
+    return (
+      <FlexWidget
+        style={{
+          height: 'match_parent',
+          width: 'match_parent',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#ffffff',
+          borderRadius: 28,
+          padding: 20
+        }}
+        clickAction="OPEN_APP"
+      >
+        <TextWidget
+          text={error}
+          style={{
+            fontSize: 20,
             fontFamily: 'Inter',
             color: '#000000'
           }}
