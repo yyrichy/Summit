@@ -39,6 +39,7 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
           const dark = (await AsyncStorage.getItem('WidgetThemeIsDark')) === 'true'
           const gradebook = await getGradebook()
           props.renderWidget(<Widget gradebook={gradebook} dark={dark} />)
+          await AsyncStorage.setItem('WidgetThemeIsDark', `${dark}`)
         } catch (e) {
           props.renderWidget(<Widget error={e.message} />)
         }
