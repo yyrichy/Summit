@@ -13,27 +13,6 @@ const widgetConfig: WithAndroidWidgetsParams = {
   ]
 }
 
-const LIGHT_SPLASH = {
-  image: './assets/splash.png',
-  resizeMode: 'contain',
-  backgroundColor: '#FEF156'
-}
-
-const DARK_SPLASH = {
-  image: './assets/splash-dark.png',
-  resizeMode: 'contain',
-  backgroundColor: '#000000'
-}
-
-const SHARED_SPLASH = {
-  splash: {
-    ...LIGHT_SPLASH,
-    dark: {
-      ...DARK_SPLASH
-    }
-  }
-}
-
 export default {
   expo: {
     name: 'GradeHelper',
@@ -42,13 +21,12 @@ export default {
     orientation: 'portrait',
     icon: './assets/icon.png',
     platforms: ['android', 'ios'],
-    splash: LIGHT_SPLASH,
+    splash: { image: './assets/splash.png', resizeMode: 'contain', backgroundColor: '#FEF156' },
     updates: {
       fallbackToCacheTimeout: 0
     },
     assetBundlePatterns: ['**/*'],
     ios: {
-      ...SHARED_SPLASH,
       userInterfaceStyle: 'automatic',
       supportsTablet: true,
       bundleIdentifier: 'com.vaporys.Summit',
@@ -57,7 +35,6 @@ export default {
       }
     },
     android: {
-      ...SHARED_SPLASH,
       userInterfaceStyle: 'automatic',
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',

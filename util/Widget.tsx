@@ -6,6 +6,7 @@ import { SchoolDistrict } from 'studentvue/StudentVue/StudentVue.interfaces'
 import * as SecureStore from 'expo-secure-store'
 import { GradesWidget } from '../widgets/GradesWidget'
 import React from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const updateGradesWidget = async (taskId: string) => {
   try {
@@ -16,9 +17,10 @@ const updateGradesWidget = async (taskId: string) => {
     }
     try {
       const gradebook = await getGradebook()
+      const dark = (await AsyncStorage.getItem('WidgetThemeIsDark')) === 'true'
       await requestWidgetUpdate({
         widgetName: 'Grades',
-        renderWidget: () => <GradesWidget gradebook={gradebook} />
+        renderWidget: () => <GradesWidget gradebook={gradebook} dark={dark} />
       })
     } catch (e) {
       await requestWidgetUpdate({

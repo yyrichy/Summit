@@ -2,15 +2,19 @@ import React from 'react'
 import { FlexWidget, TextWidget, IconWidget } from 'react-native-android-widget'
 import { Gradebook } from 'studentvue'
 import { parseCourseName } from '../gradebook/GradeUtil'
+import { MD3DarkTheme } from '../theme/MD3DarkTheme'
 import { MD3LightTheme } from '../theme/MD3LightTheme'
 import { formatAMPM } from '../util/Util'
 
 interface GradesWidgetProps {
   gradebook?: Gradebook
   error?: string
+  dark?: boolean
 }
 
-export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
+const background = '#1d1d1d'
+
+export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
   if (!gradebook && !error) {
     return (
       <FlexWidget
@@ -19,7 +23,7 @@ export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
           width: 'match_parent',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#ffffff',
+          backgroundColor: dark ? background : '#ffffff',
           borderRadius: 28
         }}
         clickAction="OPEN_APP"
@@ -29,7 +33,7 @@ export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
           style={{
             fontSize: 32,
             fontFamily: 'Inter',
-            color: '#000000'
+            color: dark ? '#ffffff' : '#000000'
           }}
         />
       </FlexWidget>
@@ -44,7 +48,7 @@ export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
           width: 'match_parent',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#ffffff',
+          backgroundColor: dark ? background : '#ffffff',
           borderRadius: 28,
           padding: 20
         }}
@@ -55,7 +59,7 @@ export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
           style={{
             fontSize: 20,
             fontFamily: 'Inter',
-            color: '#000000'
+            color: dark ? '#ffffff' : '#000000'
           }}
         />
         <IconWidget clickAction="REFRESH" font="material" size={40} icon="refresh" />
@@ -68,7 +72,7 @@ export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
       style={{
         height: 'match_parent',
         width: 'match_parent',
-        backgroundColor: '#ffffff',
+        backgroundColor: dark ? background : '#ffffff',
         borderRadius: 28,
         padding: 16
       }}
@@ -86,7 +90,8 @@ export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
         <TextWidget
           text={gradebook.reportingPeriod.current.name}
           style={{
-            fontSize: 18
+            fontSize: 18,
+            color: dark ? '#ffffff' : '#000000'
           }}
         />
         <FlexWidget style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -94,12 +99,28 @@ export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
             text={formatAMPM(new Date())}
             style={{
               fontSize: 12,
-              marginRight: 6,
+              marginRight: 8,
               //@ts-ignore
-              color: MD3LightTheme.colors.onSurfaceVariant
+              color: dark
+                ? MD3DarkTheme.colors.onSurfaceVariant
+                : MD3LightTheme.colors.onSurfaceVariant
             }}
           />
-          <IconWidget clickAction="REFRESH" font="material" size={24} icon="refresh" />
+          <IconWidget
+            clickAction="REFRESH"
+            font="material"
+            size={24}
+            icon="refresh"
+            style={{ color: dark ? '#ffffff' : '#000000', marginRight: 8 }}
+          />
+          <IconWidget
+            clickAction={dark ? 'LIGHT_MODE' : 'DARK_MODE'}
+            font="material"
+            size={24}
+            icon="brightness_6"
+            style={{ color: dark ? '#ffffff' : '#000000' }}
+            clickActionData={{ dark: dark }}
+          />
         </FlexWidget>
       </FlexWidget>
       <FlexWidget
@@ -107,24 +128,24 @@ export function GradesWidget({ gradebook, error }: GradesWidgetProps) {
           borderRadius: 12,
           paddingHorizontal: 12,
           paddingTop: 7,
-          backgroundColor: '#faf9f5',
+          backgroundColor: dark ? '#2D2D2D' : '#f6f6f6',
           width: 'match_parent',
           flex: 1
         }}
       >
-        {gradebook.courses.length >= 1 && <Course course={gradebook.courses[0]} />}
-        {gradebook.courses.length >= 2 && <Course course={gradebook.courses[1]} />}
-        {gradebook.courses.length >= 3 && <Course course={gradebook.courses[2]} />}
-        {gradebook.courses.length >= 4 && <Course course={gradebook.courses[3]} />}
-        {gradebook.courses.length >= 5 && <Course course={gradebook.courses[4]} />}
-        {gradebook.courses.length >= 6 && <Course course={gradebook.courses[5]} />}
-        {gradebook.courses.length >= 7 && <Course course={gradebook.courses[6]} />}
+        {gradebook.courses.length >= 1 && <Course course={gradebook.courses[0]} dark={dark} />}
+        {gradebook.courses.length >= 2 && <Course course={gradebook.courses[1]} dark={dark} />}
+        {gradebook.courses.length >= 3 && <Course course={gradebook.courses[2]} dark={dark} />}
+        {gradebook.courses.length >= 4 && <Course course={gradebook.courses[3]} dark={dark} />}
+        {gradebook.courses.length >= 5 && <Course course={gradebook.courses[4]} dark={dark} />}
+        {gradebook.courses.length >= 6 && <Course course={gradebook.courses[5]} dark={dark} />}
+        {gradebook.courses.length >= 7 && <Course course={gradebook.courses[6]} dark={dark} />}
       </FlexWidget>
     </FlexWidget>
   )
 }
 
-const Course = ({ course }) => {
+const Course = ({ course, dark }) => {
   return (
     <FlexWidget
       style={{
@@ -139,7 +160,8 @@ const Course = ({ course }) => {
           text={parseCourseName(course.title)}
           style={{
             fontSize: 14,
-            textAlign: 'left'
+            textAlign: 'left',
+            color: dark ? '#ffffff' : '#000000'
           }}
           maxLines={1}
           truncate={'END'}
@@ -150,7 +172,8 @@ const Course = ({ course }) => {
           text={`${course.marks[0].calculatedScore.raw}`}
           style={{
             fontSize: 14,
-            textAlign: 'right'
+            textAlign: 'right',
+            color: dark ? '#ffffff' : '#000000'
           }}
           maxLines={1}
         />

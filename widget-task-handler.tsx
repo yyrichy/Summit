@@ -2,6 +2,7 @@ import React from 'react'
 import type { WidgetTaskHandlerProps } from 'react-native-android-widget'
 import { GradesWidget } from './widgets/GradesWidget'
 import { getGradebook } from './util/Widget'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const nameToWidget = {
   Grades: GradesWidget
@@ -32,8 +33,19 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
       if (props.clickAction === 'REFRESH') {
         props.renderWidget(<Widget />)
         try {
+          const dark = (await AsyncStorage.getItem('WidgetThemeIsDark')) === 'true'
           const gradebook = await getGradebook()
-          props.renderWidget(<Widget gradebook={gradebook} />)
+          props.renderWidget(<Widget gradebook={gradebook} dark={dark} />)
+        } catch (e) {
+          props.renderWidget(<Widget error={e.message} />)
+        }
+      } else if (props.clickAction === 'DARK_MODE' || props.clickAction === 'LIGHT_MODE') {
+        const dark: boolean = props.clickAction === 'DARK_MODE'
+        props.renderWidget(<Widget />)
+        try {
+          const gradebook = await getGradebook()
+          props.renderWidget(<Widget gradebook={gradebook} dark={dark} />)
+          await AsyncStorage.setItem('WidgetThemeIsDark', `${dark}`)
         } catch (e) {
           props.renderWidget(<Widget error={e.message} />)
         }

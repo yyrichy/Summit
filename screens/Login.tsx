@@ -477,7 +477,7 @@ const Separator = () => {
 const configureBackgroundFetch = () => {
   BackgroundFetch.configure(
     {
-      minimumFetchInterval: 120,
+      minimumFetchInterval: 15,
       enableHeadless: true,
       stopOnTerminate: false,
       startOnBoot: true,
