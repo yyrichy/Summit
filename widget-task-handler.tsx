@@ -42,8 +42,8 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
         } catch (e) {
           props.renderWidget(<Widget error={e.message} />)
         }
-      } else if (props.clickAction === 'DARK_MODE' || props.clickAction === 'LIGHT_MODE') {
-        const dark: boolean = props.clickAction === 'DARK_MODE'
+      } else if (props.clickAction === 'TOGGLE_THEME') {
+        const dark: boolean = !props.clickActionData.dark
         props.renderWidget(<Widget />)
         try {
           const gradebook = await getGradebook()

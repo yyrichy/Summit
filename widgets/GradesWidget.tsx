@@ -12,9 +12,10 @@ interface GradesWidgetProps {
   dark?: boolean
 }
 
-const background = '#1d1d1d'
-
 export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
+  const backgroundColor = dark ? '#1d1d1d' : '#ffffff'
+  const textColor = dark ? '#ffffff' : '#000000'
+
   if (!gradebook && !error) {
     return (
       <FlexWidget
@@ -23,7 +24,7 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
           width: 'match_parent',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: dark ? background : '#ffffff',
+          backgroundColor: backgroundColor,
           borderRadius: 28
         }}
         clickAction="OPEN_APP"
@@ -33,7 +34,7 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
           style={{
             fontSize: 32,
             fontFamily: 'Inter',
-            color: dark ? '#ffffff' : '#000000'
+            color: textColor
           }}
         />
       </FlexWidget>
@@ -48,7 +49,7 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
           width: 'match_parent',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: dark ? background : '#ffffff',
+          backgroundColor: backgroundColor,
           borderRadius: 28,
           padding: 20
         }}
@@ -59,7 +60,7 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
           style={{
             fontSize: 20,
             fontFamily: 'Inter',
-            color: dark ? '#ffffff' : '#000000'
+            color: textColor
           }}
         />
         <IconWidget clickAction="REFRESH" font="material" size={40} icon="refresh" />
@@ -72,7 +73,7 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
       style={{
         height: 'match_parent',
         width: 'match_parent',
-        backgroundColor: dark ? background : '#ffffff',
+        backgroundColor: backgroundColor,
         borderRadius: 28,
         padding: 16
       }}
@@ -91,7 +92,7 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
           text={gradebook.reportingPeriod.current.name}
           style={{
             fontSize: 18,
-            color: dark ? '#ffffff' : '#000000'
+            color: textColor
           }}
         />
         <FlexWidget style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -111,14 +112,14 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
             font="material"
             size={24}
             icon="refresh"
-            style={{ color: dark ? '#ffffff' : '#000000', marginRight: 8 }}
+            style={{ color: textColor, marginRight: 8 }}
           />
           <IconWidget
-            clickAction={dark ? 'LIGHT_MODE' : 'DARK_MODE'}
+            clickAction={'TOGGLE_THEME'}
             font="material"
             size={24}
             icon="brightness_6"
-            style={{ color: dark ? '#ffffff' : '#000000' }}
+            style={{ color: textColor }}
             clickActionData={{ dark: dark }}
           />
         </FlexWidget>
@@ -133,19 +134,33 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
           flex: 1
         }}
       >
-        {gradebook.courses.length >= 1 && <Course course={gradebook.courses[0]} dark={dark} />}
-        {gradebook.courses.length >= 2 && <Course course={gradebook.courses[1]} dark={dark} />}
-        {gradebook.courses.length >= 3 && <Course course={gradebook.courses[2]} dark={dark} />}
-        {gradebook.courses.length >= 4 && <Course course={gradebook.courses[3]} dark={dark} />}
-        {gradebook.courses.length >= 5 && <Course course={gradebook.courses[4]} dark={dark} />}
-        {gradebook.courses.length >= 6 && <Course course={gradebook.courses[5]} dark={dark} />}
-        {gradebook.courses.length >= 7 && <Course course={gradebook.courses[6]} dark={dark} />}
+        {gradebook.courses.length >= 1 && (
+          <Course course={gradebook.courses[0]} textColor={textColor} />
+        )}
+        {gradebook.courses.length >= 2 && (
+          <Course course={gradebook.courses[1]} textColor={textColor} />
+        )}
+        {gradebook.courses.length >= 3 && (
+          <Course course={gradebook.courses[2]} textColor={textColor} />
+        )}
+        {gradebook.courses.length >= 4 && (
+          <Course course={gradebook.courses[3]} textColor={textColor} />
+        )}
+        {gradebook.courses.length >= 5 && (
+          <Course course={gradebook.courses[4]} textColor={textColor} />
+        )}
+        {gradebook.courses.length >= 6 && (
+          <Course course={gradebook.courses[5]} textColor={textColor} />
+        )}
+        {gradebook.courses.length >= 7 && (
+          <Course course={gradebook.courses[6]} textColor={textColor} />
+        )}
       </FlexWidget>
     </FlexWidget>
   )
 }
 
-const Course = ({ course, dark }) => {
+const Course = ({ course, textColor }) => {
   return (
     <FlexWidget
       style={{
@@ -161,7 +176,7 @@ const Course = ({ course, dark }) => {
           style={{
             fontSize: 14,
             textAlign: 'left',
-            color: dark ? '#ffffff' : '#000000'
+            color: textColor
           }}
           maxLines={1}
           truncate={'END'}
@@ -173,7 +188,7 @@ const Course = ({ course, dark }) => {
           style={{
             fontSize: 14,
             textAlign: 'right',
-            color: dark ? '#ffffff' : '#000000'
+            color: textColor
           }}
           maxLines={1}
         />
