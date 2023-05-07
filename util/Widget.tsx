@@ -7,6 +7,7 @@ import * as SecureStore from 'expo-secure-store'
 import { GradesWidget } from '../widgets/GradesWidget'
 import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Appearance } from 'react-native'
 
 const updateGradesWidget = async (taskId: string) => {
   try {
@@ -15,9 +16,9 @@ const updateGradesWidget = async (taskId: string) => {
       BackgroundFetch.finish(taskId)
       return
     }
+    const dark = await isWidgetDarkTheme()
     try {
       const gradebook = await getGradebook()
-      const dark = (await AsyncStorage.getItem('WidgetThemeIsDark')) === 'true'
       await requestWidgetUpdate({
         widgetName: 'Grades',
         renderWidget: () => <GradesWidget gradebook={gradebook} dark={dark} />
@@ -25,7 +26,7 @@ const updateGradesWidget = async (taskId: string) => {
     } catch (e) {
       await requestWidgetUpdate({
         widgetName: 'Grades',
-        renderWidget: () => <GradesWidget error={e.message} />
+        renderWidget: () => <GradesWidget error={e.message} dark={dark} />
       })
     }
   } catch (e) {}
@@ -58,4 +59,14 @@ const getGradebook = async () => {
   }
 }
 
-export { updateGradesWidget, getGradebook }
+const isWidgetDarkTheme = async () => {
+  let dark = Appearance.getColorScheme() === 'dark'
+  let theme
+  try {
+    theme = await AsyncStorage.getItem('WidgetThemeIsDark')
+  } catch (e) {}
+  if (theme) dark = theme === 'true'
+  return dark
+}
+
+export { updateGradesWidget, getGradebook, isWidgetDarkTheme }

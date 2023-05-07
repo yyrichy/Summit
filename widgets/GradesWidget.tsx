@@ -9,7 +9,7 @@ import { formatAMPM } from '../util/Util'
 interface GradesWidgetProps {
   gradebook?: Gradebook
   error?: string
-  dark?: boolean
+  dark: boolean
 }
 
 export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
@@ -63,7 +63,13 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
             color: textColor
           }}
         />
-        <IconWidget clickAction="REFRESH" font="material" size={40} icon="refresh" />
+        <IconWidget
+          clickAction="REFRESH"
+          font="material"
+          size={40}
+          icon="refresh"
+          style={{ color: textColor }}
+        />
       </FlexWidget>
     )
   }

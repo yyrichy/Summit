@@ -1,7 +1,7 @@
 import React from 'react'
 import type { WidgetTaskHandlerProps } from 'react-native-android-widget'
 import { GradesWidget } from './widgets/GradesWidget'
-import { getGradebook } from './util/Widget'
+import { getGradebook, isWidgetDarkTheme } from './util/Widget'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Appearance } from 'react-native'
 
@@ -12,18 +12,19 @@ const nameToWidget = {
 export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
   const widgetInfo = props.widgetInfo
   const Widget = nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget]
+  const dark = await isWidgetDarkTheme()
 
   switch (props.widgetAction) {
     case 'WIDGET_ADDED':
       if (widgetInfo.widgetName === 'Grades') {
-        props.renderWidget(<Widget />)
+        props.renderWidget(<Widget dark={dark} />)
         try {
           const gradebook = await getGradebook()
           props.renderWidget(
             <Widget gradebook={gradebook} dark={Appearance.getColorScheme() === 'dark'} />
           )
         } catch (e) {
-          props.renderWidget(<Widget error={e.message} />)
+          props.renderWidget(<Widget error={e.message} dark={dark} />)
         }
       }
       break
@@ -34,24 +35,22 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
 
     case 'WIDGET_CLICK':
       if (props.clickAction === 'REFRESH') {
-        props.renderWidget(<Widget />)
+        props.renderWidget(<Widget dark={dark} />)
         try {
-          const dark = (await AsyncStorage.getItem('WidgetThemeIsDark')) === 'true'
           const gradebook = await getGradebook()
           props.renderWidget(<Widget gradebook={gradebook} dark={dark} />)
-          await AsyncStorage.setItem('WidgetThemeIsDark', `${dark}`)
         } catch (e) {
-          props.renderWidget(<Widget error={e.message} />)
+          props.renderWidget(<Widget error={e.message} dark={dark} />)
         }
       } else if (props.clickAction === 'TOGGLE_THEME') {
-        const dark: boolean = !props.clickActionData.dark
-        props.renderWidget(<Widget />)
+        const newIsDark: boolean = !props.clickActionData.dark
+        props.renderWidget(<Widget dark={newIsDark} />)
         try {
           const gradebook = await getGradebook()
-          props.renderWidget(<Widget gradebook={gradebook} dark={dark} />)
-          await AsyncStorage.setItem('WidgetThemeIsDark', `${dark}`)
+          props.renderWidget(<Widget gradebook={gradebook} dark={newIsDark} />)
+          await AsyncStorage.setItem('WidgetThemeIsDark', `${newIsDark}`)
         } catch (e) {
-          props.renderWidget(<Widget error={e.message} />)
+          props.renderWidget(<Widget error={e.message} dark={newIsDark} />)
         }
       }
       break
