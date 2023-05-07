@@ -29,6 +29,7 @@ import Animated, {
 import { format } from 'date-fns'
 import Chip from './Chip'
 import Dot from './Dot'
+import { AnimateHeight } from './AnimateHeight'
 
 type Props = {
   courseName: string
@@ -172,7 +173,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                   styles.mark,
                   {
                     color: getModifiedColor(assignment.modified),
-                    marginRight: 6
+                    paddingRight: 10
                   }
                 ]}
                 onChangeText={(input) => {
@@ -191,7 +192,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                   styles.mark,
                   {
                     color: getModifiedColor(assignment.modified),
-                    marginLeft: 6
+                    paddingLeft: 10
                   }
                 ]}
                 onChangeText={(input) => {
@@ -200,7 +201,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
               />
             </View>
           </View>
-          {isDropdown && (
+          <AnimateHeight hide={!isDropdown}>
             <Animated.View
               style={{
                 marginTop: 10,
@@ -288,7 +289,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
                 </>
               )}
             </Animated.View>
-          )}
+          </AnimateHeight>
         </TouchableOpacity>
       </Swipeable>
     </Animated.View>
@@ -333,7 +334,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Inter_500Medium',
     alignSelf: 'center',
-    flexShrink: 1
+    flexShrink: 1,
+    paddingHorizontal: 5,
+    minWidth: 42
   },
   dash: {
     fontSize: 20,
@@ -343,7 +346,7 @@ const styles = StyleSheet.create({
   assignment_property_label: {
     fontFamily: 'Inter_400Regular',
     color: Colors.secondary,
-    fontSize: 11
+    fontSize: 12
   },
   assignment_property_value: {
     fontFamily: 'Inter_400Regular',
