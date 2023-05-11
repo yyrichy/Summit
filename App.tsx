@@ -79,7 +79,7 @@ import { Provider as PaperProvider } from 'react-native-paper'
 import { Colors } from './colors/Colors'
 
 Sentry.init({
-  release: 'com.vaporys.Summit@1.3.20',
+  release: 'com.vaporys.Summit@1.3.21',
   dsn: 'https://e3a198c431684c50b83c5dfa94e21436@o4504763946303488.ingest.sentry.io/4504763949580288'
 })
 
