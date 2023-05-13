@@ -29,10 +29,7 @@ export default {
     ios: {
       userInterfaceStyle: 'automatic',
       supportsTablet: true,
-      bundleIdentifier: 'com.vaporys.Summit',
-      infoPlist: {
-        LSApplicationQueriesSchemes: ['instagram']
-      }
+      bundleIdentifier: 'com.vaporys.Summit'
     },
     android: {
       userInterfaceStyle: 'automatic',
