@@ -49,6 +49,7 @@
     "react-native-file-viewer": "^2.1.5",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-google-mobile-ads": "^9.1.1",
+    "react-native-linear-gradient": "^2.6.2",
     "react-native-modal-datetime-picker": "^14.0.0",
     "react-native-pager-view": "^6.2.0",
     "react-native-paper": "^5.1.2",

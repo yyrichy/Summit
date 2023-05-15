@@ -18,17 +18,7 @@ import {
   parseCourseName
 } from '../gradebook/GradeUtil'
 import { Colors } from '../colors/Colors'
-import {
-  Appbar,
-  Button,
-  Chip,
-  Dialog,
-  FAB,
-  Portal,
-  ProgressBar,
-  TextInput,
-  useTheme
-} from 'react-native-paper'
+import { Appbar, Button, Chip, Dialog, FAB, Portal, TextInput, useTheme } from 'react-native-paper'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { isNumber, round } from '../util/Util'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -41,6 +31,7 @@ import {
   VictoryTheme
 } from 'victory-native'
 import { format } from 'date-fns'
+import LinearGradient from 'react-native-linear-gradient'
 
 const CourseDetails = ({ route }) => {
   const navigation = useNavigation()
@@ -127,8 +118,9 @@ const CourseDetails = ({ route }) => {
           style={[
             styles.course_mark_container,
             {
-              backgroundColor: theme.dark ? palette.neutralVariant20 : theme.colors.surfaceVariant,
-              opacity: 1
+              backgroundColor: theme.dark
+                ? theme.colors.elevation.level3
+                : theme.colors.surfaceVariant
             }
           ]}
         >
@@ -140,44 +132,54 @@ const CourseDetails = ({ route }) => {
           </Text>
         </View>
         {course.categories.size > 0 && (
-          <View style={{ flex: 1, marginLeft: 12 }}>
-            {[...course.categories.values()].map((item) => {
-              const value = round(item.value, 2)
-              const hasValue = !isNaN(value)
-              return (
-                <View
-                  key={item.name}
-                  style={{
-                    justifyContent: 'space-evenly',
-                    flex: 1
-                  }}
-                >
-                  <View style={styles.category_details}>
-                    <Text
-                      style={[styles.category_name_text, { color: theme.colors.onSurface }]}
-                      numberOfLines={2}
-                    >
-                      {item.name} {`(${item.weight}%)`}
-                    </Text>
-                    <Text
-                      style={[styles.category_mark_text, { color: theme.colors.onSurface }]}
-                      numberOfLines={2}
-                    >
-                      {hasValue ? value : 'N/A'}
-                    </Text>
-                  </View>
-                  <ProgressBar
-                    progress={hasValue ? value / 100 : 0}
-                    style={{ backgroundColor: calculateMarkColor(value) }}
-                  />
-                </View>
-              )
-            })}
+          <View style={{ marginLeft: 20, height: 80, flex: 1 }}>
+            <FlatList
+              data={[...course.categories.values()]}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => {
+                const value = round(item.value, 2)
+                const hasValue = !isNaN(value)
+                const progressValue = hasValue ? value / 100 : 0
+                return (
+                  <LinearGradient
+                    key={item.name}
+                    style={{
+                      padding: 14,
+                      borderRadius: 12,
+                      marginBottom: 8
+                    }}
+                    colors={[
+                      theme.colors.elevation.level5,
+                      theme.colors.elevation.level5,
+                      theme.colors.elevation.level2
+                    ]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    locations={[0, progressValue, progressValue]}
+                  >
+                    <View style={styles.category_details}>
+                      <Text
+                        style={[styles.category_name_text, { color: theme.colors.onSurface }]}
+                        numberOfLines={2}
+                      >
+                        {item.name} {`(${item.weight}%)`}
+                      </Text>
+                      <Text
+                        style={[styles.category_mark_text, { color: theme.colors.onSurface }]}
+                        numberOfLines={1}
+                      >
+                        {hasValue ? value : 'N/A'}
+                      </Text>
+                    </View>
+                  </LinearGradient>
+                )
+              }}
+            />
           </View>
         )}
       </View>
       {categories && (
-        <View style={{ height: 32, paddingLeft: 4, marginVertical: 15 }}>
+        <View style={{ height: 32, paddingLeft: 4, marginTop: 20, marginBottom: 15 }}>
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
@@ -216,8 +218,7 @@ const CourseDetails = ({ route }) => {
         style={[
           styles.assignment_list_container,
           {
-            shadowColor: theme.colors.shadow,
-            backgroundColor: theme.colors.background
+            backgroundColor: theme.colors.elevation.level2
           }
         ]}
       >
@@ -487,7 +488,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 10,
+    height: 80,
     paddingHorizontal: 15,
     borderRadius: 24,
     maxWidth: '50%',
@@ -501,15 +502,15 @@ const styles = StyleSheet.create({
   category_details: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     flexWrap: 'wrap',
     alignContent: 'flex-start'
   },
   category_name_text: {
     fontSize: 10,
     flex: 1,
-    marginRight: 2,
-    fontFamily: 'Inter_400Regular',
-    maxWidth: '75%'
+    marginRight: 8,
+    fontFamily: 'Inter_400Regular'
   },
   category_mark_text: {
     fontSize: 12,
@@ -519,14 +520,7 @@ const styles = StyleSheet.create({
   assignment_list_container: {
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    flex: 1,
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
+    flex: 1
   },
   assignment_scrollview_container: {
     flexGrow: 1,

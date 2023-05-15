@@ -22,8 +22,7 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher, room })
       style={[
         styles.container,
         {
-          backgroundColor: theme.dark ? Colors.dark_gray : Colors.light_yellow_white,
-          borderColor: theme.colors.outlineVariant
+          backgroundColor: theme.colors.surface
         }
       ]}
       onPress={onPress}

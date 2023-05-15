@@ -165,8 +165,9 @@ const Courses = ({ navigation }) => {
         style={[
           styles.course_list_container,
           {
-            backgroundColor: theme.colors.surface,
-            shadowColor: theme.colors.shadow
+            backgroundColor: theme.dark
+              ? theme.colors.elevation.level2
+              : theme.colors.surfaceVariant
           }
         ]}
       >
