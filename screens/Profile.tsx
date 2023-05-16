@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginTop: -20
+    marginTop: -30
   },
   info_container: {
     justifyContent: 'center',
