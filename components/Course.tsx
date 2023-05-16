@@ -44,7 +44,12 @@ const Course: React.FC<Props> = ({ mark, onPress, period, name, teacher, room })
       {!isNaN(mark) && (
         <>
           <View
-            style={{ backgroundColor: theme.colors.surfaceVariant, padding: 8, borderRadius: 12 }}
+            style={{
+              backgroundColor: theme.colors.surfaceVariant,
+              padding: 8,
+              borderRadius: 12,
+              marginRight: 6
+            }}
           >
             <Text style={[styles.mark, { color: theme.colors.onSurfaceVariant }]}>
               {round(mark, 2)}
@@ -73,7 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 6,
-    padding: 12
+    padding: 16
   },
   period_number: {
     fontFamily: 'Montserrat_800ExtraBold',
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
   course_info_container: {
     flexDirection: 'column',
     justifyContent: 'center',
-    marginHorizontal: 8,
+    marginHorizontal: 12,
     flex: 1
   },
   name: {
@@ -105,7 +110,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     fontFamily: 'Montserrat_800ExtraBold',
     fontSize: 28,
-    marginRight: 4
+    marginHorizontal: 4
   }
 })
 
