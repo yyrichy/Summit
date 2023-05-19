@@ -299,7 +299,7 @@ const Assignment: React.FC<Props> = ({ courseName, name, style }) => {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 15,
-    marginVertical: 5,
+    marginBottom: 10,
     overflow: 'hidden',
     padding: 10
   },

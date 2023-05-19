@@ -263,7 +263,7 @@ const Login = () => {
                   )
                 }}
                 style={{ flexGrow: 0 }}
-                contentContainerStyle={{ flexGrow: 0, marginTop: 12 }}
+                contentContainerStyle={{ flexGrow: 0, paddingTop: 16 }}
                 ItemSeparatorComponent={Separator}
                 ListEmptyComponent={
                   <PaperText variant="bodyMedium">No school districts found</PaperText>
@@ -467,7 +467,7 @@ const Separator = () => {
   return (
     <Divider
       style={{
-        marginVertical: 4
+        marginVertical: 8
       }}
       bold
     />

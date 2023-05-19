@@ -145,8 +145,7 @@ const CourseDetails = ({ route }) => {
                     key={item.name}
                     style={{
                       padding: 14,
-                      borderRadius: 12,
-                      marginBottom: 8
+                      borderRadius: 12
                     }}
                     colors={[
                       theme.colors.elevation.level5,
@@ -174,12 +173,13 @@ const CourseDetails = ({ route }) => {
                   </LinearGradient>
                 )
               }}
+              ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
             />
           </View>
         )}
       </View>
       {categories && (
-        <View style={{ height: 32, paddingLeft: 4, marginTop: 20, marginBottom: 15 }}>
+        <View style={{ height: 32, paddingLeft: 12, marginTop: 20, marginBottom: 15 }}>
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal
@@ -191,7 +191,7 @@ const CourseDetails = ({ route }) => {
                   selected={selected}
                   mode={'flat'}
                   style={{
-                    marginHorizontal: 8,
+                    marginRight: 16,
                     height: 32,
                     backgroundColor: selected
                       ? theme.colors.secondaryContainer
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
   assignment_scrollview_container: {
     flexGrow: 1,
     paddingHorizontal: 12,
-    paddingTop: 8,
+    paddingTop: 12,
     paddingBottom: 10
   },
   points_input_container: {

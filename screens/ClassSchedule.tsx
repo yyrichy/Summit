@@ -103,7 +103,7 @@ const ScheduleScreen = () => {
                 start={item.time?.start}
                 end={item.time?.end}
                 room={item.room}
-              ></ScheduleComponent>
+              />
             )}
             keyExtractor={(item) => item.name}
             contentContainerStyle={{

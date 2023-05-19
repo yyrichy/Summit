@@ -84,11 +84,10 @@ const Courses = ({ navigation }) => {
                 actionSheetRef.current?.hide()
               }}
               style={[
-                { minHeight: 48, justifyContent: 'center' },
+                { minHeight: 40, justifyContent: 'center' },
                 selected.name === item.name && {
                   backgroundColor: theme.colors.surfaceVariant,
                   borderRadius: 8,
-                  marginVertical: 8,
                   padding: 12
                 }
               ]}
@@ -105,7 +104,7 @@ const Courses = ({ navigation }) => {
             </TouchableOpacity>
           )}
           ItemSeparatorComponent={() => {
-            return <Divider style={{ marginVertical: 4 }} bold />
+            return <Divider style={{ marginVertical: 10 }} bold />
           }}
         />
       </ActionSheet>
@@ -197,13 +196,14 @@ const Courses = ({ navigation }) => {
                 teacher={item[1].teacher.name}
                 onPress={() => navigation.navigate('Course Details', { title: item[0] })}
                 room={item[1].room}
-              ></Course>
+              />
             )}
             keyExtractor={(item) => item[0]}
             contentContainerStyle={{
-              paddingHorizontal: 10,
-              paddingTop: 6
+              paddingHorizontal: 12,
+              paddingTop: 12
             }}
+            ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
           />
         )}
         <BannerAd
@@ -265,14 +265,7 @@ const styles = StyleSheet.create({
   course_list_container: {
     flex: 1,
     borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
+    borderTopRightRadius: 20
   }
 })
 

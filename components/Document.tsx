@@ -54,7 +54,6 @@ const Doc: React.FC<Props> = ({ name, type, date, onPress, style }) => {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 12,
-    marginVertical: 4,
     padding: 10,
     flexDirection: 'column',
     justifyContent: 'center',

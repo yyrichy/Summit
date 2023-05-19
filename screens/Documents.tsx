@@ -61,8 +61,9 @@ const Documents = () => {
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{
             paddingHorizontal: 10,
-            paddingTop: 4
+            paddingVertical: 8
           }}
+          ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
         />
       ) : (
         <ActivityIndicator

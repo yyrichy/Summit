@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 6,
     padding: 16
   },
   period_number: {
