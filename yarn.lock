@@ -7488,10 +7488,10 @@ react-native-actions-sheet@^0.8.21:
   resolved "https://registry.yarnpkg.com/react-native-actions-sheet/-/react-native-actions-sheet-0.8.21.tgz#d9175e7d5d862217f990b2ccc8a216fb4fc35b06"
   integrity sha512-WUtrGbPSlY8YuVSxKVJ36f3PrVMGMOQ5Cp5dtpurc71Uih4LEGGhEEk8yme/QOquiGsu77be0sZT4CrSUOSXag==
 
-react-native-android-widget@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-android-widget/-/react-native-android-widget-0.4.1.tgz#859376948a146f11eea3f2d891e20ee82076889d"
-  integrity sha512-ayVTYuLQohrlgP1NFcmqHL88pMBP+QSUBLh02nTwiR9iSYvevx1ujK47mYk85BF0dd3Ksi/ot7rTmH8hJlyaLQ==
+react-native-android-widget@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-android-widget/-/react-native-android-widget-0.5.3.tgz#e912b60617b297c474d19d2cd1f7f7fe7d472bf7"
+  integrity sha512-gI4BUCbyDzEbb0V1JRNw6JTebs0tMcNlceW757aJmiiIsenuBb+uImr/BEOP1lOZL0tugJ0suFNWxn1NDI388A==
 
 react-native-background-fetch@^4.1.9:
   version "4.1.9"
@@ -7548,10 +7548,10 @@ react-native-google-mobile-ads@^9.1.1:
     "@iabtcf/core" "^1.5.3"
     use-deep-compare-effect "^1.8.1"
 
-react-native-gradle-plugin@^0.71.17:
-  version "0.71.17"
-  resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.17.tgz#cf780a27270f0a32dca8184eff91555d7627dd00"
-  integrity sha512-OXXYgpISEqERwjSlaCiaQY6cTY5CH6j73gdkWpK0hedxtiWMWgH+i5TOi4hIGYitm9kQBeyDu+wim9fA8ROFJA==
+react-native-gradle-plugin@^0.71.18:
+  version "0.71.18"
+  resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.18.tgz#20ef199bc85be32e45bb6cc069ec2e7dcb1a74a6"
+  integrity sha512-7F6bD7B8Xsn3JllxcwHhFcsl9aHIig47+3eN4IHFNqfLhZr++3ElDrcqfMzugM+niWbaMi7bJ0kAkAL8eCpdWg==
 
 react-native-linear-gradient@^2.6.2:
   version "2.6.2"
@@ -7666,10 +7666,10 @@ react-native-web@~0.18.11:
     postcss-value-parser "^4.2.0"
     styleq "^0.1.2"
 
-react-native@0.71.7:
-  version "0.71.7"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.71.7.tgz#d0ae409f6ee4fc7e7a876b4ca9d8d28934133228"
-  integrity sha512-Id6iRLS581fJMFGbBl1jP5uSmjExtGOvw5Gvh7694zISXjsRAsFMmU+izs0pyCLqDBoHK7y4BT7WGPGw693nYw==
+react-native@0.71.8:
+  version "0.71.8"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.71.8.tgz#4314145341c49448cf7465b93ced52a433a5e191"
+  integrity sha512-ftMAuhpgTkbHU9brrqsEyxcNrpYvXKeATY+if22Nfhhg1zW+6wn95w9otwTnA3xHkljPCbng8mUhmmERjGEl7g==
   dependencies:
     "@jest/create-cache-key-function" "^29.2.1"
     "@react-native-community/cli" "10.2.2"
@@ -7696,7 +7696,7 @@ react-native@0.71.7:
     promise "^8.3.0"
     react-devtools-core "^4.26.1"
     react-native-codegen "^0.71.5"
-    react-native-gradle-plugin "^0.71.17"
+    react-native-gradle-plugin "^0.71.18"
     react-refresh "^0.4.0"
     react-shallow-renderer "^16.15.0"
     regenerator-runtime "^0.13.2"

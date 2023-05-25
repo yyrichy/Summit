@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlexWidget, TextWidget, IconWidget } from 'react-native-android-widget'
+import { FlexWidget, TextWidget, IconWidget, ListWidget } from 'react-native-android-widget'
 import { Gradebook } from 'studentvue'
 import { parseCourseName } from '../gradebook/GradeUtil'
 import { MD3DarkTheme } from '../theme/MD3DarkTheme'
@@ -123,7 +123,7 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
           <IconWidget
             clickAction={'TOGGLE_THEME'}
             font="material"
-            size={24}
+            size={22}
             icon="brightness_6"
             style={{ color: textColor }}
             clickActionData={{ dark: dark }}
@@ -133,54 +133,39 @@ export function GradesWidget({ gradebook, error, dark }: GradesWidgetProps) {
       <FlexWidget
         style={{
           borderRadius: 12,
-          paddingHorizontal: 12,
-          paddingTop: 7,
+          paddingTop: 6,
           backgroundColor: dark ? '#2D2D2D' : '#f6f6f6',
           width: 'match_parent',
-          flex: 1
+          height: 'match_parent'
         }}
       >
-        {gradebook.courses.length >= 1 && (
-          <Course course={gradebook.courses[0]} textColor={textColor} />
-        )}
-        {gradebook.courses.length >= 2 && (
-          <Course course={gradebook.courses[1]} textColor={textColor} />
-        )}
-        {gradebook.courses.length >= 3 && (
-          <Course course={gradebook.courses[2]} textColor={textColor} />
-        )}
-        {gradebook.courses.length >= 4 && (
-          <Course course={gradebook.courses[3]} textColor={textColor} />
-        )}
-        {gradebook.courses.length >= 5 && (
-          <Course course={gradebook.courses[4]} textColor={textColor} />
-        )}
-        {gradebook.courses.length >= 6 && (
-          <Course course={gradebook.courses[5]} textColor={textColor} />
-        )}
-        {gradebook.courses.length >= 7 && (
-          <Course course={gradebook.courses[6]} textColor={textColor} />
-        )}
+        <ListWidget style={{ width: 'match_parent', height: 'match_parent' }}>
+          {gradebook.courses.map((c, i) => (
+            <Course course={c} textColor={textColor} key={i} />
+          ))}
+        </ListWidget>
       </FlexWidget>
     </FlexWidget>
   )
 }
 
-const Course = ({ course, textColor }) => {
+const Course = ({ course, textColor, key }) => {
   return (
     <FlexWidget
       style={{
         flexDirection: 'row',
         width: 'match_parent',
-        marginTop: 1
+        paddingVertical: 2,
+        marginHorizontal: 12
       }}
-      key={course.title}
+      key={key}
+      clickAction="OPEN_APP"
     >
       <FlexWidget style={{ marginRight: 10, flex: 1 }}>
         <TextWidget
           text={parseCourseName(course.title)}
           style={{
-            fontSize: 14,
+            fontSize: 16,
             textAlign: 'left',
             color: textColor
           }}
@@ -192,9 +177,10 @@ const Course = ({ course, textColor }) => {
         <TextWidget
           text={`${course.marks[0].calculatedScore.raw}`}
           style={{
-            fontSize: 14,
+            fontSize: 16,
             textAlign: 'right',
-            color: textColor
+            color: textColor,
+            fontWeight: '600'
           }}
           maxLines={1}
         />
